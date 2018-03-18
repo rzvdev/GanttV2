@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{865A32F7-A3F7-4C64-9F3B-BB7B7C5A2454}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ganntproj1</RootNamespace>
+    <AssemblyName>ganntproj1</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ganntproj1.CommandCenter</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>70BC5DF4D52F93E3D75D26715260518A1F24B198</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ganntproj1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Documentation\readme.md" />
+    <None Include="Store.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Store.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DgvPrint.cs" />
+    <Compile Include="Diffetato.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Diffetato.Designer.cs">
+      <DependentUpon>Diffetato.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExcelExport.cs" />
+    <Compile Include="Fatturato.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fatturato.Designer.cs">
+      <DependentUpon>Fatturato.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FatturatoLinea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FatturatoLinea.Designer.cs">
+      <DependentUpon>FatturatoLinea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCarico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCarico.Designer.cs">
+      <DependentUpon>FrmCarico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLineListChecker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLineListChecker.Designer.cs">
+      <DependentUpon>FrmLineListChecker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSchedule.Designer.cs">
+      <DependentUpon>FrmSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HolidaysController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HolidaysController.Designer.cs">
+      <DependentUpon>HolidaysController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputDate.Designer.cs">
+      <DependentUpon>InputDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LineGraph.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LineGraph.Designer.cs">
+      <DependentUpon>LineGraph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mensile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mensile.Designer.cs">
+      <DependentUpon>Mensile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyMessage.Designer.cs">
+      <DependentUpon>MyMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JobModel.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="MyCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectModels\Articles.cs" />
+    <Compile Include="ObjectModels\OrderClose.cs" />
+    <Compile Include="ObjectModels\OrderLock.cs" />
+    <Compile Include="ObjectModels\Orders.cs" />
+    <Compile Include="ObjectModels\Lines.cs" />
+    <Compile Include="ObjectModels\AricleOperations.cs" />
+    <Compile Include="ObjectModels\Production.cs" />
+    <Compile Include="ObjectModels\ProductionSplit.cs" />
+    <Compile Include="ObjectModels\Shifts.cs" />
+    <Compile Include="ObjectModels\Tables.cs" />
+    <Compile Include="Produzione.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Produzione.Designer.cs">
+      <DependentUpon>Produzione.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingJobController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingJobController.Designer.cs">
+      <DependentUpon>LoadingJobController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommInput.Designer.cs">
+      <DependentUpon>CommInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config.cs" />
+    <Compile Include="CommandCenter.Designer.cs">
+      <DependentUpon>CommandCenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Geometry.cs" />
+    <Compile Include="Central.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Central.Designer.cs">
+      <DependentUpon>Central.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Respinte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Respinte.Designer.cs">
+      <DependentUpon>Respinte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkflowController.Designer.cs">
+      <DependentUpon>WorkflowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SplitHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplitHistory.Designer.cs">
+      <DependentUpon>SplitHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SplitInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplitInput.Designer.cs">
+      <DependentUpon>SplitInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SummaryReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SummaryReport.Designer.cs">
+      <DependentUpon>SummaryReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyPrintDialog.cs" />
+    <Compile Include="Channels.cs" />
+    <Compile Include="CommandCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ganttogram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TableView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Output.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="MiniTitle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MiniTitle.designer.cs">
+      <DependentUpon>MiniTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Title.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Title.designer.cs">
+      <DependentUpon>Title.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Store.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Store.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Popup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CommonTools">
+      <HintPath>..\..\..\CommonTools.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Users\boris\Desktop\Sinotico\Sinotico\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+    <None Include="Resources\icons_excel_filled_32.png" />
+    <None Include="Resources\export_excel_icon_321.png" />
+    <None Include="Resources\export_excel_icon_32.png" />
+    <None Include="Resources\excel_export_icon_50.png" />
+    <None Include="Resources\check_list_32.png" />
+    <None Include="Resources\close_icon_small_32.png" />
+    <None Include="Resources\send_clock_48.png" />
+    <None Include="Resources\loading_icon_96.png" />
+    <None Include="Resources\trash_multidm_48.png" />
+    <None Include="Resources\monitoring_multidm_48.png" />
+    <None Include="Resources\save_multidm_48.png" />
+    <None Include="Resources\warning_s_icon_48.png" />
+    <None Include="Resources\recovery_48.png" />
+    <None Include="Resources\holiday_button_16.png" />
+    <None Include="Resources\discard_changes_48.png" />
+    <None Include="Resources\accept_changes_48.png" />
+    <None Include="Resources\sidebar_32.png" />
+    <None Include="Resources\holiday_calendar_32.png" />
+    <None Include="Resources\padlock_icon_d20.png" />
+    <None Include="Resources\padlock_icon_d16.png" />
+    <None Include="Resources\filter_icon_d32.png" />
+    <None Include="Resources\print_icon_d32.png" />
+    <None Include="Resources\settings_icon_d32.png" />
+    <None Include="Resources\menu_icon_d32.png" />
+    <None Include="Resources\reset_total_32.png" />
+    <None Include="Resources\refresh_total_32.png" />
+    <None Include="Resources\zoom_out_d32.png" />
+    <None Include="Resources\zoom_in_d32.png" />
+    <None Include="Resources\arrow_forw_32.png" />
+    <None Include="Resources\arrow_mforw_32.png" />
+    <None Include="Resources\arrow_mback_32.png" />
+    <None Include="Resources\arrow_back_32.png" />
+    <None Include="Resources\clear_icon_32.png" />
+    <None Include="Resources\unlock_16.png" />
+    <None Include="Resources\lock_16.png" />
+    <None Include="Resources\rect_selection_24.png" />
+    <None Include="Resources\schedule_24.png" />
+    <None Include="Resources\back_3d_icon.png" />
+    <None Include="Resources\printing_gif.gif" />
+    <None Include="Resources\robot_96.png" />
+    <None Include="Resources\reset_24.png" />
+    <None Include="Resources\search_16.png" />
+    <None Include="Resources\inform_16.png" />
+    <None Include="Resources\exclamation_16.png" />
+    <None Include="Resources\history_40.png" />
+    <None Include="Resources\order_split_flag_16.png" />
+    <None Include="Resources\order_statusok_24.png" />
+    <None Include="Resources\foag_red_24.png" />
+    <None Include="Resources\trash_16.png" />
+    <None Include="Resources\split_16.png" />
+    <None Include="Resources\programmare_16.png" />
+    <None Include="Resources\details_48.png" />
+    <None Include="Resources\single_report_48.png" />
+    <None Include="Resources\full_report_48.png" />
+    <None Include="Resources\icons_forward_48.png" />
+    <None Include="Resources\icons_back_48.png" />
+    <None Include="Resources\collapse_arrow_32.png" />
+    <None Include="Resources\expand_arrow_32.png" />
+    <None Include="Resources\bullet_toggle_plus.png" />
+    <None Include="Resources\bullet_toggle_minus.png" />
+    <None Include="Resources\colapse_arrow_16.png" />
+    <None Include="Resources\expand_arrow_16.png" />
+    <None Include="Resources\colapse_arrow_24.png" />
+    <None Include="Resources\expand_arrow_24.png" />
+    <None Include="Resources\back_32.png" />
+    <None Include="Resources\mega_back_32.png" />
+    <None Include="Resources\fow_32.png" />
+    <None Include="Resources\mega_fow_32.png" />
+    <None Include="Resources\zoom_in_32.png" />
+    <None Include="Resources\zoom_out_32.png" />
+    <None Include="Resources\sub_task.png" />
+    <None Include="Resources\main_task.png" />
+    <None Include="Resources\toggle_colapse.png" />
+    <None Include="Resources\toggle_expand.png" />
+    <None Include="Resources\printer.png" />
+    <None Include="Resources\discard_48.png" />
+    <None Include="Resources\save_48.png" />
+    <None Include="Resources\close_com_60.png" />
+    <None Include="Resources\check_com_60.png" />
+    <None Include="Resources\add_48.png" />
+    <None Include="Resources\service_48.png" />
+    <None Include="Resources\menu.png" />
+    <None Include="Resources\sort_32.png" />
+    <None Include="Resources\filter_edit_40.png" />
+    <None Include="Resources\full_fill_40.png" />
+    <None Include="Resources\filter_40_y.png" />
+    <None Include="Resources\full_40_y.png" />
+    <None Include="Resources\full_40.png" />
+    <None Include="Resources\refresh_40.png" />
+    <None Include="Resources\filter_40.png" />
+    <None Include="Resources\info.png" />
+    <None Include="Resources\infotip_selected.png" />
+    <None Include="Resources\cleanse_selected.png" />
+    <None Include="Resources\tipinfo.png" />
+    <None Include="Resources\cleanse.png" />
+    <None Include="Resources\stiro.png" />
+    <None Include="Resources\conf.png" />
+    <None Include="Resources\tess.png" />
+    <None Include="Resources\switch.png" />
+    <None Include="Resources\reload.png" />
+    <None Include="Resources\enter.png" />
+    <None Include="Resources\export.png" />
+    <None Include="Resources\report.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\exitResize.png" />
+    <None Include="Resources\zoomOut.png" />
+    <None Include="Resources\zoomIn.png" />
+    <None Include="Resources\enlarge.png" />
+    <None Include="Resources\filter.png" />
+    <None Include="Resources\resize.png" />
+    <None Include="Resources\document.png" />
+    <None Include="Resources\calender.png" />
+    <None Include="Resources\switch1.png" />
+    <None Include="Resources\fileopen.png" />
+    <None Include="Resources\print1.png" />
+    <None Include="Resources\save1.png" />
+    <None Include="Resources\forwforw.png" />
+    <None Include="Resources\backback.png" />
+    <None Include="Resources\outputfile.png" />
+    <None Include="Resources\open.png" />
+    <None Include="Resources\forward.png" />
+    <None Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Diffetato.resx">
+      <DependentUpon>Diffetato.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fatturato.resx">
+      <DependentUpon>Fatturato.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FatturatoLinea.resx">
+      <DependentUpon>FatturatoLinea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCarico.resx">
+      <DependentUpon>FrmCarico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLineListChecker.resx">
+      <DependentUpon>FrmLineListChecker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSchedule.resx">
+      <DependentUpon>FrmSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HolidaysController.resx">
+      <DependentUpon>HolidaysController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDate.resx">
+      <DependentUpon>InputDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineGraph.resx">
+      <DependentUpon>LineGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingInfo.resx">
+      <DependentUpon>LoadingInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mensile.resx">
+      <DependentUpon>Mensile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyMessage.resx">
+      <DependentUpon>MyMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ganttogram.resx">
+      <DependentUpon>Ganttogram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingJobController.resx">
+      <DependentUpon>LoadingJobController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Produzione.resx">
+      <DependentUpon>Produzione.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommandCenter.resx">
+      <DependentUpon>CommandCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommInput.resx">
+      <DependentUpon>CommInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Central.resx">
+      <DependentUpon>Central.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Respinte.resx">
+      <DependentUpon>Respinte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowController.resx">
+      <DependentUpon>WorkflowController.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplitHistory.resx">
+      <DependentUpon>SplitHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplitInput.resx">
+      <DependentUpon>SplitInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SummaryReport.resx">
+      <DependentUpon>SummaryReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MiniTitle.resx">
+      <DependentUpon>MiniTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Title.resx">
+      <DependentUpon>Title.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup.resx">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

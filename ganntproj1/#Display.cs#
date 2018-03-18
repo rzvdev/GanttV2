@@ -1,0 +1,2437 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using ganntproj1.Properties;
+
+//------------------------------------------------------------
+//Be aware of time changes
+//RESCRIPT
+//Save all under the file content, and re-optimize after time changes.
+//------------------------------------------------------------
+
+namespace ganntproj1
+    {
+    /// <summary>
+    /// Class that represents a retaining data from sql or textual file. (See SQl algo 1.0)
+    /// </summary>
+    public sealed class Display : Form
+        {
+
+        #region Privates
+
+        private DataTable _dtRoot;
+        private Filter _filter = new Filter();
+        private List<Filter> _filtersList = new List<Filter>();
+        private Chart _gannt = new Chart();
+        private Label _title = new Label();
+
+        //There are to many
+        #region Buttons 
+        private Button btnFilter;
+        private Button btnNavBack;
+        private Button btnNavBackMega;
+        private Button btnNavBackMegaPlus;
+        private Button btnNavBackPlus;
+        private Button btnNavForw;
+        private Button btnNavForwMega;
+        private Button btnNavForwMegaPlus;
+        private Button btnNavForwPlus;
+        private Button btnOpen;
+        private Button btnPrint;
+        private Button btnResize;
+        private Button btnSave;
+        private Button btnSaveAs;
+        private Button btnSwitch;
+        private Button btnZoomIn;
+        private Button btnZoomInPlus;
+        private Button btnZoomOut;
+        private Button btnZoomOutPlus;
+        #endregion
+
+        //Other display controls
+
+        private SplitContainer DisplaySplitContainer;
+        private StatusStrip displayStatus;
+        private ToolStripStatusLabel DisplayStatusConsole;
+        private SplitContainer ganttContainer;
+
+        private ToolStripMenuItem hideConsoleOutput;
+        private Label lblFiltersTit;
+
+        private ToolStripStatusLabel lblDateTimeInterval;
+        private ToolStripStatusLabel lblDepthStatus;
+        private Title mainTitle;
+        private MiniTitle miniTitle1;
+        private Panel pnNavPlus;
+        private ToolStripMenuItem showConsoleOutput;
+        private Button btnFullPrev;
+        private ToolStripSplitButton toolStripSplitButton1;
+
+        //Configuration
+
+        private const int SwHide = 0;
+        private const int SwShow = 5;
+        private static readonly Output OutputFile = new Output();
+        private readonly BindingSource _bsGanttList = new BindingSource();
+
+        private readonly Channels _channels = new Channels();
+        private readonly Config _config = new Config();
+        private string[] _aim;
+        private readonly BindingSource _bsDatList = new BindingSource();
+        private LoadingInfo _load = new LoadingInfo();
+            
+        private const string HeaderTitle = "ONLYOU";
+
+        //Printing
+
+        private readonly MyPrintDialog _mpd = new MyPrintDialog();
+        private readonly PrintDocument _printDoc = new PrintDocument();
+            private List _dgvGantt;
+            private int _colapsed;
+            private Panel _panel1;
+            private Button btnReport;
+            private Button button1;
+            private Panel pnSplitter1;
+            private Panel panel3;
+            private Label label3;
+            private PictureBox pbStiro;
+            private PictureBox pbConf;
+            private PictureBox pbTess;
+            private PictureBox pbStaz;
+            private Panel panel2;
+            private Label label4;
+            private PictureBox pbStiro1;
+            private PictureBox pbConf1;
+            private PictureBox pbTess1;
+            private PictureBox pbStaz1;
+            private List dgvRoot;
+            private Button _btnTess;
+            private Button _btnStiro;
+            public Button BtnConf;
+            private SplitContainer splitContainer1;
+            private Button btnEndRemDays;
+            private Button btnEndAddDays;
+            private Button btnStartRemDays;
+            private Button btnStartAddDays;
+            private SplitContainer splitContainer2;
+        
+        #endregion
+
+        //console drivers
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetConsoleWindow();
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        #region Components
+
+        private void InitializeComponent() //method recognized by the software defaults
+            {
+                var dataGridViewCellStyle8 = new DataGridViewCellStyle();
+                var dataGridViewCellStyle9 = new DataGridViewCellStyle();
+                var dataGridViewCellStyle10 = new DataGridViewCellStyle();
+                var resources = new ComponentResourceManager(typeof(Display));
+                var dataGridViewCellStyle11 = new DataGridViewCellStyle();
+                var dataGridViewCellStyle12 = new DataGridViewCellStyle();
+                var dataGridViewCellStyle13 = new DataGridViewCellStyle();
+                var dataGridViewCellStyle14 = new DataGridViewCellStyle();
+                displayStatus = new StatusStrip();
+                DisplayStatusConsole = new ToolStripStatusLabel();
+                lblDepthStatus = new ToolStripStatusLabel();
+                lblDateTimeInterval = new ToolStripStatusLabel();
+                toolStripSplitButton1 = new ToolStripSplitButton();
+                showConsoleOutput = new ToolStripMenuItem();
+                hideConsoleOutput = new ToolStripMenuItem();
+                _pnSideBar = new Panel();
+                btnEndRemDays = new Button();
+                btnEndAddDays = new Button();
+                btnStartRemDays = new Button();
+                btnStartAddDays = new Button();
+                _btnStiro = new Button();
+                button1 = new Button();
+                btnFullPrev = new Button();
+                BtnConf = new Button();
+                _btnColapseSideBar = new Button();
+                lblFiltersTit = new Label();
+                _btnTess = new Button();
+                _btnReload = new Button();
+                _dtpDateTo = new DateTimePicker();
+                label2 = new Label();
+                _dtpDateFrom = new DateTimePicker();
+                label1 = new Label();
+                DisplaySplitContainer = new SplitContainer();
+                ganttContainer = new SplitContainer();
+                dgvRoot = new List();
+                pnSplitter1 = new Panel();
+                pnNavPlus = new Panel();
+                splitContainer1 = new SplitContainer();
+                btnNavBackPlus = new Button();
+                btnNavBackMegaPlus = new Button();
+                btnZoomOutPlus = new Button();
+                btnNavForwMegaPlus = new Button();
+                btnZoomInPlus = new Button();
+                btnNavForwPlus = new Button();
+                panel3 = new Panel();
+                label3 = new Label();
+                pbStiro = new PictureBox();
+                pbConf = new PictureBox();
+                pbTess = new PictureBox();
+                pbStaz = new PictureBox();
+                miniTitle1 = new MiniTitle();
+                _dgvGantt = new List();
+                _panel1 = new Panel();
+                splitContainer2 = new SplitContainer();
+                btnNavBack = new Button();
+                btnNavForwMega = new Button();
+                btnZoomOut = new Button();
+                btnNavForw = new Button();
+                btnNavBackMega = new Button();
+                btnZoomIn = new Button();
+                panel2 = new Panel();
+                label4 = new Label();
+                pbStiro1 = new PictureBox();
+                pbConf1 = new PictureBox();
+                pbTess1 = new PictureBox();
+                pbStaz1 = new PictureBox();
+                btnReport = new Button();
+                btnSaveAs = new Button();
+                btnFilter = new Button();
+                btnResize = new Button();
+                btnSwitch = new Button();
+                btnOpen = new Button();
+                btnPrint = new Button();
+                btnSave = new Button();
+                mainTitle = new Title();
+                displayStatus.SuspendLayout();
+                _pnSideBar.SuspendLayout();
+                ((ISupportInitialize) DisplaySplitContainer).BeginInit();
+                DisplaySplitContainer.Panel1.SuspendLayout();
+                DisplaySplitContainer.Panel2.SuspendLayout();
+                DisplaySplitContainer.SuspendLayout();
+                ((ISupportInitialize) ganttContainer).BeginInit();
+                ganttContainer.Panel1.SuspendLayout();
+                ganttContainer.Panel2.SuspendLayout();
+                ganttContainer.SuspendLayout();
+                ((ISupportInitialize) dgvRoot).BeginInit();
+                pnNavPlus.SuspendLayout();
+                ((ISupportInitialize) splitContainer1).BeginInit();
+                splitContainer1.Panel1.SuspendLayout();
+                splitContainer1.Panel2.SuspendLayout();
+                splitContainer1.SuspendLayout();
+                panel3.SuspendLayout();
+                ((ISupportInitialize) pbStiro).BeginInit();
+                ((ISupportInitialize) pbConf).BeginInit();
+                ((ISupportInitialize) pbTess).BeginInit();
+                ((ISupportInitialize) pbStaz).BeginInit();
+                ((ISupportInitialize) _dgvGantt).BeginInit();
+                _panel1.SuspendLayout();
+                ((ISupportInitialize) splitContainer2).BeginInit();
+                splitContainer2.Panel1.SuspendLayout();
+                splitContainer2.Panel2.SuspendLayout();
+                splitContainer2.SuspendLayout();
+                panel2.SuspendLayout();
+                ((ISupportInitialize) pbStiro1).BeginInit();
+                ((ISupportInitialize) pbConf1).BeginInit();
+                ((ISupportInitialize) pbTess1).BeginInit();
+                ((ISupportInitialize) pbStaz1).BeginInit();
+                SuspendLayout();
+                // 
+                // displayStatus
+                // 
+                displayStatus.ImageScalingSize = new Size(24, 24);
+                displayStatus.Items.AddRange(new ToolStripItem[]
+                {
+                    DisplayStatusConsole,
+                    lblDepthStatus,
+                    lblDateTimeInterval,
+                    toolStripSplitButton1
+                });
+                displayStatus.Location = new Point(0, 620);
+                displayStatus.Name = "displayStatus";
+                displayStatus.Size = new Size(1162, 30);
+                displayStatus.TabIndex = 2;
+                displayStatus.Text = "statusStrip1";
+                // 
+                // DisplayStatusConsole
+                // 
+                DisplayStatusConsole.Name = "DisplayStatusConsole";
+                DisplayStatusConsole.Size = new Size(60, 25);
+                DisplayStatusConsole.Text = "Ready";
+                // 
+                // lblDepthStatus
+                // 
+                lblDepthStatus.AutoToolTip = true;
+                lblDepthStatus.Name = "lblDepthStatus";
+                lblDepthStatus.Size = new Size(521, 25);
+                lblDepthStatus.Spring = true;
+                // 
+                // lblDateTimeInterval
+                // 
+                lblDateTimeInterval.AutoToolTip = true;
+                lblDateTimeInterval.Name = "lblDateTimeInterval";
+                lblDateTimeInterval.Size = new Size(521, 25);
+                lblDateTimeInterval.Spring = true;
+            // 
+            // toolStripSplitButton1
+            // 
+                toolStripSplitButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+                toolStripSplitButton1.DropDownItems.AddRange(new ToolStripItem[]
+                {
+                    showConsoleOutput,
+                    hideConsoleOutput
+                });
+                toolStripSplitButton1.Image = Resources.outputfile;
+                toolStripSplitButton1.ImageTransparentColor = Color.Magenta;
+                toolStripSplitButton1.Name = "toolStripSplitButton1";
+                toolStripSplitButton1.Size = new Size(45, 28);
+                toolStripSplitButton1.Text = "toolStripSplitButton1";
+                // 
+                // showConsoleOutput
+                // 
+                showConsoleOutput.Name = "showConsoleOutput";
+                showConsoleOutput.Size = new Size(265, 30);
+                showConsoleOutput.Text = "Show console output";
+                // 
+                // hideConsoleOutput
+                // 
+                hideConsoleOutput.Name = "hideConsoleOutput";
+                hideConsoleOutput.Size = new Size(265, 30);
+                hideConsoleOutput.Text = "Hide console output";
+                // 
+                // _pnSideBar
+                // 
+                _pnSideBar.BackColor = Color.WhiteSmoke;
+                _pnSideBar.BorderStyle = BorderStyle.FixedSingle;
+                _pnSideBar.Controls.Add(btnEndRemDays);
+                _pnSideBar.Controls.Add(btnEndAddDays);
+                _pnSideBar.Controls.Add(btnStartRemDays);
+                _pnSideBar.Controls.Add(btnStartAddDays);
+                _pnSideBar.Controls.Add(_btnStiro);
+                _pnSideBar.Controls.Add(button1);
+                _pnSideBar.Controls.Add(btnFullPrev);
+                _pnSideBar.Controls.Add(BtnConf);
+                _pnSideBar.Controls.Add(_btnColapseSideBar);
+                _pnSideBar.Controls.Add(lblFiltersTit);
+                _pnSideBar.Controls.Add(_btnTess);
+                _pnSideBar.Controls.Add(_btnReload);
+                _pnSideBar.Controls.Add(_dtpDateTo);
+                _pnSideBar.Controls.Add(label2);
+                _pnSideBar.Controls.Add(_dtpDateFrom);
+                _pnSideBar.Controls.Add(label1);
+                _pnSideBar.Dock = DockStyle.Left;
+                _pnSideBar.Location = new Point(0, 70);
+                _pnSideBar.Name = "_pnSideBar";
+                _pnSideBar.Size = new Size(176, 550);
+                _pnSideBar.TabIndex = 5;
+                // 
+                // btnEndRemDays
+                // 
+                btnEndRemDays.Location = new Point(153, 89);
+                btnEndRemDays.Name = "btnEndRemDays";
+                btnEndRemDays.Size = new Size(18, 21);
+                btnEndRemDays.TabIndex = 27;
+                btnEndRemDays.Text = ">";
+                btnEndRemDays.UseVisualStyleBackColor = true;
+                btnEndRemDays.Click += btnEndRemDays_Click;
+                // 
+                // btnEndAddDays
+                // 
+                btnEndAddDays.Location = new Point(133, 89);
+                btnEndAddDays.Name = "btnEndAddDays";
+                btnEndAddDays.Size = new Size(18, 21);
+                btnEndAddDays.TabIndex = 26;
+                btnEndAddDays.Text = "<";
+                btnEndAddDays.UseVisualStyleBackColor = true;
+                btnEndAddDays.Click += btnEndAddDays_Click;
+                // 
+                // btnStartRemDays
+                // 
+                btnStartRemDays.Location = new Point(153, 31);
+                btnStartRemDays.Name = "btnStartRemDays";
+                btnStartRemDays.Size = new Size(18, 21);
+                btnStartRemDays.TabIndex = 25;
+                btnStartRemDays.Text = ">";
+                btnStartRemDays.UseVisualStyleBackColor = true;
+                btnStartRemDays.Click += btnStartRemDays_Click;
+                // 
+                // btnStartAddDays
+                // 
+                btnStartAddDays.Location = new Point(133, 31);
+                btnStartAddDays.Name = "btnStartAddDays";
+                btnStartAddDays.Size = new Size(18, 21);
+                btnStartAddDays.TabIndex = 24;
+                btnStartAddDays.Text = "<";
+                btnStartAddDays.UseVisualStyleBackColor = true;
+                btnStartAddDays.Click += btnStartAddDays_Click;
+                // 
+                // btn_Stiro
+                // 
+                _btnStiro.FlatAppearance.BorderSize = 0;
+                _btnStiro.FlatStyle = FlatStyle.Flat;
+                _btnStiro.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                _btnStiro.Image = Resources.stiro;
+                _btnStiro.ImageAlign = ContentAlignment.MiddleLeft;
+                _btnStiro.Location = new Point(13, 451);
+                _btnStiro.Name = "_btnStiro";
+                _btnStiro.Size = new Size(117, 47);
+                _btnStiro.TabIndex = 23;
+                _btnStiro.Text = "Stiro";
+                _btnStiro.TextAlign = ContentAlignment.MiddleRight;
+                _btnStiro.UseVisualStyleBackColor = false;
+                _btnStiro.Click += btn_Stiro_Click;
+                // 
+                // button1
+                // 
+                button1.FlatAppearance.BorderSize = 0;
+                button1.FlatStyle = FlatStyle.Flat;
+                button1.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                button1.Image = Resources.switcher;
+                button1.ImageAlign = ContentAlignment.MiddleLeft;
+                button1.Location = new Point(13, 242);
+                button1.Name = "button1";
+                button1.Size = new Size(117, 47);
+                button1.TabIndex = 20;
+                button1.Text = "Switch to v2.0";
+                button1.TextAlign = ContentAlignment.MiddleRight;
+                button1.UseVisualStyleBackColor = false;
+                // 
+                // btnFullPrev
+                // 
+                btnFullPrev.FlatAppearance.BorderSize = 0;
+                btnFullPrev.FlatStyle = FlatStyle.Flat;
+                btnFullPrev.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                btnFullPrev.Image = Resources.enter;
+                btnFullPrev.ImageAlign = ContentAlignment.MiddleLeft;
+                btnFullPrev.Location = new Point(13, 189);
+                btnFullPrev.Name = "btnFullPrev";
+                btnFullPrev.Size = new Size(117, 47);
+                btnFullPrev.TabIndex = 17;
+                btnFullPrev.Text = "Full chart";
+                btnFullPrev.TextAlign = ContentAlignment.MiddleRight;
+                btnFullPrev.UseVisualStyleBackColor = true;
+                btnFullPrev.Click += button2_Click;
+                // 
+                // btn_Conf
+                // 
+                BtnConf.FlatAppearance.BorderSize = 0;
+                BtnConf.FlatStyle = FlatStyle.Flat;
+                BtnConf.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                BtnConf.Image = Resources.conf;
+                BtnConf.ImageAlign = ContentAlignment.MiddleLeft;
+                BtnConf.Location = new Point(13, 401);
+                BtnConf.Name = "BtnConf";
+                BtnConf.Size = new Size(117, 47);
+                BtnConf.TabIndex = 22;
+                BtnConf.Text = "Confezione";
+                BtnConf.TextAlign = ContentAlignment.MiddleRight;
+                BtnConf.UseVisualStyleBackColor = false;
+                BtnConf.Click += btn_Conf_Click;
+                // 
+                // _btnColapseSideBar
+                // 
+                _btnColapseSideBar.Dock = DockStyle.Bottom;
+                _btnColapseSideBar.FlatAppearance.BorderSize = 0;
+                _btnColapseSideBar.FlatStyle = FlatStyle.Flat;
+                _btnColapseSideBar.Image = Resources.resize;
+                _btnColapseSideBar.Location = new Point(0, 515);
+                _btnColapseSideBar.Name = "_btnColapseSideBar";
+                _btnColapseSideBar.Size = new Size(174, 33);
+                _btnColapseSideBar.TabIndex = 5;
+                _btnColapseSideBar.UseVisualStyleBackColor = true;
+                _btnColapseSideBar.Click += btnColapseSideBar_Click_1;
+                // 
+                // lblFiltersTit
+                // 
+                lblFiltersTit.AutoSize = true;
+                lblFiltersTit.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Underline, GraphicsUnit.Point, 0);
+                lblFiltersTit.Location = new Point(9, 304);
+                lblFiltersTit.Name = "lblFiltersTit";
+                lblFiltersTit.Size = new Size(52, 20);
+                lblFiltersTit.TabIndex = 13;
+                lblFiltersTit.Text = "Filters";
+                // 
+                // btn_Tess
+                // 
+                _btnTess.FlatAppearance.BorderSize = 0;
+                _btnTess.FlatStyle = FlatStyle.Flat;
+                _btnTess.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                _btnTess.Image = Resources.tess;
+                _btnTess.ImageAlign = ContentAlignment.MiddleLeft;
+                _btnTess.Location = new Point(13, 348);
+                _btnTess.Name = "_btnTess";
+                _btnTess.Size = new Size(117, 47);
+                _btnTess.TabIndex = 21;
+                _btnTess.Text = "Tessitura";
+                _btnTess.TextAlign = ContentAlignment.MiddleRight;
+                _btnTess.UseVisualStyleBackColor = false;
+                _btnTess.Click += btn_Tess_Click;
+                // 
+                // _btnReload
+                // 
+                _btnReload.FlatAppearance.BorderSize = 0;
+                _btnReload.FlatStyle = FlatStyle.Flat;
+                _btnReload.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                _btnReload.Image = Resources.reload;
+                _btnReload.ImageAlign = ContentAlignment.MiddleLeft;
+                _btnReload.Location = new Point(13, 135);
+                _btnReload.Name = "_btnReload";
+                _btnReload.Size = new Size(117, 47);
+                _btnReload.TabIndex = 4;
+                _btnReload.Text = "&Reload";
+                _btnReload.TextAlign = ContentAlignment.MiddleRight;
+                _btnReload.UseVisualStyleBackColor = true;
+                _btnReload.Click += btnReload_Click_1;
+                // 
+                // _dtpDateTo
+                // 
+                _dtpDateTo.CustomFormat = "dd/MM/yyyy";
+                _dtpDateTo.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                _dtpDateTo.Format = DateTimePickerFormat.Custom;
+                _dtpDateTo.Location = new Point(19, 96);
+                _dtpDateTo.Name = "_dtpDateTo";
+                _dtpDateTo.Size = new Size(111, 26);
+                _dtpDateTo.TabIndex = 3;
+                // 
+                // label2
+                // 
+                label2.AutoSize = true;
+                label2.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Underline, GraphicsUnit.Point, 0);
+                label2.Location = new Point(15, 73);
+                label2.Name = "label2";
+                label2.Size = new Size(27, 20);
+                label2.TabIndex = 2;
+                label2.Text = "To";
+                // 
+                // _dtpDateFrom
+                // 
+                _dtpDateFrom.CustomFormat = "dd/MM/yyyy";
+                _dtpDateFrom.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                _dtpDateFrom.Format = DateTimePickerFormat.Custom;
+                _dtpDateFrom.Location = new Point(19, 38);
+                _dtpDateFrom.Name = "_dtpDateFrom";
+                _dtpDateFrom.Size = new Size(111, 26);
+                _dtpDateFrom.TabIndex = 1;
+                // 
+                // label1
+                // 
+                label1.AutoSize = true;
+                label1.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Underline, GraphicsUnit.Point, 0);
+                label1.Location = new Point(15, 15);
+                label1.Name = "label1";
+                label1.Size = new Size(46, 20);
+                label1.TabIndex = 0;
+                label1.Text = "From";
+                // 
+                // DisplaySplitContainer
+                // 
+                DisplaySplitContainer.BackColor = Color.Silver;
+                DisplaySplitContainer.Dock = DockStyle.Fill;
+                DisplaySplitContainer.Location = new Point(176, 70);
+                DisplaySplitContainer.Name = "DisplaySplitContainer";
+                DisplaySplitContainer.Orientation = Orientation.Horizontal;
+                // 
+                // DisplaySplitContainer.Panel1
+                // 
+                DisplaySplitContainer.Panel1.Controls.Add(ganttContainer);
+                // 
+                // DisplaySplitContainer.Panel2
+                // 
+                DisplaySplitContainer.Panel2.Controls.Add(_dgvGantt);
+                DisplaySplitContainer.Panel2.Controls.Add(_panel1);
+                DisplaySplitContainer.Panel2MinSize = 100;
+                DisplaySplitContainer.Size = new Size(986, 550);
+                DisplaySplitContainer.SplitterDistance = 305;
+                DisplaySplitContainer.TabIndex = 3;
+                // 
+                // ganttContainer
+                // 
+                ganttContainer.Dock = DockStyle.Fill;
+                ganttContainer.Location = new Point(0, 0);
+                ganttContainer.Name = "ganttContainer";
+                // 
+                // ganttContainer.Panel1
+                // 
+                ganttContainer.Panel1.Controls.Add(dgvRoot);
+                ganttContainer.Panel1.Controls.Add(pnSplitter1);
+                ganttContainer.Panel1MinSize = 20;
+                // 
+                // ganttContainer.Panel2
+                // 
+                ganttContainer.Panel2.BackColor = Color.FromArgb(235, 235, 235);
+                ganttContainer.Panel2.Controls.Add(pnNavPlus);
+                ganttContainer.Panel2.Controls.Add(miniTitle1);
+                ganttContainer.Panel2MinSize = 645;
+                ganttContainer.Size = new Size(986, 305);
+                ganttContainer.SplitterDistance = 25;
+                ganttContainer.TabIndex = 0;
+                // 
+                // dgvRoot
+                // 
+                dgvRoot.AllowUserToAddRows = false;
+                dgvRoot.AllowUserToDeleteRows = false;
+                dgvRoot.AllowUserToResizeRows = false;
+                dgvRoot.BackgroundColor = Color.WhiteSmoke;
+                dgvRoot.BorderStyle = BorderStyle.None;
+                dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewCellStyle8.BackColor = SystemColors.Control;
+                dataGridViewCellStyle8.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+                dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+                dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+                dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+                dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+                dgvRoot.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+                dgvRoot.Dock = DockStyle.Fill;
+                dgvRoot.EnableHeadersVisualStyles = false;
+                dgvRoot.GridColor = Color.White;
+                dgvRoot.Location = new Point(0, 0);
+                dgvRoot.MultiSelect = false;
+                dgvRoot.Name = "dgvRoot";
+                dgvRoot.ReadOnly = true;
+                dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewCellStyle9.BackColor = SystemColors.Control;
+                dataGridViewCellStyle9.Font =
+                    new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+                dataGridViewCellStyle9.SelectionBackColor = Color.SteelBlue;
+                dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+                dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+                dgvRoot.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+                dataGridViewCellStyle10.Font = new Font("Microsoft Sans Serif", 9F);
+                dataGridViewCellStyle10.SelectionBackColor = Color.SteelBlue;
+                dataGridViewCellStyle10.SelectionForeColor = Color.White;
+                dgvRoot.RowsDefaultCellStyle = dataGridViewCellStyle10;
+                dgvRoot.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvRoot.Size = new Size(25, 265);
+                dgvRoot.TabIndex = 3;
+                // 
+                // pnSplitter1
+                // 
+                pnSplitter1.BackColor = Color.WhiteSmoke;
+                pnSplitter1.Dock = DockStyle.Bottom;
+                pnSplitter1.Location = new Point(0, 265);
+                pnSplitter1.Name = "pnSplitter1";
+                pnSplitter1.Size = new Size(25, 40);
+                pnSplitter1.TabIndex = 2;
+                pnSplitter1.Visible = false;
+                // 
+                // pnNavPlus
+                // 
+                pnNavPlus.BackColor = Color.WhiteSmoke;
+                pnNavPlus.BorderStyle = BorderStyle.FixedSingle;
+                pnNavPlus.Controls.Add(splitContainer1);
+                pnNavPlus.Dock = DockStyle.Bottom;
+                pnNavPlus.Location = new Point(0, 265);
+                pnNavPlus.Name = "pnNavPlus";
+                pnNavPlus.Size = new Size(957, 40);
+                pnNavPlus.TabIndex = 1;
+                pnNavPlus.Visible = false;
+                // 
+                // splitContainer1
+                // 
+                splitContainer1.BorderStyle = BorderStyle.Fixed3D;
+                splitContainer1.Dock = DockStyle.Fill;
+                splitContainer1.Location = new Point(0, 0);
+                splitContainer1.Name = "splitContainer1";
+                // 
+                // splitContainer1.Panel1
+                // 
+                splitContainer1.Panel1.Controls.Add(btnNavBackPlus);
+                splitContainer1.Panel1.Controls.Add(btnNavBackMegaPlus);
+                splitContainer1.Panel1.Controls.Add(btnZoomOutPlus);
+                splitContainer1.Panel1.Controls.Add(btnNavForwMegaPlus);
+                splitContainer1.Panel1.Controls.Add(btnZoomInPlus);
+                splitContainer1.Panel1.Controls.Add(btnNavForwPlus);
+                // 
+                // splitContainer1.Panel2
+                // 
+                splitContainer1.Panel2.Controls.Add(panel3);
+                splitContainer1.Size = new Size(955, 38);
+                splitContainer1.SplitterDistance = 635;
+                splitContainer1.TabIndex = 24;
+                // 
+                // btnNavBackPlus
+                // 
+                btnNavBackPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavBackPlus.FlatAppearance.BorderSize = 0;
+                btnNavBackPlus.Image = (Image) resources.GetObject("btnNavBackPlus.Image");
+                btnNavBackPlus.Location = new Point(352, 2);
+                btnNavBackPlus.Name = "btnNavBackPlus";
+                btnNavBackPlus.Size = new Size(33, 33);
+                btnNavBackPlus.TabIndex = 17;
+                btnNavBackPlus.UseVisualStyleBackColor = false;
+                btnNavBackPlus.Click += btnNavBack_Click;
+                // 
+                // btnNavBackMegaPlus
+                // 
+                btnNavBackMegaPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavBackMegaPlus.FlatAppearance.BorderSize = 0;
+                btnNavBackMegaPlus.Image = Resources.backback;
+                btnNavBackMegaPlus.Location = new Point(391, 2);
+                btnNavBackMegaPlus.Name = "btnNavBackMegaPlus";
+                btnNavBackMegaPlus.Size = new Size(33, 33);
+                btnNavBackMegaPlus.TabIndex = 18;
+                btnNavBackMegaPlus.UseVisualStyleBackColor = false;
+                btnNavBackMegaPlus.Click += btnNavBackDoub_Click;
+                // 
+                // btnZoomOutPlus
+                // 
+                btnZoomOutPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnZoomOutPlus.FlatAppearance.BorderSize = 0;
+                btnZoomOutPlus.Image = Resources.zoomOut;
+                btnZoomOutPlus.Location = new Point(547, 2);
+                btnZoomOutPlus.Name = "btnZoomOutPlus";
+                btnZoomOutPlus.Size = new Size(33, 33);
+                btnZoomOutPlus.TabIndex = 22;
+                btnZoomOutPlus.UseVisualStyleBackColor = false;
+                btnZoomOutPlus.Click += btnZoomOut_Click;
+                // 
+                // btnNavForwMegaPlus
+                // 
+                btnNavForwMegaPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavForwMegaPlus.FlatAppearance.BorderSize = 0;
+                btnNavForwMegaPlus.Image = Resources.forwforw;
+                btnNavForwMegaPlus.Location = new Point(430, 2);
+                btnNavForwMegaPlus.Name = "btnNavForwMegaPlus";
+                btnNavForwMegaPlus.Size = new Size(33, 33);
+                btnNavForwMegaPlus.TabIndex = 19;
+                btnNavForwMegaPlus.UseVisualStyleBackColor = false;
+                btnNavForwMegaPlus.Click += btnNavForwDoub_Click;
+                // 
+                // btnZoomInPlus
+                // 
+                btnZoomInPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnZoomInPlus.FlatAppearance.BorderSize = 0;
+                btnZoomInPlus.Image = Resources.zoomIn;
+                btnZoomInPlus.Location = new Point(509, 2);
+                btnZoomInPlus.Name = "btnZoomInPlus";
+                btnZoomInPlus.Size = new Size(33, 33);
+                btnZoomInPlus.TabIndex = 21;
+                btnZoomInPlus.UseVisualStyleBackColor = false;
+                btnZoomInPlus.Click += btnZoomIn_Click;
+                // 
+                // btnNavForwPlus
+                // 
+                btnNavForwPlus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavForwPlus.FlatAppearance.BorderSize = 0;
+                btnNavForwPlus.Image = Resources.forward;
+                btnNavForwPlus.Location = new Point(470, 2);
+                btnNavForwPlus.Name = "btnNavForwPlus";
+                btnNavForwPlus.Size = new Size(33, 33);
+                btnNavForwPlus.TabIndex = 20;
+                btnNavForwPlus.UseVisualStyleBackColor = false;
+                btnNavForwPlus.Click += btnNavForw_Click;
+                // 
+                // panel3
+                // 
+                panel3.Controls.Add(label3);
+                panel3.Controls.Add(pbStiro);
+                panel3.Controls.Add(pbConf);
+                panel3.Controls.Add(pbTess);
+                panel3.Controls.Add(pbStaz);
+                panel3.Dock = DockStyle.Fill;
+                panel3.Location = new Point(0, 0);
+                panel3.Name = "panel3";
+                panel3.Size = new Size(312, 34);
+                panel3.TabIndex = 23;
+                // 
+                // label3
+                // 
+                label3.AutoSize = true;
+                label3.ForeColor = Color.DarkGray;
+                label3.Location = new Point(3, 2);
+                label3.Name = "label3";
+                label3.Size = new Size(89, 40);
+                label3.TabIndex = 9;
+                label3.Text = "Legend\r\nin the order";
+                // 
+                // pbStiro
+                // 
+                pbStiro.BackColor = Color.LightGreen;
+                pbStiro.BorderStyle = BorderStyle.FixedSingle;
+                pbStiro.Location = new Point(201, 11);
+                pbStiro.Name = "pbStiro";
+                pbStiro.Size = new Size(19, 17);
+                pbStiro.TabIndex = 7;
+                pbStiro.TabStop = false;
+                pbStiro.MouseEnter += pbStaz_MouseEnter;
+                pbStiro.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbConf
+                // 
+                pbConf.BackColor = Color.Violet;
+                pbConf.BorderStyle = BorderStyle.FixedSingle;
+                pbConf.Location = new Point(176, 11);
+                pbConf.Name = "pbConf";
+                pbConf.Size = new Size(19, 17);
+                pbConf.TabIndex = 4;
+                pbConf.TabStop = false;
+                pbConf.MouseEnter += pbStaz_MouseEnter;
+                pbConf.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbTess
+                // 
+                pbTess.BackColor = Color.DarkTurquoise;
+                pbTess.BorderStyle = BorderStyle.FixedSingle;
+                pbTess.Location = new Point(151, 11);
+                pbTess.Name = "pbTess";
+                pbTess.Size = new Size(19, 17);
+                pbTess.TabIndex = 1;
+                pbTess.TabStop = false;
+                pbTess.MouseEnter += pbStaz_MouseEnter;
+                pbTess.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbStaz
+                // 
+                pbStaz.BackColor = Color.Silver;
+                pbStaz.BorderStyle = BorderStyle.FixedSingle;
+                pbStaz.Location = new Point(126, 11);
+                pbStaz.Name = "pbStaz";
+                pbStaz.Size = new Size(19, 17);
+                pbStaz.TabIndex = 0;
+                pbStaz.TabStop = false;
+                pbStaz.MouseEnter += pbStaz_MouseEnter;
+                pbStaz.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // miniTitle1
+                // 
+                miniTitle1.BackColor = Color.White;
+                miniTitle1.Dock = DockStyle.Top;
+                miniTitle1.Location = new Point(0, 0);
+                miniTitle1.Margin = new Padding(4, 5, 4, 5);
+                miniTitle1.Name = "miniTitle1";
+                miniTitle1.Size = new Size(957, 40);
+                miniTitle1.TabIndex = 0;
+                miniTitle1.TitleText = "Tessitura";
+                // 
+                // dgvGantt
+                // 
+                _dgvGantt.AllowUserToAddRows = false;
+                _dgvGantt.AllowUserToDeleteRows = false;
+                _dgvGantt.AllowUserToResizeColumns = false;
+                _dgvGantt.AllowUserToResizeRows = false;
+                _dgvGantt.BackgroundColor = Color.FromArgb(235, 235, 235);
+                _dgvGantt.CellBorderStyle = DataGridViewCellBorderStyle.None;
+                dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewCellStyle11.BackColor = SystemColors.Control;
+                dataGridViewCellStyle11.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+                dataGridViewCellStyle11.ForeColor = SystemColors.WindowText;
+                dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
+                dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
+                dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
+                _dgvGantt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+                _dgvGantt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+                dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewCellStyle12.BackColor = SystemColors.Window;
+                dataGridViewCellStyle12.Font =
+                    new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                dataGridViewCellStyle12.ForeColor = SystemColors.ControlText;
+                dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
+                dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
+                dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
+                _dgvGantt.DefaultCellStyle = dataGridViewCellStyle12;
+                _dgvGantt.Dock = DockStyle.Fill;
+                _dgvGantt.EnableHeadersVisualStyles = false;
+                _dgvGantt.GridColor = Color.White;
+                _dgvGantt.Location = new Point(0, 40);
+                _dgvGantt.MultiSelect = false;
+                _dgvGantt.Name = "_dgvGantt";
+                _dgvGantt.ReadOnly = true;
+                dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewCellStyle13.BackColor = SystemColors.Control;
+                dataGridViewCellStyle13.Font =
+                    new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+                dataGridViewCellStyle13.ForeColor = SystemColors.WindowText;
+                dataGridViewCellStyle13.SelectionBackColor = Color.SteelBlue;
+                dataGridViewCellStyle13.SelectionForeColor = SystemColors.HighlightText;
+                dataGridViewCellStyle13.WrapMode = DataGridViewTriState.True;
+                _dgvGantt.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
+                _dgvGantt.RowHeadersVisible = false;
+                dataGridViewCellStyle14.Font = new Font("Microsoft Sans Serif", 9F);
+                dataGridViewCellStyle14.SelectionBackColor = Color.SteelBlue;
+                dataGridViewCellStyle14.SelectionForeColor = Color.White;
+                _dgvGantt.RowsDefaultCellStyle = dataGridViewCellStyle14;
+                _dgvGantt.RowTemplate.Height = 28;
+                _dgvGantt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                _dgvGantt.Size = new Size(986, 201);
+                _dgvGantt.TabIndex = 1;
+                _dgvGantt.SelectionChanged += dgvCsvRecords_SelectionChanged;
+                // 
+                // panel1
+                // 
+                _panel1.BackColor = Color.WhiteSmoke;
+                _panel1.BorderStyle = BorderStyle.FixedSingle;
+                _panel1.Controls.Add(splitContainer2);
+                _panel1.Dock = DockStyle.Top;
+                _panel1.Location = new Point(0, 0);
+                _panel1.Name = "_panel1";
+                _panel1.Size = new Size(986, 40);
+                _panel1.TabIndex = 17;
+                // 
+                // splitContainer2
+                // 
+                splitContainer2.BorderStyle = BorderStyle.Fixed3D;
+                splitContainer2.Dock = DockStyle.Fill;
+                splitContainer2.Location = new Point(0, 0);
+                splitContainer2.Name = "splitContainer2";
+                // 
+                // splitContainer2.Panel1
+                // 
+                splitContainer2.Panel1.Controls.Add(btnNavBack);
+                splitContainer2.Panel1.Controls.Add(btnNavForwMega);
+                splitContainer2.Panel1.Controls.Add(btnZoomOut);
+                splitContainer2.Panel1.Controls.Add(btnNavForw);
+                splitContainer2.Panel1.Controls.Add(btnNavBackMega);
+                splitContainer2.Panel1.Controls.Add(btnZoomIn);
+                // 
+                // splitContainer2.Panel2
+                // 
+                splitContainer2.Panel2.Controls.Add(panel2);
+                splitContainer2.Size = new Size(984, 38);
+                splitContainer2.SplitterDistance = 664;
+                splitContainer2.TabIndex = 18;
+                // 
+                // btnNavBack
+                // 
+                btnNavBack.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavBack.FlatAppearance.BorderSize = 0;
+                btnNavBack.Image = (Image) resources.GetObject("btnNavBack.Image");
+                btnNavBack.Location = new Point(381, 2);
+                btnNavBack.Name = "btnNavBack";
+                btnNavBack.Size = new Size(33, 33);
+                btnNavBack.TabIndex = 10;
+                btnNavBack.UseVisualStyleBackColor = false;
+                btnNavBack.Click += btnNavBack_Click;
+                // 
+                // btnNavForwMega
+                // 
+                btnNavForwMega.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavForwMega.FlatAppearance.BorderSize = 0;
+                btnNavForwMega.Image = Resources.forwforw;
+                btnNavForwMega.Location = new Point(459, 2);
+                btnNavForwMega.Name = "btnNavForwMega";
+                btnNavForwMega.Size = new Size(33, 33);
+                btnNavForwMega.TabIndex = 12;
+                btnNavForwMega.UseVisualStyleBackColor = false;
+                btnNavForwMega.Click += btnNavForwDoub_Click;
+                // 
+                // btnZoomOut
+                // 
+                btnZoomOut.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnZoomOut.FlatAppearance.BorderSize = 0;
+                btnZoomOut.Image = Resources.zoomOut;
+                btnZoomOut.Location = new Point(575, 2);
+                btnZoomOut.Name = "btnZoomOut";
+                btnZoomOut.Size = new Size(33, 33);
+                btnZoomOut.TabIndex = 16;
+                btnZoomOut.UseVisualStyleBackColor = false;
+                btnZoomOut.Click += btnZoomOut_Click;
+                // 
+                // btnNavForw
+                // 
+                btnNavForw.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavForw.FlatAppearance.BorderSize = 0;
+                btnNavForw.Image = Resources.forward;
+                btnNavForw.Location = new Point(498, 2);
+                btnNavForw.Name = "btnNavForw";
+                btnNavForw.Size = new Size(33, 33);
+                btnNavForw.TabIndex = 13;
+                btnNavForw.UseVisualStyleBackColor = false;
+                btnNavForw.Click += btnNavForw_Click;
+                // 
+                // btnNavBackMega
+                // 
+                btnNavBackMega.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnNavBackMega.FlatAppearance.BorderSize = 0;
+                btnNavBackMega.Image = Resources.backback;
+                btnNavBackMega.Location = new Point(420, 2);
+                btnNavBackMega.Name = "btnNavBackMega";
+                btnNavBackMega.Size = new Size(33, 33);
+                btnNavBackMega.TabIndex = 11;
+                btnNavBackMega.UseVisualStyleBackColor = false;
+                btnNavBackMega.Click += btnNavBackDoub_Click;
+                // 
+                // btnZoomIn
+                // 
+                btnZoomIn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnZoomIn.FlatAppearance.BorderSize = 0;
+                btnZoomIn.Image = Resources.zoomIn;
+                btnZoomIn.Location = new Point(537, 2);
+                btnZoomIn.Name = "btnZoomIn";
+                btnZoomIn.Size = new Size(33, 33);
+                btnZoomIn.TabIndex = 15;
+                btnZoomIn.UseVisualStyleBackColor = false;
+                btnZoomIn.Click += btnZoomIn_Click;
+                // 
+                // panel2
+                // 
+                panel2.Controls.Add(label4);
+                panel2.Controls.Add(pbStiro1);
+                panel2.Controls.Add(pbConf1);
+                panel2.Controls.Add(pbTess1);
+                panel2.Controls.Add(pbStaz1);
+                panel2.Dock = DockStyle.Fill;
+                panel2.Location = new Point(0, 0);
+                panel2.Name = "panel2";
+                panel2.Size = new Size(312, 34);
+                panel2.TabIndex = 17;
+                // 
+                // label4
+                // 
+                label4.AutoSize = true;
+                label4.ForeColor = Color.DarkGray;
+                label4.Location = new Point(3, 1);
+                label4.Name = "label4";
+                label4.Size = new Size(89, 40);
+                label4.TabIndex = 10;
+                label4.Text = "Legend\r\nin the order";
+                // 
+                // pbStiro1
+                // 
+                pbStiro1.BackColor = Color.LightGreen;
+                pbStiro1.BorderStyle = BorderStyle.FixedSingle;
+                pbStiro1.Location = new Point(201, 11);
+                pbStiro1.Name = "pbStiro1";
+                pbStiro1.Size = new Size(19, 17);
+                pbStiro1.TabIndex = 7;
+                pbStiro1.TabStop = false;
+                pbStiro1.MouseEnter += pbStaz_MouseEnter;
+                pbStiro1.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbConf1
+                // 
+                pbConf1.BackColor = Color.Violet;
+                pbConf1.BorderStyle = BorderStyle.FixedSingle;
+                pbConf1.Location = new Point(176, 11);
+                pbConf1.Name = "pbConf1";
+                pbConf1.Size = new Size(19, 17);
+                pbConf1.TabIndex = 4;
+                pbConf1.TabStop = false;
+                pbConf1.MouseEnter += pbStaz_MouseEnter;
+                pbConf1.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbTess1
+                // 
+                pbTess1.BackColor = Color.DarkTurquoise;
+                pbTess1.BorderStyle = BorderStyle.FixedSingle;
+                pbTess1.Location = new Point(151, 11);
+                pbTess1.Name = "pbTess1";
+                pbTess1.Size = new Size(19, 17);
+                pbTess1.TabIndex = 1;
+                pbTess1.TabStop = false;
+                pbTess1.MouseEnter += pbStaz_MouseEnter;
+                pbTess1.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // pbStaz1
+                // 
+                pbStaz1.BackColor = Color.Silver;
+                pbStaz1.BorderStyle = BorderStyle.FixedSingle;
+                pbStaz1.Location = new Point(126, 11);
+                pbStaz1.Name = "pbStaz1";
+                pbStaz1.Size = new Size(19, 17);
+                pbStaz1.TabIndex = 0;
+                pbStaz1.TabStop = false;
+                pbStaz1.MouseEnter += pbStaz_MouseEnter;
+                pbStaz1.MouseLeave += pbStaz_MouseLeave;
+                // 
+                // btnReport
+                // 
+                btnReport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnReport.BackColor = Color.DimGray;
+                btnReport.FlatAppearance.BorderSize = 0;
+                btnReport.FlatStyle = FlatStyle.Flat;
+                btnReport.ForeColor = Color.White;
+                btnReport.Image = Resources.report;
+                btnReport.ImageAlign = ContentAlignment.TopCenter;
+                btnReport.Location = new Point(1056, 5);
+                btnReport.Name = "btnReport";
+                btnReport.Size = new Size(93, 65);
+                btnReport.TabIndex = 15;
+                btnReport.Text = "Reports ▼";
+                btnReport.TextAlign = ContentAlignment.BottomCenter;
+                btnReport.UseVisualStyleBackColor = false;
+                btnReport.Click += btnReport_Click;
+                // 
+                // btnSaveAs
+                // 
+                btnSaveAs.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnSaveAs.BackColor = Color.DimGray;
+                btnSaveAs.Enabled = false;
+                btnSaveAs.FlatAppearance.BorderSize = 0;
+                btnSaveAs.FlatStyle = FlatStyle.Flat;
+                btnSaveAs.ForeColor = Color.White;
+                btnSaveAs.Image = Resources.save1;
+                btnSaveAs.ImageAlign = ContentAlignment.TopCenter;
+                btnSaveAs.Location = new Point(673, 5);
+                btnSaveAs.Name = "btnSaveAs";
+                btnSaveAs.Size = new Size(79, 65);
+                btnSaveAs.TabIndex = 14;
+                btnSaveAs.Text = "Save As";
+                btnSaveAs.TextAlign = ContentAlignment.BottomCenter;
+                btnSaveAs.UseVisualStyleBackColor = false;
+                // 
+                // btnFilter
+                // 
+                btnFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnFilter.BackColor = Color.DimGray;
+                btnFilter.FlatAppearance.BorderSize = 0;
+                btnFilter.FlatStyle = FlatStyle.Flat;
+                btnFilter.ForeColor = Color.White;
+                btnFilter.Image = Resources.filter;
+                btnFilter.ImageAlign = ContentAlignment.TopCenter;
+                btnFilter.Location = new Point(832, 5);
+                btnFilter.Name = "btnFilter";
+                btnFilter.Size = new Size(70, 65);
+                btnFilter.TabIndex = 13;
+                btnFilter.Text = "Filter";
+                btnFilter.TextAlign = ContentAlignment.BottomCenter;
+                btnFilter.UseVisualStyleBackColor = false;
+                btnFilter.Click += btnFilter_Click;
+                // 
+                // btnResize
+                // 
+                btnResize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnResize.BackColor = Color.DimGray;
+                btnResize.FlatAppearance.BorderSize = 0;
+                btnResize.FlatStyle = FlatStyle.Flat;
+                btnResize.ForeColor = Color.White;
+                btnResize.Image = Resources.enlarge;
+                btnResize.ImageAlign = ContentAlignment.TopCenter;
+                btnResize.Location = new Point(905, 5);
+                btnResize.Name = "btnResize";
+                btnResize.Size = new Size(70, 65);
+                btnResize.TabIndex = 12;
+                btnResize.Text = "Resize";
+                btnResize.TextAlign = ContentAlignment.BottomCenter;
+                btnResize.UseVisualStyleBackColor = false;
+                btnResize.Click += btnResize_Click;
+                // 
+                // btnSwitch
+                // 
+                btnSwitch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnSwitch.BackColor = Color.DimGray;
+                btnSwitch.FlatAppearance.BorderSize = 0;
+                btnSwitch.FlatStyle = FlatStyle.Flat;
+                btnSwitch.ForeColor = Color.White;
+                btnSwitch.Image = Resources.switch1;
+                btnSwitch.ImageAlign = ContentAlignment.TopCenter;
+                btnSwitch.Location = new Point(981, 5);
+                btnSwitch.Name = "btnSwitch";
+                btnSwitch.Size = new Size(70, 65);
+                btnSwitch.TabIndex = 9;
+                btnSwitch.Text = "Switch";
+                btnSwitch.TextAlign = ContentAlignment.BottomCenter;
+                btnSwitch.UseVisualStyleBackColor = false;
+                btnSwitch.Click += btnSwitch_Click;
+                // 
+                // btnOpen
+                // 
+                btnOpen.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnOpen.BackColor = Color.DimGray;
+                btnOpen.FlatAppearance.BorderSize = 0;
+                btnOpen.FlatStyle = FlatStyle.Flat;
+                btnOpen.ForeColor = Color.White;
+                btnOpen.Image = Resources.fileopen;
+                btnOpen.ImageAlign = ContentAlignment.TopCenter;
+                btnOpen.Location = new Point(521, 5);
+                btnOpen.Name = "btnOpen";
+                btnOpen.Size = new Size(70, 65);
+                btnOpen.TabIndex = 8;
+                btnOpen.Text = "Open";
+                btnOpen.TextAlign = ContentAlignment.BottomCenter;
+                btnOpen.UseVisualStyleBackColor = false;
+                btnOpen.Click += btnOpen_Click;
+                // 
+                // btnPrint
+                // 
+                btnPrint.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnPrint.BackColor = Color.DimGray;
+                btnPrint.FlatAppearance.BorderSize = 0;
+                btnPrint.FlatStyle = FlatStyle.Flat;
+                btnPrint.ForeColor = Color.White;
+                btnPrint.Image = Resources.print1;
+                btnPrint.ImageAlign = ContentAlignment.TopCenter;
+                btnPrint.Location = new Point(758, 5);
+                btnPrint.Name = "btnPrint";
+                btnPrint.Size = new Size(70, 65);
+                btnPrint.TabIndex = 7;
+                btnPrint.Text = "Print";
+                btnPrint.TextAlign = ContentAlignment.BottomCenter;
+                btnPrint.UseVisualStyleBackColor = false;
+                btnPrint.Click += btnPrint_Click;
+                // 
+                // btnSave
+                // 
+                btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                btnSave.BackColor = Color.DimGray;
+                btnSave.Enabled = false;
+                btnSave.FlatAppearance.BorderSize = 0;
+                btnSave.FlatStyle = FlatStyle.Flat;
+                btnSave.ForeColor = Color.White;
+                btnSave.Image = Resources.save;
+                btnSave.ImageAlign = ContentAlignment.TopCenter;
+                btnSave.Location = new Point(597, 5);
+                btnSave.Name = "btnSave";
+                btnSave.Size = new Size(70, 65);
+                btnSave.TabIndex = 6;
+                btnSave.Text = "Save";
+                btnSave.TextAlign = ContentAlignment.BottomCenter;
+                btnSave.UseVisualStyleBackColor = false;
+                // 
+                // mainTitle
+                // 
+                mainTitle.BackColor = Color.Silver;
+                mainTitle.Dock = DockStyle.Top;
+                mainTitle.Location = new Point(0, 0);
+                mainTitle.Margin = new Padding(4, 5, 4, 5);
+                mainTitle.Name = "mainTitle";
+                mainTitle.Size = new Size(1162, 70);
+                mainTitle.TabIndex = 4;
+                mainTitle.TitleText = " ONLYOU";
+                // 
+                // Display
+                // 
+                BackColor = Color.White;
+                ClientSize = new Size(1162, 650);
+                Controls.Add(btnReport);
+                Controls.Add(btnSaveAs);
+                Controls.Add(btnFilter);
+                Controls.Add(btnResize);
+                Controls.Add(btnSwitch);
+                Controls.Add(btnOpen);
+                Controls.Add(btnPrint);
+                Controls.Add(btnSave);
+                Controls.Add(DisplaySplitContainer);
+                Controls.Add(_pnSideBar);
+                Controls.Add(displayStatus);
+                Controls.Add(mainTitle);
+                Icon = (Icon) resources.GetObject("$this.Icon");
+                MinimumSize = new Size(700, 400);
+                Name = "Display";
+                Text = "ganntproj v1.2";
+                displayStatus.ResumeLayout(false);
+                displayStatus.PerformLayout();
+                _pnSideBar.ResumeLayout(false);
+                _pnSideBar.PerformLayout();
+                DisplaySplitContainer.Panel1.ResumeLayout(false);
+                DisplaySplitContainer.Panel2.ResumeLayout(false);
+                ((ISupportInitialize) DisplaySplitContainer).EndInit();
+                DisplaySplitContainer.ResumeLayout(false);
+                ganttContainer.Panel1.ResumeLayout(false);
+                ganttContainer.Panel2.ResumeLayout(false);
+                ((ISupportInitialize) ganttContainer).EndInit();
+                ganttContainer.ResumeLayout(false);
+                ((ISupportInitialize) dgvRoot).EndInit();
+                pnNavPlus.ResumeLayout(false);
+                splitContainer1.Panel1.ResumeLayout(false);
+                splitContainer1.Panel2.ResumeLayout(false);
+                ((ISupportInitialize) splitContainer1).EndInit();
+                splitContainer1.ResumeLayout(false);
+                panel3.ResumeLayout(false);
+                panel3.PerformLayout();
+                ((ISupportInitialize) pbStiro).EndInit();
+                ((ISupportInitialize) pbConf).EndInit();
+                ((ISupportInitialize) pbTess).EndInit();
+                ((ISupportInitialize) pbStaz).EndInit();
+                ((ISupportInitialize) _dgvGantt).EndInit();
+                _panel1.ResumeLayout(false);
+                splitContainer2.Panel1.ResumeLayout(false);
+                splitContainer2.Panel2.ResumeLayout(false);
+                ((ISupportInitialize) splitContainer2).EndInit();
+                splitContainer2.ResumeLayout(false);
+                panel2.ResumeLayout(false);
+                panel2.PerformLayout();
+                ((ISupportInitialize) pbStiro1).EndInit();
+                ((ISupportInitialize) pbConf1).EndInit();
+                ((ISupportInitialize) pbTess1).EndInit();
+                ((ISupportInitialize) pbStaz1).EndInit();
+                ResumeLayout(false);
+                PerformLayout();
+            }
+
+        #endregion
+
+        #region StartTask
+
+        [STAThread]
+        private static void Main(string[] args)
+            {
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(true);
+
+            var console = GetConsoleWindow();
+            ShowWindow(console, SwHide);
+
+            var resDialog = new Config.OpenDialog();
+            resDialog.ShowDialog();
+            resDialog.Dispose();
+
+            var disp = new Display();
+            disp.ShowDialog();
+            }
+
+        //public delegate void FormClosingEventHandler(object sender, FormClosingEventArgs e);
+
+        public Display()
+            {
+            AllowDrop = true;
+
+            WindowState = FormWindowState.Maximized;
+
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+               BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, this,
+               new object[] { true });
+
+            InitializeComponent(); 
+            }
+
+        protected override void OnLoad(EventArgs e)
+            {  
+            var currentDate = DateTime.Now;
+            _config.StartDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+            _config.EndDate = _config.StartDate.AddMonths(1).AddDays(-1);
+            
+            InitializeGanttChart();
+            _gannt.FromDate = _config.StartDate;
+            _gannt.ToDate = _config.EndDate;
+
+            _dtRoot = new DataTable();
+            _dtRoot.Columns.Clear();
+            _dtRoot.Clear();
+
+            foreach (var col in StaticColumnsArray()) _dtRoot.Columns.Add(col, typeof(string));
+
+            _bsDatList.DataSource = Output.GTable;
+            _dgvGantt.DataSource = _bsDatList;
+
+            Output.GTable.AcceptChanges();
+
+            for (var i = Output.GTable.Rows.Count - 1; i >= 0; i--)
+                {
+                var dr = Output.GTable.Rows[i];
+
+                if (string.IsNullOrEmpty(dr.ItemArray.GetValue(8).ToString()) ||
+                    string.IsNullOrEmpty(dr.ItemArray.GetValue(9).ToString()) ||
+                    string.IsNullOrEmpty(dr.ItemArray.GetValue(11).ToString()) ||
+                    string.IsNullOrEmpty(dr.ItemArray.GetValue(13).ToString()) ||
+                    string.IsNullOrEmpty(dr.ItemArray.GetValue(16).ToString()) ||
+                    string.IsNullOrEmpty(dr.ItemArray.GetValue(18).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(19).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(21).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(23).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(26).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(32).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(33).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(35).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(37).ToString()) ||
+                            string.IsNullOrEmpty(dr.ItemArray.GetValue(40).ToString()))
+                    {
+                    dr.Delete();
+                    }
+                }
+
+            Output.GTable.AcceptChanges();
+
+                _dtRoot.Clear();
+                dgvRoot.DataSource = Output.GTable;
+
+                for (var vCol = 5; vCol <= Output.GTable.Columns.Count - 1; vCol++)
+                {
+                    dgvRoot.Columns[vCol].Visible = false;
+                }
+            
+                for (var i = 0; i <= 4; i++)
+                {
+                    _dgvGantt.Columns[i].DefaultCellStyle.BackColor = Color.Gainsboro;
+                    _dgvGantt.Columns[i].Frozen = true;
+                }
+            
+                Output.GTable.WriteXml("C:\\GanttOutcomes\\outputg.gntx", XmlWriteMode.WriteSchema, false);
+
+                Filter.FilteredChannel = _channels.Channel; //default value
+                Filter.FilteredKey = null;
+                Filter.AllChannels = false;
+                
+                CallDisplay();
+
+            
+ 
+            base.OnLoad(e);
+            }
+
+        private void CallingFunction()
+            {
+            var methodInvoker = new MethodInvoker(HighlightDisplay);
+            Invoke(methodInvoker);
+            }
+
+        private void CallDisplay()
+            {
+            var trdUpdateDisplay = new Thread(CallingFunction)
+                {
+                Name = "Updating " + Text + " display",
+                Priority = ThreadPriority.Highest
+                };
+            if (trdUpdateDisplay.ThreadState != ThreadState.Running) trdUpdateDisplay.Start();
+
+            trdUpdateDisplay.DisableComObjectEagerCleanup();
+            }
+
+        private void InitializeGanttChart()
+            {
+            SuspendLayout();
+
+            _gannt = new Chart
+                {
+                Dock = DockStyle.Fill,
+                BackColor = Color.WhiteSmoke,
+                AllowChange = true,
+                FromDate = _config.StartDate,
+                ToDate = _config.EndDate
+                };
+
+            ganttContainer.Panel2.Controls.Add(_gannt);
+            _gannt.BringToFront();
+
+            ResumeLayout(false);
+            PerformLayout();
+            _gannt.MouseDown += _gannt.Chart_MouseDown;
+            _gannt.MouseMove += _gannt.Chart_MouseMove;
+            _gannt.MouseDragged += _gannt.Chart_MouseDragged;
+            _gannt.MouseLeave += _gannt.Chart_MouseLeave;
+            _gannt.MouseWheel += _gannt.Chart_MouseWheel;
+            }
+
+        #endregion
+
+        #region Engine
+
+        /// <summary>
+        /// Gantt supplementary, integrated as a static order.
+        /// </summary>
+        /// <returns>Array of columns.</returns>
+        private static string[] StaticColumnsArray()
+            {
+            var columnsDepth = new[] { "Commessa", "Articolo", "Finezza", "Capi commessa", "Stagione" };
+
+            return columnsDepth;
+            }
+
+        /// <summary>
+        /// Crucial structure for maintaining objects through the algorithm.
+        /// </summary>
+        private void HighlightDisplay()
+            {
+            _gannt.FromDate = _config.StartDate;
+            _gannt.ToDate = _config.EndDate;
+            _gannt.AllowManualEditBar = false;
+
+            //initialize filters list
+                
+            _filtersList = new List<Filter>();
+            _filtersList.Clear();
+            
+            //initialize bars lists
+                
+            _gannt.bars = new List<BarProperty>();
+                _gannt._headerList.Clear();
+                
+            var barList = new List<Bar>();
+            var fullBarList = new List<Bar>();
+
+            //clear bars and their properties
+               
+            _gannt.bars.Clear();    
+            barList.Clear();
+            fullBarList.Clear();
+
+            var channelsList = _channels.ListOfChannels(); //gets channels list
+
+            //reset 'dgvGant' columns visibility based on selected mode
+
+            if (Filter.AllChannels)
+                {
+                //show all columns in full mode
+                for (var c = 5; c <= _dgvGantt.Columns.Count - 1; c++)
+                    {
+                    _dgvGantt.Columns[c].Visible = true;
+                    }
+                }
+            else
+                {
+                for (var c = 5; c <= _dgvGantt.Columns.Count - 1; c++)
+                    {
+                    _dgvGantt.Columns[c].Visible = false;
+                    }
+                }
+    
+            for (var i = 0; i <= channelsList.Count - 1; i++)
+                {
+                var chain = i; //group channel records
+
+                //skip unfiltered depths     
+                if (channelsList[chain].Channel != Filter.FilteredChannel)
+                    {
+                    continue;
+                    }
+
+                //sets new columns visibility
+                if (!Filter.AllChannels)
+                    {
+                    if (chain == 0)
+                        {
+                        for (var col = 5; col <= 17; col++)
+                            _dgvGantt.Columns[col].Visible = true;
+                        }
+                    else if (chain == 1)
+                        {
+                        for (var col = 18; col <= 31; col++)
+                            _dgvGantt.Columns[col].Visible = true;
+                        }
+                    else if (chain == 2)
+                        {
+                        for (var col = 32; col <= _dgvGantt.Columns.Count - 1; col++)
+                            _dgvGantt.Columns[col].Visible = true;
+                        }
+                    }
+
+                var index = 0;
+                var fullIndex = 0;
+
+                foreach (DataRow row in Output.GTable.Rows)
+                    {
+                    //gets root values
+                    var order = row.ItemArray.GetValue(0).ToString();
+                    var article = row.ItemArray.GetValue(1).ToString();
+                    var fineness = row.ItemArray.GetValue(2).ToString();
+                    var season = row.ItemArray.GetValue(4).ToString();
+
+                    //gets date points through channels
+                    var tessYarn = Convert.ToDateTime(row.ItemArray.GetValue(8));
+                    var tessInit = Convert.ToDateTime(row.ItemArray.GetValue(9));
+                    var tessEnd = Convert.ToDateTime(row.ItemArray.GetValue(11));
+                    var tessConseg = Convert.ToDateTime(row.ItemArray.GetValue(13));
+                    var tessRdd = Convert.ToDateTime(row.ItemArray.GetValue(16));
+                    var confYarn = Convert.ToDateTime(row.ItemArray.GetValue(18));
+                    var confInit = Convert.ToDateTime(row.ItemArray.GetValue(19));
+                    var confEnd = Convert.ToDateTime(row.ItemArray.GetValue(21));
+                    var confConseg = Convert.ToDateTime(row.ItemArray.GetValue(23));
+                    var confRdd = Convert.ToDateTime(row.ItemArray.GetValue(26));
+                    var stiYarn = Convert.ToDateTime(row.ItemArray.GetValue(32));
+                    var stiInit = Convert.ToDateTime(row.ItemArray.GetValue(33));
+                    var stiEnd = Convert.ToDateTime(row.ItemArray.GetValue(35));
+                    var stiConseg = Convert.ToDateTime(row.ItemArray.GetValue(37));
+                    var stiRdd = Convert.ToDateTime(row.ItemArray.GetValue(40));
+
+                    //initialzie filters
+
+                    _aim = StaticColumnsArray();
+                    for (var k = 0; k <= 4; k++)
+                        {
+                        if (k == 3) continue; //skip capi comesa
+                        _filtersList.Add(new Filter(_aim[k], row.ItemArray.GetValue(k).ToString().Trim()));
+                        }
+
+                    //populate gantt
+
+                    if (stiConseg >= _config.StartDate && tessYarn <= _config.EndDate)
+                        {
+                        //create full mode in gantt
+                        if (!string.IsNullOrEmpty(Filter.FilteredKey) &&
+                            (Filter.FilteredKey == order) |
+                            (Filter.FilteredKey == article) |
+                            (Filter.FilteredKey == fineness) |
+                            Filter.FilteredKey == season)
+                            {
+                            fullBarList.Add(new Bar(order, tessYarn, tessInit, tessInit, Color.Silver, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, tessInit, tessEnd, tessEnd, Color.DarkTurquoise, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, tessEnd, tessConseg, tessRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, confYarn, confInit, confInit, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, confInit, confEnd, confEnd, Color.Violet, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, confEnd, confConseg, confRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, stiYarn, stiInit, stiInit, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, stiInit, stiEnd, stiEnd, Color.LightGreen, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, stiEnd, stiConseg, stiRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+
+                            fullIndex++;
+                            }
+                        else if (string.IsNullOrEmpty(Filter.FilteredKey))
+                            {
+                            fullBarList.Add(new Bar(order, tessYarn, tessInit, tessInit, Color.Silver, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, tessInit, tessEnd, tessEnd, Color.DarkTurquoise, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, tessEnd, tessConseg, tessRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, confYarn, confInit, confInit, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, confInit, confEnd, confEnd, Color.Violet, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, confEnd, confConseg, confRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, stiYarn, stiInit, stiInit, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+                            fullBarList.Add(new Bar(order, stiInit, stiEnd, stiEnd, Color.LightGreen, Color.PapayaWhip, fullIndex));
+                            fullBarList.Add(new Bar(order, stiEnd, stiConseg, stiRdd, Color.Gainsboro, Color.WhiteSmoke, fullIndex));
+
+                            fullIndex++;
+                            }
+                        }
+                        
+                    //populate table
+                    switch (chain)
+                        {
+                        case 0:
+                        //load data based on date interval selection
+
+                        if (!(tessConseg < tessEnd) && tessConseg >= _config.StartDate && tessYarn <= _config.EndDate)
+                            {
+                            if (!string.IsNullOrEmpty(Filter.FilteredKey) &&
+                              (Filter.FilteredKey == order) |
+                              (Filter.FilteredKey == article) |
+                              (Filter.FilteredKey == fineness) |
+                              Filter.FilteredKey == season)
+                                {
+                                barList.Add(new Bar(order, tessYarn, tessInit, tessInit, Color.Silver, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, tessInit, tessEnd, tessEnd, Color.DarkTurquoise, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, tessEnd, tessConseg, tessRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            else if (string.IsNullOrEmpty(Filter.FilteredKey))
+                                {
+                                barList.Add(new Bar(order, tessYarn, tessInit, tessInit, Color.Silver, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, tessInit, tessEnd, tessEnd, Color.DarkTurquoise, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, tessEnd, tessConseg, tessRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            }
+                        break;
+                        case 1:
+                        if (!(confConseg < confEnd) && confConseg >= _config.StartDate && confYarn <= _config.EndDate)
+                            {
+                            if (!string.IsNullOrEmpty(Filter.FilteredKey) &&
+                              (Filter.FilteredKey == order) |
+                              (Filter.FilteredKey == article) |
+                              (Filter.FilteredKey == fineness) |
+                              Filter.FilteredKey == season)
+                                {
+                                barList.Add(new Bar(order, confYarn, confInit, confInit, Color.Gainsboro, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, confInit, confEnd, confEnd, Color.Violet, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, confEnd, confConseg, confRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            else if (string.IsNullOrEmpty(Filter.FilteredKey))
+                                {
+                                barList.Add(new Bar(order, confYarn, confInit, confInit, Color.Gainsboro, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, confInit, confEnd, confEnd, Color.Violet, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, confEnd, confConseg, confRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            }
+                        break;
+                        case 2:
+                        if (!(stiConseg < stiEnd) && stiConseg >= _config.StartDate && stiYarn <= _config.EndDate)
+                            {
+                            if (!string.IsNullOrEmpty(Filter.FilteredKey) &&
+                               (Filter.FilteredKey == order) |
+                               (Filter.FilteredKey == article) |
+                               (Filter.FilteredKey == fineness) |
+                               Filter.FilteredKey == season)
+                                {
+                                barList.Add(new Bar(order, stiYarn, stiInit, stiInit, Color.Gainsboro, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, stiInit, stiEnd, stiEnd, Color.LightGreen, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, stiEnd, stiConseg, stiRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            else if (string.IsNullOrEmpty(Filter.FilteredKey))
+                                {
+                                barList.Add(new Bar(order, stiYarn, stiInit, stiInit, Color.Gainsboro, Color.WhiteSmoke, index));
+                                barList.Add(new Bar(order, stiInit, stiEnd, stiEnd, Color.LightGreen, Color.PapayaWhip, index));
+                                barList.Add(new Bar(order, stiEnd, stiConseg, stiRdd, Color.Gainsboro, Color.WhiteSmoke, index));
+                                index++;
+                                }
+                            }
+                        break;
+                        }
+                    }
+                }
+            
+            if (Filter.AllChannels)
+                {
+                foreach (var bar in fullBarList)    //use full bar list
+                    {
+                    _gannt.AddBars(bar.RowText,
+                        bar, bar.ToRealTime, bar.FromTime, bar.ToTime, bar.Color, bar.HoverColor, bar.Index, false);
+                    }
+                }
+            else
+                {
+                foreach (var bar in barList)    //use single list
+                    {
+                    _gannt.AddBars(bar.RowText,
+                        bar, bar.ToRealTime, bar.FromTime, bar.ToTime, bar.Color, bar.HoverColor, bar.Index, false);
+                    }
+                }
+
+            _gannt.Refresh();
+
+            lblDateTimeInterval.Text = @"Interval from " + _config.StartDate.ToLongDateString() + @" to " + _config.EndDate.ToLongDateString();
+            lblDepthStatus.Text = @"Channel " + Filter.FilteredChannel;
+
+            _dtpDateFrom.Value = _config.StartDate;
+            _dtpDateTo.Value = _config.EndDate;
+ 
+            miniTitle1.TitleText = Filter.FilteredChannel;
+
+            IntegrateFiltersIntoDgvCsvRecords();
+          
+            //check if resizing mode enabled
+            if (_resize == 0)
+                {
+                //disable resizing
+                _gannt.AllowManualEditBar = false;
+                btnResize.Image = Properties.Resources.enlarge;
+                _resize = -1;
+                }
+            }
+
+        /// <summary>
+        /// Higlight display using start and end time params.
+        /// </summary>
+        /// <param name="starTime"></param>
+        /// <param name="endTime"></param>
+        public void HighlightDisplay(DateTime starTime, DateTime endTime)
+            {
+            _config.StartDate = starTime;
+            _config.EndDate = endTime;
+
+            HighlightDisplay();
+            }
+
+        #endregion
+
+        #region TitleCommandButtonsAndNavigation
+
+        private void btnOpen_Click(object sender, EventArgs e)
+            {
+            var outputFileDialog = new Config.OpenDialog();
+            outputFileDialog.ShowDialog();
+            outputFileDialog.Dispose();
+
+            if (outputFileDialog.DialogResult != DialogResult.OK) return;
+
+            Output.GTable.WriteXml("C:\\GanttOutcomes\\outputg.gntx", XmlWriteMode.WriteSchema, false);
+
+            CallDisplay();
+            }
+        private void btnNavBackDoub_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(-7);
+            _config.EndDate = _config.EndDate.AddDays(-7);
+            CallDisplay();
+            }
+
+        private void btnNavForwDoub_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(7);
+            _config.EndDate = _config.EndDate.AddDays(7);
+            CallDisplay();
+            }
+
+        private void btnNavBack_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(-1);
+            _config.EndDate = _config.EndDate.AddDays(-1);
+            CallDisplay();
+            }
+
+        private void btnNavForw_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(1);
+            _config.EndDate = _config.EndDate.AddDays(1);
+            CallDisplay();
+            }
+
+        private int _counter;
+        private void btnZoomIn_Click(object sender, EventArgs e)
+            {
+            if (_config.EndDate.Subtract(_config.StartDate).TotalDays < 4)
+                {
+                _counter++;
+
+                if (_counter >= 7)
+                    {
+                    MessageBox.Show(@"Can't zoom anymore.");
+                    _counter = 0;
+                    }
+                return;
+                }
+
+            _config.StartDate = _config.StartDate.AddDays(1);
+            _config.EndDate = _config.EndDate.AddDays(-1);
+            CallDisplay();
+            }
+
+        private void btnZoomOut_Click(object sender, EventArgs e)
+            {
+            if (_config.EndDate.Subtract(_config.StartDate).TotalDays > 60) //two months maximum
+                {
+
+                _counter++;
+
+                if (_counter >= 7)
+                    {
+                    MessageBox.Show(@"Can't zoom anymore.");
+                    _counter = 0;
+                    }
+                return;
+                }
+
+            _config.StartDate = _config.StartDate.AddDays(-1);
+            _config.EndDate = _config.EndDate.AddDays(1);
+            CallDisplay();
+            }
+
+        private void btnSwitch_Click(object sender, EventArgs e)
+            {
+            pnNavPlus.Visible = false;
+            pnSplitter1.Visible = false;
+
+            switch (_colapsed)
+                {
+                case 0:
+                DisplaySplitContainer.Panel1Collapsed = true;
+                _colapsed = 1; //only list
+                break;
+                case 1:
+                DisplaySplitContainer.Panel2Collapsed = true;
+                pnNavPlus.Visible = true;
+                pnSplitter1.Visible = true;
+                _colapsed = 2;  //list + gantt
+                break;
+                case 2:
+                DisplaySplitContainer.Panel1Collapsed = false;
+                DisplaySplitContainer.Panel2Collapsed = false;
+                _colapsed = 0;  //full
+                break;
+                }
+            }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+            {
+            var frm = new FilterSet(GetFilterSource());
+            frm.ShowDialog();
+            frm.Dispose();
+
+            if (frm.DialogResult == DialogResult.OK && Filter.FilteredKey != string.Empty)
+                {
+                CallDisplay();
+
+                foreach (var kvp in GetFiltersDictionary())
+                    {
+                    if (kvp.Key != Filter.FilteredKey) continue;
+
+                    var aim = kvp.Value;
+
+                    //apply filtering on binding source for csv data
+                    _bsDatList.Filter = string.Format("CONVERT(" +
+                                                      _dgvGantt.Columns[aim]?.DataPropertyName +
+                                                      ", System.String) like '%" + kvp.Key.Replace("'", "''") + "%'");
+
+                    //apply filtering on binding source for gantt
+                    _bsGanttList.Filter = string.Format("CONVERT(" +
+                                                        _dgvGantt.Columns[aim]?.DataPropertyName +
+                                                        ", System.String) like '%" + kvp.Key.Replace("'", "''") + "%'");
+                    }
+                }
+            else if (frm.DialogResult == DialogResult.OK && Filter.FilteredKey == string.Empty)
+                {
+                CallDisplay();
+                }
+            }
+
+        //use some properties here
+        private int _resize = -1;
+        private void btnResize_Click(object sender, EventArgs e)
+            {
+            switch (_resize)
+                {
+                case -1:
+                _gannt.AllowManualEditBar = true;
+                btnResize.Image = Properties.Resources.exitResize;
+                _resize = 0;
+                break;
+                case 0:
+                _gannt.AllowManualEditBar = false;
+                btnResize.Image = Properties.Resources.enlarge;
+                _resize = -1;
+                break;
+                }
+            }
+
+        private string _tmpImageFilePath;
+        private void btnPrint_Click(object sender, EventArgs e)
+            {
+            if (_colapsed == 0)
+                {
+                MessageBox.Show(@"Printing function is available, only in an expanded state.");
+                return;
+                }
+
+            LoadingInfo.InfoText = "Executing printers query";
+            LoadingInfo.ShowLoading();
+
+            _mpd.Show();    //show custom print dialog
+
+            if (!_mpd.Printing) return;
+
+            //save gannt as a document
+            if (_colapsed == 1)
+                {
+                //print data grid
+                if (_dgvGantt.Rows.Count <= 0)
+                    {
+                    MessageBox.Show(@"No records");
+                    return;
+                    }
+                }
+            else
+                {
+                var tmpFile = "\\gnt" + DateTime.UtcNow.ToString("ssffffff");   //take some time, or other format, that will never be repeated //in this way, you can skip serching through files in main dir.
+
+                _tmpImageFilePath = (_config.GlobalDir + tmpFile);
+                _gannt.SaveImage(_tmpImageFilePath);
+                }
+
+            //sets the document properties
+
+            _printDoc.DocumentName = _mpd.DocumentTitle = HeaderTitle + " " + Text + _mpd.DocumentTitle;
+            _printDoc.PrinterSettings.PrintFileName = _mpd.DocumentTitle;
+            _printDoc.PrinterSettings.PrinterName = _mpd.Printer;   //set printer
+            _printDoc.DefaultPageSettings.Landscape = true;
+
+            PrinterSettings ps = new PrinterSettings();
+            IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
+
+            PaperSize paperSize = paperSizes.FirstOrDefault(size => size.Kind == _mpd.Formater);
+            _printDoc.DefaultPageSettings.PaperSize = paperSize;
+
+            _printDoc.BeginPrint += Document_StartPrint;
+            _printDoc.PrintPage += Document_Print;
+            _printDoc.Print();
+            }
+
+        private ToolTip _toolTip;
+        private PictureBox _pbLegend;
+        private void pbStaz_MouseEnter(object sender, EventArgs e)
+            {
+            _toolTip = new ToolTip
+                {
+                BackColor = Color.DimGray,
+                ForeColor = Color.WhiteSmoke,
+                UseAnimation = true,
+                UseFading = true,
+                ToolTipIcon = ToolTipIcon.Info,
+                ToolTipTitle = "ganttproj info",
+                AutoPopDelay=10000
+                };
+
+            _pbLegend = (PictureBox)sender;
+        
+            if (_pbLegend.BackColor == Color.Silver)
+                {
+                _toolTip.Show("Stazionamento commesse", _pbLegend);
+                }
+            else if (_pbLegend.BackColor == Color.DarkTurquoise)
+                {
+                _toolTip.Show("Tessitura", _pbLegend);
+                }
+            else if (_pbLegend.BackColor == Color.Violet)
+                {
+                _toolTip.Show("Confezione", _pbLegend);
+                }
+            else if (_pbLegend.BackColor == Color.LightGreen)
+                {
+                _toolTip.Show("Stiro", _pbLegend);
+                }
+            }
+
+        private void pbStaz_MouseLeave(object sender, EventArgs e)
+            {
+            _toolTip.Hide(_pbLegend);
+            }
+
+        #endregion
+
+        #region Filters
+
+        private AutoCompleteStringCollection GetFilterSource()
+            {
+            //populate filter with completed custom source
+
+            var source = new AutoCompleteStringCollection();
+            for (var i = 0; i <= _filtersList.Count - 1; i++)
+                source.AddRange(new[]
+                {
+                    //import keys
+                    _filtersList.ElementAt(i).FilterKey
+                });
+
+            return source;
+            }
+
+        private Dictionary<string, string> GetFiltersDictionary()
+            {
+            //initialize filtering structure
+
+            var dictionary = new Dictionary<string, string>();
+            foreach (var item in _filtersList)
+                if (!dictionary.ContainsKey(item.FilterKey))
+                    dictionary.Add(item.FilterKey, item.FilterAim);
+
+            return dictionary;
+            }
+                    TabIndex = TabIndex + 1
+                    };
+
+                _dgvGantt.Controls.Add(txt);
+
+                var acsc = new AutoCompleteStringCollection();
+
+                //pair string collection with dictionared values
+                foreach (var kvp in GetFiltersDictionary())
+                    {
+                    if (_aim[i] == kvp.Value) acsc.AddRange(new[] { kvp.Key });
+                    }
+
+                txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                txt.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                txt.AutoCompleteCustomSource = acsc; //bind
+
+                var headerRect = _dgvGantt.GetColumnDisplayRectangle(i, true);
+                txt.Location = new Point(headerRect.Location.X + 1, 50 - txt.Height - 1);
+                txt.Size = new Size(headerRect.Width - 2, _dgvGantt.ColumnHeadersHeight);
+
+                //perform filtering
+
+                txt.TextChanged += delegate
+                    {
+                        //apply filtering
+                        _bsDatList.Filter = string.Format("CONVERT(" + _dgvGantt.Columns[txt.Name]?.DataPropertyName +
+                                                          ", System.String) like '%" + txt.Text.Replace("'", "''") + "%'");
+
+                        _bsGanttList.Filter = string.Format("CONVERT(" + dgvRoot.Columns[txt.Name]?.DataPropertyName +
+                                                            ", System.String) like '%" + txt.Text.Replace("'", "''") +
+                                                            "%'");
+
+                        _dgvGantt.DataSource = _bsDatList;
+                        dgvRoot.DataSource = _bsGanttList;
+
+                        Filter.FilteredKey = txt.Text;
+
+                        CallDisplay();
+                        };
+                }
+
+            _firstTime = false;
+            }
+
+        private void dgvCsvRecords_SelectionChanged(object sender, EventArgs e)
+            {
+            if (_dgvGantt.SelectedRows.Count <= 0) return;
+            if (_dgvGantt.CurrentCell == null) return;
+            var row = _dgvGantt.CurrentCell.RowIndex;
+
+            try
+                {
+                dgvRoot.FirstDisplayedScrollingRowIndex = row;
+                dgvRoot.Rows[row].Selected = true;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+        #endregion
+
+        #region SideBar 
+
+        private Panel _pnSideBar;
+        private DateTimePicker _dtpDateTo;
+        private DateTimePicker _dtpDateFrom;
+        private Button _btnColapseSideBar;
+        private Button _btnReload;
+        private Label label2;
+        private Label label1;
+
+        private int _collapseState = -1;
+
+        private int _fullCase = -1;
+        private void button2_Click(object sender, EventArgs e)
+            {
+            switch (_fullCase)
+                {
+                case -1:
+                Filter.AllChannels = true;
+                _fullCase = 0;
+                btnFullPrev.Text = @"Normal chart";
+                break;
+                case 0:
+                Filter.AllChannels = false;
+                _fullCase = -1;
+                btnFullPrev.Text = @"Full chart";
+
+                break;
+                }
+
+            CallDisplay();
+            }
+
+        private void btnReload_Click_1(object sender, EventArgs e)
+            {
+            //reset configurations
+            Filter.FilteredKey = null;
+            _bsDatList.Filter = null;
+            _bsGanttList.Filter = null;
+
+            //set new date configuration
+            _config.StartDate = _dtpDateFrom.Value;
+            _config.EndDate = _dtpDateTo.Value;
+
+            CallDisplay();
+            }
+
+        private void btnStartAddDays_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(+1);
+            CallDisplay();
+            }
+
+        private void btnStartRemDays_Click(object sender, EventArgs e)
+            {
+            _config.StartDate = _config.StartDate.AddDays(-1);
+            CallDisplay();
+            }
+
+        private void btnEndAddDays_Click(object sender, EventArgs e)
+            {
+            _config.EndDate=_config.EndDate.AddDays(+1);
+            CallDisplay();
+            }
+
+        private void btnEndRemDays_Click(object sender, EventArgs e)
+            {
+            _config.EndDate=_config.EndDate.AddDays(-1);
+            CallDisplay();
+            }
+
+        private void btn_Tess_Click(object sender, EventArgs e)
+            {
+            Filter.AllChannels = false;
+            _fullCase = -1;
+            btnFullPrev.Text = @"Full chart";
+            Filter.FilteredChannel = "TESSITURA";
+            CallDisplay();
+            }
+
+        private void btn_Conf_Click(object sender, EventArgs e)
+            {
+            Filter.AllChannels = false;
+            _fullCase = -1;
+            btnFullPrev.Text = @"Full chart";
+            Filter.FilteredChannel = "CONFEZIONE";
+            CallDisplay();
+            }
+
+        private void btn_Stiro_Click(object sender, EventArgs e)
+            {
+            Filter.AllChannels = false;
+            _fullCase = -1;
+            btnFullPrev.Text = @"Full chart";
+            Filter.FilteredChannel = "STIRO";
+            CallDisplay();
+            }
+
+        private void btnColapseSideBar_Click_1(object sender, EventArgs e)
+            {
+            if (_collapseState == -1)
+                {
+                _pnSideBar.Width = 69;
+                _collapseState = 0;
+                }
+            else if (_collapseState == 0)
+                {
+                _pnSideBar.Width = 176;
+                _collapseState = -1;
+                }
+            }
+
+        #endregion
+
+        #region Printing
+
+        //datagridview variables
+        private StringFormat strFormat;
+        private System.Collections.ArrayList arrColumnLefts = new System.Collections.ArrayList();
+        private System.Collections.ArrayList arrColumnWidths = new System.Collections.ArrayList();
+        private int iCellHeight = 0;
+        private int iTotalWidth = 0;
+        private int iRow = 0;
+        private bool bFirstPage = false;
+        private bool bNewPage = false;
+        private int iHeaderHeight = 0;
+
+        private void Document_StartPrint(object sender, PrintEventArgs e)
+            {
+            strFormat = new StringFormat
+                {
+                Alignment = StringAlignment.Near,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.EllipsisCharacter
+                };
+
+            arrColumnLefts.Clear();
+            arrColumnWidths.Clear();
+            iCellHeight = 0;
+            //iCount = 0;
+            bFirstPage = true;
+            bNewPage = true;
+
+            // Calculating Total Widths
+            iTotalWidth = 0;
+            foreach (DataGridViewColumn dgvGridCol in _dgvGantt.Columns)
+                {
+                if (dgvGridCol.Visible != false)
+                    {
+                    iTotalWidth += dgvGridCol.Width;
+                    }
+                }
+            }
+
+        private void Document_Print(object sender, PrintPageEventArgs e)
+            {
+            // Set up string.
+            string title = string.Empty;
+            if (_colapsed == 1)
+                {
+                title = "Document: " + Filter.FilteredChannel + " table preview" + Environment.NewLine + "Selected interval: " + _config.StartDate.ToShortDateString() + " - " + _config.EndDate.ToShortDateString() + Environment.NewLine + "ID " + DateTime.Now.ToString("ssffffff");
+                }
+            else
+                {
+                title = "Document: " + Filter.FilteredChannel + " gantt preview" + Environment.NewLine + "Selected interval: " + _config.StartDate.ToShortDateString() + " - " + _config.EndDate.ToShortDateString() + Environment.NewLine + "ID " + DateTime.Now.ToString("ssffffff");
+                }
+
+            string printDate = _mpd.Printdate.ToString(System.Globalization.CultureInfo.CurrentUICulture);
+            string dedication = _mpd.Dedication = "";  //modified
+            string notify = _mpd.Notification;
+
+            Font stringFont = new Font("Times New Roman", 9);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(title);
+            sb.AppendLine("Print date: " + printDate + " " + DateTime.Now.ToString("HH:mm", System.Globalization.CultureInfo.CurrentCulture));
+            sb.AppendLine(new string('_', title.Length - 1));
+            sb.AppendLine("Note: " + notify);
+            var strSb = sb.ToString();
+
+            var measureString = strSb;
+            // Measure string.
+            SizeF stringSize = new SizeF();
+            stringSize = e.Graphics.MeasureString(measureString, stringFont);
+
+            var pen = new Pen(Brushes.Gainsboro, 1);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+
+            //measure main title string to define start point
+            var measureHeaderTitle = e.Graphics.MeasureString(HeaderTitle, new Font("Tahoma", 20, FontStyle.Bold));
+            var headerTitleW = (int)measureHeaderTitle.Width;
+            var headerX = e.PageBounds.Width - headerTitleW - 10;
+            var headerY = (int)stringSize.Height / 2 - 10;
+
+            if (_colapsed == 1)
+                {
+                int iLeftMargin = 2;
+                int iTopMargin = (int)stringSize.Height + 20;
+                bool bMorePagesToPrint = false;
+                int iTmpWidth = 0;
+
+                if (bFirstPage)
+                    {
+                    foreach (DataGridViewColumn GridCol in _dgvGantt.Columns)
+                        {
+                        if (GridCol.Visible != false)
+                            {
+                            iTmpWidth = (int)(Math.Floor((double)((double)GridCol.Width /
+                              (double)iTotalWidth * (double)iTotalWidth *
+                              ((double)e.PageBounds.Width / (double)iTotalWidth))));
+
+                            iHeaderHeight = (int)(e.Graphics.MeasureString(GridCol.HeaderText,
+                                GridCol.InheritedStyle.Font, iTmpWidth).Height) + 11;
+
+                            arrColumnLefts.Add(iLeftMargin);
+                            arrColumnWidths.Add(iTmpWidth);
+                            iLeftMargin += iTmpWidth;
+                            }
+
+                        }
+                    }
+
+                while (iRow <= _dgvGantt.Rows.Count - 1)
+                    {
+                    DataGridViewRow GridRow = _dgvGantt.Rows[iRow];
+                    iCellHeight = GridRow.Height + 10;
+
+                    int iCount = 0;
+                    if (iTopMargin + iCellHeight >= e.MarginBounds.Height + e.MarginBounds.Top)
+                        {
+                        bNewPage = true;
+                        bFirstPage = false;
+                        bMorePagesToPrint = true;
+                        break;
+                        }
+                    else
+                        {
+                        if (bNewPage)
+                            {
+                            // Draw rectangle representing size of string.
+                            e.Graphics.FillRectangle(Brushes.Gainsboro, new Rectangle(0, 0, e.PageBounds.Width, (int)stringSize.Height + 10));
+                            e.Graphics.DrawString(strSb, new Font("Times New Roman", 8, FontStyle.Bold), Brushes.Black, new PointF(10, 10));
+                            e.Graphics.DrawRectangle(new Pen(Color.Silver, 3), 0.0F, 0.0F, e.PageBounds.Width, stringSize.Height + 10);
+                            e.Graphics.DrawString(HeaderTitle, new Font("Tahoma", 20, FontStyle.Bold), Brushes.Orange, headerX, headerY);
+
+                            iTopMargin = (int)stringSize.Height + 20;
+
+                            //draw column headers
+                            foreach (DataGridViewColumn GridCol in _dgvGantt.Columns)
+                                {
+                                if (GridCol.Visible != false)
+                                    {
+                                    e.Graphics.FillRectangle(new SolidBrush(Color.Gainsboro),
+                                           new Rectangle((int)arrColumnLefts[iCount], iTopMargin, (int)arrColumnWidths[iCount], iHeaderHeight));
+                                    e.Graphics.DrawRectangle(pen,
+                                        new Rectangle((int)arrColumnLefts[iCount], iTopMargin,
+                                        (int)arrColumnWidths[iCount], iHeaderHeight));
+                                    e.Graphics.DrawString(GridCol.HeaderText,
+                                        new Font("Times New Roman", 6, FontStyle.Bold),
+                                        new SolidBrush(GridCol.InheritedStyle.ForeColor),
+                                        new RectangleF((int)arrColumnLefts[iCount], iTopMargin,
+                                        (int)arrColumnWidths[iCount], iHeaderHeight), strFormat);
+
+                                    iCount++;
+                                    }
+                                }
+                            bNewPage = false;
+                            iTopMargin += iHeaderHeight;
+                            }
+                        iCount = 0;
+
+                        //draw records
+                        foreach (DataGridViewCell Cel in GridRow.Cells)
+                            {
+                            if (Cel.Visible != false)
+                                {
+                                if (Cel.Value != null)
+                                    {
+
+                                    e.Graphics.FillRectangle(Brushes.White,
+                                        new Rectangle((int)arrColumnLefts[iCount], iTopMargin,
+                                        (int)arrColumnWidths[iCount], iCellHeight));
+
+                                    e.Graphics.DrawString(Cel.Value.ToString(),
+                                        new Font("Times New Roman", 7),
+                                        new SolidBrush(Cel.InheritedStyle.ForeColor),
+                                        new RectangleF((int)arrColumnLefts[iCount],
+                                        (float)iTopMargin,
+                                        (int)arrColumnWidths[iCount], (float)iCellHeight),
+                                        strFormat);
+                                    }
+                                e.Graphics.DrawRectangle(pen,
+                                    new Rectangle((int)arrColumnLefts[iCount], iTopMargin,
+                                    (int)arrColumnWidths[iCount], iCellHeight));
+
+                                iCount++;
+                                }
+
+                            }
+                        }
+                    iRow++;
+                    iTopMargin += iCellHeight;
+                    }
+
+                if (bMorePagesToPrint)
+                    e.HasMorePages = true;
+                else
+                    e.HasMorePages = false;
+                }
+            else if (_colapsed == 2)
+                {
+                // Draw rectangle representing size of string.
+                e.Graphics.FillRectangle(Brushes.Gainsboro, new Rectangle(0, 0, e.PageBounds.Width, (int)stringSize.Height + 10));
+                e.Graphics.DrawString(strSb, new Font("Microsoft Sans Serif", 8, FontStyle.Bold), Brushes.Black, new PointF(10, 10));
+                e.Graphics.DrawRectangle(new Pen(Color.Silver, 3), 0.0F, 0.0F, e.PageBounds.Width, stringSize.Height + 10);
+                e.Graphics.DrawString(HeaderTitle, new Font("Tahoma", 20, FontStyle.Bold), Brushes.Orange, headerX, headerY);
+
+                Image img = Image.FromFile(_tmpImageFilePath);
+
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                e.Graphics.DrawImage(img, new Rectangle(0, (int)stringSize.Height + 30, img.Width, img.Height));
+                e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                }
+            }
+        #endregion
+
+        #region Files
+
+        private string[] _dropped = { };
+        private List<string> _files = new List<string>();
+
+        protected override void OnDragEnter(DragEventArgs drgevent)
+            {
+            //get files array
+            _dropped = drgevent.Data.GetData(DataFormats.FileDrop) as string[];
+            _files = _dropped.ToList();
+
+            foreach (var file in _files)
+                {
+                //accept only csv files
+                if (file.ToLower().EndsWith(".csv"))
+                    drgevent.Effect = DragDropEffects.Copy;
+                else
+                    drgevent.Effect = DragDropEffects.None;
+                }
+
+            base.OnDragEnter(drgevent);
+            }
+
+        protected override void OnDragDrop(DragEventArgs drgevent)
+            {
+            foreach (var file in _files)
+                {
+                Console.WriteLine("Uploaded: " + file + " " + DateTime.Now);
+                Store.Default.outputDir = file;
+                Store.Default.Save();
+
+                CallDisplay();
+                }
+
+            base.OnDragDrop(drgevent);
+            }
+
+        private void btnReport_Click(object sender, EventArgs e)
+            {
+            var f = new SummaryReport();
+            f.Show();
+            }
+
+        private bool IsFileValid()
+        {
+            const bool isValid = false;
+
+            return isValid;
+        }
+
+        #endregion
+
+        }
+    }
