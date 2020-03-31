@@ -63,6 +63,16 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _822 {
+            get {
+                object obj = ResourceManager.GetObject("_822", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap accept_changes_48 {
             get {
                 object obj = ResourceManager.GetObject("accept_changes_48", resourceCulture);
@@ -93,9 +103,29 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_down {
+            get {
+                object obj = ResourceManager.GetObject("arrow-down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow_forw_32 {
             get {
                 object obj = ResourceManager.GetObject("arrow_forw_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_left {
+            get {
+                object obj = ResourceManager.GetObject("arrow_left", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,6 +146,36 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap arrow_mforw_32 {
             get {
                 object obj = ResourceManager.GetObject("arrow_mforw_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right1 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_triangle_right {
+            get {
+                object obj = ResourceManager.GetObject("arrow_triangle_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +253,29 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap check_com_60 {
+        internal static System.Drawing.Bitmap cartellina_edit_32x32 {
             get {
-                object obj = ResourceManager.GetObject("check_com_60", resourceCulture);
+                object obj = ResourceManager.GetObject("cartellina_edit_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chart_bar_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("chart_bar_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap check {
+            get {
+                object obj = ResourceManager.GetObject("check", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,16 +303,6 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cleanse_selected {
-            get {
-                object obj = ResourceManager.GetObject("cleanse_selected", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap clear_icon_32 {
             get {
                 object obj = ResourceManager.GetObject("clear_icon_32", resourceCulture);
@@ -243,9 +313,19 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap close_com_60 {
+        internal static System.Drawing.Bitmap close {
             get {
-                object obj = ResourceManager.GetObject("close_com_60", resourceCulture);
+                object obj = ResourceManager.GetObject("close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap close_circle {
+            get {
+                object obj = ResourceManager.GetObject("close_circle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -266,16 +346,6 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap collapse_arrow_32 {
             get {
                 object obj = ResourceManager.GetObject("collapse_arrow_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap conf {
-            get {
-                object obj = ResourceManager.GetObject("conf", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,9 +393,39 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap edit_big {
+            get {
+                object obj = ResourceManager.GetObject("edit_big", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap enlarge {
             get {
                 object obj = ResourceManager.GetObject("enlarge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap event_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("event_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap excel_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("excel_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -393,6 +493,26 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fast_forward {
+            get {
+                object obj = ResourceManager.GetObject("fast_forward", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fast_rewind {
+            get {
+                object obj = ResourceManager.GetObject("fast_rewind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fileopen {
             get {
                 object obj = ResourceManager.GetObject("fileopen", resourceCulture);
@@ -436,6 +556,26 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap filter_icon_d32 {
             get {
                 object obj = ResourceManager.GetObject("filter_icon_d32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder {
+            get {
+                object obj = ResourceManager.GetObject("folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder_icon_32_gold {
+            get {
+                object obj = ResourceManager.GetObject("folder_icon_32_gold", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -496,6 +636,26 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap full_report_48 {
             get {
                 object obj = ResourceManager.GetObject("full_report_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Help {
+            get {
+                object obj = ResourceManager.GetObject("Help", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap help_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("help_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -583,16 +743,6 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap infotip_selected {
-            get {
-                object obj = ResourceManager.GetObject("infotip_selected", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap loading_icon_96 {
             get {
                 object obj = ResourceManager.GetObject("loading_icon_96", resourceCulture);
@@ -606,6 +756,16 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap lock_16 {
             get {
                 object obj = ResourceManager.GetObject("lock_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Logo {
+            get {
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -733,6 +893,16 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap preloader_gantt {
+            get {
+                object obj = ResourceManager.GetObject("preloader_gantt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap print_icon_d32 {
             get {
                 object obj = ResourceManager.GetObject("print_icon_d32", resourceCulture);
@@ -803,16 +973,6 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap refresh_40 {
-            get {
-                object obj = ResourceManager.GetObject("refresh_40", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap refresh_total_32 {
             get {
                 object obj = ResourceManager.GetObject("refresh_total_32", resourceCulture);
@@ -853,29 +1013,19 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap reset_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("reset_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap reset_total_32 {
             get {
                 object obj = ResourceManager.GetObject("reset_total_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap resize {
-            get {
-                object obj = ResourceManager.GetObject("resize", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap robot_96 {
-            get {
-                object obj = ResourceManager.GetObject("robot_96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -923,16 +1073,6 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap schedule_24 {
-            get {
-                object obj = ResourceManager.GetObject("schedule_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap search {
             get {
                 object obj = ResourceManager.GetObject("search", resourceCulture);
@@ -953,19 +1093,9 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap send_clock_48 {
+        internal static System.Drawing.Bitmap settings_32x32 {
             get {
-                object obj = ResourceManager.GetObject("send_clock_48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap service_48 {
-            get {
-                object obj = ResourceManager.GetObject("service_48", resourceCulture);
+                object obj = ResourceManager.GetObject("settings_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -983,19 +1113,9 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap sidebar_32 {
+        internal static System.Drawing.Bitmap show_24x24 {
             get {
-                object obj = ResourceManager.GetObject("sidebar_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap single_report_48 {
-            get {
-                object obj = ResourceManager.GetObject("single_report_48", resourceCulture);
+                object obj = ResourceManager.GetObject("show_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1023,9 +1143,9 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap stiro {
+        internal static System.Drawing.Bitmap sub_task {
             get {
-                object obj = ResourceManager.GetObject("stiro", resourceCulture);
+                object obj = ResourceManager.GetObject("sub_task", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1033,9 +1153,9 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap sub_task {
+        internal static System.Drawing.Bitmap switch_arrow_triangle_right_white {
             get {
-                object obj = ResourceManager.GetObject("sub_task", resourceCulture);
+                object obj = ResourceManager.GetObject("switch_arrow_triangle_right_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1053,9 +1173,9 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tess {
+        internal static System.Drawing.Bitmap tick_icon_16 {
             get {
-                object obj = ResourceManager.GetObject("tess", resourceCulture);
+                object obj = ResourceManager.GetObject("tick_icon_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1103,9 +1223,39 @@ namespace ganntproj1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap update_100x100 {
+            get {
+                object obj = ResourceManager.GetObject("update_100x100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap update_check_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("update_check_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap warning_s_icon_48 {
             get {
                 object obj = ResourceManager.GetObject("warning_s_icon_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap zoom_in {
+            get {
+                object obj = ResourceManager.GetObject("zoom_in", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1126,6 +1276,16 @@ namespace ganntproj1.Properties {
         internal static System.Drawing.Bitmap zoom_in_d32 {
             get {
                 object obj = ResourceManager.GetObject("zoom_in_d32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap zoom_out {
+            get {
+                object obj = ResourceManager.GetObject("zoom_out", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

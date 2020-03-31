@@ -57,7 +57,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ganntproj1.CommandCenter</StartupObject>
+    <StartupObject>ganntproj1.Central</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -77,6 +77,27 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="App.config" />
@@ -86,201 +107,187 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Documentation\readme.md" />
+    <None Include="docs\readme.md" />
+    <None Include="Resources\Help.pdf" />
     <None Include="Store.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Store.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DgvPrint.cs" />
-    <Compile Include="Diffetato.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Diffetato.Designer.cs">
-      <DependentUpon>Diffetato.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ExcelExport.cs" />
-    <Compile Include="Fatturato.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Fatturato.Designer.cs">
-      <DependentUpon>Fatturato.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FatturatoLinea.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FatturatoLinea.Designer.cs">
-      <DependentUpon>FatturatoLinea.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmCarico.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmCarico.Designer.cs">
-      <DependentUpon>FrmCarico.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmLineListChecker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmLineListChecker.Designer.cs">
-      <DependentUpon>FrmLineListChecker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmSchedule.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmSchedule.Designer.cs">
-      <DependentUpon>FrmSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HolidaysController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HolidaysController.Designer.cs">
-      <DependentUpon>HolidaysController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InputDate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InputDate.Designer.cs">
-      <DependentUpon>InputDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LineGraph.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LineGraph.Designer.cs">
-      <DependentUpon>LineGraph.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LoadingInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mensile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mensile.Designer.cs">
-      <DependentUpon>Mensile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MyMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyMessage.Designer.cs">
-      <DependentUpon>MyMessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="JobModel.cs" />
-    <Compile Include="Globals.cs" />
-    <Compile Include="MyCheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="MyComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ObjectModels\Articles.cs" />
-    <Compile Include="ObjectModels\OrderClose.cs" />
-    <Compile Include="ObjectModels\OrderLock.cs" />
-    <Compile Include="ObjectModels\Orders.cs" />
-    <Compile Include="ObjectModels\Lines.cs" />
-    <Compile Include="ObjectModels\AricleOperations.cs" />
-    <Compile Include="ObjectModels\Production.cs" />
-    <Compile Include="ObjectModels\ProductionSplit.cs" />
-    <Compile Include="ObjectModels\Shifts.cs" />
-    <Compile Include="ObjectModels\Tables.cs" />
-    <Compile Include="Produzione.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Produzione.Designer.cs">
-      <DependentUpon>Produzione.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LoadingJobController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoadingJobController.Designer.cs">
-      <DependentUpon>LoadingJobController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CommInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CommInput.Designer.cs">
-      <DependentUpon>CommInput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Config.cs" />
-    <Compile Include="CommandCenter.Designer.cs">
-      <DependentUpon>CommandCenter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Geometry.cs" />
-    <Compile Include="Central.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Central.Designer.cs">
-      <DependentUpon>Central.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Respinte.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Respinte.Designer.cs">
-      <DependentUpon>Respinte.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WorkflowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WorkflowController.Designer.cs">
-      <DependentUpon>WorkflowController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SplitHistory.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplitHistory.Designer.cs">
-      <DependentUpon>SplitHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SplitInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplitInput.Designer.cs">
-      <DependentUpon>SplitInput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SummaryReport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SummaryReport.Designer.cs">
-      <DependentUpon>SummaryReport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MyPrintDialog.cs" />
-    <Compile Include="Channels.cs" />
-    <Compile Include="CommandCenter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ganttogram.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TableView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Output.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Printers\TableViewPrint.cs" />
+    <Compile Include="Views\Diffetato.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Diffetato.Designer.cs">
+      <DependentUpon>Diffetato.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\ExcelExport.cs" />
+    <Compile Include="src\Extensions.cs" />
+    <Compile Include="Views\Fatturato.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Fatturato.Designer.cs">
+      <DependentUpon>Fatturato.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FatturatoLinea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FatturatoLinea.Designer.cs">
+      <DependentUpon>FatturatoLinea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Carico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Carico.Designer.cs">
+      <DependentUpon>Carico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LineList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LineList.Designer.cs">
+      <DependentUpon>LineList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Holidays.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Holidays.Designer.cs">
+      <DependentUpon>Holidays.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InputDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\InputDate.Designer.cs">
+      <DependentUpon>InputDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\JobModel.cs" />
+    <Compile Include="Views\LineGraph.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LineGraph.Designer.cs">
+      <DependentUpon>LineGraph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Mensile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Mensile.Designer.cs">
+      <DependentUpon>Mensile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\MyMessage.Designer.cs">
+      <DependentUpon>MyMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Printers\EventPrintDialog.cs" />
+    <Compile Include="src\Output.cs" />
+    <Compile Include="src\Globals.cs" />
+    <Compile Include="src\ControlReport\ToggleCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="src\ControlReport\EventComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="src\Models\Articles.cs" />
+    <Compile Include="src\Models\Log.cs" />
+    <Compile Include="src\Models\Orders.cs" />
+    <Compile Include="src\Models\Lines.cs" />
+    <Compile Include="src\Models\Production.cs" />
+    <Compile Include="src\Models\Shifts.cs" />
+    <Compile Include="src\Models\Tables.cs" />
+    <Compile Include="Views\OperationProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\OperationProgram.Designer.cs">
+      <DependentUpon>OperationProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Produzione.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Produzione.Designer.cs">
+      <DependentUpon>Produzione.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingJob.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LoadingJob.Designer.cs">
+      <DependentUpon>LoadingJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductionInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProductionInput.Designer.cs">
+      <DependentUpon>ProductionInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Config.cs" />
+    <Compile Include="src\Geometry.cs" />
+    <Compile Include="Views\Central.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Central.Designer.cs">
+      <DependentUpon>Central.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Respinte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Respinte.Designer.cs">
+      <DependentUpon>Respinte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Workflow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Workflow.Designer.cs">
+      <DependentUpon>Workflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SplitHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SplitHistory.Designer.cs">
+      <DependentUpon>SplitHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Split.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Split.Designer.cs">
+      <DependentUpon>Split.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Channels.cs" />
+    <Compile Include="src\ControlReport\Ganttogram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="src\ControlReport\TableView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="MiniTitle.cs">
+    <Compile Include="src\ControlReport\MiniTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MiniTitle.designer.cs">
+    <Compile Include="src\ControlReport\MiniTitle.designer.cs">
       <DependentUpon>MiniTitle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Title.cs">
+    <Compile Include="src\ControlReport\Title.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Title.designer.cs">
+    <Compile Include="src\ControlReport\Title.designer.cs">
       <DependentUpon>Title.cs</DependentUpon>
     </Compile>
     <Compile Include="Store.Designer.cs">
@@ -288,10 +295,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Store.settings</DependentUpon>
     </Compile>
-    <Compile Include="Popup.cs">
+    <Compile Include="Views\Popup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Popup.Designer.cs">
+    <Compile Include="Views\Popup.Designer.cs">
       <DependentUpon>Popup.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -326,6 +333,39 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Resources\show_24x24.png" />
+    <None Include="Resources\update_100x100.png" />
+    <None Include="Resources\822.gif" />
+    <None Include="Resources\update_check_32x32.png" />
+    <None Include="Resources\help_32x32.png" />
+    <None Include="Resources\close_circle.png" />
+    <None Include="Resources\chart-bar_32x32.png" />
+    <None Include="Resources\folder_icon_32_gold.png" />
+    <None Include="Resources\check.png" />
+    <None Include="Resources\edit-big.png" />
+    <None Include="Resources\zoom_in.png" />
+    <None Include="Resources\zoom_out.png" />
+    <None Include="Resources\fast_rewind.png" />
+    <None Include="Resources\fast_forward.png" />
+    <None Include="Resources\close.png" />
+    <None Include="Resources\cartellina_edit_32x32.png" />
+    <None Include="Resources\excel_32x32.png" />
+    <None Include="Resources\event_32x32.png" />
+    <None Include="Resources\arrow_left.png" />
+    <None Include="Resources\arrow_right.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\settings_32x32.png" />
+    <None Include="Resources\reset_32x32.png" />
+    <None Include="Resources\Logo.png" />
+    <None Include="Resources\arrow-right.png" />
+    <None Include="Resources\arrow-down.png" />
+    <None Include="Resources\switch_arrow_triangle_right_white.png" />
+    <None Include="Resources\arrow-triangle-right.png" />
+    <None Include="Resources\onlyou_logo_minnine.png" />
+    <None Include="Resources\preloader_gantt.gif" />
+    <None Include="Resources\tick_icon_16.png" />
+    <None Include="Resources\tick_icon_24.png" />
+    <None Include="Resources\holiday_flag_16.png" />
     <None Include="Resources\icons_excel_filled_32.png" />
     <None Include="Resources\export_excel_icon_321.png" />
     <None Include="Resources\export_excel_icon_32.png" />
@@ -451,90 +491,84 @@
     <None Include="Resources\back.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Diffetato.resx">
+    <EmbeddedResource Include="Views\Diffetato.resx">
       <DependentUpon>Diffetato.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Fatturato.resx">
+    <EmbeddedResource Include="Views\Fatturato.resx">
       <DependentUpon>Fatturato.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FatturatoLinea.resx">
+    <EmbeddedResource Include="Views\FatturatoLinea.resx">
       <DependentUpon>FatturatoLinea.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmCarico.resx">
-      <DependentUpon>FrmCarico.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Carico.resx">
+      <DependentUpon>Carico.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmLineListChecker.resx">
-      <DependentUpon>FrmLineListChecker.cs</DependentUpon>
+    <EmbeddedResource Include="Views\LineList.resx">
+      <DependentUpon>LineList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmSchedule.resx">
-      <DependentUpon>FrmSchedule.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Holidays.resx">
+      <DependentUpon>Holidays.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HolidaysController.resx">
-      <DependentUpon>HolidaysController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InputDate.resx">
+    <EmbeddedResource Include="Views\InputDate.resx">
       <DependentUpon>InputDate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LineGraph.resx">
+    <EmbeddedResource Include="Views\LineGraph.resx">
       <DependentUpon>LineGraph.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoadingInfo.resx">
+    <EmbeddedResource Include="Views\LoadingInfo.resx">
       <DependentUpon>LoadingInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mensile.resx">
+    <EmbeddedResource Include="Views\Mensile.resx">
       <DependentUpon>Mensile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MyMessage.resx">
+    <EmbeddedResource Include="Views\MyMessage.resx">
       <DependentUpon>MyMessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ganttogram.resx">
+    <EmbeddedResource Include="src\ControlReport\Ganttogram.resx">
       <DependentUpon>Ganttogram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoadingJobController.resx">
-      <DependentUpon>LoadingJobController.cs</DependentUpon>
+    <EmbeddedResource Include="Views\LoadingJob.resx">
+      <DependentUpon>LoadingJob.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Produzione.resx">
+    <EmbeddedResource Include="Views\OperationProgram.resx">
+      <DependentUpon>OperationProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Produzione.resx">
       <DependentUpon>Produzione.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommandCenter.resx">
-      <DependentUpon>CommandCenter.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ProductionInput.resx">
+      <DependentUpon>ProductionInput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommInput.resx">
-      <DependentUpon>CommInput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Central.resx">
+    <EmbeddedResource Include="Views\Central.resx">
       <DependentUpon>Central.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Respinte.resx">
+    <EmbeddedResource Include="Views\Respinte.resx">
       <DependentUpon>Respinte.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WorkflowController.resx">
-      <DependentUpon>WorkflowController.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Workflow.resx">
+      <DependentUpon>Workflow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings.resx">
+    <EmbeddedResource Include="Views\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplitHistory.resx">
+    <EmbeddedResource Include="Views\SplitHistory.resx">
       <DependentUpon>SplitHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplitInput.resx">
-      <DependentUpon>SplitInput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SummaryReport.resx">
-      <DependentUpon>SummaryReport.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Split.resx">
+      <DependentUpon>Split.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="MiniTitle.resx">
+    <EmbeddedResource Include="src\ControlReport\MiniTitle.resx">
       <DependentUpon>MiniTitle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Title.resx">
+    <EmbeddedResource Include="src\ControlReport\Title.resx">
       <DependentUpon>Title.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Popup.resx">
+    <EmbeddedResource Include="Views\Popup.resx">
       <DependentUpon>Popup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -554,7 +588,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\" />
+    <Folder Include="src\Data\" />
+    <Folder Include="src\Models\JobRangeData\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

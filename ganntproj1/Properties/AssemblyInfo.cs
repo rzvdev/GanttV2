@@ -2,21 +2,15 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("ganntproj1.Properties")]
-[assembly: AssemblyDescription("no mutex")]
+[assembly: AssemblyTitle("ganntproj")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ganntproj1.Properties")]
-[assembly: AssemblyCopyright("Copyright  ©  2018")]
+[assembly: AssemblyCompany("Olimpias Knitting Group")]
+[assembly: AssemblyProduct("ganntproj1")]
+[assembly: AssemblyCopyright("Copyright  © Olimpias Knitting Serbia 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(true)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
@@ -29,6 +23,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyVersion("3.1.2.2")]
 [assembly: AssemblyFileVersion("3.0.2.6")]
 [assembly: NeutralResourcesLanguage("en")]
