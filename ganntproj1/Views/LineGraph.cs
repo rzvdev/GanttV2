@@ -375,6 +375,7 @@
             }
             tblGraph.Refresh();
         }
+
         private void BtnZoomOut_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in tblGraph.Rows)
@@ -384,6 +385,7 @@
             }
             tblGraph.Refresh();
         }
+
         private void CbYearAll_CheckedChanged(object sender, EventArgs e)
         {
             LoadGraph();

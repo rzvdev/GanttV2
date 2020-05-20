@@ -253,6 +253,7 @@ namespace ganntproj1
             var jobModel = new JobModel();
             var c = new Central();
             c.GetBase();
+            c.GetProductionColor();
             if (Central.ListOfModels.Count <= 0) return;
             _indexerList = new List<Index>();
             DefaultAim = Central.ListOfModels.First().Aim;
@@ -424,24 +425,29 @@ namespace ganntproj1
                              });
 
                 var barColor = Color.FromArgb(80, 144, 169);
-                var barOverColor = Color.FromArgb(27, 98, 124);                
+                var barOverColor = Color.FromArgb(27, 98, 124);        
+                
                 var prodQtyDiff = model.LoadedQty - model.ProdQty;
-                int.TryParse(model.WorkingDays.ToString(), out var workDays);
-                var eff = Convert.ToInt32(model.ProdQty / model.DailyProd * workDays);
+                double.TryParse(model.WorkingDays.ToString(), out var workDays);
+
+                if (workDays == 0) workDays = 1;
+                var eff = (model.ProdQty / (model.DailyProd * workDays)) * 100;
 
                 var prodBarColor = new Color();
 
-                if (workDays == 0 && prodQtyDiff > 0 || !model.ClosedByUser)
+                //get efficiency color
+
+                if (prodQtyDiff == 0 || model.ClosedByUser)
                 {
-                    prodBarColor = Central.HighColor;
+                    barColor = Color.Gray;
+                    barOverColor = Color.DarkGray;
+                    prodBarColor = Color.FromArgb(175, 175, 175);
                 }
                 else
                 {
-                    if (prodQtyDiff == 0 || model.ClosedByUser)
+                    if (workDays == 0)
                     {
-                        barColor = Color.Gray;
-                        barOverColor = Color.DarkGray;
-                        prodBarColor = Color.FromArgb(175, 175, 175);
+                        prodBarColor = Central.HighColor;
                     }
                     else
                     {
@@ -458,8 +464,9 @@ namespace ganntproj1
                             prodBarColor = Central.HighColor;
                         }
                     }
+
                 }
-                
+
                 // Insert objects into chart object list
                 _objList.Add(new Bar(model.Name, model.Name + '_' + model.Aim,
                     model.StartDate,
