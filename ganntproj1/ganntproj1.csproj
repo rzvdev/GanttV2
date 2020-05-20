@@ -121,6 +121,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="src\Printers\TableViewPrint.cs" />
+    <Compile Include="Views\CommessaDefect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CommessaDefect.Designer.cs">
+      <DependentUpon>CommessaDefect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Diffetato.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,18 @@
     </Compile>
     <Compile Include="Views\Carico.Designer.cs">
       <DependentUpon>Carico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GraficoRespinte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\GraficoRespinte.Designer.cs">
+      <DependentUpon>GraficoRespinte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LineGraphMonth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LineGraphMonth.Designer.cs">
+      <DependentUpon>LineGraphMonth.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\LineList.cs">
       <SubType>Form</SubType>
@@ -241,6 +259,12 @@
     <Compile Include="Views\Respinte.Designer.cs">
       <DependentUpon>Respinte.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\RespinteControlloInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RespinteControlloInput.Designer.cs">
+      <DependentUpon>RespinteControlloInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Workflow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,9 +330,6 @@
     <Reference Include="CommonTools">
       <HintPath>..\..\..\CommonTools.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
@@ -330,9 +351,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="ZedGraph, Version=5.1.7.430, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZedGraph.5.1.7\lib\net35-Client\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="License-LGPL.txt" />
     <None Include="Resources\show_24x24.png" />
     <None Include="Resources\update_100x100.png" />
     <None Include="Resources\822.gif" />
@@ -491,6 +516,9 @@
     <None Include="Resources\back.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Views\CommessaDefect.resx">
+      <DependentUpon>CommessaDefect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Diffetato.resx">
       <DependentUpon>Diffetato.cs</DependentUpon>
     </EmbeddedResource>
@@ -502,6 +530,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Carico.resx">
       <DependentUpon>Carico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\GraficoRespinte.resx">
+      <DependentUpon>GraficoRespinte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LineGraphMonth.resx">
+      <DependentUpon>LineGraphMonth.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LineList.resx">
       <DependentUpon>LineList.cs</DependentUpon>
@@ -544,6 +578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Respinte.resx">
       <DependentUpon>Respinte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RespinteControlloInput.resx">
+      <DependentUpon>RespinteControlloInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Workflow.resx">
       <DependentUpon>Workflow.cs</DependentUpon>

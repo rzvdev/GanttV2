@@ -150,6 +150,7 @@
             _tableCarico.Columns.Add("Dft Conf"); //34
             _tableCarico.Columns.Add("TempoTotStaz");
             _tableCarico.Columns.Add("RitardoMedia");   //36
+            _tableCarico.Columns.Add("Prezzo"); //37
         }
 
         /// <summary>
@@ -413,7 +414,8 @@
                      "Comenzi.ram_tess," +
                      "Comenzi.ram_conf," +
                      "Comenzi.def_tess," +
-                     "Comenzi.def_conf " +
+                     "Comenzi.def_conf, " +
+                     "Articole.Prezzo " +
                      "from Comenzi" +
                      " inner join Articole on Comenzi.IdArticol = Articole.Id " + queryCondition;
 
@@ -542,6 +544,7 @@
                 newRow[32] = row[25].ToString();
                 newRow[33] = row[26].ToString();
                 newRow[34] = row[27].ToString();
+                newRow[37] = row[28].ToString();
 
                 //calculate ritardo
                 DateTime.TryParse(row[9].ToString(), out var dtCons);
@@ -603,16 +606,18 @@
             dgvReport.Columns[8].HeaderText = "DataInizio Prev";
             dgvReport.Columns[9].HeaderText = "DataFine Prev";
             dgvReport.Columns[10].HeaderText = "Data Consegna";
-            dgvReport.Columns[13].HeaderText = "Capi/\nOra";
+            dgvReport.Columns[13].HeaderText = "Capi/\nOra\n" + GetTotals()[6].ToString();
             dgvReport.Columns[14].Visible = false;
             //dgvReport.Columns[16].Visible = false;
             dgvReport.Columns[22].Visible = false;
             dgvReport.Columns[26].Visible = false;
             dgvReport.Columns[27].Visible = false;
+            dgvReport.Columns["Ritardo"].HeaderText = "Ritardo\n\n" + string.Format("{0:#,##0}", GetTotals()[7]);
             dgvReport.Columns["Ritardo"].HeaderCell.Style.BackColor = Color.FromArgb(50, 52, 68);
             dgvReport.Columns["CaricoTrigger"].Visible = false;
             dgvReport.Columns[26].DisplayIndex = 11;
-            dgvReport.Columns[27].DisplayIndex = 14;
+            dgvReport.Columns[27].DisplayIndex = 15;
+            dgvReport.Columns[37].DisplayIndex = 22;
             if (Store.Default.selSector == "Confezione")
             {
                 dgvReport.Columns[15].Visible = true;
@@ -664,6 +669,12 @@
             {
                 if (dgvReport.Rows[i].Cells[22].Value.ToString() == "2")
                     dgvReport.Rows[i].DefaultCellStyle.BackColor = Color.LightYellow;
+
+                if (dgvReport.Rows[i].Cells[22].Value.ToString() == "1")
+                    dgvReport.Rows[i].Cells["Carico"].Style.ForeColor = Color.Red;
+                else 
+                    dgvReport.Rows[i].Cells["Carico"].Style.ForeColor = Color.DarkGreen;
+
                 if (!string.IsNullOrEmpty(dgvReport.Rows[i].Cells[23].Value.ToString()))
                 {
                     dgvReport.Rows[i].Cells[23].Style.BackColor = Color.LightCoral;
@@ -1811,8 +1822,17 @@
         private void _dtpProdChange_ValueChange(object sender, EventArgs e)
         {
             var dtp = (DateTimePicker)sender;
-            var dr = MessageBox.Show("Do you want to save changes?", "Carico lavoro", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var dr = MessageBox.Show("Do you want to upadte to 'Chiuso'?", "Carico lavoro", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
+            {
+                using (var con = new System.Data.Linq.DataContext(Central.ConnStr))
+                {
+                    con.ExecuteCommand("update Comenzi set " + "DataLivrare={0}, IdStare={1} where NrComanda={2}", dtp.Value, 2, _orderToUpdate);
+                }
+                dgvReport.Rows[_rowIdx].Cells[_cellIdx].Value = UniParseDateTime(_dtProdChange.Value.ToString());
+                dgvReport.Controls.Remove(dtp);
+            }
+            else
             {
                 using (var con = new System.Data.Linq.DataContext(Central.ConnStr))
                 {
@@ -1820,7 +1840,7 @@
                 }
                 dgvReport.Rows[_rowIdx].Cells[_cellIdx].Value = UniParseDateTime(_dtProdChange.Value.ToString());
                 dgvReport.Controls.Remove(dtp);
-            }     
+            }
         }
 
         /// <summary>
@@ -1916,12 +1936,13 @@
             catch
             {
             }
-        }       
+        }
+
         /// <summary>
         /// The GetTotals
         /// </summary>
-        /// <returns>The <see cref="int[]"/></returns>
-        private int[] GetTotals()
+        /// <returns>The <see cref="object[]"/></returns>
+        private object[] GetTotals()
         {
             var totQ = 0;
             var totC = 0;
@@ -1929,24 +1950,30 @@
             var tempoStazMedia = 0.0;
             var tempoTotStazMedia = 0.0;
             var ritardoMedia = 0.0;
+            var mediaCapiHour = 0.0;
+            var ritardo = 0;
 
             var tszCount = 0.0;
             var tszTotCount = 0.0;
             var rmCount = 0.0;
+            var capiHourCount = 0.0;
+            var ritardocount = 0;
 
             foreach (DataGridViewRow row in dgvReport.Rows)
             {
                 int.TryParse(row.Cells[4].Value.ToString(), out var q);
                 int.TryParse(row.Cells[5].Value.ToString(), out var c);
-                int.TryParse(row.Cells[6].Value.ToString(), out var d);;
-
+                int.TryParse(row.Cells[6].Value.ToString(), out var d);
+                
                 totQ += q;
                 totC += c;
                 totD += d;
-
+                
                 int.TryParse(row.Cells[29].Value.ToString(), out var tz);
                 int.TryParse(row.Cells[35].Value.ToString(), out var totTz);
                 int.TryParse(row.Cells[36].Value.ToString(), out var totRm);
+                double.TryParse(row.Cells["Minuti"].Value.ToString(), out var totCapiHour);
+                int.TryParse(row.Cells["Ritardo"].Value.ToString(), out var ritardoc);
 
                 if (tz != 0)
                 {
@@ -1963,8 +1990,18 @@
                     rmCount++;
                     ritardoMedia += totRm;
                 }
-
+                if (totCapiHour != 0)
+                {
+                    capiHourCount+=1;
+                    mediaCapiHour += totCapiHour;
+                }
+                if (ritardoc != 0)
+                {
+                    ritardocount++;
+                    ritardo += ritardoc;
+                }
             }
+
             if (tempoStazMedia <= 0)
             {
                 tempoStazMedia = 0;
@@ -1990,10 +2027,19 @@
             {
                 ritardoMedia /= rmCount;
             }
+            if (mediaCapiHour <= 0.0) 
+                mediaCapiHour = 0.0; 
+            else 
+                mediaCapiHour /= capiHourCount;
 
-            return new int[] { totQ, totC, totD, 
+            if (ritardo < 0)
+                ritardo = 0;
+            else
+                ritardo /= ritardocount;
+
+            return new object[] { totQ, totC, totD, 
                 Convert.ToInt32(tempoStazMedia), 
-                Convert.ToInt32(tempoTotStazMedia),Convert.ToInt32(ritardoMedia) };
+                Convert.ToInt32(tempoTotStazMedia),Convert.ToInt32(ritardoMedia), Math.Round(mediaCapiHour, 2 ), ritardo};
         }
         /// <summary>
         /// The DgvReport_CellPainting

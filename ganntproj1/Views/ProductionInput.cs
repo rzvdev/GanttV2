@@ -743,7 +743,11 @@ namespace ganntproj1
         private void btnDelete_Click(object sender, EventArgs e)
         {
             tableView1.Focus();
-            if (tableView1.Rows.Count <= 0) return;
+            if (tableView1.Rows.Count <= 0)             
+            {
+                MessageBox.Show("Nothing to delete.", "Production", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             var diag = MessageBox.Show("Are you sure you want to delete this record?", "Workflow controller", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (diag == DialogResult.No) return;
 

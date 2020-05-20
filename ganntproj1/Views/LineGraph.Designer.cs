@@ -188,6 +188,7 @@
             this.tblGraph.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.tblGraph.Size = new System.Drawing.Size(600, 294);
             this.tblGraph.TabIndex = 15;
+            this.tblGraph.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblGraph_CellDoubleClick);
             this.tblGraph.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.TblGraph_CellPainting);
             this.tblGraph.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.TblGraph_DataBindingComplete);
             this.tblGraph.SelectionChanged += new System.EventHandler(this.TblGraph_SelectionChanged);

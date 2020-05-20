@@ -32,6 +32,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.pnDockBar = new System.Windows.Forms.Panel();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.btnGraphRespinte = new System.Windows.Forms.Button();
+            this.btnCommessaDefects = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btnFatturato = new System.Windows.Forms.Button();
             this.btnFatturatoLinea = new System.Windows.Forms.Button();
@@ -112,7 +115,6 @@
             this.pbMenu = new System.Windows.Forms.PictureBox();
             this.btnFilters = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblVersion = new System.Windows.Forms.Label();
             this.pnDockBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnNavi.SuspendLayout();
@@ -161,6 +163,9 @@
             this.pnDockBar.AutoScroll = true;
             this.pnDockBar.AutoScrollMargin = new System.Drawing.Size(10, 10);
             this.pnDockBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.pnDockBar.Controls.Add(this.lblVersion);
+            this.pnDockBar.Controls.Add(this.btnGraphRespinte);
+            this.pnDockBar.Controls.Add(this.btnCommessaDefects);
             this.pnDockBar.Controls.Add(this.pictureBox2);
             this.pnDockBar.Controls.Add(this.btnFatturato);
             this.pnDockBar.Controls.Add(this.btnFatturatoLinea);
@@ -182,14 +187,66 @@
             this.pnDockBar.Size = new System.Drawing.Size(287, 576);
             this.pnDockBar.TabIndex = 13;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.BackColor = System.Drawing.Color.SteelBlue;
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblVersion.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.White;
+            this.lblVersion.Location = new System.Drawing.Point(1, 596);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(271, 21);
+            this.lblVersion.TabIndex = 14;
+            this.lblVersion.Text = "Ganttproj1";
+            // 
+            // btnGraphRespinte
+            // 
+            this.btnGraphRespinte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.btnGraphRespinte.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btnGraphRespinte.FlatAppearance.BorderSize = 0;
+            this.btnGraphRespinte.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGraphRespinte.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnGraphRespinte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(113)))), ((int)(((byte)(113)))));
+            this.btnGraphRespinte.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnGraphRespinte.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnGraphRespinte.Location = new System.Drawing.Point(26, 547);
+            this.btnGraphRespinte.Name = "btnGraphRespinte";
+            this.btnGraphRespinte.Size = new System.Drawing.Size(236, 39);
+            this.btnGraphRespinte.TabIndex = 13;
+            this.btnGraphRespinte.Tag = "1";
+            this.btnGraphRespinte.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGraphRespinte.UseVisualStyleBackColor = false;
+            this.btnGraphRespinte.Click += new System.EventHandler(this.btnGraphRespinte_Click);
+            this.btnGraphRespinte.Paint += new System.Windows.Forms.PaintEventHandler(this.BtnFatturatoLinea_Paint);
+            // 
+            // btnCommessaDefects
+            // 
+            this.btnCommessaDefects.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.btnCommessaDefects.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btnCommessaDefects.FlatAppearance.BorderSize = 0;
+            this.btnCommessaDefects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCommessaDefects.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnCommessaDefects.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(113)))), ((int)(((byte)(113)))));
+            this.btnCommessaDefects.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCommessaDefects.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnCommessaDefects.Location = new System.Drawing.Point(26, 503);
+            this.btnCommessaDefects.Name = "btnCommessaDefects";
+            this.btnCommessaDefects.Size = new System.Drawing.Size(236, 39);
+            this.btnCommessaDefects.TabIndex = 12;
+            this.btnCommessaDefects.Tag = "1";
+            this.btnCommessaDefects.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCommessaDefects.UseVisualStyleBackColor = false;
+            this.btnCommessaDefects.Click += new System.EventHandler(this.btnCommessaDefects_Click);
+            this.btnCommessaDefects.Paint += new System.Windows.Forms.PaintEventHandler(this.BtnFatturatoLinea_Paint);
+            // 
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Silver;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Right;
             this.pictureBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox2.Location = new System.Drawing.Point(286, 0);
+            this.pictureBox2.Location = new System.Drawing.Point(272, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(1, 576);
+            this.pictureBox2.Size = new System.Drawing.Size(1, 617);
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
@@ -427,7 +484,7 @@
             this.treeMenu.Margin = new System.Windows.Forms.Padding(2);
             this.treeMenu.Name = "treeMenu";
             this.treeMenu.ShowLines = false;
-            this.treeMenu.Size = new System.Drawing.Size(1, 576);
+            this.treeMenu.Size = new System.Drawing.Size(1, 617);
             this.treeMenu.TabIndex = 4;
             // 
             // dtpTo
@@ -928,6 +985,7 @@
             this.lblResetGlobal.TabIndex = 0;
             this.lblResetGlobal.Text = "Commesse in lavoro/prog   ";
             this.lblResetGlobal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblResetGlobal.Click += new System.EventHandler(this.lblResetGlobal_Click_1);
             this.lblResetGlobal.Paint += new System.Windows.Forms.PaintEventHandler(this.label11_Paint);
             this.lblResetGlobal.MouseEnter += new System.EventHandler(this.lblResetGlobal_MouseEnter);
             this.lblResetGlobal.MouseLeave += new System.EventHandler(this.lblResetGlobal_MouseLeave);
@@ -1315,18 +1373,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // lblVersion
-            // 
-            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.Gray;
-            this.lblVersion.Location = new System.Drawing.Point(327, 705);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(62, 14);
-            this.lblVersion.TabIndex = 12;
-            this.lblVersion.Text = "Ganttproj1";
-            // 
             // Central
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1336,7 +1382,6 @@
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1311, 727);
             this.ControlBox = false;
-            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.pbShowHide);
             this.Controls.Add(this.pictureBox8);
             this.Controls.Add(this.pictureBox7);
@@ -1471,6 +1516,8 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pbShowHide;
+        private System.Windows.Forms.Button btnCommessaDefects;
+        private System.Windows.Forms.Button btnGraphRespinte;
         private System.Windows.Forms.Label lblVersion;
     }
     }

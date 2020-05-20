@@ -35,6 +35,7 @@ namespace ganntproj1
         }
         public static void ShowLoading()
         {
+            if (_formBlock != null) _formBlock.Dispose();
             _threadB = new Thread(delegate ()
             {
                 _formBlock = new LoadingInfo
@@ -57,7 +58,7 @@ namespace ganntproj1
             _threadB.SetApartmentState(ApartmentState.STA);
             _threadB.IsBackground = true;
             _threadB.Start();
-        } 
+        }
         public static void CloseLoading()
         {
             if (_formBlock == null) return;
@@ -72,7 +73,8 @@ namespace ganntproj1
                 BorderStyle = BorderStyle.None,
                 TextAlign = ContentAlignment.MiddleLeft,
                 BackColor = Color.AliceBlue,
-                AutoSize=true
+                Margin = new Padding(10,10,20,20),
+                AutoSize = true
             };
             _lbl.MouseMove += (s, mv) =>
             {
@@ -83,14 +85,19 @@ namespace ganntproj1
                 }
                 _lbl.Invalidate();
             };
-            _lbl.Paint += (sender,args) => 
+            _lbl.Paint += (sender, args) =>
             {
                 var geo = new Geometry();
                 args.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 using (GraphicsPath path = geo.RoundedRectanglePath(new Rectangle(-1, -1, _lbl.Width, _lbl.Height), 10))
                 {
                     args.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    args.Graphics.DrawPath(new Pen(new SolidBrush(Color.SeaGreen), 6), geo.RoundedRectanglePath(new Rectangle(-1, -1, _lbl.Width, _lbl.Height), 10));
+                    if (BorderColor == null)
+                    {
+                        BorderColor = Brushes.SeaGreen;
+                    }
+
+                    args.Graphics.DrawPath(new Pen(BorderColor, 6), geo.RoundedRectanglePath(new Rectangle(-1, -1, _lbl.Width, _lbl.Height), 10));
                     Region = new Region(path);
                     args.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 }
@@ -166,11 +173,12 @@ namespace ganntproj1
         {
             e.Graphics.DrawString("ONLYOU", new Font("Tahoma", 8, FontStyle.Bold), Brushes.Orange, 2, 2);
             base.OnPaint(e);
-        }       
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             var geo = new Geometry();
-            using (GraphicsPath path = geo.RoundedRectanglePath(new Rectangle(-1, -1, Width - 1, Height-1), 10))
+            using (GraphicsPath path = geo.RoundedRectanglePath(new Rectangle(-1, -1, Width - 1, Height - 1), 10))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 Region = new Region(path);
@@ -179,5 +187,7 @@ namespace ganntproj1
 
             base.OnPaintBackground(e);
         }
+
+        public static Brush BorderColor {get;set;}
     }
 }

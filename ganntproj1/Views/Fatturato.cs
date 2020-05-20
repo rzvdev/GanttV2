@@ -8,34 +8,16 @@
     using System.Linq;
     using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="Fatturato" />
-    /// </summary>
     public partial class Fatturato : Form
     {
-        /// <summary>
-        /// Defines the StrPrev
-        /// </summary>
         private const string StrPrev = "Fatturato Preventivo";
 
-        /// <summary>
-        /// Defines the StrEff
-        /// </summary>
         private const string StrEff = "Fatturato Effetivo";
 
-        /// <summary>
-        /// Defines the StrDeltaValor
-        /// </summary>
         private const string StrDeltaValor = "Delta Valoare";
 
-        /// <summary>
-        /// Defines the StrPercent
-        /// </summary>
         private const string StrPercent = "%";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Fatturato"/> class.
-        /// </summary>
         public Fatturato()
         {
             InitializeComponent();
@@ -43,19 +25,11 @@
             dgvReport.DataBindingComplete += dgvReport_DataBindingCom;
         }
 
-        /// <summary>
-        /// The Fatturato_Load
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void Fatturato_Load(object sender, EventArgs e)
         {
             LoadData();
         }
 
-        /// <summary>
-        /// The LoadData
-        /// </summary>
         public void LoadData()
         {
             dgvReport.DataSource = null;
@@ -98,12 +72,7 @@
                 tblRep.Columns.Add(FindT(StrPrev, l), typeof(double));
                 tblRep.Columns.Add(FindT(StrEff, l), typeof(double));
                 tblRep.Columns.Add(FindT(StrDeltaValor, l), typeof(double));
-                tblRep.Columns.Add(FindT(StrPercent, l), typeof(string));
-                //if (sCount == 2)
-                //{
-                //    tblRep.Columns.Add(FindT("sep", l));
-                //    sCount = 0;
-                //}
+                tblRep.Columns.Add(FindT(StrPercent, l), typeof(string));               
             }
 
             var totRow = tblRep.NewRow();
@@ -171,20 +140,11 @@
             GetTotals();
         }
 
-        /// <summary>
-        /// The FindT
-        /// </summary>
-        /// <param name="prefx">The prefx<see cref="string"/></param>
-        /// <param name="target">The target<see cref="string"/></param>
-        /// <returns>The <see cref="string"/></returns>
         private string FindT(string prefx, string target)
         {
             return string.Format("{0}{1}{2}", prefx, "_", target);
         }
 
-        /// <summary>
-        /// The GetTotals
-        /// </summary>
         private void GetTotals()
         {
             foreach (DataGridViewRow row in dgvReport.Rows)
@@ -207,8 +167,8 @@
                 var eff = Math.Round(tPrice / tQty * 100, 1).ToString() + "%";
                 var c = dgvReport.ColumnCount;
                 row.Cells[2].Value = Math.Round(tQty,1);
-                row.Cells[3].Value = Math.Round(tPrice,1);//.ToString();
-                row.Cells[4].Value = dif;//.ToString();
+                row.Cells[3].Value = Math.Round(tPrice,1);
+                row.Cells[4].Value = dif;
                 row.Cells[5].Value = eff.ToString();
             }
 
@@ -292,16 +252,8 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _rect
-        /// </summary>
         private Rectangle _rect = new Rectangle();
 
-        /// <summary>
-        /// The DgvReport_Paint
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="PaintEventArgs"/></param>
         private void DgvReport_Paint(object sender, PaintEventArgs e)
         {
             var specBrush = new SolidBrush(SystemColors.Control);
@@ -346,6 +298,7 @@
             }
 
             //fill rectangle in frozen cell to avoid graphical bugs
+
             _rect = dgvReport.GetCellDisplayRectangle(0, -1, true);
             int wData = dgvReport.GetCellDisplayRectangle(0, -1, true).Width;
             _rect.X += -1;
@@ -360,11 +313,6 @@
                 _rect.Height / 2 - 10);
         }
 
-        /// <summary>
-        /// The DgvReport_CellPainting
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellPaintingEventArgs"/></param>
         private void DgvReport_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex == -1 && e.ColumnIndex > 0 && e.ColumnIndex < dgvReport.ColumnCount - 1)
@@ -378,11 +326,6 @@
             }
         }
 
-        /// <summary>
-        /// The dgvReport_DataBindingCom
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewBindingCompleteEventArgs"/></param>
         private void dgvReport_DataBindingCom(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             foreach (DataGridViewColumn dgvc in dgvReport.Columns)
@@ -390,7 +333,6 @@
                 if (dgvc.Name.Split('_')[0] != "sep")
                 {
                     dgvc.HeaderText = dgvc.HeaderText.Split('_')[0];
-                    //dgvc.HeaderCell.Style.BackColor = Color.LightBlue;
                     dgvc.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgvc.Width = 60;
                     dgvc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
@@ -423,25 +365,7 @@
                     dgvr.DefaultCellStyle.BackColor = Color.Gainsboro;
                     dgvr.DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
                     dgvr.DefaultCellStyle.SelectionForeColor = Color.Black;
-                    //foreach (DataGridViewColumn c in dgvReport.Columns)
-                    //{
-                    //    if (c.HeaderText == string.Empty)
-                    //    {
-                    //        dgvr.Cells[c.Index].Style.BackColor = Color.White;
-                    //        dgvr.Cells[c.Index].Style.SelectionBackColor = Color.White;
-                    //    }
-                    //}
                 }
-                //else if (dgvr.Cells[0].Value.ToString() == string.Empty)
-                //{
-                //    dgvr.DefaultCellStyle.BackColor = Color.Gainsboro;
-                //    dgvr.DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
-                //    dgvr.Height = 5;
-                //}
-                //else
-                //{
-                //    dgvr.Cells[0].Style.BackColor = Color.Gainsboro;
-                //}
             }
 
             dgvReport.Columns[0].Width = 100;
@@ -449,27 +373,16 @@
             dgvReport.ColumnHeadersHeight = 90;
             dgvReport.Columns[0].DefaultCellStyle.BackColor = Color.Gainsboro;
             dgvReport.Columns[0].DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
-            dgvReport.Columns[0].Frozen = true;        
+            dgvReport.Columns[0].Frozen = true;
+            dgvReport.Columns[3].DefaultCellStyle.BackColor = Color.Gold;
         }
 
-        /// <summary>
-        /// Defines the <see cref="LineTotals" />
-        /// </summary>
         internal class LineTotals
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LineTotals"/> class.
-            /// </summary>
             public LineTotals()
             {
             }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LineTotals"/> class.
-            /// </summary>
-            /// <param name="line">The line<see cref="string"/></param>
-            /// <param name="q">The q<see cref="double"/></param>
-            /// <param name="p">The p<see cref="double"/></param>
             public LineTotals(string line, double q, double p)
             {
                 Line = line;
@@ -477,34 +390,19 @@
                 Price = p;
             }
 
-            /// <summary>
-            /// Gets or sets the Line
-            /// </summary>
             public string Line { get; set; }
 
-            /// <summary>
-            /// Gets or sets the Qty
-            /// </summary>
             public double Qty { get; set; }
 
-            /// <summary>
-            /// Gets or sets the Price
-            /// </summary>
             public double Price { get; set; }
         }
 
-        /// <summary>
-        /// The DgvReport_Scroll
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="ScrollEventArgs"/></param>
         private void DgvReport_Scroll(object sender, ScrollEventArgs e)
         {
            
             if (e.NewValue > e.OldValue)
             {                
                 dgvReport.Invalidate(_rect);
-                //dgvReport.Invalidate();
             }
             else
             {
@@ -516,15 +414,8 @@
             {
                 dgvReport.Invalidate();
             }
-            //dgvReport.Invalidate(true);
         }
 
-        /// <summary>
-        /// The GetPrice
-        /// </summary>
-        /// <param name="order">The order<see cref="string"/></param>
-        /// <param name="line">The line<see cref="string"/></param>
-        /// <returns>The <see cref="double"/></returns>
         private double GetPrice(string order, string line)
         {
             var p = 0.0;
@@ -547,19 +438,11 @@
             return p;
         }
 
-        /// <summary>
-        /// The CbAcconto_CheckedChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void CbAcconto_CheckedChanged(object sender, EventArgs e)
         {
             LoadData();
         }
 
-        /// <summary>
-        /// The ExportToExcel
-        /// </summary>
         public void ExportToExcel()
         {
             dgvReport.MultiSelect = true;

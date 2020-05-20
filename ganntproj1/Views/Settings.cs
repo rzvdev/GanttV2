@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -115,6 +116,7 @@ namespace ganntproj1
             txtLine.CharacterCasing = CharacterCasing.Upper;
             txtShiftName.CharacterCasing = CharacterCasing.Upper;
             _startWdth = Width;
+
             if (Central.SettingsCompleted == Central.SettingsSys.Shift)
                 {
                 tc1.SelectedIndex = 4;
@@ -139,7 +141,19 @@ namespace ganntproj1
             }
 
             Text = "Settings - " + tc1.SelectedTab.Text;
+
+            txt1.Text = Central.LowEff.ToString();
+            txt2.Text = Central.MediumEff.ToString();
+            txt3.Text = Central.HighEff.ToString();
+            lbl1.BackColor = Central.LowColor;
+            lbl2.BackColor = Central.MediumColor;
+            lbl3.BackColor = Central.HighColor;
+
+            lblcolor1.Text = "#" + Central.LowColor.ToArgb().ToString("x").Substring(2, 6);
+            lblcolor2.Text = "#" + Central.MediumColor.ToArgb().ToString("x").Substring(2, 6);
+            lblcolor3.Text = "#" + Central.HighColor.ToArgb().ToString("x").Substring(2, 6);
         }
+
         private void LoadLines()
             {
             var vp = new JobModel();
@@ -183,8 +197,11 @@ namespace ganntproj1
             Store.Default.Save();
             
             SaveDepartments();
+            SaveProductionEff();
             var c = new Central();
             c.GetBase();
+            c.GetProductionColor();
+
             var table = Central.ListOfModels;
             dataGridView2.DataSource = table;
             }
@@ -831,6 +848,111 @@ namespace ganntproj1
             else
             {
                 toolTip1.Hide((CheckBox)sender);
+            }
+        }
+
+        private string _color1;
+        private string _color2;
+        private string _color3;
+
+        private void SaveProductionEff()
+        {
+            var q = "delete from produzioneRelation";
+            var cmd = new SqlCommand();
+            using (var c = new SqlConnection(Central.SpecialConnStr))
+            {
+                c.Open();
+                cmd = new SqlCommand(q, c);
+                cmd.ExecuteNonQuery();
+                c.Close();
+                cmd = null;
+            }
+
+             _color1 = "#" + lbl1.BackColor.ToArgb().ToString("x").Substring(2, 6);
+             _color2 = "#" + lbl2.BackColor.ToArgb().ToString("x").Substring(2, 6);
+             _color3 = "#" + lbl3.BackColor.ToArgb().ToString("x").Substring(2, 6);
+
+            if (txt1.Text == string.Empty) txt1.Text = "82";
+            if (txt2.Text == string.Empty) txt2.Text = "90";
+            if (txt3.Text == string.Empty) txt3.Text = "120";
+
+            q = "insert into produzioneRelation (id,mode,item,value) values (@param,@param1, @param2, @param3)";
+            using (var c = new SqlConnection(Central.SpecialConnStr))
+            {
+                c.Open();
+                cmd = new SqlCommand(q, c);
+                cmd.Parameters.Add("@param", SqlDbType.NVarChar).Value = 1;
+                cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = "production";
+                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = txt1.Text;
+                cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = _color1;
+
+                cmd.ExecuteNonQuery();
+                c.Close();
+                cmd = null;
+            }
+            using (var c = new SqlConnection(Central.SpecialConnStr))
+            {
+                c.Open();
+                cmd = new SqlCommand(q, c);
+                cmd.Parameters.Add("@param", SqlDbType.NVarChar).Value = 2;
+                cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = "production";
+                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = txt2.Text;
+                cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = _color2;
+
+                cmd.ExecuteNonQuery();
+                c.Close();
+                cmd = null;
+            }
+            using (var c = new SqlConnection(Central.SpecialConnStr))
+            {
+                c.Open();
+                cmd = new SqlCommand(q, c);
+                cmd.Parameters.Add("@param", SqlDbType.NVarChar).Value = 3;
+                cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = "production";
+                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = txt3.Text;
+                cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = _color3;
+                cmd.ExecuteNonQuery();
+                c.Close();
+                cmd = null;
+            }
+        }
+
+        private void lbl1_Click(object sender, EventArgs e)
+        {
+            ColorDialog col = new ColorDialog();
+
+            if (col.ShowDialog() == DialogResult.OK)
+            {
+                string color = col.Color.ToArgb().ToString("x");
+                color = color.Substring(2, 6);                
+                lbl1.BackColor = col.Color;
+                lblcolor1.Text = color;
+            }
+        }
+
+        private void lbl2_Click(object sender, EventArgs e)
+        {
+            ColorDialog col = new ColorDialog();
+
+            if (col.ShowDialog() == DialogResult.OK)
+            {
+                string color = col.Color.ToArgb().ToString("x");
+                color = color.Substring(2, 6);
+                lbl2.BackColor = col.Color;
+                lblcolor2.Text = color;
+            }
+        }
+
+        private void lbl3_Click(object sender, EventArgs e)
+        {
+            ColorDialog col = new ColorDialog();
+
+            if (col.ShowDialog() == DialogResult.OK)
+            {
+                string color = col.Color.ToArgb().ToString("x");
+                color = color.Substring(2, 6);                
+                lbl3.BackColor = col.Color;
+                lblcolor3.Text = color;
             }
         }
     }

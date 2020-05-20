@@ -26,11 +26,13 @@
  */
 namespace ganntproj1
 {
+    using ganntproj1.Views;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
     using System.Data.Linq;
+    using System.Data.SqlClient;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.IO;
@@ -165,6 +167,21 @@ namespace ganntproj1
         /// Gets a value indicating whether IsArticleSelection
         /// </summary>
         public static bool IsArticleSelection { get; set; }
+
+
+        #region ProductionEff
+
+        public static int LowEff { get; set; }
+        public static int MediumEff { get; set; }
+        public static int HighEff { get; set; }
+
+        public static Color LowColor { get; set; }
+
+        public static Color MediumColor { get; set; }
+
+        public static Color HighColor { get; set; }
+
+        #endregion
 
         public string RefreshTitle { get; set; }
         //console drivers
@@ -519,10 +536,12 @@ namespace ganntproj1
                 settings.Dispose();
             }
 
-            if (Store.Default.updateCheckRuntime)
-            {
-                CheckSilentForUpdates();
-            }
+            //if (Store.Default.updateCheckRuntime)
+            //{
+            //    CheckSilentForUpdates();
+            //}
+
+            GetProductionColor();
         }
 
         /// <summary>
@@ -657,7 +676,9 @@ namespace ganntproj1
                 var dept = row[31].ToString();
 
                 if (updateProduction)
+                {
                     jb.GetJobContinum(name, aim, dept);
+                }
 
                 var article = row[3].ToString();
                 int.TryParse(row[4].ToString(), out var stateId);
@@ -687,6 +708,8 @@ namespace ganntproj1
                 bool.TryParse(row[28].ToString(), out var doneProd);
                 long.TryParse(row[29].ToString(), out var lockDate);
                 bool.TryParse(row[30].ToString(), out var based);
+
+                int.TryParse(row[32].ToString(), out var workingDays);
                     
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
@@ -709,7 +732,7 @@ namespace ganntproj1
 
                 endDt = Config.MinimalDate.AddTicks(endDate);
 
-                if (updateProduction) // && !isClosed)
+                if (updateProduction)
                 {
                     var nArt = (from art in Models.Tables.Articles
                                 where art.Articol == article && art.Idsector == Store.Default.sectorId
@@ -743,7 +766,7 @@ namespace ganntproj1
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
                     qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
                     locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept));
+                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept,workingDays));
             }
         }
 
@@ -763,6 +786,8 @@ namespace ganntproj1
             var node8 = root.Nodes.Add("Effizienza/linea");
             var node9 = root.Nodes.Add("Grafico di efficienza/linea");
             var node10 = root.Nodes.Add("Fatturato per Linea");
+            var node11 = root.Nodes.Add("Chiusura commesse piu difettato");
+            var node12 = root.Nodes.Add("Grafico commesse respinte");
 
             treeMenu.BeginUpdate();
             treeMenu.Nodes.Add(root);
@@ -770,6 +795,7 @@ namespace ganntproj1
 
             treeMenu.AfterSelect += (sender, eventArgs) =>
             {
+                LoadingInfo.BorderColor = Brushes.SeaGreen;
                 LoadingInfo.ShowLoading();
                 LoadingInfo.InfoText = "Loading data...";
                 pnNavi.Enabled = false;
@@ -1327,9 +1353,93 @@ namespace ganntproj1
                         frm.ExportToExcel();
                     };
                 }
+                if (treeMenu.SelectedNode == node11)
+                {
+                    if (IsResetJobLoader) ResetStateFilters();
+
+                    var frm = new CommessaDefect();
+                    frm.WindowState = FormWindowState.Minimized;
+                    frm.FormBorderStyle = FormBorderStyle.None;
+                    frm.ShowInTaskbar = false;
+                    frm.ControlBox = false;
+                    frm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                    frm.Visible = false;
+                    frm.Show();
+                    //frm.LoadData();
+                    frm.TopLevel = false;
+                    pnForms.Controls.Add(frm);
+                    frm.Location = new Point(0, 0);
+                    frm.Size = pnForms.Size;
+                    frm.Visible = true;
+                    btnCommessaDefects.BackColor = Color.FromArgb(125, 141, 161);
+                    btnCommessaDefects.ForeColor = Color.White;
+                    btnCommessaDefects.Image = Properties.Resources.switch_arrow_triangle_right_white;
+
+                    //btnExcel.Click += (se, e) =>
+                    //{
+                    //    frm.ExportToExcel();
+                    //};
+                }
+                if (treeMenu.SelectedNode == node12)
+                {
+                    if (IsResetJobLoader) ResetStateFilters();
+
+                    var frm = new GraficoRespinte
+                    {
+                        WindowState = FormWindowState.Minimized,
+                        FormBorderStyle = FormBorderStyle.None,
+                        ShowInTaskbar = false,
+                        ControlBox = false,
+                        Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
+                        Visible = false
+                    };
+                    frm.Show();
+                    frm.TopLevel = false;
+                    pnForms.Controls.Add(frm);
+                    frm.Location = new Point(0, 0);
+                    frm.Size = pnForms.Size;
+                    frm.Visible = true;
+                    btnGraphRespinte.BackColor = Color.FromArgb(125, 141, 161);
+                    btnGraphRespinte.ForeColor = Color.White;
+                    btnGraphRespinte.Image = Properties.Resources.switch_arrow_triangle_right_white;
+                    pbReload.Click += (se, e) =>
+                    {
+                        if (IsResetJobLoader)
+                        {
+                            IsResetJobLoader = true;
+                            IsAcconto = true;
+                            IsSaldo = true;
+                            cbAcconto.Checked = true;
+                            cbSaldo.Checked = true;
+                        }
+                        else
+                        {
+                            IsResetJobLoader = false;
+                            ResetStateFilters();
+                        }
+                        frm.LoadaDataFromServer();
+                        frm.CreateSituationContolReport();
+                        frm.CreateGraphReport();
+                    };
+                    lblRefreshGlobal.Click += (se, e) =>
+                    {
+                        if (IsResetJobLoader)
+                        {
+                            ResetStateFilters();
+                            IsResetJobLoader = false;
+                        }
+                        frm.LoadaDataFromServer();
+                        frm.CreateSituationContolReport();
+                        frm.CreateGraphReport();
+                        pnReload.Visible = false;
+                        pbReload.Image = Properties.Resources.reset_total_32;
+                        RefreshTitle = "Commesse sul selezione data";
+                    };
+                }
 
                 pnNavi.Enabled = true;
                 treeMenu.Enabled = true;
+
                 // Tests to see does user select node from treeMenu
                 if (eventArgs.Action != TreeViewAction.Unknown) return;
                 if (!_fromNavigation)
@@ -1433,6 +1543,11 @@ namespace ganntproj1
         private void dtpTo_ValueChanged(object sender, EventArgs e)
         {
             DateTo = new DateTime(dtpTo.Value.Year, dtpTo.Value.Month, dtpTo.Value.Day);
+            if (DateTo <= DateFrom)
+            {
+                dtpTo.Value = DateFrom.AddDays(+15);
+                DateTo = new DateTime(dtpTo.Value.Year, dtpTo.Value.Month, dtpTo.Value.Day);
+            }
         }
 
         /// <summary>
@@ -1668,6 +1783,20 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
+
+        private void btnCommessaDefects_Click(object sender, EventArgs e)
+        {
+            _fromNavigation = false;
+            treeMenu.SelectedNode = treeMenu.Nodes[0].Nodes[10];
+            treeMenu.Select();
+        }
+
+        private void btnGraphRespinte_Click(object sender, EventArgs e)
+        {
+            _fromNavigation = false;
+            treeMenu.SelectedNode = treeMenu.Nodes[0].Nodes[11];
+            treeMenu.Select();
+        }
         /// <summary>
         /// The ResetMenuCommands
         /// </summary>
@@ -1713,6 +1842,15 @@ namespace ganntproj1
             btnFatturatoLinea.BackColor = Color.FromArgb(210, 210, 210);
             btnFatturatoLinea.ForeColor = Color.FromArgb(113, 113, 113);
             btnFatturatoLinea.Image = Properties.Resources.arrow_triangle_right;
+            btnCommessaDefects.Text = "Chiusura commesse piu difettato";
+            btnCommessaDefects.BackColor = Color.FromArgb(210, 210, 210);
+            btnCommessaDefects.ForeColor = Color.FromArgb(113, 113, 113);
+            btnCommessaDefects.Image = Properties.Resources.arrow_triangle_right;
+
+            btnGraphRespinte.Text = "Grafico commesse respinte";
+            btnGraphRespinte.BackColor = Color.FromArgb(210, 210, 210);
+            btnGraphRespinte.ForeColor = Color.FromArgb(113, 113, 113);
+            btnGraphRespinte.Image = Properties.Resources.arrow_triangle_right;
         }
 
         /// <summary>
@@ -2095,8 +2233,8 @@ namespace ganntproj1
 
         private void BtnSync_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+           // {
                 LoadingInfo.ShowLoading();
                 LoadingInfo.InfoText = "Computing...";
 
@@ -2150,27 +2288,27 @@ namespace ganntproj1
                           select models;
                 ListOfModels = lst.ToList();
 
-            LoadingInfo.CloseLoading();
+            LoadingInfo.CloseLoading();      
+            //}
+            //catch (Exception ex)
+            //{
+            //    Cursor = Cursors.Default;
+            //    MessageBox.Show(ex.Message, "Synchronization error",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Error);
+            //}    
         }
-            catch (Exception ex)
-            {
-                Cursor = Cursors.Default;
-                MessageBox.Show(ex.Message, "Synchronization error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-}
 
         private void BtnHelp_Click(object sender, EventArgs e)
         {
             byte[] pdf = Properties.Resources.Help;
 
             MemoryStream ms = new MemoryStream(pdf);
-            FileStream f = new FileStream("Help.pdf", FileMode.OpenOrCreate);
+            FileStream f = new FileStream("Help6786.pdf", FileMode.OpenOrCreate);
             ms.WriteTo(f);
             f.Close();
             ms.Close();
-            System.Diagnostics.Process.Start("Help.pdf");
+            System.Diagnostics.Process.Start("Help6786.pdf");
         }
 
         private void Central_Paint(object sender, PaintEventArgs e)
@@ -2259,16 +2397,53 @@ namespace ganntproj1
         {
         }
 
-        private System.Threading.Timer _tmCheck;
-        private void CheckSilentForUpdates()
+        //private System.Threading.Timer _tmCheck;
+        //private void CheckSilentForUpdates()
+        //{
+        //    if (_tmCheck != null) _tmCheck.Dispose();
+
+        //    TimerCallback tcb = new TimerCallback(CheckForUpdates);
+        //    AutoResetEvent are = new AutoResetEvent(false);
+        //    //Application.DoEvents();
+
+        //    _tmCheck = new System.Threading.Timer(tcb, are, 120000, 1000);
+        //}
+
+        private void lblResetGlobal_Click_1(object sender, EventArgs e)
         {
-            if (_tmCheck != null) _tmCheck.Dispose();
 
-            TimerCallback tcb = new TimerCallback(CheckForUpdates);
-            AutoResetEvent are = new AutoResetEvent(false);
-            //Application.DoEvents();
+        }
 
-            _tmCheck = new System.Threading.Timer(tcb, are, 120000, 1000);
+        public void GetProductionColor()
+        {
+            var q = "select * from produzioneRelation where mode='production'";
+            var dt = new System.Data.DataTable();
+
+            using (var c = new SqlConnection(SpecialConnStr))
+            {
+                c.Open();
+                var cmd = new SqlCommand(q, c);
+                var dr = cmd.ExecuteReader();
+                dt.Load(dr);
+                c.Close();
+                dr.Close();
+            }
+
+            int.TryParse(dt.Rows[0][2].ToString(), out var leff);
+            int.TryParse(dt.Rows[1][2].ToString(), out var meff);
+            int.TryParse(dt.Rows[2][2].ToString(), out var heff);
+
+            LowEff = leff;
+            MediumEff = meff;
+            HighEff = heff;
+
+            var c1 = dt.Rows[0][3].ToString();
+            var c2 = dt.Rows[1][3].ToString();
+            var c3 = dt.Rows[2][3].ToString();
+
+            LowColor = ColorTranslator.FromHtml(c1);
+            MediumColor = ColorTranslator.FromHtml(c2);
+            HighColor = ColorTranslator.FromHtml(c3);
         }
     }
 

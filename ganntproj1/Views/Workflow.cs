@@ -424,17 +424,42 @@ namespace ganntproj1
                              });
 
                 var barColor = Color.FromArgb(80, 144, 169);
-                var barOverColor = Color.FromArgb(27, 98, 124);
-                var prodBarColor = Color.FromArgb(6, 218, 96);
+                var barOverColor = Color.FromArgb(27, 98, 124);                
                 var prodQtyDiff = model.LoadedQty - model.ProdQty;
+                int.TryParse(model.WorkingDays.ToString(), out var workDays);
+                var eff = Convert.ToInt32(model.ProdQty / model.DailyProd * workDays);
 
-                if (prodQtyDiff == 0 || model.ClosedByUser)
+                var prodBarColor = new Color();
+
+                if (workDays == 0 && prodQtyDiff > 0 || !model.ClosedByUser)
                 {
-                    barColor = Color.Gray;
-                    barOverColor = Color.DarkGray;
-                    prodBarColor = Color.FromArgb(175, 175, 175);
+                    prodBarColor = Central.HighColor;
                 }
-
+                else
+                {
+                    if (prodQtyDiff == 0 || model.ClosedByUser)
+                    {
+                        barColor = Color.Gray;
+                        barOverColor = Color.DarkGray;
+                        prodBarColor = Color.FromArgb(175, 175, 175);
+                    }
+                    else
+                    {
+                        if (eff < Central.LowEff)
+                        {
+                            prodBarColor = Central.LowColor;
+                        }
+                        else if (eff > Central.LowEff && eff < Central.MediumEff)
+                        {
+                            prodBarColor = Central.MediumColor;
+                        }
+                        else if (eff > Central.MediumEff)
+                        {
+                            prodBarColor = Central.HighColor;
+                        }
+                    }
+                }
+                
                 // Insert objects into chart object list
                 _objList.Add(new Bar(model.Name, model.Name + '_' + model.Aim,
                     model.StartDate,

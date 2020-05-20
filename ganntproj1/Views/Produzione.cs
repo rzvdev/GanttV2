@@ -51,7 +51,6 @@ namespace ganntproj1
                     }                
                 }
 
-                //total row
                 dgvReport.Rows[0].DefaultCellStyle.ForeColor = Color.Green;
                 dgvReport.Rows[0].DefaultCellStyle.BackColor = Color.Gainsboro;
                 dgvReport.Rows[0].DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
@@ -85,17 +84,13 @@ namespace ganntproj1
                 dgvReport.Rows[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvReport.Rows[2].Frozen = true;
 
-                //all columns
                 for (var i = 0; i <= dgvReport.Columns.Count - 1; i++)
                 {
-                    //if (i > 0 && i <= _indexFromTotals - 1) dgvReport.Columns[i].Width = 40;
-
                     dgvReport.Columns[i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
                     dgvReport.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    //dgvReport.AutoResizeColumn(i, DataGridViewAutoSizeColumnMode.AllCells);
+                   
                     if (dgvReport.Columns[i].Name.Split('_')[0] == "sep")
                     {
-                        //dgvReport.Columns[i].Visible = false;
                         dgvReport.Columns[i].Width = 5;
                         dgvReport.Columns[i].HeaderCell.Style.BackColor = Color.White;
                         dgvReport.Columns[i].HeaderText = "";
@@ -116,7 +111,7 @@ namespace ganntproj1
                     dgvReport.Columns[i].DefaultCellStyle.BackColor = Color.Gainsboro;
                     dgvReport.Columns[i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
                     dgvReport.Columns[i].Frozen = true;
-                }               
+                }
             };
 
             dgvReport.Paint += dgvReport_Paint;
@@ -129,18 +124,13 @@ namespace ganntproj1
 
         private int _columnRange = 0;
         private int _lines_range = 0;
-        //private int _indexFromTotals = 0;
-
-        /// <summary>
-        /// 
-        /// </summary>
+    
         public void LoadReportTable()
         {
             var table_report = new DataTable();
 
             var strComm = "Comm";
             var strCapi = "Capi";
-            //var strTot = "Tot";
 
             table_report.Columns.Add("Data");
             table_report.Columns.Add("Tot");
@@ -148,7 +138,6 @@ namespace ganntproj1
 
             dgvReport.DataSource = null;
 
-            //add dinamycally columns 
             var con = new SqlConnection(Central.SpecialConnStr);
             var cmd = new SqlCommand("get_data_produzione", con);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -162,7 +151,7 @@ namespace ganntproj1
             da.Fill(ds);
             da.Dispose();
 
-            foreach (DataRow row in ds.Tables[1].Rows)  //counted_max
+            foreach (DataRow row in ds.Tables[1].Rows)
             {
                 _columnRange = !string.IsNullOrEmpty(row[0].ToString()) ? _columnRange = Convert.ToInt32(row[0]) : _columnRange = 0;
             }
@@ -177,7 +166,6 @@ namespace ganntproj1
             _lines_range = lines.Count;
             int index = 0;
 
-            // Add partitioned columns
             var oldLine = "x";
             foreach (DataRow line in lines)
                 for (var c = 1; c <= _columnRange; c++)
@@ -213,7 +201,6 @@ namespace ganntproj1
             medRow[0] = "Medie";
             table_report.Rows.Add(medRow);
 
-            //DataRow repRow = table_report.NewRow();
             var partIndex = 0;
             var lineBefore = string.Empty;
             var lst = new List<string>();
@@ -301,7 +288,6 @@ namespace ganntproj1
                 }
             }
 
-            //calculate totals_hor
             for (var r = 1; r <= dgvReport.Rows.Count - 1; r++)
             {
                 var qty = 0;
@@ -317,7 +303,7 @@ namespace ganntproj1
                     dgvReport.Rows[r].Cells[1].Value = string.Format("{0:#,##0}", qty);
                 }                
             }
-            // calculate totals
+
             var capiTot = 0;
             for (var c = 2; c <= dgvReport.Columns.Count - 1; c++)
             {
@@ -458,21 +444,8 @@ namespace ganntproj1
                 }
                 e.Graphics.DrawLine(Pens.Gray, _rect.X + _rect.Width, _rect.Y, _rect.X + _rect.Width, rowHeight);              
             }
-            //e.Graphics.DrawLine(Pens.Red, _rect.X, 0, _rect.Width,0);
         }
-        private void dgvReport_Scroll(object sender, ScrollEventArgs e)
-        {
-            if (e.NewValue > e.OldValue)
-            {
-                dgvReport.Invalidate(_rect);
-                dgvReport.Invalidate();                
-            }
-            else
-            {
-                dgvReport.Invalidate(_rect);
-                dgvReport.Invalidate();              
-            }
-        }
+
         private void dgvReport_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex == -1 && e.ColumnIndex > 0 && e.ColumnIndex < dgvReport.ColumnCount - 1)

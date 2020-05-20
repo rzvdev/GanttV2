@@ -1,5 +1,6 @@
 ﻿namespace ganntproj1
 {
+    using Microsoft.Office.Interop.Excel;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -61,7 +62,7 @@
             DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, int dailyProd,
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
-            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept)
+            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, int workingdays)
         {
             Name = name;
             Aim = aim;
@@ -96,6 +97,7 @@
             NewQtyh = newQh;
             NewPrice = newPrice;
             Department = dept;
+            WorkingDays = workingdays;
         }
 
         /// <summary>
@@ -255,6 +257,8 @@
         public double NewPrice { get; set; }
 
         public string Department { get; set; }
+
+        public int WorkingDays { get; set; }
 
         /// <summary>
         /// The GetDaysInRange
@@ -441,6 +445,11 @@
                              && prod.Line == aim && prod.Department == dept
                              orderby prod.Data
                              select prod;
+
+            var jobMod = Central.ListOfModels.SingleOrDefault(x => x.Name == job && x.Aim == aim && x.Department == dept);
+            var jobModEndProduction = jobMod.ProductionEndDate.Date;
+            int.TryParse(jobMod.WorkingDays.ToString(), out var jobWorkingDays);
+
             //check production insertments to get start-end date
             var prodStart = production.ToList().Count > 0 ?
                 production.ToList().First().Data : new DateTime();
@@ -496,12 +505,13 @@
                 dymOverQty,
                 dymOverTime,dymAlertTime
             };
-            DateTime.TryParse(prodEnd.ToString(), out var endDate);           
+            DateTime.TryParse(prodEnd.ToString(), out var endDate);
+            if (endDate.Date > jobModEndProduction) jobWorkingDays += 1;
             using (var context = new System.Data.Linq.DataContext(Central.SpecialConnStr))
             {
                 // delete existing records
                 context.ExecuteCommand("update objects set " +
-                    "startprod={0},endprod={1},prodqty={2},delayts={3}, delaystart={4},delayend={5} " +
+                    "startprod={0},endprod={1},prodqty={2},delayts={3}, delaystart={4},delayend={5}, workingdays={9} " +
                     "where ordername={6} and aim={7} and department={8}", 
                     GetLSpan(prodStart),
                     GetLSpan(endDate), 
@@ -509,7 +519,7 @@
                     dymAlertTime.Ticks,
                     GetLSpan(endDate),
                     GetLSpan(endDate) + dymAlertTime.Ticks,
-                    job,aim, dept);
+                    job,aim, dept, jobWorkingDays);
             }
             return obj;
         }

@@ -1,5 +1,6 @@
 ﻿namespace ganntproj1
 {
+    using ganntproj1.Views;
     using System;
     using System.Data;
     using System.Drawing;
@@ -149,6 +150,7 @@
             dt.Columns.Add("50%");
             dt.Columns.Add("75%");
             dt.Columns.Add("100%");
+            dt.Columns.Add("Department");
             
             if (_dataTable.Rows.Count <= 0) return;
             var ln =  Store.Default.sectorId == 1 ? _dataTable.Rows[0][1].ToString() + _dataTable.Rows[0][5].ToString().Split(' ')[1] : _dataTable.Rows[0][1].ToString();
@@ -164,6 +166,7 @@
                 double.TryParse(arr[4].ToString(), out var prodQty);
                 double.TryParse(arr[2].ToString(), out var qtyToProd);
                 var lnCheck = Store.Default.sectorId == 1 ? arr[1].ToString() + arr[5].ToString().Split(' ')[1] : arr[1].ToString();
+                var dept = arr[5].ToString();
 
                 if (ln == lnCheck) //arr[1].ToString() + arr[5].ToString().Split(' ')[1])
                 {
@@ -177,7 +180,8 @@
                     var eff = Math.Round(totEff / count, 2);
                     if (double.IsNaN(eff) || double.IsInfinity(eff)) eff = 0.0;
                     if (eff > 120.0) eff = 120.0;
-                    newRow[1] = eff;                              
+                    newRow[1] = eff;
+                    newRow[7] = dept;
                     dt.Rows.Add(newRow);
                     MediaEff += eff;
                     totEff = 0.0;
@@ -311,6 +315,7 @@
             tblGraph.Columns[4].HeaderText = "75%";
             tblGraph.Columns[5].HeaderText = "100%";
             tblGraph.Columns[6].HeaderText = "";
+            tblGraph.Columns[7].Visible = false;
 
             tblGraph.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
 
@@ -392,6 +397,25 @@
         private void Label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void tblGraph_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var tbl = (TableView)sender;
+            if (e.RowIndex >= tbl.Rows.Count - 1) return;
+
+            if (Store.Default.sectorId == 1)
+            {
+                var rI = e.RowIndex;
+                var line = tbl.Rows[rI].Cells[0].Value.ToString();
+                var dept = $"Confezione {line.Substring(line.Length - 1, 1)}";
+                line = line.Remove(line.Length - 1, 1);
+                var month = cboMonth.SelectedIndex + 1;
+                int.TryParse(cboYears.SelectedItem.ToString(), out var year);
+                var frm = new LineGraphMonth(line, dept, month, year, MediaEff);
+                frm.ShowDialog();
+                frm.Dispose();
+            }
         }
     }
 }

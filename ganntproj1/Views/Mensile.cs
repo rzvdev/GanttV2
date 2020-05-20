@@ -58,11 +58,6 @@
         /// <param name="e">The e<see cref="EventArgs"/></param>
         protected override void OnLoad(EventArgs e)
         {
-            for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
-            {
-                cboYears.Items.Add(i);
-            }
-
             cboMonth.SelectedIndexChanged += (s, ev) =>
             {
                 Month = cboMonth.SelectedIndex + 1;
@@ -80,6 +75,11 @@
                     }
                 }
             };
+
+            for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
+            {
+                cboYears.Items.Add(i);
+            }
             cboYears.SelectedIndexChanged += (s, ev) =>
             {
                 Year = Convert.ToInt32(cboYears.Text);
@@ -327,28 +327,18 @@
                     {
                         case "CAPI PRODUCIBILI":
                             dt.Rows[j][dateIdx] = cProducibili.ToString();
-                            //int.TryParse(dt.Rows[1][dateIdx].ToString(), out var q);
-                            //dt.Rows[1][dateIdx] = (q + cProducibili).ToString();
                             break;
                         case "CAPI PREVENTIVATI":
                             dt.Rows[j][dateIdx] = cPreventivati.ToString();
-                            //int.TryParse(dt.Rows[2][dateIdx].ToString(), out var q1);
-                            //dt.Rows[2][dateIdx] = (q1 + cPreventivati).ToString();
                             break;
                         case "CAPI PRODOTI":
                             dt.Rows[j][dateIdx] = item.Qty.ToString();
-                            //int.TryParse(dt.Rows[3][dateIdx].ToString(), out var q2);
-                            //dt.Rows[3][dateIdx] = (q2 + item.Qty).ToString();
                             break;
                         case "DIFF PROD-PREVENT":
                             dt.Rows[j][dateIdx] = (item.Qty - cPreventivati).ToString();
-                            //int.TryParse(dt.Rows[4][dateIdx].ToString(), out var q3);
-                            //dt.Rows[4][dateIdx] = (q3 + (item.Qty - cPreventivati)).ToString();
                             break;
                         case "DIFF PROD-PRODUCI":
                             dt.Rows[j][dateIdx] = (item.Qty - cProducibili).ToString();
-                            //int.TryParse(dt.Rows[5][dateIdx].ToString(), out var q4);
-                            //dt.Rows[5][dateIdx] = (q4 + (item.Qty - cProducibili)).ToString();
                             break;
                     }
                 }
@@ -377,28 +367,18 @@
                     {
                         case "CAPI PRODUCIBILI":
                             newRow[dateIdx] = cProducibili.ToString();
-                            //int.TryParse(dt.Rows[1][dateIdx].ToString(), out var q);
-                            //dt.Rows[1][dateIdx] = (q + cProducibili).ToString();
                             break;
                         case "CAPI PREVENTIVATI":
                             newRow[dateIdx] = cPreventivati.ToString();
-                            //int.TryParse(dt.Rows[2][dateIdx].ToString(), out var q1);
-                            //dt.Rows[2][dateIdx] = (q1 + cPreventivati).ToString();
                             break;
                         case "CAPI PRODOTI":
                             newRow[dateIdx] = item.Qty.ToString();
-                            //int.TryParse(dt.Rows[3][dateIdx].ToString(), out var q2);
-                            //dt.Rows[3][dateIdx] = (q2 + item.Qty).ToString();
                             break;
                         case "DIFF PROD-PREVENT":
                             newRow[dateIdx] = (item.Qty - cPreventivati).ToString();
-                            //int.TryParse(dt.Rows[4][dateIdx].ToString(), out var q3);
-                            //dt.Rows[4][dateIdx] = (q3 + (item.Qty - cPreventivati)).ToString();
                             break;
                         case "DIFF PROD-PRODUCI":
                             newRow[dateIdx] = (item.Qty - cProducibili).ToString();
-                            //int.TryParse(dt.Rows[5][dateIdx].ToString(), out var q4);
-                            //dt.Rows[5][dateIdx] = (q4 + (item.Qty - cProducibili)).ToString();
                             break;
                     }
                     dt.Rows.Add(newRow);
@@ -475,7 +455,6 @@
             if (data.Count > 0)
             {
                 lastLine = Store.Default.sectorId == 1 ? data.First().Line + data.First().Department.Split(' ')[1] : data.First().Line;
-                //lastLine = data.First().Line + data.First().Department.Split(' ')[1];
             }
             var htbl = new System.Collections.Hashtable();
             var idx = tpMax + 2;
@@ -491,7 +470,6 @@
 
                 hKey = line + item.Type;
              
-                // hKey = (item.Line + item.Department.Split(' ')[1]) + item.Type;
                 var dateIdx = item.Datex.ToString("yyyy-MM-dd");
                 if (htbl.Contains(hKey))
                 {
@@ -519,12 +497,11 @@
                         idx++;
                         if (idx > 7) tmpIdx++;
                     }
-                    lastLine = line; //item.Line + item.Department.Split(' ')[1];
+                    lastLine = line;
                     var newRow = dt.NewRow();
-                    //add line string in the first row when is new line
                     if (_cboType.SelectedIndex <= 0 &&
-                        (idx - tmpIdx) % tpMax == 2) newRow[0] = line; // item.Line + item.Department.Split(' ')[1];
-                    else if (_cboType.SelectedIndex > 0) newRow[0] = line; // item.Line + item.Department.Split(' ')[1];
+                        (idx - tmpIdx) % tpMax == 2) newRow[0] = line;
+                    else if (_cboType.SelectedIndex > 0) newRow[0] = line;
                     newRow[1] = item.Type;
                     switch (item.Type)
                     {
@@ -620,7 +597,6 @@
                     tot += t;
                 }
                 tableView1.Rows[r].Cells["TOTAL"].Value = tot.ToString();
-                    //Math.Round(tot, 0).ToString();
             }
 
             for (var c = 2; c <= tableView1.Columns.Count - 1; c++)
@@ -864,7 +840,6 @@
                 if (dx.DayOfWeek == DayOfWeek.Saturday || dx.DayOfWeek == DayOfWeek.Sunday)
                 {
                     c.HeaderCell.Style.BackColor = Color.FromArgb(125, 141, 161);
-                    //c.HeaderCell.Style.ForeColor = Color.FromArgb(80,80,80);
                     c.DefaultCellStyle.BackColor = Color.Gainsboro;
                 }
             }
@@ -909,23 +884,6 @@
                     e.Handled = true;
                 }
             }
-            //if (e.RowIndex > 0 && e.ColumnIndex > 1 && e.ColumnIndex <= tableView1.ColumnCount - 1)
-            //{
-            //    if (tableView1.Columns[e.ColumnIndex].HeaderText.Contains("^ SETT"))
-            //    {
-            //        if (tableView1.Rows[e.RowIndex].Cells[0].Value.ToString() != string.Empty ||
-            //     tableView1.Rows[e.RowIndex].Cells[1].Value.ToString() != string.Empty)
-            //        {
-            //            e.Graphics.FillRectangle(Brushes.LightSteelBlue,
-            //                e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width, e.CellBounds.Height);
-            //            //e.Graphics.DrawRectangle(Pens.Black,
-            //            //    e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
-            //            e.Graphics.DrawString(e.Value.ToString(), new Font("Microsoft Sans Serif", 8),
-            //                new SolidBrush(e.CellStyle.ForeColor), e.CellBounds.X + 8, e.CellBounds.Y + (e.CellBounds.Height / 2 - 7));
-            //            e.Handled = true;
-            //        }
-            //    }
-            //}
         }
 
         /// <summary>

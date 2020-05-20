@@ -98,6 +98,8 @@
             this.dataGridView2 = new ganntproj1.TableView();
             this.lblModelsTitle = new System.Windows.Forms.Label();
             this.tpUpdate = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblpop = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.lblCulture = new System.Windows.Forms.Label();
@@ -116,6 +118,18 @@
             this.label25 = new System.Windows.Forms.Label();
             this.txtDownloadSource = new System.Windows.Forms.TextBox();
             this.cbUpdateRuntime = new ganntproj1.ToggleCheckBox();
+            this.tpEffColors = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lbl3 = new System.Windows.Forms.Label();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.lbl1 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.txt1 = new System.Windows.Forms.TextBox();
+            this.txt3 = new System.Windows.Forms.TextBox();
+            this.txt2 = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -123,8 +137,9 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lblcolor1 = new System.Windows.Forms.Label();
+            this.lblcolor2 = new System.Windows.Forms.Label();
+            this.lblcolor3 = new System.Windows.Forms.Label();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -147,9 +162,11 @@
             this.tpModels.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.tpUpdate.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tpEffColors.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc1
@@ -161,6 +178,7 @@
             this.tc1.Controls.Add(this.tpShifts);
             this.tc1.Controls.Add(this.tpModels);
             this.tc1.Controls.Add(this.tpUpdate);
+            this.tc1.Controls.Add(this.tpEffColors);
             this.tc1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tc1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tc1.Location = new System.Drawing.Point(0, 50);
@@ -777,7 +795,7 @@
             // 
             this.pbDiscard.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbDiscard.Image = global::ganntproj1.Properties.Resources.discard_48;
-            this.pbDiscard.Location = new System.Drawing.Point(232, 119);
+            this.pbDiscard.Location = new System.Drawing.Point(232, 129);
             this.pbDiscard.Margin = new System.Windows.Forms.Padding(2);
             this.pbDiscard.Name = "pbDiscard";
             this.pbDiscard.Size = new System.Drawing.Size(36, 31);
@@ -790,7 +808,7 @@
             // 
             this.pbSave.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbSave.Image = global::ganntproj1.Properties.Resources.save_48;
-            this.pbSave.Location = new System.Drawing.Point(232, 83);
+            this.pbSave.Location = new System.Drawing.Point(232, 93);
             this.pbSave.Margin = new System.Windows.Forms.Padding(2);
             this.pbSave.Name = "pbSave";
             this.pbSave.Size = new System.Drawing.Size(36, 31);
@@ -803,7 +821,7 @@
             // 
             this.pbAdd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbAdd.Image = global::ganntproj1.Properties.Resources.add_48;
-            this.pbAdd.Location = new System.Drawing.Point(232, 47);
+            this.pbAdd.Location = new System.Drawing.Point(232, 57);
             this.pbAdd.Margin = new System.Windows.Forms.Padding(2);
             this.pbAdd.Name = "pbAdd";
             this.pbAdd.Size = new System.Drawing.Size(36, 31);
@@ -954,7 +972,7 @@
             // 
             this.pbDiscardShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbDiscardShift.Image = global::ganntproj1.Properties.Resources.discard_48;
-            this.pbDiscardShift.Location = new System.Drawing.Point(235, 126);
+            this.pbDiscardShift.Location = new System.Drawing.Point(235, 136);
             this.pbDiscardShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbDiscardShift.Name = "pbDiscardShift";
             this.pbDiscardShift.Size = new System.Drawing.Size(36, 31);
@@ -966,7 +984,7 @@
             // 
             this.pbSaveShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbSaveShift.Image = global::ganntproj1.Properties.Resources.save_48;
-            this.pbSaveShift.Location = new System.Drawing.Point(235, 90);
+            this.pbSaveShift.Location = new System.Drawing.Point(235, 100);
             this.pbSaveShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbSaveShift.Name = "pbSaveShift";
             this.pbSaveShift.Size = new System.Drawing.Size(36, 31);
@@ -978,7 +996,7 @@
             // 
             this.pbAddShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbAddShift.Image = global::ganntproj1.Properties.Resources.add_48;
-            this.pbAddShift.Location = new System.Drawing.Point(235, 54);
+            this.pbAddShift.Location = new System.Drawing.Point(235, 64);
             this.pbAddShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbAddShift.Name = "pbAddShift";
             this.pbAddShift.Size = new System.Drawing.Size(36, 31);
@@ -1081,6 +1099,26 @@
             this.tpUpdate.Size = new System.Drawing.Size(624, 368);
             this.tpUpdate.TabIndex = 6;
             this.tpUpdate.Text = "Update";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Gainsboro;
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 23);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(624, 1);
+            this.pictureBox2.TabIndex = 80;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Silver;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 22);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(624, 1);
+            this.pictureBox1.TabIndex = 79;
+            this.pictureBox1.TabStop = false;
             // 
             // lblpop
             // 
@@ -1292,6 +1330,122 @@
             this.cbUpdateRuntime.UseVisualStyleBackColor = true;
             this.cbUpdateRuntime.CheckedChanged += new System.EventHandler(this.CbUpdateRuntime_CheckedChanged);
             // 
+            // tpEffColors
+            // 
+            this.tpEffColors.Controls.Add(this.groupBox3);
+            this.tpEffColors.Location = new System.Drawing.Point(4, 44);
+            this.tpEffColors.Name = "tpEffColors";
+            this.tpEffColors.Size = new System.Drawing.Size(624, 368);
+            this.tpEffColors.TabIndex = 7;
+            this.tpEffColors.Text = "EColors";
+            this.tpEffColors.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblcolor3);
+            this.groupBox3.Controls.Add(this.lblcolor2);
+            this.groupBox3.Controls.Add(this.lblcolor1);
+            this.groupBox3.Controls.Add(this.lbl3);
+            this.groupBox3.Controls.Add(this.lbl2);
+            this.groupBox3.Controls.Add(this.lbl1);
+            this.groupBox3.Controls.Add(this.label31);
+            this.groupBox3.Controls.Add(this.label30);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.label24);
+            this.groupBox3.Controls.Add(this.txt1);
+            this.groupBox3.Controls.Add(this.txt3);
+            this.groupBox3.Controls.Add(this.txt2);
+            this.groupBox3.Location = new System.Drawing.Point(31, 38);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(567, 295);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "groupBox3";
+            // 
+            // lbl3
+            // 
+            this.lbl3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl3.Location = new System.Drawing.Point(162, 207);
+            this.lbl3.Name = "lbl3";
+            this.lbl3.Size = new System.Drawing.Size(138, 21);
+            this.lbl3.TabIndex = 9;
+            this.lbl3.Click += new System.EventHandler(this.lbl3_Click);
+            // 
+            // lbl2
+            // 
+            this.lbl2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl2.Location = new System.Drawing.Point(162, 156);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(138, 21);
+            this.lbl2.TabIndex = 8;
+            this.lbl2.Click += new System.EventHandler(this.lbl2_Click);
+            // 
+            // lbl1
+            // 
+            this.lbl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl1.Location = new System.Drawing.Point(162, 101);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(138, 21);
+            this.lbl1.TabIndex = 7;
+            this.lbl1.Click += new System.EventHandler(this.lbl1_Click);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(67, 184);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(33, 15);
+            this.label31.TabIndex = 6;
+            this.label31.Text = "High";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(67, 133);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(53, 15);
+            this.label30.TabIndex = 5;
+            this.label30.Text = "Medium";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(67, 78);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(30, 15);
+            this.label29.TabIndex = 4;
+            this.label29.Text = "Low";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(30, 31);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(130, 15);
+            this.label24.TabIndex = 3;
+            this.label24.Text = "SetUp efficiency colors";
+            // 
+            // txt1
+            // 
+            this.txt1.Location = new System.Drawing.Point(65, 101);
+            this.txt1.Name = "txt1";
+            this.txt1.Size = new System.Drawing.Size(70, 21);
+            this.txt1.TabIndex = 0;
+            // 
+            // txt3
+            // 
+            this.txt3.Location = new System.Drawing.Point(65, 207);
+            this.txt3.Name = "txt3";
+            this.txt3.Size = new System.Drawing.Size(70, 21);
+            this.txt3.TabIndex = 2;
+            // 
+            // txt2
+            // 
+            this.txt2.Location = new System.Drawing.Point(65, 156);
+            this.txt2.Name = "txt2";
+            this.txt2.Size = new System.Drawing.Size(70, 21);
+            this.txt2.TabIndex = 1;
+            // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1384,25 +1538,32 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
-            // pictureBox1
+            // lblcolor1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Silver;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 22);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(624, 1);
-            this.pictureBox1.TabIndex = 79;
-            this.pictureBox1.TabStop = false;
+            this.lblcolor1.AutoSize = true;
+            this.lblcolor1.Location = new System.Drawing.Point(306, 107);
+            this.lblcolor1.Name = "lblcolor1";
+            this.lblcolor1.Size = new System.Drawing.Size(14, 15);
+            this.lblcolor1.TabIndex = 10;
+            this.lblcolor1.Text = "#";
             // 
-            // pictureBox2
+            // lblcolor2
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 23);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(624, 1);
-            this.pictureBox2.TabIndex = 80;
-            this.pictureBox2.TabStop = false;
+            this.lblcolor2.AutoSize = true;
+            this.lblcolor2.Location = new System.Drawing.Point(306, 162);
+            this.lblcolor2.Name = "lblcolor2";
+            this.lblcolor2.Size = new System.Drawing.Size(14, 15);
+            this.lblcolor2.TabIndex = 11;
+            this.lblcolor2.Text = "#";
+            // 
+            // lblcolor3
+            // 
+            this.lblcolor3.AutoSize = true;
+            this.lblcolor3.Location = new System.Drawing.Point(306, 213);
+            this.lblcolor3.Name = "lblcolor3";
+            this.lblcolor3.Size = new System.Drawing.Size(14, 15);
+            this.lblcolor3.TabIndex = 12;
+            this.lblcolor3.Text = "#";
             // 
             // Settings
             // 
@@ -1459,10 +1620,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tpUpdate.ResumeLayout(false);
             this.tpUpdate.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tpEffColors.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
             }
@@ -1564,5 +1728,20 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TabPage tpEffColors;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label lbl3;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txt1;
+        private System.Windows.Forms.TextBox txt3;
+        private System.Windows.Forms.TextBox txt2;
+        private System.Windows.Forms.Label lblcolor3;
+        private System.Windows.Forms.Label lblcolor2;
+        private System.Windows.Forms.Label lblcolor1;
     }
     }

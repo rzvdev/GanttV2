@@ -22,36 +22,40 @@ namespace ganntproj1
             MultiSelect = false;
             SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            DataBindingComplete += delegate
-            {
-                foreach (DataGridViewColumn c in Columns)
-                {
-                    c.SortMode = DataGridViewColumnSortMode.NotSortable;
-                }
-
-                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-                ColumnHeadersHeight = 50;
-                RowTemplate.Height = 22;
-                ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-                CellBorderStyle = DataGridViewCellBorderStyle.None;
-                ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(125, 141, 161);
-                ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
-                CellBorderStyle = DataGridViewCellBorderStyle.Single;
-                DefaultCellStyle.BackColor = Color.FromArgb(242, 242, 242);
-                RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(125, 141, 161);
-                RowsDefaultCellStyle.SelectionForeColor = Color.AliceBlue;
-                RowHeadersVisible = false;
-                GridColor = Color.FromArgb(181,181,181);
-                for (var i = 0; i <= Columns.Count - 1; i++)
-                {
-                    var c = Columns[i];
-                    c.DefaultCellStyle.Font = new Font("Bahnschrift", 9);
-                    c.HeaderCell.Style.Font = new Font("Bahnschrift", 9, FontStyle.Bold);
-                    c.HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopLeft;
-                }
-            };
+            DataBindingComplete += DataBindComplete;
         }
         
+        private void DataBindComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+
+            foreach (DataGridViewColumn c in Columns)
+            {
+                c.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            ColumnHeadersHeight = 50;
+            RowTemplate.Height = 22;
+            ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            CellBorderStyle = DataGridViewCellBorderStyle.None;
+            ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(125, 141, 161);
+            ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
+            CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            DefaultCellStyle.BackColor = Color.FromArgb(242, 242, 242);
+            RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(125, 141, 161);
+            RowsDefaultCellStyle.SelectionForeColor = Color.AliceBlue;
+            RowHeadersVisible = false;
+            GridColor = Color.FromArgb(181, 181, 181);
+            for (var i = 0; i <= Columns.Count - 1; i++)
+            {
+                var c = Columns[i];
+                c.DefaultCellStyle.Font = new Font("Bahnschrift", 9);
+                c.HeaderCell.Style.Font = new Font("Bahnschrift", 9, FontStyle.Bold);
+                c.HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopLeft;
+            }
+            BorderStyle = BorderStyle.None;
+        }
+
         #region Formating
 
         private static string ToTitleCase(string str)
