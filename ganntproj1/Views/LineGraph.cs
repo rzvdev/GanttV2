@@ -408,11 +408,13 @@
             {
                 var rI = e.RowIndex;
                 var line = tbl.Rows[rI].Cells[0].Value.ToString();
+                double.TryParse(tbl.Rows[rI].Cells[1].Value.ToString(), out var media);
+
                 var dept = $"Confezione {line.Substring(line.Length - 1, 1)}";
                 line = line.Remove(line.Length - 1, 1);
                 var month = cboMonth.SelectedIndex + 1;
                 int.TryParse(cboYears.SelectedItem.ToString(), out var year);
-                var frm = new LineGraphMonth(line, dept, month, year, MediaEff);
+                var frm = new LineGraphMonth(line, dept, month, year, media);
                 frm.ShowDialog();
                 frm.Dispose();
             }
