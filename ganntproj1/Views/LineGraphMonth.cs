@@ -27,6 +27,7 @@ namespace ganntproj1.Views
         private double Media { get; set; }
 
         private List<LineProductionData> lineProductionDatas = new List<LineProductionData>();
+        private List<ArticleProductionData> articleProductions = new List<ArticleProductionData>();
 
         public LineGraphMonth()
         {
@@ -70,6 +71,7 @@ namespace ganntproj1.Views
         private void LoadData()
         {
             lineProductionDatas = new List<LineProductionData>();
+            articleProductions = new List<ArticleProductionData>();
 
             var q = @"select round(cast(sum(capi) as float) / cast(sum(dailyQty) as float) * 100, 1), datepart(day,data),count(1) from produzione 
 where line=@line and department=@department and datepart(month,data) = @month and datepart(year,data) = @year 
@@ -98,8 +100,32 @@ order by datepart(day,data)";
                             new LineProductionData(eff * ordersCount, day));
                     }
 
-                con.Close();
                 dr.Close();
+
+                q = @"use Ganttproj
+select o.article, datepart(day,p.data) from produzione p
+inner join objects o on p.commessa = o.ordername and o.department = p.department
+where p.line=@line and p.department=@department and datepart(month,p.data) = @month and datepart(year,p.data) = @year
+group by o.article,datepart(day,p.data) 
+order by datepart(day,p.data)";
+                cmd = new SqlCommand(q, con);
+                cmd.Parameters.Add("@line", SqlDbType.NVarChar).Value = Line;
+                cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = Department;
+                cmd.Parameters.Add("@month", SqlDbType.Int).Value = Month;
+                cmd.Parameters.Add("@year", SqlDbType.Int).Value = Year;
+
+                dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                    while (dr.Read())
+                    {
+                        var art = dr[0].ToString();
+                        int.TryParse(dr[1].ToString(), out var day);
+
+                        articleProductions.Add(
+                            new ArticleProductionData(art, day));
+                    }
+                dr.Close();
+                con.Close();
             }
         }
 
@@ -110,6 +136,8 @@ order by datepart(day,data)";
                 MessageBox.Show("Unable to load data from server.", "Line efficiency daily graph", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            var bufferList = new List<ArticleProductionData>();
 
             var pane = new ZedGraph.GraphPane();
 
@@ -154,18 +182,60 @@ order by datepart(day,data)";
             pane.Fill = new ZedGraph.Fill(Color.FromArgb(250, 250, 250));
             
             zedGraph.GraphPane = pane;
+            pane.Legend.IsVisible = false;
+            ZedGraph.PointPairList articleRangeList = new ZedGraph.PointPairList();
+            ZedGraph.LineItem articleVertCurve = new ZedGraph.LineItem("");
 
             for (var i = 0; i <= curve.Points.Count - 1; i++)
             {
                 ZedGraph.PointPair pt = curve.Points[i];
 
-                ZedGraph.TextObj text = new ZedGraph.TextObj(pt.Y.ToString("f1"), pt.X, pt.Y + 2,
+                ZedGraph.TextObj text = new ZedGraph.TextObj(pt.Y.ToString("f1"), pt.X, pt.Y,
                     ZedGraph.CoordType.AxisXYScale, ZedGraph.AlignH.Left, ZedGraph.AlignV.Center);
                 text.ZOrder = ZedGraph.ZOrder.D_BehindAxis;
                 text.FontSpec.Border.IsVisible = false;
                 text.FontSpec.Fill.IsVisible = false;
                 text.FontSpec.Angle = 90;
                 pane.GraphObjList.Add(text);
+
+                var art = articleProductions.LastOrDefault(x => x.Day == pt.X);
+                var buf = bufferList.FirstOrDefault(x => x.Article == art.Article || x.Day == art.Day);
+
+                if (art != null && buf == null)
+                {
+                    bufferList.Add(art);
+
+                    ZedGraph.TextObj textArt = new ZedGraph.TextObj(art.Article, pt.X + 0.2f, pane.YAxis.Scale.Min + pt.Y / 2,
+                                            ZedGraph.CoordType.AxisXYScale, ZedGraph.AlignH.Left, ZedGraph.AlignV.Center);
+
+                    textArt.ZOrder = ZedGraph.ZOrder.D_BehindAxis;
+                    textArt.FontSpec.Border.IsVisible = false;
+                    textArt.FontSpec.Fill.IsVisible = false;
+                    textArt.FontSpec.Size = 9;
+                    textArt.FontSpec.FontColor = Color.Black;
+
+                    var lastArt = articleProductions.LastOrDefault(x => x.Day == pt.X - 1);
+                    var nextArt = articleProductions.FirstOrDefault(x => x.Day == pt.X + 2);
+
+                    if (lastArt != null && lastArt.Article != art.Article || nextArt != null && nextArt.Article != art.Article)
+                    {
+                        textArt.FontSpec.Angle = 90;
+                    }
+                    else
+                    {
+                        textArt.FontSpec.Angle = 0;
+                    }
+
+                    pane.GraphObjList.Add(textArt);
+
+                    articleRangeList = new ZedGraph.PointPairList();
+                    articleRangeList.Add(pt.X, pt.Y);
+                    articleRangeList.Add(pt.X, pane.YAxis.Scale.Min);
+
+                    var ac = new ZedGraph.LineItem(art.Article);
+                    ac.Line.Style = System.Drawing.Drawing2D.DashStyle.Dot;
+                    ac = pane.AddCurve(art.Article, articleRangeList, Color.Orange, ZedGraph.SymbolType.None);
+                }
             }
 
             zedGraph.GraphPane.CurveList.Add(curve);
@@ -185,6 +255,19 @@ order by datepart(day,data)";
             }
 
             public double Eff { get; set; }
+
+            public int Day { get; set; }
+        }
+
+        internal class ArticleProductionData
+        {
+            public ArticleProductionData(string art, int day)
+            {
+                Article = art;
+                Day = day;
+            }
+
+            public string Article { get; set; }
 
             public int Day { get; set; }
         }
