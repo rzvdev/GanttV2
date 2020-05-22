@@ -133,8 +133,8 @@
     <Compile Include="src\Views\Diffetato.Designer.cs">
       <DependentUpon>Diffetato.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\ExcelExport.cs" />
-    <Compile Include="src\Extensions.cs" />
+    <Compile Include="src\Helpers\ExcelExport.cs" />
+    <Compile Include="src\Helpers\Extensions.cs" />
     <Compile Include="src\Views\Fatturato.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,7 +183,7 @@
     <Compile Include="src\Views\InputDate.Designer.cs">
       <DependentUpon>InputDate.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\JobModel.cs" />
+    <Compile Include="src\Helpers\JobModel.cs" />
     <Compile Include="src\Views\LineGraph.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,8 +206,8 @@
       <DependentUpon>MyMessage.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Printers\EventPrintDialog.cs" />
-    <Compile Include="src\Output.cs" />
-    <Compile Include="src\Globals.cs" />
+    <Compile Include="src\Helpers\Output.cs" />
+    <Compile Include="src\Helpers\Globals.cs" />
     <Compile Include="src\Controls\ToggleCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -245,8 +245,8 @@
     <Compile Include="src\Views\ProductionInput.Designer.cs">
       <DependentUpon>ProductionInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Config.cs" />
-    <Compile Include="src\Geometry.cs" />
+    <Compile Include="src\Helpers\Config.cs" />
+    <Compile Include="src\Helpers\Geometry.cs" />
     <Compile Include="src\Views\Central.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,7 +289,7 @@
     <Compile Include="src\Views\Split.Designer.cs">
       <DependentUpon>Split.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Channels.cs" />
+    <Compile Include="src\Helpers\Channels.cs" />
     <Compile Include="src\Controls\Ganttogram.cs">
       <SubType>UserControl</SubType>
     </Compile>
