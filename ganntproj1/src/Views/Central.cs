@@ -2449,7 +2449,6 @@ namespace ganntproj1
 
     public class ReSize
     {
-
         private bool Above, Right, Under, Left, Right_above, Right_under, Left_under, Left_above;
 
         int Thickness = 6;
@@ -2500,9 +2499,6 @@ namespace ganntproj1
                 (_Above && (!above_underArea)); if (Left_above) return "la";
 
             return "";
-
         }
-
-
     }
 }

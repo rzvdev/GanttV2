@@ -108,7 +108,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="docs\readme.md" />
-    <None Include="Resources\Help.pdf" />
+    <None Include="src\Resources\Help.pdf" />
     <None Include="Store.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Store.Designer.cs</LastGenOutput>
@@ -121,97 +121,97 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="src\Printers\TableViewPrint.cs" />
-    <Compile Include="Views\CommessaDefect.cs">
+    <Compile Include="src\Views\CommessaDefect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\CommessaDefect.Designer.cs">
+    <Compile Include="src\Views\CommessaDefect.Designer.cs">
       <DependentUpon>CommessaDefect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Diffetato.cs">
+    <Compile Include="src\Views\Diffetato.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Diffetato.Designer.cs">
+    <Compile Include="src\Views\Diffetato.Designer.cs">
       <DependentUpon>Diffetato.cs</DependentUpon>
     </Compile>
     <Compile Include="src\ExcelExport.cs" />
     <Compile Include="src\Extensions.cs" />
-    <Compile Include="Views\Fatturato.cs">
+    <Compile Include="src\Views\Fatturato.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Fatturato.Designer.cs">
+    <Compile Include="src\Views\Fatturato.Designer.cs">
       <DependentUpon>Fatturato.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FatturatoLinea.cs">
+    <Compile Include="src\Views\FatturatoLinea.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FatturatoLinea.Designer.cs">
+    <Compile Include="src\Views\FatturatoLinea.Designer.cs">
       <DependentUpon>FatturatoLinea.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Carico.cs">
+    <Compile Include="src\Views\Carico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Carico.Designer.cs">
+    <Compile Include="src\Views\Carico.Designer.cs">
       <DependentUpon>Carico.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\GraficoRespinte.cs">
+    <Compile Include="src\Views\GraficoRespinte.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\GraficoRespinte.Designer.cs">
+    <Compile Include="src\Views\GraficoRespinte.Designer.cs">
       <DependentUpon>GraficoRespinte.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\LineGraphMonth.cs">
+    <Compile Include="src\Views\LineGraphMonth.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\LineGraphMonth.Designer.cs">
+    <Compile Include="src\Views\LineGraphMonth.Designer.cs">
       <DependentUpon>LineGraphMonth.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\LineList.cs">
+    <Compile Include="src\Views\LineList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\LineList.Designer.cs">
+    <Compile Include="src\Views\LineList.Designer.cs">
       <DependentUpon>LineList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Holidays.cs">
+    <Compile Include="src\Views\Holidays.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Holidays.Designer.cs">
+    <Compile Include="src\Views\Holidays.Designer.cs">
       <DependentUpon>Holidays.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\InputDate.cs">
+    <Compile Include="src\Views\InputDate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\InputDate.Designer.cs">
+    <Compile Include="src\Views\InputDate.Designer.cs">
       <DependentUpon>InputDate.cs</DependentUpon>
     </Compile>
     <Compile Include="src\JobModel.cs" />
-    <Compile Include="Views\LineGraph.cs">
+    <Compile Include="src\Views\LineGraph.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\LineGraph.Designer.cs">
+    <Compile Include="src\Views\LineGraph.Designer.cs">
       <DependentUpon>LineGraph.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoadingInfo.cs">
+    <Compile Include="src\Views\LoadingInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Mensile.cs">
+    <Compile Include="src\Views\Mensile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Mensile.Designer.cs">
+    <Compile Include="src\Views\Mensile.Designer.cs">
       <DependentUpon>Mensile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyMessage.cs">
+    <Compile Include="src\Views\MyMessage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\MyMessage.Designer.cs">
+    <Compile Include="src\Views\MyMessage.Designer.cs">
       <DependentUpon>MyMessage.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Printers\EventPrintDialog.cs" />
     <Compile Include="src\Output.cs" />
     <Compile Include="src\Globals.cs" />
-    <Compile Include="src\ControlReport\ToggleCheckBox.cs">
+    <Compile Include="src\Controls\ToggleCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\ControlReport\EventComboBox.cs">
+    <Compile Include="src\Controls\EventComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="src\Models\Articles.cs" />
@@ -221,79 +221,79 @@
     <Compile Include="src\Models\Production.cs" />
     <Compile Include="src\Models\Shifts.cs" />
     <Compile Include="src\Models\Tables.cs" />
-    <Compile Include="Views\OperationProgram.cs">
+    <Compile Include="src\Views\OperationProgram.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\OperationProgram.Designer.cs">
+    <Compile Include="src\Views\OperationProgram.Designer.cs">
       <DependentUpon>OperationProgram.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Produzione.cs">
+    <Compile Include="src\Views\Produzione.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Produzione.Designer.cs">
+    <Compile Include="src\Views\Produzione.Designer.cs">
       <DependentUpon>Produzione.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoadingJob.cs">
+    <Compile Include="src\Views\LoadingJob.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\LoadingJob.Designer.cs">
+    <Compile Include="src\Views\LoadingJob.Designer.cs">
       <DependentUpon>LoadingJob.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProductionInput.cs">
+    <Compile Include="src\Views\ProductionInput.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ProductionInput.Designer.cs">
+    <Compile Include="src\Views\ProductionInput.Designer.cs">
       <DependentUpon>ProductionInput.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Config.cs" />
     <Compile Include="src\Geometry.cs" />
-    <Compile Include="Views\Central.cs">
+    <Compile Include="src\Views\Central.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Central.Designer.cs">
+    <Compile Include="src\Views\Central.Designer.cs">
       <DependentUpon>Central.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Respinte.cs">
+    <Compile Include="src\Views\Respinte.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Respinte.Designer.cs">
+    <Compile Include="src\Views\Respinte.Designer.cs">
       <DependentUpon>Respinte.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\RespinteControlloInput.cs">
+    <Compile Include="src\Views\RespinteControlloInput.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\RespinteControlloInput.Designer.cs">
+    <Compile Include="src\Views\RespinteControlloInput.Designer.cs">
       <DependentUpon>RespinteControlloInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Workflow.cs">
+    <Compile Include="src\Views\Workflow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Workflow.Designer.cs">
+    <Compile Include="src\Views\Workflow.Designer.cs">
       <DependentUpon>Workflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings.cs">
+    <Compile Include="src\Views\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Settings.Designer.cs">
+    <Compile Include="src\Views\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\SplitHistory.cs">
+    <Compile Include="src\Views\SplitHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\SplitHistory.Designer.cs">
+    <Compile Include="src\Views\SplitHistory.Designer.cs">
       <DependentUpon>SplitHistory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Split.cs">
+    <Compile Include="src\Views\Split.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Split.Designer.cs">
+    <Compile Include="src\Views\Split.Designer.cs">
       <DependentUpon>Split.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Channels.cs" />
-    <Compile Include="src\ControlReport\Ganttogram.cs">
+    <Compile Include="src\Controls\Ganttogram.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\ControlReport\TableView.cs">
+    <Compile Include="src\Controls\TableView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -302,16 +302,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="src\ControlReport\MiniTitle.cs">
+    <Compile Include="src\Controls\MiniTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\ControlReport\MiniTitle.designer.cs">
+    <Compile Include="src\Controls\MiniTitle.designer.cs">
       <DependentUpon>MiniTitle.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\ControlReport\Title.cs">
+    <Compile Include="src\Controls\Title.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\ControlReport\Title.designer.cs">
+    <Compile Include="src\Controls\Title.designer.cs">
       <DependentUpon>Title.cs</DependentUpon>
     </Compile>
     <Compile Include="Store.Designer.cs">
@@ -319,10 +319,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Store.settings</DependentUpon>
     </Compile>
-    <Compile Include="Views\Popup.cs">
+    <Compile Include="src\Views\Popup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Popup.Designer.cs">
+    <Compile Include="src\Views\Popup.Designer.cs">
       <DependentUpon>Popup.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -358,254 +358,254 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="License-LGPL.txt" />
-    <None Include="Resources\show_24x24.png" />
-    <None Include="Resources\update_100x100.png" />
-    <None Include="Resources\822.gif" />
-    <None Include="Resources\update_check_32x32.png" />
-    <None Include="Resources\help_32x32.png" />
-    <None Include="Resources\close_circle.png" />
-    <None Include="Resources\chart-bar_32x32.png" />
-    <None Include="Resources\folder_icon_32_gold.png" />
-    <None Include="Resources\check.png" />
-    <None Include="Resources\edit-big.png" />
-    <None Include="Resources\zoom_in.png" />
-    <None Include="Resources\zoom_out.png" />
-    <None Include="Resources\fast_rewind.png" />
-    <None Include="Resources\fast_forward.png" />
-    <None Include="Resources\close.png" />
-    <None Include="Resources\cartellina_edit_32x32.png" />
-    <None Include="Resources\excel_32x32.png" />
-    <None Include="Resources\event_32x32.png" />
-    <None Include="Resources\arrow_left.png" />
-    <None Include="Resources\arrow_right.png" />
-    <None Include="Resources\folder.png" />
-    <None Include="Resources\settings_32x32.png" />
-    <None Include="Resources\reset_32x32.png" />
-    <None Include="Resources\Logo.png" />
-    <None Include="Resources\arrow-right.png" />
-    <None Include="Resources\arrow-down.png" />
-    <None Include="Resources\switch_arrow_triangle_right_white.png" />
-    <None Include="Resources\arrow-triangle-right.png" />
-    <None Include="Resources\onlyou_logo_minnine.png" />
-    <None Include="Resources\preloader_gantt.gif" />
-    <None Include="Resources\tick_icon_16.png" />
-    <None Include="Resources\tick_icon_24.png" />
-    <None Include="Resources\holiday_flag_16.png" />
-    <None Include="Resources\icons_excel_filled_32.png" />
-    <None Include="Resources\export_excel_icon_321.png" />
-    <None Include="Resources\export_excel_icon_32.png" />
-    <None Include="Resources\excel_export_icon_50.png" />
-    <None Include="Resources\check_list_32.png" />
-    <None Include="Resources\close_icon_small_32.png" />
-    <None Include="Resources\send_clock_48.png" />
-    <None Include="Resources\loading_icon_96.png" />
-    <None Include="Resources\trash_multidm_48.png" />
-    <None Include="Resources\monitoring_multidm_48.png" />
-    <None Include="Resources\save_multidm_48.png" />
-    <None Include="Resources\warning_s_icon_48.png" />
-    <None Include="Resources\recovery_48.png" />
-    <None Include="Resources\holiday_button_16.png" />
-    <None Include="Resources\discard_changes_48.png" />
-    <None Include="Resources\accept_changes_48.png" />
-    <None Include="Resources\sidebar_32.png" />
-    <None Include="Resources\holiday_calendar_32.png" />
-    <None Include="Resources\padlock_icon_d20.png" />
-    <None Include="Resources\padlock_icon_d16.png" />
-    <None Include="Resources\filter_icon_d32.png" />
-    <None Include="Resources\print_icon_d32.png" />
-    <None Include="Resources\settings_icon_d32.png" />
-    <None Include="Resources\menu_icon_d32.png" />
-    <None Include="Resources\reset_total_32.png" />
-    <None Include="Resources\refresh_total_32.png" />
-    <None Include="Resources\zoom_out_d32.png" />
-    <None Include="Resources\zoom_in_d32.png" />
-    <None Include="Resources\arrow_forw_32.png" />
-    <None Include="Resources\arrow_mforw_32.png" />
-    <None Include="Resources\arrow_mback_32.png" />
-    <None Include="Resources\arrow_back_32.png" />
-    <None Include="Resources\clear_icon_32.png" />
-    <None Include="Resources\unlock_16.png" />
-    <None Include="Resources\lock_16.png" />
-    <None Include="Resources\rect_selection_24.png" />
-    <None Include="Resources\schedule_24.png" />
-    <None Include="Resources\back_3d_icon.png" />
-    <None Include="Resources\printing_gif.gif" />
-    <None Include="Resources\robot_96.png" />
-    <None Include="Resources\reset_24.png" />
-    <None Include="Resources\search_16.png" />
-    <None Include="Resources\inform_16.png" />
-    <None Include="Resources\exclamation_16.png" />
-    <None Include="Resources\history_40.png" />
-    <None Include="Resources\order_split_flag_16.png" />
-    <None Include="Resources\order_statusok_24.png" />
-    <None Include="Resources\foag_red_24.png" />
-    <None Include="Resources\trash_16.png" />
-    <None Include="Resources\split_16.png" />
-    <None Include="Resources\programmare_16.png" />
-    <None Include="Resources\details_48.png" />
-    <None Include="Resources\single_report_48.png" />
-    <None Include="Resources\full_report_48.png" />
-    <None Include="Resources\icons_forward_48.png" />
-    <None Include="Resources\icons_back_48.png" />
-    <None Include="Resources\collapse_arrow_32.png" />
-    <None Include="Resources\expand_arrow_32.png" />
-    <None Include="Resources\bullet_toggle_plus.png" />
-    <None Include="Resources\bullet_toggle_minus.png" />
-    <None Include="Resources\colapse_arrow_16.png" />
-    <None Include="Resources\expand_arrow_16.png" />
-    <None Include="Resources\colapse_arrow_24.png" />
-    <None Include="Resources\expand_arrow_24.png" />
-    <None Include="Resources\back_32.png" />
-    <None Include="Resources\mega_back_32.png" />
-    <None Include="Resources\fow_32.png" />
-    <None Include="Resources\mega_fow_32.png" />
-    <None Include="Resources\zoom_in_32.png" />
-    <None Include="Resources\zoom_out_32.png" />
-    <None Include="Resources\sub_task.png" />
-    <None Include="Resources\main_task.png" />
-    <None Include="Resources\toggle_colapse.png" />
-    <None Include="Resources\toggle_expand.png" />
-    <None Include="Resources\printer.png" />
-    <None Include="Resources\discard_48.png" />
-    <None Include="Resources\save_48.png" />
-    <None Include="Resources\close_com_60.png" />
-    <None Include="Resources\check_com_60.png" />
-    <None Include="Resources\add_48.png" />
-    <None Include="Resources\service_48.png" />
-    <None Include="Resources\menu.png" />
-    <None Include="Resources\sort_32.png" />
-    <None Include="Resources\filter_edit_40.png" />
-    <None Include="Resources\full_fill_40.png" />
-    <None Include="Resources\filter_40_y.png" />
-    <None Include="Resources\full_40_y.png" />
-    <None Include="Resources\full_40.png" />
-    <None Include="Resources\refresh_40.png" />
-    <None Include="Resources\filter_40.png" />
-    <None Include="Resources\info.png" />
-    <None Include="Resources\infotip_selected.png" />
-    <None Include="Resources\cleanse_selected.png" />
-    <None Include="Resources\tipinfo.png" />
-    <None Include="Resources\cleanse.png" />
-    <None Include="Resources\stiro.png" />
-    <None Include="Resources\conf.png" />
-    <None Include="Resources\tess.png" />
-    <None Include="Resources\switch.png" />
-    <None Include="Resources\reload.png" />
-    <None Include="Resources\enter.png" />
-    <None Include="Resources\export.png" />
-    <None Include="Resources\report.png" />
-    <None Include="Resources\save.png" />
-    <None Include="Resources\search.png" />
-    <None Include="Resources\exitResize.png" />
-    <None Include="Resources\zoomOut.png" />
-    <None Include="Resources\zoomIn.png" />
-    <None Include="Resources\enlarge.png" />
-    <None Include="Resources\filter.png" />
-    <None Include="Resources\resize.png" />
-    <None Include="Resources\document.png" />
-    <None Include="Resources\calender.png" />
-    <None Include="Resources\switch1.png" />
-    <None Include="Resources\fileopen.png" />
-    <None Include="Resources\print1.png" />
-    <None Include="Resources\save1.png" />
-    <None Include="Resources\forwforw.png" />
-    <None Include="Resources\backback.png" />
-    <None Include="Resources\outputfile.png" />
-    <None Include="Resources\open.png" />
-    <None Include="Resources\forward.png" />
-    <None Include="Resources\back.png" />
+    <None Include="src\Resources\show_24x24.png" />
+    <None Include="src\Resources\update_100x100.png" />
+    <None Include="src\Resources\822.gif" />
+    <None Include="src\Resources\update_check_32x32.png" />
+    <None Include="src\Resources\help_32x32.png" />
+    <None Include="src\Resources\close_circle.png" />
+    <None Include="src\Resources\chart-bar_32x32.png" />
+    <None Include="src\Resources\folder_icon_32_gold.png" />
+    <None Include="src\Resources\check.png" />
+    <None Include="src\Resources\edit-big.png" />
+    <None Include="src\Resources\zoom_in.png" />
+    <None Include="src\Resources\zoom_out.png" />
+    <None Include="src\Resources\fast_rewind.png" />
+    <None Include="src\Resources\fast_forward.png" />
+    <None Include="src\Resources\close.png" />
+    <None Include="src\Resources\cartellina_edit_32x32.png" />
+    <None Include="src\Resources\excel_32x32.png" />
+    <None Include="src\Resources\event_32x32.png" />
+    <None Include="src\Resources\arrow_left.png" />
+    <None Include="src\Resources\arrow_right.png" />
+    <None Include="src\Resources\folder.png" />
+    <None Include="src\Resources\settings_32x32.png" />
+    <None Include="src\Resources\reset_32x32.png" />
+    <None Include="src\Resources\Logo.png" />
+    <None Include="src\Resources\arrow-right.png" />
+    <None Include="src\Resources\arrow-down.png" />
+    <None Include="src\Resources\switch_arrow_triangle_right_white.png" />
+    <None Include="src\Resources\arrow-triangle-right.png" />
+    <None Include="src\Resources\onlyou_logo_minnine.png" />
+    <None Include="src\Resources\preloader_gantt.gif" />
+    <None Include="src\Resources\tick_icon_16.png" />
+    <None Include="src\Resources\tick_icon_24.png" />
+    <None Include="src\Resources\holiday_flag_16.png" />
+    <None Include="src\Resources\icons_excel_filled_32.png" />
+    <None Include="src\Resources\export_excel_icon_321.png" />
+    <None Include="src\Resources\export_excel_icon_32.png" />
+    <None Include="src\Resources\excel_export_icon_50.png" />
+    <None Include="src\Resources\check_list_32.png" />
+    <None Include="src\Resources\close_icon_small_32.png" />
+    <None Include="src\Resources\send_clock_48.png" />
+    <None Include="src\Resources\loading_icon_96.png" />
+    <None Include="src\Resources\trash_multidm_48.png" />
+    <None Include="src\Resources\monitoring_multidm_48.png" />
+    <None Include="src\Resources\save_multidm_48.png" />
+    <None Include="src\Resources\warning_s_icon_48.png" />
+    <None Include="src\Resources\recovery_48.png" />
+    <None Include="src\Resources\holiday_button_16.png" />
+    <None Include="src\Resources\discard_changes_48.png" />
+    <None Include="src\Resources\accept_changes_48.png" />
+    <None Include="src\Resources\sidebar_32.png" />
+    <None Include="src\Resources\holiday_calendar_32.png" />
+    <None Include="src\Resources\padlock_icon_d20.png" />
+    <None Include="src\Resources\padlock_icon_d16.png" />
+    <None Include="src\Resources\filter_icon_d32.png" />
+    <None Include="src\Resources\print_icon_d32.png" />
+    <None Include="src\Resources\settings_icon_d32.png" />
+    <None Include="src\Resources\menu_icon_d32.png" />
+    <None Include="src\Resources\reset_total_32.png" />
+    <None Include="src\Resources\refresh_total_32.png" />
+    <None Include="src\Resources\zoom_out_d32.png" />
+    <None Include="src\Resources\zoom_in_d32.png" />
+    <None Include="src\Resources\arrow_forw_32.png" />
+    <None Include="src\Resources\arrow_mforw_32.png" />
+    <None Include="src\Resources\arrow_mback_32.png" />
+    <None Include="src\Resources\arrow_back_32.png" />
+    <None Include="src\Resources\clear_icon_32.png" />
+    <None Include="src\Resources\unlock_16.png" />
+    <None Include="src\Resources\lock_16.png" />
+    <None Include="src\Resources\rect_selection_24.png" />
+    <None Include="src\Resources\schedule_24.png" />
+    <None Include="src\Resources\back_3d_icon.png" />
+    <None Include="src\Resources\printing_gif.gif" />
+    <None Include="src\Resources\robot_96.png" />
+    <None Include="src\Resources\reset_24.png" />
+    <None Include="src\Resources\search_16.png" />
+    <None Include="src\Resources\inform_16.png" />
+    <None Include="src\Resources\exclamation_16.png" />
+    <None Include="src\Resources\history_40.png" />
+    <None Include="src\Resources\order_split_flag_16.png" />
+    <None Include="src\Resources\order_statusok_24.png" />
+    <None Include="src\Resources\foag_red_24.png" />
+    <None Include="src\Resources\trash_16.png" />
+    <None Include="src\Resources\split_16.png" />
+    <None Include="src\Resources\programmare_16.png" />
+    <None Include="src\Resources\details_48.png" />
+    <None Include="src\Resources\single_report_48.png" />
+    <None Include="src\Resources\full_report_48.png" />
+    <None Include="src\Resources\icons_forward_48.png" />
+    <None Include="src\Resources\icons_back_48.png" />
+    <None Include="src\Resources\collapse_arrow_32.png" />
+    <None Include="src\Resources\expand_arrow_32.png" />
+    <None Include="src\Resources\bullet_toggle_plus.png" />
+    <None Include="src\Resources\bullet_toggle_minus.png" />
+    <None Include="src\Resources\colapse_arrow_16.png" />
+    <None Include="src\Resources\expand_arrow_16.png" />
+    <None Include="src\Resources\colapse_arrow_24.png" />
+    <None Include="src\Resources\expand_arrow_24.png" />
+    <None Include="src\Resources\back_32.png" />
+    <None Include="src\Resources\mega_back_32.png" />
+    <None Include="src\Resources\fow_32.png" />
+    <None Include="src\Resources\mega_fow_32.png" />
+    <None Include="src\Resources\zoom_in_32.png" />
+    <None Include="src\Resources\zoom_out_32.png" />
+    <None Include="src\Resources\sub_task.png" />
+    <None Include="src\Resources\main_task.png" />
+    <None Include="src\Resources\toggle_colapse.png" />
+    <None Include="src\Resources\toggle_expand.png" />
+    <None Include="src\Resources\printer.png" />
+    <None Include="src\Resources\discard_48.png" />
+    <None Include="src\Resources\save_48.png" />
+    <None Include="src\Resources\close_com_60.png" />
+    <None Include="src\Resources\check_com_60.png" />
+    <None Include="src\Resources\add_48.png" />
+    <None Include="src\Resources\service_48.png" />
+    <None Include="src\Resources\menu.png" />
+    <None Include="src\Resources\sort_32.png" />
+    <None Include="src\Resources\filter_edit_40.png" />
+    <None Include="src\Resources\full_fill_40.png" />
+    <None Include="src\Resources\filter_40_y.png" />
+    <None Include="src\Resources\full_40_y.png" />
+    <None Include="src\Resources\full_40.png" />
+    <None Include="src\Resources\refresh_40.png" />
+    <None Include="src\Resources\filter_40.png" />
+    <None Include="src\Resources\info.png" />
+    <None Include="src\Resources\infotip_selected.png" />
+    <None Include="src\Resources\cleanse_selected.png" />
+    <None Include="src\Resources\tipinfo.png" />
+    <None Include="src\Resources\cleanse.png" />
+    <None Include="src\Resources\stiro.png" />
+    <None Include="src\Resources\conf.png" />
+    <None Include="src\Resources\tess.png" />
+    <None Include="src\Resources\switch.png" />
+    <None Include="src\Resources\reload.png" />
+    <None Include="src\Resources\enter.png" />
+    <None Include="src\Resources\export.png" />
+    <None Include="src\Resources\report.png" />
+    <None Include="src\Resources\save.png" />
+    <None Include="src\Resources\search.png" />
+    <None Include="src\Resources\exitResize.png" />
+    <None Include="src\Resources\zoomOut.png" />
+    <None Include="src\Resources\zoomIn.png" />
+    <None Include="src\Resources\enlarge.png" />
+    <None Include="src\Resources\filter.png" />
+    <None Include="src\Resources\resize.png" />
+    <None Include="src\Resources\document.png" />
+    <None Include="src\Resources\calender.png" />
+    <None Include="src\Resources\switch1.png" />
+    <None Include="src\Resources\fileopen.png" />
+    <None Include="src\Resources\print1.png" />
+    <None Include="src\Resources\save1.png" />
+    <None Include="src\Resources\forwforw.png" />
+    <None Include="src\Resources\backback.png" />
+    <None Include="src\Resources\outputfile.png" />
+    <None Include="src\Resources\open.png" />
+    <None Include="src\Resources\forward.png" />
+    <None Include="src\Resources\back.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CommessaDefect.resx">
+    <EmbeddedResource Include="src\Views\CommessaDefect.resx">
       <DependentUpon>CommessaDefect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Diffetato.resx">
+    <EmbeddedResource Include="src\Views\Diffetato.resx">
       <DependentUpon>Diffetato.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Fatturato.resx">
+    <EmbeddedResource Include="src\Views\Fatturato.resx">
       <DependentUpon>Fatturato.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FatturatoLinea.resx">
+    <EmbeddedResource Include="src\Views\FatturatoLinea.resx">
       <DependentUpon>FatturatoLinea.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Carico.resx">
+    <EmbeddedResource Include="src\Views\Carico.resx">
       <DependentUpon>Carico.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\GraficoRespinte.resx">
+    <EmbeddedResource Include="src\Views\GraficoRespinte.resx">
       <DependentUpon>GraficoRespinte.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\LineGraphMonth.resx">
+    <EmbeddedResource Include="src\Views\LineGraphMonth.resx">
       <DependentUpon>LineGraphMonth.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\LineList.resx">
+    <EmbeddedResource Include="src\Views\LineList.resx">
       <DependentUpon>LineList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Holidays.resx">
+    <EmbeddedResource Include="src\Views\Holidays.resx">
       <DependentUpon>Holidays.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\InputDate.resx">
+    <EmbeddedResource Include="src\Views\InputDate.resx">
       <DependentUpon>InputDate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\LineGraph.resx">
+    <EmbeddedResource Include="src\Views\LineGraph.resx">
       <DependentUpon>LineGraph.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\LoadingInfo.resx">
+    <EmbeddedResource Include="src\Views\LoadingInfo.resx">
       <DependentUpon>LoadingInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Mensile.resx">
+    <EmbeddedResource Include="src\Views\Mensile.resx">
       <DependentUpon>Mensile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\MyMessage.resx">
+    <EmbeddedResource Include="src\Views\MyMessage.resx">
       <DependentUpon>MyMessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\ControlReport\Ganttogram.resx">
+    <EmbeddedResource Include="src\Controls\Ganttogram.resx">
       <DependentUpon>Ganttogram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\LoadingJob.resx">
+    <EmbeddedResource Include="src\Views\LoadingJob.resx">
       <DependentUpon>LoadingJob.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\OperationProgram.resx">
+    <EmbeddedResource Include="src\Views\OperationProgram.resx">
       <DependentUpon>OperationProgram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Produzione.resx">
+    <EmbeddedResource Include="src\Views\Produzione.resx">
       <DependentUpon>Produzione.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ProductionInput.resx">
+    <EmbeddedResource Include="src\Views\ProductionInput.resx">
       <DependentUpon>ProductionInput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Central.resx">
+    <EmbeddedResource Include="src\Views\Central.resx">
       <DependentUpon>Central.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Respinte.resx">
+    <EmbeddedResource Include="src\Views\Respinte.resx">
       <DependentUpon>Respinte.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\RespinteControlloInput.resx">
+    <EmbeddedResource Include="src\Views\RespinteControlloInput.resx">
       <DependentUpon>RespinteControlloInput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Workflow.resx">
+    <EmbeddedResource Include="src\Views\Workflow.resx">
       <DependentUpon>Workflow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Settings.resx">
+    <EmbeddedResource Include="src\Views\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\SplitHistory.resx">
+    <EmbeddedResource Include="src\Views\SplitHistory.resx">
       <DependentUpon>SplitHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Split.resx">
+    <EmbeddedResource Include="src\Views\Split.resx">
       <DependentUpon>Split.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\ControlReport\MiniTitle.resx">
+    <EmbeddedResource Include="src\Controls\MiniTitle.resx">
       <DependentUpon>MiniTitle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\ControlReport\Title.resx">
+    <EmbeddedResource Include="src\Controls\Title.resx">
       <DependentUpon>Title.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Popup.resx">
+    <EmbeddedResource Include="src\Views\Popup.resx">
       <DependentUpon>Popup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
