@@ -675,11 +675,6 @@ namespace ganntproj1
                 var aim = row[2].ToString();
                 var dept = row[31].ToString();
 
-                if (updateProduction)
-                {
-                    jb.GetJobContinum(name, aim, dept);
-                }
-
                 var article = row[3].ToString();
                 int.TryParse(row[4].ToString(), out var stateId);
                 int.TryParse(row[5].ToString(), out var qty);
@@ -762,11 +757,15 @@ namespace ganntproj1
                             qtyHSync, priceSync, name, aim, dept,isClosed);
                     }
                 }
-
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
-                    qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
-                    locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept,workingDays));
+             qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
+             locked, holiday, isClosed, artPrice, hasProd, lockedProd,
+             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays));
+
+                if (updateProduction)
+                {
+                    jb.GetJobContinum(name, aim, dept);
+                }
             }
         }
 
@@ -1109,7 +1108,7 @@ namespace ganntproj1
                     frm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                     frm.Visible = false;
                     frm.Show();
-                    frm.LoadReportByDate(true);
+                    if (Store.Default.sectorId != 2) frm.LoadReportByDate(true); else frm.LoadReportByDateStiro(true);
                     frm.TopLevel = false;
                     pnForms.Controls.Add(frm);
                     frm.Location = new Point(0, 0);
@@ -1141,7 +1140,9 @@ namespace ganntproj1
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
-                        frm.LoadReportByDate(!IsResetJobLoader);
+                        //frm.LoadReportByDate(!IsResetJobLoader);
+                        if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
+
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
@@ -1150,7 +1151,9 @@ namespace ganntproj1
                             ResetStateFilters();
                             IsResetJobLoader = false;
                         }
-                        frm.LoadReportByDate(!IsResetJobLoader);
+                        //frm.LoadReportByDate(!IsResetJobLoader);
+                        if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
+
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.reset_total_32;
                         RefreshTitle = "Commesse sul selezione data";
@@ -1162,7 +1165,9 @@ namespace ganntproj1
                         IsSaldo = true;
                         cbAcconto.Checked = true;
                         cbSaldo.Checked = true;
-                        frm.LoadReportByDate(!IsResetJobLoader);
+                        //frm.LoadReportByDate(!IsResetJobLoader);
+                        if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
+
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.refresh_total_32;
                         RefreshTitle = "Commesse in lavoro/ commesse da programmare";
