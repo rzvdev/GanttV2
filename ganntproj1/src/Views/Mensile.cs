@@ -150,9 +150,9 @@
         {
             try
             {
-                using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
+                using (var c = new SqlConnection(Central.SpecialConnStr))
                 {
-                    var cmd = new System.Data.SqlClient.SqlCommand();
+                    var cmd = new SqlCommand();
                     cmd.Connection = c;
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "drop_temporary_tables";
@@ -160,7 +160,7 @@
                     cmd.ExecuteNonQuery();
                     c.Close();
                 }
-
+                
                 var q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
                 q += "insert into tmpTable ";
                 q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";

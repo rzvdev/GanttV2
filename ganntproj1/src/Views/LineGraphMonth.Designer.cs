@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnData = new System.Windows.Forms.Panel();
+            this.lblMedia = new System.Windows.Forms.Label();
             this.lblDept = new System.Windows.Forms.Label();
             this.lblLine = new System.Windows.Forms.Label();
             this.zedGraph = new ZedGraph.ZedGraphControl();
-            this.lblMedia = new System.Windows.Forms.Label();
             this.pnData.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,18 @@
             this.pnData.Name = "pnData";
             this.pnData.Size = new System.Drawing.Size(1119, 73);
             this.pnData.TabIndex = 0;
+            // 
+            // lblMedia
+            // 
+            this.lblMedia.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblMedia.Font = new System.Drawing.Font("Bahnschrift", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMedia.ForeColor = System.Drawing.Color.Crimson;
+            this.lblMedia.Location = new System.Drawing.Point(697, 0);
+            this.lblMedia.Name = "lblMedia";
+            this.lblMedia.Size = new System.Drawing.Size(420, 71);
+            this.lblMedia.TabIndex = 2;
+            this.lblMedia.Text = "label1";
+            this.lblMedia.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblDept
             // 
@@ -87,18 +99,6 @@
             this.zedGraph.Size = new System.Drawing.Size(1119, 520);
             this.zedGraph.TabIndex = 1;
             this.zedGraph.UseExtendedPrintDialog = true;
-            // 
-            // lblMedia
-            // 
-            this.lblMedia.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblMedia.Font = new System.Drawing.Font("Bahnschrift", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMedia.ForeColor = System.Drawing.Color.Crimson;
-            this.lblMedia.Location = new System.Drawing.Point(697, 0);
-            this.lblMedia.Name = "lblMedia";
-            this.lblMedia.Size = new System.Drawing.Size(420, 71);
-            this.lblMedia.TabIndex = 2;
-            this.lblMedia.Text = "label1";
-            this.lblMedia.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LineGraphMonth
             // 

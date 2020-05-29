@@ -604,6 +604,7 @@ namespace ganntproj1
             };
             m.Show();
             }
+
         private void SaveDepartments()
         {
             var sb = new System.Text.StringBuilder();
@@ -716,8 +717,6 @@ namespace ganntproj1
         {
            
         }
-
-      
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {

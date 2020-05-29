@@ -436,5 +436,10 @@
                 frm.Dispose();
             }
         }
+
+        private void tcbAb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

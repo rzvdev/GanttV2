@@ -25,8 +25,8 @@ namespace ganntproj1.Views
         private int Year { get; set; }
 
         private double Media { get; set; }
-
-        private List<LineProductionData> lineProductionDatas = new List<LineProductionData>();
+        
+        private List<DataCollection> lineProductionDatas = new List<DataCollection>();
         private List<ArticleProductionData> articleProductions = new List<ArticleProductionData>();
 
         public LineGraphMonth()
@@ -44,9 +44,10 @@ namespace ganntproj1.Views
             Month = month;
             Year = year;
             Media = media;
-
+            
             lblLine.Text = Line;
-            lblDept.Text = Department;    
+            lblDept.Text = Department;
+
         }
 
         protected override void OnLoad(EventArgs e)
@@ -70,21 +71,31 @@ namespace ganntproj1.Views
 
         private void LoadData()
         {
-            lineProductionDatas = new List<LineProductionData>();
+            lineProductionDatas = new List<DataCollection>();
             articleProductions = new List<ArticleProductionData>();
 
-            var q = @"select round(cast(sum(capi) as float) / cast(sum(dailyQty) as float) * 100, 1), datepart(day,data),count(1) from produzione 
-where line=@line and department=@department and datepart(month,data) = @month and datepart(year,data) = @year 
-group by line,department,datepart(day,data) 
-order by datepart(day,data)";
+            var qx = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
+            qx += "insert into tmpTable ";
+            qx += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
+            qx += "capi,department from viewproduction ";
+            qx += "where line=@line and datepart(month,data) = @month and datepart(year,data) = @year and department=@department ";
+            qx += "order by datepart(day,data) ";
+            qx += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
+            qx += "insert into tmpSum ";
+            qx += "select datas,line,sum((qtyH * members))producibili, ";
+            qx += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
+            qx += "group by datas,line,dept order by dept,len(line),line,datas ";
+            qx += "select datas,line, (produc / cnt * '" + Store.Default.confHour + "')producibili,(prevent / cnt * '" + Store.Default.confHour + "'),qty,dept from tmpSum ";
+            qx += "drop table tmpTable drop table tmpSum";
 
             using (var con = new SqlConnection(Central.SpecialConnStr))
             {
-                var cmd = new SqlCommand(q, con);
+                var cmd = new SqlCommand(qx, con);
                 cmd.Parameters.Add("@line", SqlDbType.NVarChar).Value = Line;
                 cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = Department;
                 cmd.Parameters.Add("@month", SqlDbType.Int).Value = Month;
                 cmd.Parameters.Add("@year", SqlDbType.Int).Value = Year;
+                cmd.Parameters.Add("@paramAb", SqlDbType.BigInt).Value = false;
 
                 con.Open();
 
@@ -92,23 +103,27 @@ order by datepart(day,data)";
                 if (dr.HasRows)
                     while (dr.Read())
                     {
-                        double.TryParse(dr[0].ToString(), out var eff);
-                        int.TryParse(dr[1].ToString(), out var day);
-                        int.TryParse(dr[2].ToString(), out var ordersCount);
-                        
-                        lineProductionDatas.Add(
-                            new LineProductionData(eff * ordersCount, day));
+                        DateTime.TryParse(dr[0].ToString(), out var dt);
+                        double.TryParse(dr[2].ToString(), out var produc);
+                        double.TryParse(dr[3].ToString(), out var prevent);
+                        int.TryParse(dr[4].ToString(), out var qty);
+                        var dpt = dr[5].ToString();
+                        lineProductionDatas.Add(new DataCollection(
+                            dt,
+                            dr[1].ToString(), "", produc, prevent, qty, dpt, 0.0)
+                            );
                     }
 
                 dr.Close();
 
-                q = @"use Ganttproj
+
+                qx = @"use Ganttproj
 select o.article, datepart(day,p.data) from produzione p
 inner join objects o on p.commessa = o.ordername and o.department = p.department
 where p.line=@line and p.department=@department and datepart(month,p.data) = @month and datepart(year,p.data) = @year
 group by o.article,datepart(day,p.data) 
 order by datepart(day,p.data)";
-                cmd = new SqlCommand(q, con);
+                cmd = new SqlCommand(qx, con);
                 cmd.Parameters.Add("@line", SqlDbType.NVarChar).Value = Line;
                 cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = Department;
                 cmd.Parameters.Add("@month", SqlDbType.Int).Value = Month;
@@ -140,13 +155,11 @@ order by datepart(day,p.data)";
             var bufferList = new List<ArticleProductionData>();
 
             var pane = new ZedGraph.GraphPane();
-
-            //graph customization
+            
             pane.Title.Text = "EFF con " + Line + "  (" + Department + ")";
             pane.YAxis.Title.Text = "EFF %";
             pane.XAxis.Title.Text = Month.ToString() + "/" + Year.ToString();
             pane.XAxis.MajorTic.IsAllTics = true;
-            //pane.XAxis.Scale.MajorUnit = ZedGraph.DateUnit.Day;
             pane.XAxis.Scale.MajorStep = 1;
             pane.XAxis.Scale.Min = 1;
             pane.XAxis.Scale.Max = 31;
@@ -157,11 +170,13 @@ order by datepart(day,p.data)";
 
             foreach (var lineProduction in lineProductionDatas)
             {
-                if (new DateTime(Year, Month, lineProduction.Day).DayOfWeek == DayOfWeek.Saturday
-                            || new DateTime(Year, Month, lineProduction.Day).DayOfWeek == DayOfWeek.Sunday) continue;
+                var workEff = Math.Round((lineProduction.Qty / lineProduction.Producibili) * 100.0, 1);
 
-                list.Add(lineProduction.Day, lineProduction.Eff);
+                list.Add(lineProduction.Datex.Day, workEff);
             }
+
+            pane.GraphObjList.Clear();
+            zedGraph.GraphPane.CurveList.Clear();
 
             var curve = new ZedGraph.LineItem("EFF %", list, Color.SteelBlue, ZedGraph.SymbolType.Circle);
             curve.Line.IsVisible = true;
@@ -188,7 +203,7 @@ order by datepart(day,p.data)";
             pane.Legend.IsVisible = false;
             ZedGraph.PointPairList articleRangeList = new ZedGraph.PointPairList();
             ZedGraph.LineItem articleVertCurve = new ZedGraph.LineItem("");
-
+            
             for (var i = 0; i <= curve.Points.Count - 1; i++)
             {
                 ZedGraph.PointPair pt = curve.Points[i];
@@ -203,6 +218,7 @@ order by datepart(day,p.data)";
 
                 var art = articleProductions.LastOrDefault(x => x.Day == pt.X);
                 var buf = bufferList.FirstOrDefault(x => x.Article == art.Article || x.Day == art.Day);
+
 
                 if (art != null && buf == null)
                 {
@@ -240,10 +256,11 @@ order by datepart(day,p.data)";
                     ac = pane.AddCurve(art.Article, articleRangeList, Color.Orange, ZedGraph.SymbolType.None);                  
                 }
             }
-
+            
             zedGraph.GraphPane.CurveList.Add(curve);
-
             zedGraph.AxisChange();
+            zedGraph.Refresh();
+
             zedGraph.IsShowPointValues = true;
             zedGraph.PointValueFormat = "0";
             zedGraph.Invalidate();
