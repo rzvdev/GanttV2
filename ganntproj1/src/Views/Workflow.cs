@@ -242,7 +242,7 @@ namespace ganntproj1
         /// <summary>
         /// The SetPrincipalBarIndex
         /// </summary>
-        private void SetPrincipalBarIndex()
+        private void SetPrincipalBarIndex(bool effColor)
         {
             _gChart.Bars = new List<BarProperty>();
             _gChart.HeaderList = new List<Header>();
@@ -444,27 +444,70 @@ namespace ganntproj1
                     prodBarColor = Color.FromArgb(175, 175, 175);
                 }
                 else
-                {
-                    if (workDays == 0)
+                {                    
+                    if (!effColor)
                     {
                         prodBarColor = Central.HighColor;
                     }
                     else
                     {
-                        if (eff < Central.LowEff)
+                        var production = from prod in Models.Tables.Productions
+                                         where prod.Commessa == model.Name
+                                         && prod.Line == model.Aim && prod.Department == model.Department
+                                         orderby prod.Data
+                                         select prod;
+
+                        var prodList = production.ToList();
+
+                        var lastDate = DateTime.MinValue;
+                        var daysCount = 0;
+                        var totalEff = 0.0;
+
+                        foreach (var prod in prodList)
+                        {
+                            if (prod.Data.Date != lastDate.Date)
+                            {
+                                daysCount++;
+                            }
+
+                            bool.TryParse(prod.IncludeHours.ToString(), out var hasHours);
+                            if (hasHours)
+                            {
+                                var start = prod.Data;
+                                DateTime.TryParse(prod.Times.ToString(), out var end);
+                                var hours = end.Subtract(start).Hours;
+                                double.TryParse(prod.Capi.ToString(), out var qty);
+                                double.TryParse(prod.Dailyqty.ToString(), out var qtyTarget);
+                                if (hours == 0) hours = 1;
+                                var e1 = qty / hours;
+                                var e2 = qtyTarget / 7.5;
+                                var efx = (e1 / e2) * 100.0;
+                                totalEff += efx;
+                            }
+                            else
+                            {
+                                double.TryParse(prod.Capi.ToString(), out var qty);
+                                double.TryParse(prod.Dailyqty.ToString(), out var qtyTarget);
+                                totalEff += qty / qtyTarget * 100.0;
+                            }
+
+                            lastDate = prod.Data;
+                        }
+                        totalEff /= daysCount;
+
+                        if (totalEff < Central.LowEff)
                         {
                             prodBarColor = Central.LowColor;
                         }
-                        else if (eff > Central.LowEff && eff < Central.MediumEff)
+                        else if (totalEff > Central.LowEff && totalEff < Central.MediumEff)
                         {
                             prodBarColor = Central.MediumColor;
                         }
-                        else if (eff > Central.MediumEff)
+                        else if (totalEff > Central.MediumEff)
                         {
                             prodBarColor = Central.HighColor;
                         }
                     }
-
                 }
 
                 // Insert objects into chart object list
@@ -512,12 +555,13 @@ namespace ganntproj1
             }
             _gChart.Refresh();
         }
+
         /// <summary>
         /// The AddTimelineObjects
         /// </summary>
         public void AddTimelineObjects()
         {
-            SetPrincipalBarIndex();
+            SetPrincipalBarIndex(false);
             ByQty = false;
         }
 
@@ -1746,6 +1790,15 @@ namespace ganntproj1
 
                 _clActive = false;
             }
+        }
+
+        private void btnShowEff_Click(object sender, EventArgs e)
+        {
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "     Please wait...     ";
+            SetPrincipalBarIndex(true);
+            ByQty = false;
+            LoadingInfo.CloseLoading();
         }
     }
 }

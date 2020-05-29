@@ -95,7 +95,7 @@ order by datepart(day,data)";
                         double.TryParse(dr[0].ToString(), out var eff);
                         int.TryParse(dr[1].ToString(), out var day);
                         int.TryParse(dr[2].ToString(), out var ordersCount);
-
+                        
                         lineProductionDatas.Add(
                             new LineProductionData(eff * ordersCount, day));
                     }
@@ -146,7 +146,7 @@ order by datepart(day,p.data)";
             pane.YAxis.Title.Text = "EFF %";
             pane.XAxis.Title.Text = Month.ToString() + "/" + Year.ToString();
             pane.XAxis.MajorTic.IsAllTics = true;
-            pane.XAxis.Scale.MajorUnit = ZedGraph.DateUnit.Day;
+            //pane.XAxis.Scale.MajorUnit = ZedGraph.DateUnit.Day;
             pane.XAxis.Scale.MajorStep = 1;
             pane.XAxis.Scale.Min = 1;
             pane.XAxis.Scale.Max = 31;
@@ -157,6 +157,9 @@ order by datepart(day,p.data)";
 
             foreach (var lineProduction in lineProductionDatas)
             {
+                if (new DateTime(Year, Month, lineProduction.Day).DayOfWeek == DayOfWeek.Saturday
+                            || new DateTime(Year, Month, lineProduction.Day).DayOfWeek == DayOfWeek.Sunday) continue;
+
                 list.Add(lineProduction.Day, lineProduction.Eff);
             }
 
@@ -234,7 +237,7 @@ order by datepart(day,p.data)";
 
                     var ac = new ZedGraph.LineItem(art.Article);
                     ac.Line.Style = System.Drawing.Drawing2D.DashStyle.Dot;
-                    ac = pane.AddCurve(art.Article, articleRangeList, Color.Orange, ZedGraph.SymbolType.None);
+                    ac = pane.AddCurve(art.Article, articleRangeList, Color.Orange, ZedGraph.SymbolType.None);                  
                 }
             }
 

@@ -50,6 +50,12 @@
             this.myCheckBox1 = new ganntproj1.ToggleCheckBox();
             this.cbFast = new ganntproj1.ToggleCheckBox();
             this.tpSectors = new System.Windows.Forms.TabPage();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.grpSart = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.grpTess = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.rbStiro = new System.Windows.Forms.RadioButton();
             this.grpStiro = new System.Windows.Forms.GroupBox();
             this.txtHoursStiro = new System.Windows.Forms.TextBox();
@@ -138,17 +144,13 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpSectors.SuspendLayout();
+            this.grpSart.SuspendLayout();
+            this.grpTess.SuspendLayout();
             this.grpStiro.SuspendLayout();
             this.grpConfezione.SuspendLayout();
             this.tpLines.SuspendLayout();
@@ -171,8 +173,6 @@
             this.tpEffColors.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc1
@@ -440,9 +440,9 @@
             this.tpSectors.AutoScrollMargin = new System.Drawing.Size(0, 20);
             this.tpSectors.BackColor = System.Drawing.SystemColors.Control;
             this.tpSectors.Controls.Add(this.radioButton2);
-            this.tpSectors.Controls.Add(this.groupBox5);
+            this.tpSectors.Controls.Add(this.grpSart);
             this.tpSectors.Controls.Add(this.radioButton1);
-            this.tpSectors.Controls.Add(this.groupBox4);
+            this.tpSectors.Controls.Add(this.grpTess);
             this.tpSectors.Controls.Add(this.rbStiro);
             this.tpSectors.Controls.Add(this.grpStiro);
             this.tpSectors.Controls.Add(this.rbConfezione);
@@ -455,6 +455,78 @@
             this.tpSectors.Size = new System.Drawing.Size(624, 368);
             this.tpSectors.TabIndex = 0;
             this.tpSectors.Text = "Sectors";
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.radioButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.radioButton2.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton2.Location = new System.Drawing.Point(37, 288);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(105, 29);
+            this.radioButton2.TabIndex = 23;
+            this.radioButton2.Text = "Sartoria";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // grpSart
+            // 
+            this.grpSart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpSart.Controls.Add(this.textBox2);
+            this.grpSart.Location = new System.Drawing.Point(26, 295);
+            this.grpSart.Margin = new System.Windows.Forms.Padding(2);
+            this.grpSart.Name = "grpSart";
+            this.grpSart.Padding = new System.Windows.Forms.Padding(2);
+            this.grpSart.Size = new System.Drawing.Size(539, 123);
+            this.grpSart.TabIndex = 22;
+            this.grpSart.TabStop = false;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(442, 53);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(56, 23);
+            this.textBox2.TabIndex = 43;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.radioButton1.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton1.Location = new System.Drawing.Point(37, 13);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(115, 29);
+            this.radioButton1.TabIndex = 21;
+            this.radioButton1.Text = "Tessitura";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // grpTess
+            // 
+            this.grpTess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpTess.Controls.Add(this.textBox1);
+            this.grpTess.Location = new System.Drawing.Point(26, 20);
+            this.grpTess.Margin = new System.Windows.Forms.Padding(2);
+            this.grpTess.Name = "grpTess";
+            this.grpTess.Padding = new System.Windows.Forms.Padding(2);
+            this.grpTess.Size = new System.Drawing.Size(539, 123);
+            this.grpTess.TabIndex = 20;
+            this.grpTess.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(442, 53);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(56, 23);
+            this.textBox1.TabIndex = 43;
             // 
             // rbStiro
             // 
@@ -484,7 +556,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(556, 124);
+            this.grpStiro.Size = new System.Drawing.Size(539, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -564,6 +636,7 @@
             this.rbConfezione.Name = "rbConfezione";
             this.rbConfezione.Size = new System.Drawing.Size(132, 29);
             this.rbConfezione.TabIndex = 17;
+            this.rbConfezione.TabStop = true;
             this.rbConfezione.Text = "Confezione";
             this.rbConfezione.UseVisualStyleBackColor = true;
             this.rbConfezione.CheckedChanged += new System.EventHandler(this.RbConfezione_CheckedChanged);
@@ -581,7 +654,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(556, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(539, 123);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -1554,76 +1627,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.radioButton1.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton1.Location = new System.Drawing.Point(37, 13);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(115, 29);
-            this.radioButton1.TabIndex = 21;
-            this.radioButton1.Text = "Tessitura";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.textBox1);
-            this.groupBox4.Location = new System.Drawing.Point(26, 20);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox4.Size = new System.Drawing.Size(556, 123);
-            this.groupBox4.TabIndex = 20;
-            this.groupBox4.TabStop = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(442, 53);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(56, 23);
-            this.textBox1.TabIndex = 43;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.radioButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.radioButton2.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2.Location = new System.Drawing.Point(37, 288);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(105, 29);
-            this.radioButton2.TabIndex = 23;
-            this.radioButton2.Text = "Sartoria";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.textBox2);
-            this.groupBox5.Location = new System.Drawing.Point(26, 295);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox5.Size = new System.Drawing.Size(556, 123);
-            this.groupBox5.TabIndex = 22;
-            this.groupBox5.TabStop = false;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(442, 53);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(56, 23);
-            this.textBox2.TabIndex = 43;
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1656,6 +1659,10 @@
             this.tpGeneral.PerformLayout();
             this.tpSectors.ResumeLayout(false);
             this.tpSectors.PerformLayout();
+            this.grpSart.ResumeLayout(false);
+            this.grpSart.PerformLayout();
+            this.grpTess.ResumeLayout(false);
+            this.grpTess.PerformLayout();
             this.grpStiro.ResumeLayout(false);
             this.grpStiro.PerformLayout();
             this.grpConfezione.ResumeLayout(false);
@@ -1686,10 +1693,6 @@
             this.groupBox3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
             }
@@ -1805,10 +1808,10 @@
         private System.Windows.Forms.Label lblcolor2;
         private System.Windows.Forms.Label lblcolor1;
         private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox grpSart;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox grpTess;
         private System.Windows.Forms.TextBox textBox1;
     }
     }

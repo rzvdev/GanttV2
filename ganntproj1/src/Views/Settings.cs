@@ -606,14 +606,15 @@ namespace ganntproj1
             }
         private void SaveDepartments()
         {
-            if (!cbConfA.Checked && !cbConfB.Checked)
-            {
-                MessageBox.Show("Invalid department definition.", "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             var sb = new System.Text.StringBuilder();
             if (Store.Default.sectorId == 1)
             {
+                if (!cbConfA.Checked && !cbConfB.Checked)
+                {
+                    MessageBox.Show("Invalid department definition.", "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 if (cbConfA.Checked)
                 {
                     sb.Append(',' + lblConfA.Text);
@@ -623,11 +624,19 @@ namespace ganntproj1
                     sb.Append(',' + lblConfB.Text);
                 }
             }
-            else
+            else if (Store.Default.sectorId == 2)
             {
-                sb.Append(',' + "Stiro");
+                sb.Append(",Stiro");
             }
-          
+            else if (Store.Default.sectorId == 7)
+            {
+                sb.Append(",Tessitura");
+            }
+            else if (Store.Default.sectorId == 8)
+            {
+                sb.Append(",Sartoria");
+            }
+
             string str = sb.ToString() + ',';
 
             if (Store.Default.sectorId == 1)
@@ -635,19 +644,25 @@ namespace ganntproj1
                 if (rbConfezione.Checked)
                 {
                     Store.Default.selSector = rbConfezione.Text;
-
                 }
                 else
                 {
                     Store.Default.selSector = rbStiro.Text;
-
                 }
             }
-            else
+            else if (Store.Default.sectorId == 2)
             {
                 Store.Default.selSector = "Stiro";
             }
-                         
+            else if (Store.Default.sectorId == 7)
+            {
+                Store.Default.selSector = "Tessitura";
+            }
+            else if (Store.Default.sectorId == 8)
+            {
+                Store.Default.selSector = "Sartoria";
+            }
+
             Store.Default.arrDept = str;
             Store.Default.Save();
         }
@@ -662,6 +677,8 @@ namespace ganntproj1
             Store.Default.sectorId = 1;
             Store.Default.Save();
             grpStiro.Enabled = false;
+            grpTess.Enabled = false;
+            grpSart.Enabled = false;
             grpConfezione.Enabled = true;
         }
 
@@ -670,7 +687,29 @@ namespace ganntproj1
             Store.Default.sectorId = 2;
             Store.Default.Save();
             grpConfezione.Enabled = false;
+            grpTess.Enabled = false;
+            grpSart.Enabled = false;
             grpStiro.Enabled = true;
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.sectorId = 7;
+            Store.Default.Save();
+            grpConfezione.Enabled = false;
+            grpTess.Enabled = true;
+            grpStiro.Enabled = false;
+            grpSart.Enabled = false;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.sectorId = 8;
+            Store.Default.Save();
+            grpConfezione.Enabled = false;
+            grpSart.Enabled = true;
+            grpStiro.Enabled = false;
+            grpTess.Enabled = false;
         }
 
         private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -954,6 +993,6 @@ namespace ganntproj1
                 lbl3.BackColor = col.Color;
                 lblcolor3.Text = color;
             }
-        }
+        }       
     }
 }

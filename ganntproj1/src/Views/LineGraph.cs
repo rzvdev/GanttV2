@@ -39,6 +39,8 @@
         /// <param name="e">The e<see cref="EventArgs"/></param>
         protected override void OnLoad(EventArgs e)
         {
+            var c = new Central();
+            c.GetProductionColor();
             cbYearAll.Checked = false;
             for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
             {
@@ -330,10 +332,23 @@
 
                 double.TryParse(tblGraph.Rows[i].Cells[1].Value.ToString(), out var eff);
 
-                if (eff > 93.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.FromArgb(138, 184, 44);
-                if (eff < 93.2 && eff > 83.7) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Gold;
-                if (eff < 83.7 && eff > 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Orange;
-                if (eff < 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.OrangeRed;
+                if (eff < Central.LowEff)
+                {
+                    tblGraph.Rows[i].Cells[1].Style.BackColor = Central.LowColor;
+                }
+                else if (eff > Central.LowEff && eff < Central.MediumEff)
+                {
+                    tblGraph.Rows[i].Cells[1].Style.BackColor = Central.MediumColor;
+                }
+                else if (eff > Central.MediumEff)
+                {
+                    tblGraph.Rows[i].Cells[1].Style.BackColor = Central.HighColor;
+                }
+
+                //    if (eff > 93.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.FromArgb(138, 184, 44);
+                //if (eff < 93.2 && eff > 83.7) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Gold;
+                //if (eff < 83.7 && eff > 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Orange;
+                //if (eff < 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.OrangeRed;
             }
             tblGraph.Columns[0].Width = 90;
             tblGraph.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -389,7 +404,7 @@
         private void CbYearAll_CheckedChanged(object sender, EventArgs e)
         {
             LoadGraph();
-            label2.ForeColor = default;
+            label2.ForeColor = default(Color);
             if (cbYearAll.Checked)
             {
                 label2.ForeColor = Color.SeaGreen;

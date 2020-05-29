@@ -757,6 +757,7 @@ namespace ganntproj1
                             qtyHSync, priceSync, name, aim, dept,isClosed);
                     }
                 }
+
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
              qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
              locked, holiday, isClosed, artPrice, hasProd, lockedProd,

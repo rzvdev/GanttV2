@@ -2035,7 +2035,10 @@
             if (ritardo < 0)
                 ritardo = 0;
             else
+            {
+                if (ritardocount == 0) ritardocount = 1;
                 ritardo /= ritardocount;
+            }
 
             return new object[] { totQ, totC, totD, 
                 Convert.ToInt32(tempoStazMedia), 

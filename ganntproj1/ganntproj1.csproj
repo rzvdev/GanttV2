@@ -42,6 +42,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>
     </DocumentationFile>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -358,6 +360,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\eff_color_32.png" />
     <None Include="Resources\show_24x24.png" />
     <None Include="Resources\update_100x100.png" />
     <None Include="Resources\822.gif" />
