@@ -26,6 +26,7 @@
  */
 namespace ganntproj1
 {
+    using ganntproj1.Models;
     using ganntproj1.Views;
     using System;
     using System.Collections.Generic;
@@ -167,6 +168,8 @@ namespace ganntproj1
         /// Gets a value indicating whether IsArticleSelection
         /// </summary>
         public static bool IsArticleSelection { get; set; }
+
+        public static List<Lines> ListOfLines = new List<Lines>();
 
 
         #region ProductionEff
@@ -438,9 +441,8 @@ namespace ganntproj1
 
             //LoadingInfo.UpdateText("Scaffolding...");
             var lst = (from models in ListOfModels
-                       select models).OrderBy(x => x.Department)
-                      .ThenBy(x => Convert.ToInt32(x.Aim.Remove(0, 5)))
-                      .ThenBy(x => x.StartDate);
+                       select models);
+
             ListOfModels = lst.ToList();
 
             treeMenu.Width = 0;
@@ -550,9 +552,9 @@ namespace ganntproj1
         private void LoadShifts()
         {
             var q = "select starttime,endtime from shifts where shift='" + Store.Default.selShift + "'";
-            using (var c = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
+            using (var c = new SqlConnection(SpecialConnStr))
             {
-                var cmd = new System.Data.SqlClient.SqlCommand(q, c);
+                var cmd = new SqlCommand(q, c);
                 c.Open();
                 var dr = cmd.ExecuteReader();
                 if (dr.HasRows)
@@ -634,6 +636,12 @@ namespace ganntproj1
                           .ThenBy(x => Convert.ToInt32(x.Aim.Remove(0, 5)))
                           .ThenBy(x => x.StartDate);
                 ListOfModels = lst.ToList();
+
+                var ln = from lines in Tables.Lines
+                         select lines;
+
+                ListOfLines = ln.ToList();
+
                 Cursor = Cursors.Default;
             }
             catch

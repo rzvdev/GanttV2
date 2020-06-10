@@ -1,5 +1,6 @@
 ﻿namespace ganntproj1
 {
+    using ganntproj1.Models;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -228,6 +229,7 @@
         /// </summary>
         public bool IsMouseOverRowText { get; set; }
 
+        public bool IsMouseOverRowLine { get; set; }
         /// <summary>
         /// Gets a value indicating whether IsMouseOverToggle
         /// </summary>
@@ -1093,23 +1095,39 @@
                         grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
                     }
 
+                    var desc = (from line in Central.ListOfLines
+                                where line.Line == bar.Tag && line.Department == bar.Department
+                                select line).SingleOrDefault().Description;
+
+
                     //var i = 0;
                     if (Store.Default.sectorId == 1)
                     {
                         var strLine = "LINEA ";
                         var lineNum = bar.Tag.Remove(0, 5);
+
                         var deptChar = bar.Department.Split(' ')[1];
                         var rowTit = strLine + lineNum + deptChar;
                         // Draws strings as row texts/values
                         grfx.DrawString(new string(' ', 10) + rowTit, new Font("Bahnschrift", 9, FontStyle.Regular),
                             new SolidBrush(Color.FromArgb(242,242,242)), 1,
                             ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 2));
+                        
+                        grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
+                       new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
+                       ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 + 12));
+
                     }
                     else
                     {
                         grfx.DrawString(new string(' ', 10) + bar.Tag, new Font("Bahnschrift", 9, FontStyle.Regular),
                            new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
                            (BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 2);
+
+
+                        grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
+                      new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
+                      ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 + 12));
                     }
                 }
 
@@ -1470,17 +1488,17 @@
             //from right: -22
             //from bottom: loc-5
 
-            if ((LocalMousePosition.X >= 9) & (LocalMousePosition.X <= 22)
-            & (LocalMousePosition.Y > 50))
+            if ((LocalMousePosition.X >= 0) & (LocalMousePosition.X <= 100)
+            & (LocalMousePosition.Y > 0))
             {
                 foreach (var bar in Bars)
                 {
-                    if (!((LocalMousePosition.Y > bar.TopLocation.Left.Y + 9) &
-                          (LocalMousePosition.Y < bar.BottomLocation.Left.Y + 5))) continue;
+                    if (!((LocalMousePosition.Y > bar.TopLocation.Left.Y) &
+                          (LocalMousePosition.Y < bar.BottomLocation.Left.Y))) continue;
                     if ((LocalMousePosition.X > 0) &
                         (LocalMousePosition.X < 100))
                     {
-                        MouseOverToggleValue = bar.Value;
+                        IsMouseOverRowLine = true;
                         //MouseClicked?.Invoke(sender, e);
                     }
                 }

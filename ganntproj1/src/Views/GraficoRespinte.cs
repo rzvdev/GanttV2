@@ -23,7 +23,6 @@ namespace ganntproj1.Views
 
             LoadaDataFromServer();
             CreateSituationContolReport();
-
             CreateGraphReport();
 
             cbAbatim.CheckedChanged += (s, e) =>
@@ -43,7 +42,7 @@ namespace ganntproj1.Views
             _dataTable.Columns.Add("Articolo");
             _dataTable.Columns.Add("Linea");
             _dataTable.Columns.Add("Acconto/Saldo");
-            _dataTable.Columns.Add("Capi");
+            _dataTable.Columns.Add("Capi\ncontrollati");
             _dataTable.Columns.Add("DataConsegna", typeof(string));
             _dataTable.Columns.Add("Accetata/Rispinta");
             _dataTable.Columns.Add("DataDiControlo", typeof(string));
@@ -68,7 +67,7 @@ namespace ganntproj1.Views
                 qAddit = " and sc.Stare_IT <> 'Chiusa' ";
             }
 
-            var q = "select c.id,nrcomanda,a.Articol ,Line,sc.Stare_IT,Consegnato,carico,convert(date,DataLivrare,110),Respinte,convert(date,DateControlled,110),Motivo,c.department " +
+            var q = "select c.id,nrcomanda,a.Articol ,Line,sc.Stare_IT,Consegnato,Respinte,convert(date,DataLivrare,110),Respinte,convert(date,DateControlled,110),Motivo,c.department " +
                 "from comenzi c inner join Articole a on c.IdArticol = a.Id inner join StareCmd sc on c.IdStare = sc.id " +
                 "where dataLivrare between '" + from + "' and '" + to + "'" + qAddit + " and  charindex(+',' + c.department + ',', '" + Store.Default.selDept + "') > 0 and line is not null " +
                 "order by convert(date,DataLivrare,110) desc";
@@ -114,22 +113,24 @@ namespace ganntproj1.Views
                 var line = row[3].ToString();
                 var state = row[4].ToString();
                 var conseg = row[5].ToString();
-                var carico = row[6].ToString();
+                var carico = row[6].ToString();     //respinte
+
                 DateTime.TryParse(row[7].ToString(), out var dateConseg);
 
                 string respinte;
+                double.TryParse(conseg, out var consegQty);
                 double.TryParse(carico, out var qty);
 
                 if (string.IsNullOrEmpty(row[8].ToString()))
                 {
                     respinte = "Accetata";
-                    totQty += qty;
+                    totQty += consegQty;
                 }
                 else
                 {
                     respinte = "Respinta";
                     totResQty += qty;
-                    totQty += qty;
+                    totQty += consegQty;
                 }
 
                 percentage = Math.Round(totResQty / totQty, 2);
@@ -147,7 +148,7 @@ namespace ganntproj1.Views
                 newRow[3] = article;
                 newRow[4] = line;
                 newRow[5] = state;
-                newRow[6] = carico;
+                newRow[6] = conseg;
                 newRow[7] = dateConseg != DateTime.MinValue ? dateConseg.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
                 newRow[8] = respinte;
                 newRow[9] = dateControlled != DateTime.MinValue ? dateControlled.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
@@ -243,11 +244,7 @@ namespace ganntproj1.Views
         }
 
         public void CreateGraphReport()
-        {
-            LoadingInfo.BorderColor = Brushes.SteelBlue;
-            LoadingInfo.ShowLoading();
-            LoadingInfo.InfoText = "Loading rejected orders infrastructure...";
-
+        {            
             var lbl = new System.Windows.Forms.Label();
             var tblGraph = new TableView();
             var lst = new List<string>();
@@ -274,8 +271,8 @@ namespace ganntproj1.Views
                 i++;
                 var newRow = _dataTableGraph.NewRow();
 
-                double.TryParse(row[6].ToString(), out var capiControllati);
-                double.TryParse(row[5].ToString(), out var respinti);
+                double.TryParse(row[5].ToString(), out var capiControllati);
+                double.TryParse(row[6].ToString(), out var respinti);
                     
                 var resPercentage = capiControllati != 0 ? Math.Round(respinti / capiControllati * 100.0, 1) : 0;
 
@@ -374,8 +371,6 @@ namespace ganntproj1.Views
                 pnGraphs.Controls.Add(tblGraph);
                 tblHeight = tblGraph.Height + lbl.Height + 15;
             }
-
-            LoadingInfo.CloseLoading();
         }
 
         private void TblGraph_BindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

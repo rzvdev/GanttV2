@@ -137,6 +137,12 @@
     </Compile>
     <Compile Include="src\Helpers\ExcelExport.cs" />
     <Compile Include="src\Helpers\Extensions.cs" />
+    <Compile Include="src\Views\DiffetatoInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Views\DiffetatoInput.Designer.cs">
+      <DependentUpon>DiffetatoInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Views\Fatturato.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -524,6 +530,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Views\Diffetato.resx">
       <DependentUpon>Diffetato.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Views\DiffetatoInput.resx">
+      <DependentUpon>DiffetatoInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Views\Fatturato.resx">
       <DependentUpon>Fatturato.cs</DependentUpon>

@@ -33,7 +33,7 @@ namespace ganntproj1
                      };
 
             var splitQuery = (from split in Central.ListOfModels
-                              where split.Name == Order && split.Department == Dept
+                              where split.Name == Order || split.Name == Order+".1" && split.Department == Dept
                               select split).ToList();
 
             listView1.Columns.Add("Line", 100, HorizontalAlignment.Left);

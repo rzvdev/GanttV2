@@ -81,7 +81,7 @@
               "comenzi.dvc,comenzi.note " +
               "from comenzi inner join articole on comenzi.idarticol = articole.id " +
               "where charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and comenzi.dataLivrare between '" + from + "' and '" + to + "' " +
-              "and comenzi.Respinte='Yes'";
+              "and comenzi.Respinte <> '' AND comenzi.Respinte IS NOT NULL";
             }
             else
             {
@@ -96,7 +96,7 @@
               "comenzi.tessitura," +
               "comenzi.dvc,comenzi.note " +
               "from comenzi inner join articole on comenzi.idarticol = articole.id " +
-              "where charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and comenzi.Respinte='Yes'";
+              "where charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and comenzi.Respinte<>'' AND comenzi.Respinte IS NOT NULL";
             }
 
             using (var conn = new System.Data.SqlClient.SqlConnection(Central.ConnStr))

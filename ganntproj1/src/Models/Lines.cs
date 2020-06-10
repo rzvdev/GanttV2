@@ -79,5 +79,19 @@ namespace ganntproj1.Models
                 _Department = value;
                 }
             }
+
+        private string _Description;
+        [Column(Storage = "_Description")]
+        public string Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                _Description = value;
+            }
         }
-    }
+    }    
+}    

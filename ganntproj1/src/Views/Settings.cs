@@ -58,11 +58,29 @@ namespace ganntproj1
             {
                 rbConfezione.Checked = true;
                 grpStiro.Enabled = false;
+                grpStiro.Enabled = false;
+                grpSart.Enabled = false;
             }
-            else
+            else if (Store.Default.sectorId == 2)
             {
                 rbStiro.Checked = true;
+                grpSart.Enabled = false;
                 grpConfezione.Enabled = false;
+                grpTess.Enabled=false;
+            }
+            else if (Store.Default.sectorId == 7)
+            {
+                grpStiro.Enabled = false;
+                grpSart.Enabled = false;
+                grpConfezione.Enabled = false;
+                radioButton1.Checked = true;
+            }
+            else if (Store.Default.sectorId == 8)
+            {
+                grpStiro.Enabled = false;
+                radioButton2.Checked = true;
+                grpConfezione.Enabled = false;
+                grpTess.Enabled = false;
             }
 
             var dept = Store.Default.arrDept;
@@ -134,6 +152,8 @@ namespace ganntproj1
 
             txtHoursConf.Text = Store.Default.confHour.ToString();
             txtHoursStiro.Text = Store.Default.stiroHour.ToString();
+            txtHoursTess.Text = Store.Default.tessHour.ToString();
+            txtHoursSart.Text = Store.Default.sartHour.ToString();
 
             if (Central.SettingsCompleted == Central.SettingsSys.Department)
             {
@@ -159,10 +179,10 @@ namespace ganntproj1
             var vp = new JobModel();
             var linesQuery = from lin in Models.Tables.Lines
                              where lin.Department == cbDept.Text
-                             orderby Convert.ToInt32(lin.Line.Remove(0,5))
-                             select new { lin.Line, lin.Members, lin.Abatimento};
+                             select new { lin.Line, lin.Members, lin.Abatimento, lin.Description};
             dgvLines.DataSource = linesQuery;
             }
+
         private void button1_Click_1(object sender, EventArgs e)
             {
             Store.Default.autoSync = cbAutoSync.Checked;
@@ -173,13 +193,17 @@ namespace ganntproj1
             Store.Default.confHour = confh;
             double.TryParse(txtHoursStiro.Text, out var stiroh);
             Store.Default.stiroHour = stiroh;
+            double.TryParse(txtHoursTess.Text, out var tessh);
+            Store.Default.tessHour = tessh;
+            double.TryParse(txtHoursSart.Text, out var sarth);
+            Store.Default.sartHour = sarth;
             Store.Default.downloadSource = txtDownloadSource.Text;
             Store.Default.updateCheckRuntime = cbUpdateRuntime.Checked;
-
             Store.Default.Save();
             SaveDepartments();
             Close();
             }
+
         private void btnOk_Click(object sender, EventArgs e)
             {
             //Store.Default.suggestData = cbSuggest.Checked;
@@ -191,6 +215,10 @@ namespace ganntproj1
             Store.Default.confHour = confh;
             double.TryParse(txtHoursStiro.Text, out var stiroh);
             Store.Default.stiroHour = stiroh;
+            double.TryParse(txtHoursTess.Text, out var tessh);
+            Store.Default.tessHour = tessh;
+            double.TryParse(txtHoursSart.Text, out var sarth);
+            Store.Default.sartHour = sarth;
             Store.Default.downloadSource = txtDownloadSource.Text;
             Store.Default.updateCheckRuntime = cbUpdateRuntime.Checked;
 
@@ -205,6 +233,7 @@ namespace ganntproj1
             var table = Central.ListOfModels;
             dataGridView2.DataSource = table;
             }
+
         private void btnCancel_Click(object sender, EventArgs e)
             {
             if (Store.Default.selShift == string.Empty)
@@ -314,6 +343,7 @@ namespace ganntproj1
                     lines.Members = nrp;
                     lines.Abatimento = ab;
                     lines.Department = cbDept.Text;
+                    lines.Description = txtDescriptionLine.Text;
 
                     Tables.Lines.InsertOnSubmit(lines);
                     Config.GetGanttConn().SubmitChanges();
@@ -349,7 +379,8 @@ namespace ganntproj1
                     Line = txtLine.Text,
                     Members = nrp,
                     Abatimento = ab,
-                    Department = cbDept.Text
+                    Department = cbDept.Text,
+                    Description =txtDescriptionLine.Text
                 };
 
                 Tables.Lines.InsertOnSubmit(lines);
@@ -359,6 +390,7 @@ namespace ganntproj1
             txtLine.Text = "";
             txtMembers.Text = "";
             txtAbatimentoEff.Text = "";
+            txtDescriptionLine.Text = "";
 
             LoadLines();
             }
@@ -588,8 +620,9 @@ namespace ganntproj1
                 m.Show();
                 return;
             }
-            if (dgvShifts.Rows.Count <= 0)
-                {
+
+            if (dgvShifts.Rows.Count <= 0)            
+            {
                 m = new MyMessage("Error", "No shift detection.")
                 {
                     MessageIcon = Properties.Resources.discard_changes_48
@@ -597,6 +630,7 @@ namespace ganntproj1
                 m.Show();
                 return;
                 }
+
             Store.Default.selShift = _selectedShift;
             m = new MyMessage("Shifts", _selectedShift + " has been saved as default shift.")
             {

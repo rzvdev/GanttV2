@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ganntproj1
@@ -41,7 +37,6 @@ namespace ganntproj1
             Department = depart;
             InitializeComponent();
         }
-
 
         private string _originalLine;
         private int _originalCapi;
@@ -283,7 +278,7 @@ namespace ganntproj1
 
                 var jobDuration = j.CalculateJobDuration(cbCommLinea.Text, newCapi, jobModel.QtyH, Department);    //production duration
 
-                var end = dtpCommData.Value;
+                var end = JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment);
                 var eDate = end.AddDays(+jobDuration);
 
                 using (var con = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
@@ -295,7 +290,7 @@ namespace ganntproj1
                     cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
                     cmd.Parameters.Add("@param5", SqlDbType.Int).Value = newCapi;
                     cmd.Parameters.Add("@param6", SqlDbType.Float).Value = jobModel.QtyH; ;
-                    cmd.Parameters.Add("@param7", System.Data.SqlDbType.BigInt).Value = JobModel.GetLSpan(dtpCommData.Value);
+                    cmd.Parameters.Add("@param7", System.Data.SqlDbType.BigInt).Value = JobModel.GetLSpan(JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment));
                     cmd.Parameters.Add("@param8", System.Data.SqlDbType.Int).Value = jobDuration;
                     cmd.Parameters.Add("@param9", System.Data.SqlDbType.BigInt).Value = JobModel.GetLSpan(eDate);
                     cmd.Parameters.Add("@param10", System.Data.SqlDbType.BigInt).Value = 0;

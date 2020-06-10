@@ -181,13 +181,16 @@ namespace ganntproj1
                 dr.Close();
             }
 
-            if (DateTime.Now.Hour > 14 && cboShift.Items.Count > 1)
+            if (cboShift.Items.Count > 0 )
             {
-                cboShift.SelectedIndex = 1;
-            }
-            else
-            {
-                cboShift.SelectedIndex = 0;
+                if (DateTime.Now.Hour > 14 && cboShift.Items.Count > 1)
+                {
+                    cboShift.SelectedIndex = 1;
+                }
+                else
+                {
+                    cboShift.SelectedIndex = 0;
+                }
             }
         }
 

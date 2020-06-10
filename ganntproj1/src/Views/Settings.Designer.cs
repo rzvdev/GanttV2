@@ -52,10 +52,10 @@
             this.tpSectors = new System.Windows.Forms.TabPage();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.grpSart = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtHoursSart = new System.Windows.Forms.TextBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.grpTess = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtHoursTess = new System.Windows.Forms.TextBox();
             this.rbStiro = new System.Windows.Forms.RadioButton();
             this.grpStiro = new System.Windows.Forms.GroupBox();
             this.txtHoursStiro = new System.Windows.Forms.TextBox();
@@ -71,6 +71,8 @@
             this.lblConfB = new System.Windows.Forms.Label();
             this.lblConfA = new System.Windows.Forms.Label();
             this.tpLines = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtDescriptionLine = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.npdComplet = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
@@ -475,22 +477,22 @@
             // 
             this.grpSart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpSart.Controls.Add(this.textBox2);
+            this.grpSart.Controls.Add(this.txtHoursSart);
             this.grpSart.Location = new System.Drawing.Point(26, 295);
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(539, 123);
+            this.grpSart.Size = new System.Drawing.Size(549, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
-            // textBox2
+            // txtHoursSart
             // 
-            this.textBox2.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(442, 53);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(56, 23);
-            this.textBox2.TabIndex = 43;
+            this.txtHoursSart.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursSart.Location = new System.Drawing.Point(442, 53);
+            this.txtHoursSart.Name = "txtHoursSart";
+            this.txtHoursSart.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursSart.TabIndex = 43;
             // 
             // radioButton1
             // 
@@ -511,22 +513,22 @@
             // 
             this.grpTess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpTess.Controls.Add(this.textBox1);
+            this.grpTess.Controls.Add(this.txtHoursTess);
             this.grpTess.Location = new System.Drawing.Point(26, 20);
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(539, 123);
+            this.grpTess.Size = new System.Drawing.Size(549, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
-            // textBox1
+            // txtHoursTess
             // 
-            this.textBox1.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(442, 53);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(56, 23);
-            this.textBox1.TabIndex = 43;
+            this.txtHoursTess.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursTess.Location = new System.Drawing.Point(442, 53);
+            this.txtHoursTess.Name = "txtHoursTess";
+            this.txtHoursTess.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursTess.TabIndex = 43;
             // 
             // rbStiro
             // 
@@ -556,7 +558,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(539, 124);
+            this.grpStiro.Size = new System.Drawing.Size(549, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -654,7 +656,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(539, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(549, 123);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -722,6 +724,8 @@
             // 
             this.tpLines.AutoScroll = true;
             this.tpLines.BackColor = System.Drawing.SystemColors.Control;
+            this.tpLines.Controls.Add(this.label16);
+            this.tpLines.Controls.Add(this.txtDescriptionLine);
             this.tpLines.Controls.Add(this.groupBox2);
             this.tpLines.Controls.Add(this.label11);
             this.tpLines.Controls.Add(this.label10);
@@ -740,6 +744,26 @@
             this.tpLines.Size = new System.Drawing.Size(624, 368);
             this.tpLines.TabIndex = 2;
             this.tpLines.Text = "Lines";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 159);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(72, 15);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "Description:";
+            // 
+            // txtDescriptionLine
+            // 
+            this.txtDescriptionLine.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
+            this.txtDescriptionLine.Location = new System.Drawing.Point(92, 144);
+            this.txtDescriptionLine.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDescriptionLine.Name = "txtDescriptionLine";
+            this.txtDescriptionLine.Size = new System.Drawing.Size(116, 36);
+            this.txtDescriptionLine.TabIndex = 15;
+            this.txtDescriptionLine.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // groupBox2
             // 
@@ -797,7 +821,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(17, 144);
+            this.label11.Location = new System.Drawing.Point(16, 119);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(100, 15);
@@ -807,7 +831,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(17, 103);
+            this.label10.Location = new System.Drawing.Point(16, 78);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(74, 15);
@@ -817,7 +841,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 63);
+            this.label9.Location = new System.Drawing.Point(16, 38);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(34, 15);
@@ -827,7 +851,7 @@
             // txtAbatimentoEff
             // 
             this.txtAbatimentoEff.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
-            this.txtAbatimentoEff.Location = new System.Drawing.Point(122, 129);
+            this.txtAbatimentoEff.Location = new System.Drawing.Point(121, 104);
             this.txtAbatimentoEff.Margin = new System.Windows.Forms.Padding(2);
             this.txtAbatimentoEff.Name = "txtAbatimentoEff";
             this.txtAbatimentoEff.Size = new System.Drawing.Size(87, 36);
@@ -837,7 +861,7 @@
             // txtMembers
             // 
             this.txtMembers.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
-            this.txtMembers.Location = new System.Drawing.Point(122, 89);
+            this.txtMembers.Location = new System.Drawing.Point(121, 64);
             this.txtMembers.Margin = new System.Windows.Forms.Padding(2);
             this.txtMembers.Name = "txtMembers";
             this.txtMembers.Size = new System.Drawing.Size(87, 36);
@@ -847,7 +871,7 @@
             // txtLine
             // 
             this.txtLine.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
-            this.txtLine.Location = new System.Drawing.Point(97, 49);
+            this.txtLine.Location = new System.Drawing.Point(96, 24);
             this.txtLine.Margin = new System.Windows.Forms.Padding(2);
             this.txtLine.Name = "txtLine";
             this.txtLine.Size = new System.Drawing.Size(100, 36);
@@ -857,7 +881,7 @@
             // 
             this.pbDiscard.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbDiscard.Image = global::ganntproj1.Properties.Resources.discard_48;
-            this.pbDiscard.Location = new System.Drawing.Point(232, 129);
+            this.pbDiscard.Location = new System.Drawing.Point(231, 104);
             this.pbDiscard.Margin = new System.Windows.Forms.Padding(2);
             this.pbDiscard.Name = "pbDiscard";
             this.pbDiscard.Size = new System.Drawing.Size(36, 31);
@@ -870,7 +894,7 @@
             // 
             this.pbSave.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbSave.Image = global::ganntproj1.Properties.Resources.save_48;
-            this.pbSave.Location = new System.Drawing.Point(232, 93);
+            this.pbSave.Location = new System.Drawing.Point(231, 68);
             this.pbSave.Margin = new System.Windows.Forms.Padding(2);
             this.pbSave.Name = "pbSave";
             this.pbSave.Size = new System.Drawing.Size(36, 31);
@@ -883,7 +907,7 @@
             // 
             this.pbAdd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbAdd.Image = global::ganntproj1.Properties.Resources.add_48;
-            this.pbAdd.Location = new System.Drawing.Point(232, 57);
+            this.pbAdd.Location = new System.Drawing.Point(231, 32);
             this.pbAdd.Margin = new System.Windows.Forms.Padding(2);
             this.pbAdd.Name = "pbAdd";
             this.pbAdd.Size = new System.Drawing.Size(36, 31);
@@ -1809,9 +1833,11 @@
         private System.Windows.Forms.Label lblcolor1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.GroupBox grpSart;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtHoursSart;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox grpTess;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtHoursTess;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtDescriptionLine;
     }
     }

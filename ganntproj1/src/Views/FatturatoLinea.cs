@@ -529,6 +529,7 @@ namespace ganntproj1
 
             _lstCompare.Clear();
         }
+
         private bool CheckProductionExist(DateTime d, string line, string dept)
         {
             var q = from prod in _lstCompare
@@ -541,6 +542,7 @@ namespace ganntproj1
             if (prodList.Count > 0) return true;
             else return false;
         }
+
         private List<DataCollection> _lstCompare = new List<DataCollection>();
         private void LoadComparationList()
         {

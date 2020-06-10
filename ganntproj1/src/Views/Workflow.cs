@@ -1208,6 +1208,7 @@ namespace ganntproj1
                 _tmTip?.Dispose();
                 return;
             }
+
             if (_gChart.MouseOverRowValue == null)
             {
                 return;
@@ -1231,6 +1232,7 @@ namespace ganntproj1
             var dt = new DataTable();
             dt.Columns.Add("value");
             dt.Columns.Add("text");
+            
             if (_gChart.IsMouseOverProductionBar)
             {
                 dt.Rows.Add(new[] { "Commessa", model.Name });

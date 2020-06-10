@@ -1,5 +1,6 @@
 ﻿namespace ganntproj1
 {
+    using ganntproj1.Models;
     using ganntproj1.Views;
     using System;
     using System.Collections.Generic;
@@ -10,6 +11,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Runtime.InteropServices;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Windows.Forms;
 
@@ -1343,12 +1345,11 @@
 
                 var linesList = (from lines in Models.Tables.Lines
                                  where lines.Department == dept
-                                 orderby (Convert.ToInt32(lines.Line.Remove(0,5)))
                                  select lines);
 
                 foreach (var item in linesList)
                 {
-                    _cbLineChange.Items.Add(item.Line);
+                    _cbLineChange.Items.Add(item.Description);
                 }
                 _cbLineChange.SelectedIndex = _cbLineChange.FindString(lineTxt);
                 _cbLineChange.Font = new Font("Microsoft Sans Serif", 10);
@@ -1409,14 +1410,7 @@
             }
             if (e.ColumnIndex == 17)
             {
-                var asc = new AutoCompleteStringCollection();
-                asc.Add("Yes");
-                asc.Add("No");
-
                 _txtInput = new TextBox();
-                _txtInput.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                _txtInput.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                _txtInput.AutoCompleteCustomSource = asc;
                 _txtInput.Text = dgvReport.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 dgvReport.Controls.Add(_txtInput);
                 Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
@@ -1723,6 +1717,10 @@
             var article = dgvReport.CurrentRow.Cells[2].Value.ToString();
             var dept = dgvReport.CurrentRow.Cells["Department"].Value.ToString();
 
+            var lineInsteadDescripton = (from lines in Tables.Lines
+                                         where lines.Description == cb.Text && lines.Department == dept
+                                         select lines).SingleOrDefault().Line;
+
             if (stateNum == 2)
             {
                 MessageBox.Show("Programmation of an order with 'Chiuso' status can harm current display of the workflow.\n\nAction won't be performed.", "Stop", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
@@ -1747,7 +1745,7 @@
             var dg = MessageBox.Show("Do you want to program by total qty?", "Produzione gantt", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dg == DialogResult.Yes) byQty = true;
 
-            var d = JobModel.GetLineLastDate(cb.Text, dept);
+            var d = JobModel.GetLineLastDate(lineInsteadDescripton, dept);
 
             int qty;
             if (byQty)
@@ -1771,8 +1769,10 @@
                 qty = carico;
             }
             var j = new JobModel();
-            var jobDuration = j.CalculateJobDuration(cb.Text, qty, qtyH, dept);    //production duration
-            int.TryParse(j.CalculateDailyQty(cb.Text, qtyH, dept).ToString(), out var dailyQty);
+
+            
+            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept);    //production duration
+            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept).ToString(), out var dailyQty);
             var price = j.GetPrice(article);
             DateTime startDate;
             DateTime endDate;
@@ -2402,11 +2402,16 @@
 
             var eDate = startDate.AddDays(+duration);
 
+            var lineDesc = (from lines in Tables.Lines
+                       where lines.Description == line && lines.Department == dept
+                       select lines).SingleOrDefault();
+
+            var lineDescription = lineDesc != null ? lineDesc.Line : line;
             using (var con = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new System.Data.SqlClient.SqlCommand(q, con);
                 cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = order;
-                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = line;
+                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = lineDescription;
                 cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = article;
                 cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
                 cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;

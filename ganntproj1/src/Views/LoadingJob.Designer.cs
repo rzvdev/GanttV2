@@ -60,6 +60,7 @@
             // 
             // tmsiSplitCommessa
             // 
+            this.tmsiSplitCommessa.Enabled = false;
             this.tmsiSplitCommessa.Image = global::ganntproj1.Properties.Resources.split_16;
             this.tmsiSplitCommessa.Name = "tmsiSplitCommessa";
             this.tmsiSplitCommessa.Size = new System.Drawing.Size(176, 46);
