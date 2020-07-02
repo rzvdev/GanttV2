@@ -155,6 +155,11 @@ namespace ganntproj1
             txtHoursTess.Text = Store.Default.tessHour.ToString();
             txtHoursSart.Text = Store.Default.sartHour.ToString();
 
+            txtHoursConfW.Text = Store.Default.confHourW.ToString();
+            txtHoursStiroW.Text = Store.Default.stioHourW.ToString();
+            txtHoursTessW.Text = Store.Default.tessHourW.ToString();
+            txtHoursSartW.Text = Store.Default.sartHourW.ToString();
+
             if (Central.SettingsCompleted == Central.SettingsSys.Department)
             {
                 tc1.SelectedIndex = 2;
@@ -172,6 +177,9 @@ namespace ganntproj1
             lblcolor1.Text = "#" + Central.LowColor.ToArgb().ToString("x").Substring(2, 6);
             lblcolor2.Text = "#" + Central.MediumColor.ToArgb().ToString("x").Substring(2, 6);
             lblcolor3.Text = "#" + Central.HighColor.ToArgb().ToString("x").Substring(2, 6);
+
+            toggleCheckBox1.Checked = Store.Default.manualMembers;
+            toggleCheckBox2.Checked = Store.Default.manualDate;
         }
 
         private void LoadLines()
@@ -197,6 +205,14 @@ namespace ganntproj1
             Store.Default.tessHour = tessh;
             double.TryParse(txtHoursSart.Text, out var sarth);
             Store.Default.sartHour = sarth;
+            double.TryParse(txtHoursConfW.Text, out var confhw);
+            Store.Default.confHourW = confhw;
+            double.TryParse(txtHoursStiroW.Text, out var stirohw);
+            Store.Default.stioHourW = stirohw;
+            double.TryParse(txtHoursTessW.Text, out var tesshw);
+            Store.Default.tessHourW = tesshw;
+            double.TryParse(txtHoursSartW.Text, out var sarthw);
+            Store.Default.sartHourW = sarthw;
             Store.Default.downloadSource = txtDownloadSource.Text;
             Store.Default.updateCheckRuntime = cbUpdateRuntime.Checked;
             Store.Default.Save();
@@ -211,6 +227,7 @@ namespace ganntproj1
             Store.Default.backupData = cbBackupData.Checked;
             Store.Default.fastStart = cbFast.Checked;
             Store.Default.daysToFinish = Convert.ToInt32(npdComplet.Value);
+            
             double.TryParse(txtHoursConf.Text, out var confh);
             Store.Default.confHour = confh;
             double.TryParse(txtHoursStiro.Text, out var stiroh);
@@ -219,6 +236,16 @@ namespace ganntproj1
             Store.Default.tessHour = tessh;
             double.TryParse(txtHoursSart.Text, out var sarth);
             Store.Default.sartHour = sarth;
+
+            double.TryParse(txtHoursConfW.Text, out var confhw);
+            Store.Default.confHourW = confhw;
+            double.TryParse(txtHoursStiroW.Text, out var stirohw);
+            Store.Default.stioHourW = stirohw;
+            double.TryParse(txtHoursTessW.Text, out var tesshw);
+            Store.Default.tessHourW = tesshw;
+            double.TryParse(txtHoursSartW.Text, out var sarthw);
+            Store.Default.sartHourW = sarthw;
+
             Store.Default.downloadSource = txtDownloadSource.Text;
             Store.Default.updateCheckRuntime = cbUpdateRuntime.Checked;
 
@@ -295,7 +322,8 @@ namespace ganntproj1
             _selectedLine = dgvLines.SelectedRows[0].Cells[0].Value.ToString();
             txtLine.Text = _selectedLine;
             txtMembers.Text = dgvLines.SelectedRows[0].Cells[1].Value.ToString();
-            txtAbatimentoEff.Text = dgvLines.SelectedRows[0].Cells[2].Value.ToString();            
+            txtAbatimentoEff.Text = dgvLines.SelectedRows[0].Cells[2].Value.ToString();
+            txtDescriptionLine.Text = dgvLines.SelectedRows[0].Cells[3].Value.ToString();
             }
 
         private bool _isNew = false;
@@ -1026,6 +1054,28 @@ namespace ganntproj1
                 lbl3.BackColor = col.Color;
                 lblcolor3.Text = color;
             }
-        }       
+        }
+
+        private void label36_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toggleCheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.manualMembers = toggleCheckBox1.Checked;
+            Store.Default.Save();
+        }
+
+        private void toggleCheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.manualDate = toggleCheckBox2.Checked;
+            Store.Default.Save();
+        }
     }
 }

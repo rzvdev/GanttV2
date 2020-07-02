@@ -298,5 +298,77 @@ namespace ganntproj1 {
                 this["sartHour"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double confHourW {
+            get {
+                return ((double)(this["confHourW"]));
+            }
+            set {
+                this["confHourW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double stioHourW {
+            get {
+                return ((double)(this["stioHourW"]));
+            }
+            set {
+                this["stioHourW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double tessHourW {
+            get {
+                return ((double)(this["tessHourW"]));
+            }
+            set {
+                this["tessHourW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double sartHourW {
+            get {
+                return ((double)(this["sartHourW"]));
+            }
+            set {
+                this["sartHourW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool manualMembers {
+            get {
+                return ((bool)(this["manualMembers"]));
+            }
+            set {
+                this["manualMembers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool manualDate {
+            get {
+                return ((bool)(this["manualDate"]));
+            }
+            set {
+                this["manualDate"] = value;
+            }
+        }
     }
 }

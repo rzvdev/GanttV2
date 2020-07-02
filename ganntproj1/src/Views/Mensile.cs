@@ -160,6 +160,28 @@
                     cmd.ExecuteNonQuery();
                     c.Close();
                 }
+
+                var hour = 0.0;
+                var hourW = 0.0;
+                switch (Store.Default.sectorId)
+                {
+                    case 1:
+                        hour = Store.Default.confHour;
+                        hourW = Store.Default.confHourW;
+                        break;
+                    case 2:
+                        hour = Store.Default.stiroHour;
+                        hourW = Store.Default.stioHourW;
+                        break;
+                    case 7:
+                        hour = Store.Default.tessHour;
+                        hourW = Store.Default.tessHourW;
+                        break;
+                    case 8:
+                        hour = Store.Default.sartHour;
+                        hourW = Store.Default.sartHourW;
+                        break;
+                }
                 
                 var q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
                 q += "insert into tmpTable ";
@@ -173,7 +195,11 @@
                 q += "select datas,line,sum((qtyH * members))producibili, ";
                 q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
                 q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                q += "select datas,line, (produc / cnt * '" + Store.Default.confHour + "')producibili,(prevent / cnt * '" + Store.Default.confHour + "'),qty,dept from tmpSum ";
+                q += "select datas,line, (produc / cnt * " +
+                    "case when DATEPART(DW, datas) <> 7 THEN '" + 
+                      hour + "' ELSE '" + hourW + "' END)producibili," +
+                    "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
+                      hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
                 q += "drop table tmpTable drop table tmpSum";
 
                 var lst = new List<DataCollection>();

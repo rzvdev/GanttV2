@@ -40,6 +40,10 @@
             this.btnCallCarico = new System.Windows.Forms.Button();
             this.spContainer = new System.Windows.Forms.SplitContainer();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.label2 = new System.Windows.Forms.Label();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.cbArticle = new ganntproj1.ToggleCheckBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.btnShowEff = new System.Windows.Forms.Button();
             this.btnHolidays = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -51,7 +55,6 @@
             this.btnMegaBack = new System.Windows.Forms.Button();
             this.btnFow = new System.Windows.Forms.Button();
             this.btnMegaFow = new System.Windows.Forms.Button();
-            this.cbArticle = new ganntproj1.ToggleCheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spContainer)).BeginInit();
             this.spContainer.Panel1.SuspendLayout();
@@ -71,6 +74,9 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.toggleCheckBox1);
             this.panel1.Controls.Add(this.btnShowEff);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnHolidays);
@@ -100,7 +106,7 @@
             // label1
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(621, 7);
+            this.label1.Location = new System.Drawing.Point(736, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(2, 34);
@@ -112,7 +118,7 @@
             this.label17.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label17.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label17.Location = new System.Drawing.Point(61, 16);
+            this.label17.Location = new System.Drawing.Point(61, 17);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(53, 16);
             this.label17.TabIndex = 68;
@@ -121,7 +127,7 @@
             // label8
             // 
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Location = new System.Drawing.Point(902, 7);
+            this.label8.Location = new System.Drawing.Point(1017, 7);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(2, 34);
@@ -130,7 +136,7 @@
             // label7
             // 
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label7.Location = new System.Drawing.Point(139, 7);
+            this.label7.Location = new System.Drawing.Point(208, 7);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(2, 34);
@@ -140,7 +146,7 @@
             // 
             this.cbComm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbComm.FormattingEnabled = true;
-            this.cbComm.Location = new System.Drawing.Point(656, 12);
+            this.cbComm.Location = new System.Drawing.Point(771, 12);
             this.cbComm.Margin = new System.Windows.Forms.Padding(2);
             this.cbComm.Name = "cbComm";
             this.cbComm.Size = new System.Drawing.Size(92, 25);
@@ -151,7 +157,7 @@
             // 
             this.cbArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbArt.FormattingEnabled = true;
-            this.cbArt.Location = new System.Drawing.Point(752, 12);
+            this.cbArt.Location = new System.Drawing.Point(867, 12);
             this.cbArt.Margin = new System.Windows.Forms.Padding(2);
             this.cbArt.Name = "cbArt";
             this.cbArt.Size = new System.Drawing.Size(122, 25);
@@ -163,7 +169,7 @@
             this.btnCallCarico.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnCallCarico.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this.btnCallCarico.ForeColor = System.Drawing.Color.Black;
-            this.btnCallCarico.Location = new System.Drawing.Point(932, 9);
+            this.btnCallCarico.Location = new System.Drawing.Point(1047, 9);
             this.btnCallCarico.Margin = new System.Windows.Forms.Padding(2);
             this.btnCallCarico.Name = "btnCallCarico";
             this.btnCallCarico.Size = new System.Drawing.Size(151, 31);
@@ -207,6 +213,52 @@
             this.hScrollBar1.TabIndex = 4;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar1_Scroll);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(168, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 16);
+            this.label2.TabIndex = 73;
+            this.label2.Text = "Qty";
+            // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.toggleCheckBox1.Location = new System.Drawing.Point(120, 9);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(6);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 72;
+            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
+            // 
+            // cbArticle
+            // 
+            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbArticle.Location = new System.Drawing.Point(13, 9);
+            this.cbArticle.Name = "cbArticle";
+            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
+            this.cbArticle.Size = new System.Drawing.Size(42, 24);
+            this.cbArticle.TabIndex = 67;
+            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
+            // 
+            // button2
+            // 
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = global::ganntproj1.Properties.Resources.active_321;
+            this.button2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.button2.Location = new System.Drawing.Point(681, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(37, 40);
+            this.button2.TabIndex = 74;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // btnShowEff
             // 
             this.btnShowEff.FlatAppearance.BorderSize = 0;
@@ -214,7 +266,7 @@
             this.btnShowEff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowEff.Image = global::ganntproj1.Properties.Resources.eff_color_32;
             this.btnShowEff.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnShowEff.Location = new System.Drawing.Point(569, 4);
+            this.btnShowEff.Location = new System.Drawing.Point(638, 4);
             this.btnShowEff.Name = "btnShowEff";
             this.btnShowEff.Size = new System.Drawing.Size(37, 40);
             this.btnShowEff.TabIndex = 71;
@@ -228,7 +280,7 @@
             this.btnHolidays.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHolidays.Image = global::ganntproj1.Properties.Resources.event_32x32;
             this.btnHolidays.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnHolidays.Location = new System.Drawing.Point(526, 4);
+            this.btnHolidays.Location = new System.Drawing.Point(595, 4);
             this.btnHolidays.Name = "btnHolidays";
             this.btnHolidays.Size = new System.Drawing.Size(37, 40);
             this.btnHolidays.TabIndex = 69;
@@ -242,7 +294,7 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Image = global::ganntproj1.Properties.Resources.cartellina_edit_32x32;
-            this.button1.Location = new System.Drawing.Point(484, 4);
+            this.button1.Location = new System.Drawing.Point(553, 4);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(37, 40);
@@ -257,7 +309,7 @@
             this.btnHideDelay.FlatAppearance.BorderSize = 0;
             this.btnHideDelay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHideDelay.Image = global::ganntproj1.Properties.Resources.edit_big;
-            this.btnHideDelay.Location = new System.Drawing.Point(444, 4);
+            this.btnHideDelay.Location = new System.Drawing.Point(513, 4);
             this.btnHideDelay.Margin = new System.Windows.Forms.Padding(2);
             this.btnHideDelay.Name = "btnHideDelay";
             this.btnHideDelay.Size = new System.Drawing.Size(37, 40);
@@ -273,7 +325,7 @@
             this.btnDayInfo.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this.btnDayInfo.ForeColor = System.Drawing.Color.Black;
             this.btnDayInfo.Image = global::ganntproj1.Properties.Resources.close;
-            this.btnDayInfo.Location = new System.Drawing.Point(399, 4);
+            this.btnDayInfo.Location = new System.Drawing.Point(468, 4);
             this.btnDayInfo.Margin = new System.Windows.Forms.Padding(2);
             this.btnDayInfo.Name = "btnDayInfo";
             this.btnDayInfo.Size = new System.Drawing.Size(40, 40);
@@ -289,7 +341,7 @@
             this.btnZoomOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZoomOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomOut.Image = global::ganntproj1.Properties.Resources.zoom_out;
-            this.btnZoomOut.Location = new System.Drawing.Point(356, 4);
+            this.btnZoomOut.Location = new System.Drawing.Point(425, 4);
             this.btnZoomOut.Margin = new System.Windows.Forms.Padding(2);
             this.btnZoomOut.Name = "btnZoomOut";
             this.btnZoomOut.Size = new System.Drawing.Size(37, 40);
@@ -306,7 +358,7 @@
             this.btnZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZoomIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomIn.Image = global::ganntproj1.Properties.Resources.zoom_in;
-            this.btnZoomIn.Location = new System.Drawing.Point(315, 4);
+            this.btnZoomIn.Location = new System.Drawing.Point(384, 4);
             this.btnZoomIn.Margin = new System.Windows.Forms.Padding(2);
             this.btnZoomIn.Name = "btnZoomIn";
             this.btnZoomIn.Size = new System.Drawing.Size(37, 40);
@@ -322,7 +374,7 @@
             this.btnBack.FlatAppearance.BorderSize = 0;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBack.Image = global::ganntproj1.Properties.Resources.arrow_left;
-            this.btnBack.Location = new System.Drawing.Point(153, 4);
+            this.btnBack.Location = new System.Drawing.Point(222, 4);
             this.btnBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(37, 40);
@@ -336,7 +388,7 @@
             this.btnMegaBack.FlatAppearance.BorderSize = 0;
             this.btnMegaBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMegaBack.Image = global::ganntproj1.Properties.Resources.fast_rewind;
-            this.btnMegaBack.Location = new System.Drawing.Point(194, 4);
+            this.btnMegaBack.Location = new System.Drawing.Point(263, 4);
             this.btnMegaBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnMegaBack.Name = "btnMegaBack";
             this.btnMegaBack.Size = new System.Drawing.Size(37, 40);
@@ -350,7 +402,7 @@
             this.btnFow.FlatAppearance.BorderSize = 0;
             this.btnFow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFow.Image = global::ganntproj1.Properties.Resources.arrow_right;
-            this.btnFow.Location = new System.Drawing.Point(275, 4);
+            this.btnFow.Location = new System.Drawing.Point(344, 4);
             this.btnFow.Margin = new System.Windows.Forms.Padding(2);
             this.btnFow.Name = "btnFow";
             this.btnFow.Size = new System.Drawing.Size(37, 40);
@@ -364,23 +416,13 @@
             this.btnMegaFow.FlatAppearance.BorderSize = 0;
             this.btnMegaFow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMegaFow.Image = global::ganntproj1.Properties.Resources.fast_forward;
-            this.btnMegaFow.Location = new System.Drawing.Point(234, 4);
+            this.btnMegaFow.Location = new System.Drawing.Point(303, 4);
             this.btnMegaFow.Margin = new System.Windows.Forms.Padding(2);
             this.btnMegaFow.Name = "btnMegaFow";
             this.btnMegaFow.Size = new System.Drawing.Size(37, 40);
             this.btnMegaFow.TabIndex = 55;
             this.btnMegaFow.UseVisualStyleBackColor = false;
             this.btnMegaFow.Click += new System.EventHandler(this.btnMegaFow_Click);
-            // 
-            // cbArticle
-            // 
-            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbArticle.Location = new System.Drawing.Point(13, 12);
-            this.cbArticle.Name = "cbArticle";
-            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
-            this.cbArticle.Size = new System.Drawing.Size(42, 24);
-            this.cbArticle.TabIndex = 67;
-            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
             // 
             // Workflow
             // 
@@ -433,5 +475,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnHolidays;
         private System.Windows.Forms.Button btnShowEff;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
+        private ToggleCheckBox toggleCheckBox1;
     }
     }

@@ -28,13 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.cboYears = new System.Windows.Forms.ComboBox();
+            this.cbAbatim = new ganntproj1.ToggleCheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tableView1 = new ganntproj1.TableView();
-            this.cbAbatim = new ganntproj1.ToggleCheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cboMonth = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbCom = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbAr = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tableView1)).BeginInit();
             this.SuspendLayout();
@@ -42,6 +49,13 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.cbCom);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.cbAr);
+            this.panel1.Controls.Add(this.cboMonth);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.cboYears);
             this.panel1.Controls.Add(this.cbAbatim);
@@ -56,7 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 10);
+            this.label2.Location = new System.Drawing.Point(164, 13);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
@@ -69,17 +83,32 @@
             this.cboYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboYears.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboYears.FormattingEnabled = true;
-            this.cboYears.Location = new System.Drawing.Point(15, 28);
+            this.cboYears.Location = new System.Drawing.Point(166, 31);
             this.cboYears.Margin = new System.Windows.Forms.Padding(2);
             this.cboYears.Name = "cboYears";
             this.cboYears.Size = new System.Drawing.Size(92, 28);
             this.cboYears.TabIndex = 56;
             // 
+            // cbAbatim
+            // 
+            this.cbAbatim.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbAbatim.BackColor = System.Drawing.Color.Transparent;
+            this.cbAbatim.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbAbatim.Location = new System.Drawing.Point(383, 32);
+            this.cbAbatim.Margin = new System.Windows.Forms.Padding(2);
+            this.cbAbatim.Name = "cbAbatim";
+            this.cbAbatim.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbAbatim.Size = new System.Drawing.Size(42, 24);
+            this.cbAbatim.TabIndex = 42;
+            this.cbAbatim.Text = "Chec";
+            this.cbAbatim.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbAbatim.UseVisualStyleBackColor = true;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Location = new System.Drawing.Point(132, 35);
+            this.label7.Location = new System.Drawing.Point(283, 38);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(91, 13);
@@ -95,14 +124,14 @@
             this.tableView1.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.tableView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tableView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.tableView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.tableView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.tableView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableView1.EnableHeadersVisualStyles = false;
@@ -116,20 +145,93 @@
             this.tableView1.Size = new System.Drawing.Size(800, 378);
             this.tableView1.TabIndex = 14;
             // 
-            // cbAbatim
+            // label1
             // 
-            this.cbAbatim.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cbAbatim.BackColor = System.Drawing.Color.Transparent;
-            this.cbAbatim.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbAbatim.Location = new System.Drawing.Point(232, 29);
-            this.cbAbatim.Margin = new System.Windows.Forms.Padding(2);
-            this.cbAbatim.Name = "cbAbatim";
-            this.cbAbatim.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cbAbatim.Size = new System.Drawing.Size(42, 24);
-            this.cbAbatim.TabIndex = 42;
-            this.cbAbatim.Text = "Chec";
-            this.cbAbatim.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbAbatim.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 13);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 59;
+            this.label1.Text = "Month";
+            // 
+            // cboMonth
+            // 
+            this.cboMonth.BackColor = System.Drawing.Color.White;
+            this.cboMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMonth.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboMonth.FormattingEnabled = true;
+            this.cboMonth.Items.AddRange(new object[] {
+            "Gennaio",
+            "Febbraio",
+            "Marzo",
+            "Aprile",
+            "Maggio",
+            "Giugno",
+            "Luglio",
+            "Agosto",
+            "Settembre",
+            "Ottobre",
+            "Novembre",
+            "Dicembre"});
+            this.cboMonth.Location = new System.Drawing.Point(23, 31);
+            this.cboMonth.Margin = new System.Windows.Forms.Padding(2);
+            this.cboMonth.Name = "cboMonth";
+            this.cboMonth.Size = new System.Drawing.Size(137, 28);
+            this.cboMonth.TabIndex = 58;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(487, 17);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 63;
+            this.label3.Text = "Commessa";
+            // 
+            // cbCom
+            // 
+            this.cbCom.BackColor = System.Drawing.Color.White;
+            this.cbCom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCom.FormattingEnabled = true;
+            this.cbCom.Location = new System.Drawing.Point(489, 35);
+            this.cbCom.Margin = new System.Windows.Forms.Padding(2);
+            this.cbCom.Name = "cbCom";
+            this.cbCom.Size = new System.Drawing.Size(113, 23);
+            this.cbCom.TabIndex = 62;
+            this.cbCom.SelectedIndexChanged += new System.EventHandler(this.cbCom_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(603, 17);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(38, 13);
+            this.label4.TabIndex = 61;
+            this.label4.Text = "Articoli";
+            // 
+            // cbAr
+            // 
+            this.cbAr.BackColor = System.Drawing.Color.White;
+            this.cbAr.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbAr.FormattingEnabled = true;
+            this.cbAr.Location = new System.Drawing.Point(606, 35);
+            this.cbAr.Margin = new System.Windows.Forms.Padding(2);
+            this.cbAr.Name = "cbAr";
+            this.cbAr.Size = new System.Drawing.Size(131, 23);
+            this.cbAr.TabIndex = 60;
+            this.cbAr.SelectedIndexChanged += new System.EventHandler(this.cbAr_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label5.Location = new System.Drawing.Point(454, 26);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(2, 34);
+            this.label5.TabIndex = 64;
             // 
             // CommessaDefect
             // 
@@ -156,5 +258,12 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboYears;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cboMonth;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbCom;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbAr;
+        private System.Windows.Forms.Label label5;
     }
 }

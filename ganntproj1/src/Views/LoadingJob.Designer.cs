@@ -137,7 +137,6 @@
             this.dgvReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvReport.ColumnHeadersHeight = 90;
             this.dgvReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvReport.ContextMenuStrip = this.cmsTable;
             this.dgvReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvReport.EnableHeadersVisualStyles = false;
             this.dgvReport.Location = new System.Drawing.Point(0, 121);

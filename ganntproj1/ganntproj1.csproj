@@ -261,6 +261,12 @@
     <Compile Include="src\Views\Central.Designer.cs">
       <DependentUpon>Central.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Views\ProgramationControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Views\ProgramationControl.Designer.cs">
+      <DependentUpon>ProgramationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Views\Respinte.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -366,6 +372,8 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\active_321.png" />
+    <None Include="Resources\active_32.png" />
     <None Include="Resources\eff_color_32.png" />
     <None Include="Resources\show_24x24.png" />
     <None Include="Resources\update_100x100.png" />
@@ -587,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Views\Central.resx">
       <DependentUpon>Central.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Views\ProgramationControl.resx">
+      <DependentUpon>ProgramationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Views\Respinte.resx">
       <DependentUpon>Respinte.cs</DependentUpon>

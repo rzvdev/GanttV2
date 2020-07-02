@@ -921,9 +921,11 @@
             //grfx.SmoothingMode = SmoothingMode.AntiAlias;
             var geo = new Geometry();
             foreach (var bar in Bars)
-            {
+            {                
                 if (FilteredRowText != string.Empty && bar.RowText != FilteredRowText) continue;
-               
+
+                if (Central.IsActiveOrdersSelection && bar.ProdQty == bar.FixQty || Central.IsActiveOrdersSelection && bar.ProdQty == 0) continue;
+
                 var index = bar.RowIndex;
                 var scrollPos = ScrollPosition;
 
@@ -1010,10 +1012,25 @@
 
                     // Draws bar text
                     string rowTxt;
+                    string prodRowTxt;
                     if (Central.IsArticleSelection)
                         rowTxt = bar.Article;
                     else
                         rowTxt = bar.RowText;
+
+                    prodRowTxt = rowTxt;
+
+                    if (Central.IsQtySelection)
+                    {
+                        rowTxt = bar.FixQty.ToString();
+                        prodRowTxt = bar.ProdQty.ToString();
+                    }
+                    else
+                    {
+                        rowTxt = bar.RowText;
+                        prodRowTxt = rowTxt;
+                    }
+                    
                     var barTextWidth = grfx.MeasureString(rowTxt, _barFont).Width;
 
                     var brshProdText = bar.ProdColor == Color.FromArgb(175, 175, 175) ? Brushes.DimGray : Brushes.WhiteSmoke;
@@ -1064,7 +1081,7 @@
                         }
 
                         if (pw > 160)
-                            grfx.DrawString(rowTxt, _barFont, brshProdText,
+                            grfx.DrawString(prodRowTxt, _barFont, brshProdText,
                                 new PointF(px + (pw / 2) - (barTextWidth / 2), findCenterByY));
 
                         //prod over
@@ -1099,17 +1116,17 @@
                                 where line.Line == bar.Tag && line.Department == bar.Department
                                 select line).SingleOrDefault().Description;
 
-
                     //var i = 0;
                     if (Store.Default.sectorId == 1)
                     {
                         var strLine = "LINEA ";
                         var lineNum = bar.Tag.Remove(0, 5);
+                        var deptChar = bar.Department == "Confezione A" 
+                            || bar.Department == "Confezione B" ? bar.Department.Split(' ')[1] : "";
+                        var rowTitle = strLine + lineNum + deptChar;
 
-                        var deptChar = bar.Department.Split(' ')[1];
-                        var rowTit = strLine + lineNum + deptChar;
                         // Draws strings as row texts/values
-                        grfx.DrawString(new string(' ', 10) + rowTit, new Font("Bahnschrift", 9, FontStyle.Regular),
+                        grfx.DrawString(new string(' ', 10) + rowTitle, new Font("Bahnschrift", 9, FontStyle.Regular),
                             new SolidBrush(Color.FromArgb(242,242,242)), 1,
                             ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 2));
                         

@@ -26,6 +26,7 @@
  */
 namespace ganntproj1
 {
+    using ganntproj1.src.Views;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -33,6 +34,7 @@ namespace ganntproj1
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
     using System.Windows.Forms;
@@ -131,10 +133,12 @@ namespace ganntproj1
         /// </summary>
         public static Color TargetModelColor { get; set; }
 
+        public static int Members { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether TargetClosedByUser
-        /// </summary>
+        public static bool ByManualDate { get; set; }
+
+        public static DateTime ManualDateTime { get; set; }
+
         public static bool TargetClosedByUser { get; set; }
 
         /// <summary>
@@ -220,7 +224,7 @@ namespace ganntproj1
             _gChart.FilteredRowText = string.Empty;
             _gChart.FilteredRowAtt = string.Empty;
         }
-
+ 
         /// <summary>
         /// The LoadDataWithDateChange
         /// </summary>
@@ -265,10 +269,11 @@ namespace ganntproj1
             var rowIdx = 0;
             var elementIdx = 0;
             foreach (var model in Central.ListOfModels)
-            {
-                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
+            {                
+                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;                
+
                 if (model.Aim == DefaultAim && model.Department == DefaultDept && !islocked)
-                {
+                {                
                     _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));
                     elementIdx++;
                 }
@@ -294,6 +299,7 @@ namespace ganntproj1
                 timeToMoveForward = 0.0;
                 timeToMoveBack = 0.0;
                 var model = Central.ListOfModels.SingleOrDefault(x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept);
+             
                 var modelBefore = JobModel.GetModelIndex(model.Name, _indexerList, -1);
                 var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
                 if (modelBefore != null)
@@ -305,10 +311,13 @@ namespace ganntproj1
                     if (modelBefore.DelayEndDate == DateTime.MinValue) tck = 0;
                     else tck = modelBefore.DelayEndDate.Subtract(modelBefore.EndDate).TotalDays;
                     var before = modelBefore.EndDate.AddDays(tck);
-                    timeToMoveForward = before.Subtract(model.StartDate).TotalDays;
-                    timeToMoveBack = modelStartDate.Subtract(before).TotalDays;
-                    if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
-                    if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
+                    if (!model.ManualDate)
+                    {
+                        timeToMoveForward = before.Subtract(model.StartDate).TotalDays;
+                        timeToMoveBack = modelStartDate.Subtract(before).TotalDays;
+                        if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
+                        if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
+                    }                   
                 }
                 else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
                 {
@@ -417,7 +426,7 @@ namespace ganntproj1
                              select md)
                              .Update(st =>
                              {
-                                 st.StartDate = model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
+                                 st.StartDate = !model.ManualDate ? model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack) : model.StartDate;
                                  st.EndDate = jobEnd.AddMinutes(-1);
                                  st.DelayTime = delayTs.Ticks;
                                  st.DelayStartDate = delayStart;
@@ -539,6 +548,12 @@ namespace ganntproj1
 
             foreach (var obj in _objList)
             {
+
+                if (!Central.IsResetJobLoader)
+                {
+                    if (obj.FromTime.Date < Central.DateFrom.Date || obj.FromTime.Date > Central.DateTo.Date) continue;
+                }
+
                 _gChart.AddBars(obj.RowText, obj.RowText + "_" + obj.Tag, obj,
                     obj.FromTime, obj.ToTime,
                     obj.ProdFromTime, obj.ProdToTime,
@@ -596,41 +611,17 @@ namespace ganntproj1
             TargetDepartment = val.Department;
             var start = _gChart.FromDate;
             var end = _gChart.ToDate;
-            //var frmTransp = new Form
-            //{
-            //    //Size = this.ClientRectangle.Size,
-            //    BackColor = Color.Black,
-            //    Opacity = 0.7,
-            //    FormBorderStyle = FormBorderStyle.None,
-            //    WindowState = FormWindowState.Maximized,
-            //    ShowIcon = false,
-            //    ShowInTaskbar = false
-            //};
-            ////_gChart.Refresh();
-            //frmTransp.Show();
+
             if (_tmTip != null) _tmTip.Dispose();
             var ci = new ProductionInput();
             ci.StartPosition = FormStartPosition.CenterScreen;
             ci.ShowDialog();
             ci.Dispose();
-            //frmTransp.Close();
             TargetOrder = string.Empty;
             _gChart.FromDate = start;
-            _gChart.ToDate = end;
-            //var c = new Central();
-            //c.GetBase(null);               
+            _gChart.ToDate = end;            
             AddTimelineObjects();
             _gChart.Refresh();
-
-            //ci.FormClosing += (s, ev) =>
-            //{
-
-            //};
-            //frmTransp.Click += (s, ev) =>
-            //{
-            //    ci.Close();
-            //    frmTransp.Close();
-            //};
         }
         /// <summary>
         /// The AddGanttContextMenu
@@ -795,6 +786,28 @@ namespace ganntproj1
                     TargetOrder = val.RowText;
                     TargetLine = val.Tag;
                     TargetDepartment = val.Department;
+
+                    var lockCounter = 0;
+                    var q = "select count(*) from objects where locked = 1 and aim = '" + TargetLine + "' and department = '" + TargetDepartment + "'";
+                    using (var c = new SqlConnection(Central.SpecialConnStr))
+                    {
+                        var cmd = new SqlCommand(q, c);
+                        c.Open();
+                        var dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                            while (dr.Read())
+                                int.TryParse(dr[0].ToString(), out lockCounter);
+
+                        c.Close();
+                        dr.Close();
+                    }
+
+                    if (lockCounter > 2)
+                    {
+                        MessageBox.Show("This line has lock limit " + lockCounter.ToString());
+                        return;
+                    }
+
                     using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
                     {
                         var isLockedStatus = val.Locked;
@@ -871,6 +884,8 @@ namespace ganntproj1
                 TargetLine = nextValue.Tag;
                 TargetDepartment = nextValue.Department;
                 var sDate = JobModel.GetLineLastDate(TargetLine, TargetDepartment);
+                ManualDateTime = sDate;
+
                 var activeLineMembers = Central.ListOfModels.Where(x => x.Aim == nextValue.Tag && x.Department == nextValue.Department).ToList();
                 LineActiveArticlesList = new List<string>();
                 foreach (var member in activeLineMembers)
@@ -930,10 +945,12 @@ namespace ganntproj1
                     ByQty = true;
                 }
                 var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment);
-                var eDate = sDate.AddDays(+dur);
+                var eDate = ManualDateTime.AddDays(+dur);
                 var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment);
                 int.TryParse(dailyQty.ToString(), out var dq);
-                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, sDate, dur, dq, price, orderQuery.Department);
+
+
+                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dq, price, orderQuery.Department,Members, ByManualDate);
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
                 // update job aim
                 {
@@ -1014,7 +1031,6 @@ namespace ganntproj1
 
                     if (getOrder != null)
                     {
-
                         var newQty = checkIsSplitted.LoadedQty + getOrder.LoadedQty;
 
                         var j = new JobModel();
@@ -1038,12 +1054,19 @@ namespace ganntproj1
                     ctx.ExecuteCommand("delete from objects where ordername={0} and aim={1} and department={2}",
                         TargetOrder, TargetLine, TargetDepartment);
                 }
-                using (var context = new System.Data.Linq.DataContext(Central.ConnStr))
+                using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
+                // update job aim
                 {
-                    // delete existing records
-                    context.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0} and line={1} and department={2}",
-                        TargetOrder, TargetLine, TargetDepartment);
+                    ctx.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0}" +
+                        " and Department={1}",
+                        TargetOrder, TargetDepartment);
                 }
+                //using (var context = new System.Data.Linq.DataContext(Central.ConnStr))
+                //{
+                //    // delete existing records
+                //    context.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0} and line={1} and department={2}",
+                //        TargetOrder, TargetLine, TargetDepartment);
+                //}
                 ListOfRemovedOrders.Add(TargetOrder);
                 Config.InsertOperationLog("manual_programmingremoval",
                     TargetOrder + "-" + TargetLine + "-" + Store.Default.selDept, "workflowcontroller");
@@ -1801,6 +1824,18 @@ namespace ganntproj1
             SetPrincipalBarIndex(true);
             ByQty = false;
             LoadingInfo.CloseLoading();
+        }
+
+        private void toggleCheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Central.IsQtySelection = !Central.IsQtySelection;
+            AddTimelineObjects();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Central.IsActiveOrdersSelection = !Central.IsActiveOrdersSelection;
+            AddTimelineObjects();
         }
     }
 }

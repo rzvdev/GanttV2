@@ -318,7 +318,7 @@ namespace ganntproj1
                 tableView1.Rows[r].Cells["TOTAL"].Value = "€ " + String.Format("{0:0.00}", Math.Round(tot, 2));
                 tot = 0.0;
             }
- 
+
             //calculate total on top
             for (var c = 1; c <= tableView1.Columns.Count - 1; c++)
             {
@@ -327,7 +327,6 @@ namespace ganntproj1
                 {
                     if (tableView1.Rows[r].Index == tot1 || tableView1.Rows[r].Index == tot2 ||
                         tableView1.Rows[r].Index == tot3 || tableView1.Rows[r].Index == tot4) continue;
-
                 
                     if (tableView1.Rows[r].Cells[c].Value.ToString().Contains("€ "))
                     {
@@ -340,9 +339,8 @@ namespace ganntproj1
                         t += x;
                     }
                 }
-                tableView1.Rows[0].Cells[c].Value = "€ " + String.Format("{0:0,0.00}", Math.Round(t, 2));
+                tableView1.Rows[0].Cells[c].Value = "€ " + String.Format("{0:0.00}", Math.Round(t, 2));
             }
-
 
             double.TryParse(tableView1.Rows[0].Cells["TOTAL"].Value.ToString().Split(' ')[1], out var totMed);
             var days = 0;
@@ -354,9 +352,9 @@ namespace ganntproj1
                 var day = row.Cells[0].Value.ToString().Split('/')[0];
                 var month = row.Cells[0].Value.ToString().Split('/')[1];
                 var str = month + "/" + day + "/" + cboYears.Text;
-                var check = DateTime.ParseExact(str, "MM/dd/yyyy", System.Globalization.CultureInfo.CurrentCulture);
+                var check = DateTime.ParseExact(str, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
-                if (check > Config.MinimalDate && row.Cells["TOTAL"].Value.ToString() != "€ 0.00")
+                if (check > Config.MinimalDate && check.DayOfWeek != DayOfWeek.Saturday && row.Cells["TOTAL"].Value.ToString() != "€ 0.00")
                 {
                     days++;
                 }

@@ -14,7 +14,7 @@ namespace ganntproj1.Views
         private System.Data.DataTable _dataTableGraph;
         private System.Data.DataTable _dt;
         private bool _isChiuse;
-
+        private BindingSource _bs = new BindingSource();
         public GraficoRespinte()
         {
             _dataTable = new System.Data.DataTable();
@@ -92,6 +92,14 @@ namespace ganntproj1.Views
 
             AddSituationContolColumns();
 
+            cbCom.Items.Clear();
+            cbAr.Items.Clear();
+            cbLin.Items.Clear();
+
+            cbCom.Items.Add("<Reset>");
+            cbAr.Items.Add("<Reset>");
+            cbLin.Items.Add("<Reset>");
+
             var i = 0;
 
             _dataTable.Rows.Add();  //row for total res
@@ -140,7 +148,10 @@ namespace ganntproj1.Views
 
                 //add department character to the line
                 var department = row[11].ToString().Split(' ');
-                if (department.Length > 0) line += " " + department[1];
+                //if (department.Length > 0) line += " " + department[1];
+                if (!cbCom.Items.Contains(commessa)) cbCom.Items.Add(commessa);
+                if (!cbAr.Items.Contains(article)) cbAr.Items.Add(article);
+                if (!cbLin.Items.Contains(line)) cbLin.Items.Add(line);
 
                 newRow[0] = id;
                 newRow[1] = i.ToString();
@@ -161,7 +172,9 @@ namespace ganntproj1.Views
             _dataTable.Rows[1][6] = totQty.ToString();
             _dataTable.Rows[1][8] = percentage.ToString() + "%";
 
-            tblRespinte.DataSource = _dataTable;
+            _bs = new BindingSource();
+            _bs.DataSource = _dataTable;
+            tblRespinte.DataSource = _bs;
 
             tblRespinte.Columns[0].Visible = false;
             tblRespinte.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -511,6 +524,57 @@ namespace ganntproj1.Views
 
         private void tblRespinte_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {           
+        }
+
+        private void cbCom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbCom.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tblRespinte.DataSource = _bs;
+                tblRespinte.Refresh();
+                return;
+            }
+
+            _bs.Filter = string.Format("CONVERT(" + tblRespinte.Columns[2].DataPropertyName +
+                                ", System.String) = '" + cbCom.Text.Replace("'", "''") + "'");
+
+            tblRespinte.DataSource = _bs;
+            tblRespinte.Refresh();
+        }
+
+        private void cbAr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAr.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tblRespinte.DataSource = _bs;
+                tblRespinte.Refresh();
+                return;
+            }
+
+            _bs.Filter = string.Format("CONVERT(" + tblRespinte.Columns[3].DataPropertyName +
+                                ", System.String) = '" + cbAr.Text.Replace("'", "''") + "'");
+
+            tblRespinte.DataSource = _bs;
+            tblRespinte.Refresh();
+        }
+
+        private void cbLin_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbLin.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tblRespinte.DataSource = _bs;
+                tblRespinte.Refresh();
+                return;
+            }
+
+            _bs.Filter = string.Format("CONVERT(" + tblRespinte.Columns[4].DataPropertyName +
+                                ", System.String) = '" + cbLin.Text.Replace("'", "''") + "'");
+
+            tblRespinte.DataSource = _bs;
+            tblRespinte.Refresh();
         }
     }
 }

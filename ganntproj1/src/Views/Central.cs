@@ -168,6 +168,8 @@ namespace ganntproj1
         /// Gets a value indicating whether IsArticleSelection
         /// </summary>
         public static bool IsArticleSelection { get; set; }
+        public static bool IsQtySelection { get; set; }
+        public static bool IsActiveOrdersSelection { get; set; }
 
         public static List<Lines> ListOfLines = new List<Lines>();
 
@@ -187,6 +189,7 @@ namespace ganntproj1
         #endregion
 
         public string RefreshTitle { get; set; }
+        public string SectorTitle { get; set; }
         //console drivers
         /// <summary>
         /// The GetConsoleWindow
@@ -496,6 +499,8 @@ namespace ganntproj1
             cbSaldo.Checked = true;
             pbReload.Image = Properties.Resources.refresh_total_32;
             IsArticleSelection = false;
+            IsQtySelection = false;
+            IsActiveOrdersSelection = false;
 
             var currentDate = DateTime.Now;
             dtpFrom.Value = new DateTime(currentDate.Year, currentDate.Month, 1);
@@ -713,7 +718,9 @@ namespace ganntproj1
                 bool.TryParse(row[30].ToString(), out var based);
 
                 int.TryParse(row[32].ToString(), out var workingDays);
-                    
+                int.TryParse(row[33].ToString(), out var members);
+                bool.TryParse(row[34].ToString(), out var manualDate);
+
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
                 var dvcDt = Config.MinimalDate.AddTicks(dvc);
@@ -769,7 +776,7 @@ namespace ganntproj1
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
              qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
              locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays));
+             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate));
 
                 if (updateProduction)
                 {
@@ -2169,9 +2176,10 @@ namespace ganntproj1
             var logoRect = new Rectangle(10, 5, 102, 40);
             e.Graphics.DrawImage(Properties.Resources.Logo, logoRect);
 
-            var strSector = Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
+            SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
+            //var strSector = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
 
-            var refreshTitle = strSector + "  " + RefreshTitle;
+            var refreshTitle = SectorTitle + RefreshTitle;
             var refreshTitleSize = e.Graphics.MeasureString(refreshTitle, fnt);
 
             var posX = pn.Width / 2 - refreshTitleSize.Width / 2;
@@ -2229,6 +2237,10 @@ namespace ganntproj1
                     lblDepartment.Text = Store.Default.selSector;
                     AddDepartmentsToCombo();
                     GetBase();
+
+                    SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
+
+                    pnTitlebar.Invalidate();
                 }
             };
             statusStrip.Refresh();

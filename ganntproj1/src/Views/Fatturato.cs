@@ -44,7 +44,31 @@
             cmd.Parameters.Add("@to_date", SqlDbType.DateTime).Value = Central.DateTo;
             cmd.Parameters.Add("@deptArr", SqlDbType.NVarChar).Value = Store.Default.arrDept;
             cmd.Parameters.Add("@useAbat", SqlDbType.Bit).Value = cbAcconto.Checked;
-            cmd.Parameters.Add("@useHours", SqlDbType.Float).Value = Store.Default.confHour;
+
+            var hour = 0.0;
+            var hourW = 0.0;
+            switch (Store.Default.sectorId)
+            {
+                case 1:
+                    hour = Store.Default.confHour;
+                    hourW = Store.Default.confHourW;
+                    break;
+                case 2:
+                    hour = Store.Default.stiroHour;
+                    hourW = Store.Default.stioHourW;
+                    break;
+                case 7:
+                    hour = Store.Default.tessHour;
+                    hourW = Store.Default.tessHourW;
+                    break;
+                case 8:
+                    hour = Store.Default.sartHour;
+                    hourW = Store.Default.sartHourW;
+                    break;
+            }
+
+            cmd.Parameters.Add("@useHours", SqlDbType.Float).Value = hour;
+            cmd.Parameters.Add("@useHoursW", SqlDbType.Float).Value = hourW;
 
             var da = new SqlDataAdapter(cmd);
             var ds = new DataSet();

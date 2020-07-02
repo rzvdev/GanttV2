@@ -80,6 +80,12 @@
             PropertyInfo pi = pnType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
             pi.SetValue(ctl, setting, null);
         }
+        public static void DoubleBuffered(this ComboBox ctl, bool setting)
+        {
+            Type pnType = ctl.GetType();
+            PropertyInfo pi = pnType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(ctl, setting, null);
+        }
 
         /// <summary>Represents a t source.</summary>
         /// <typeparam name="TArg0">The type of the arg0.</typeparam>

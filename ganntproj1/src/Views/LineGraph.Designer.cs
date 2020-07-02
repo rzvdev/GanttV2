@@ -38,6 +38,9 @@
             this.cboYears = new System.Windows.Forms.ComboBox();
             this.cboMonth = new System.Windows.Forms.ComboBox();
             this.tblGraph = new ganntproj1.TableView();
+            this.rbConfA = new System.Windows.Forms.RadioButton();
+            this.rbConfB = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tblGraph)).BeginInit();
             this.SuspendLayout();
@@ -45,6 +48,9 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.radioButton1);
+            this.panel1.Controls.Add(this.rbConfB);
+            this.panel1.Controls.Add(this.rbConfA);
             this.panel1.Controls.Add(this.cbYearAll);
             this.panel1.Controls.Add(this.btnZoomOut);
             this.panel1.Controls.Add(this.btnZoomIn);
@@ -56,7 +62,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(600, 72);
+            this.panel1.Size = new System.Drawing.Size(906, 72);
             this.panel1.TabIndex = 14;
             // 
             // cbYearAll
@@ -186,7 +192,7 @@
             this.tblGraph.ReadOnly = true;
             this.tblGraph.RowTemplate.Height = 24;
             this.tblGraph.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tblGraph.Size = new System.Drawing.Size(600, 294);
+            this.tblGraph.Size = new System.Drawing.Size(906, 294);
             this.tblGraph.TabIndex = 15;
             this.tblGraph.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblGraph_CellDoubleClick);
             this.tblGraph.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.TblGraph_CellPainting);
@@ -194,11 +200,44 @@
             this.tblGraph.SelectionChanged += new System.EventHandler(this.TblGraph_SelectionChanged);
             this.tblGraph.SizeChanged += new System.EventHandler(this.TblGraph_SizeChanged);
             // 
+            // rbConfA
+            // 
+            this.rbConfA.AutoSize = true;
+            this.rbConfA.Location = new System.Drawing.Point(534, 37);
+            this.rbConfA.Name = "rbConfA";
+            this.rbConfA.Size = new System.Drawing.Size(88, 17);
+            this.rbConfA.TabIndex = 63;
+            this.rbConfA.Text = "Confezione A";
+            this.rbConfA.UseVisualStyleBackColor = true;
+            this.rbConfA.CheckedChanged += new System.EventHandler(this.rbConfA_CheckedChanged);
+            // 
+            // rbConfB
+            // 
+            this.rbConfB.AutoSize = true;
+            this.rbConfB.Location = new System.Drawing.Point(635, 37);
+            this.rbConfB.Name = "rbConfB";
+            this.rbConfB.Size = new System.Drawing.Size(88, 17);
+            this.rbConfB.TabIndex = 64;
+            this.rbConfB.Text = "Confezione B";
+            this.rbConfB.UseVisualStyleBackColor = true;
+            this.rbConfB.CheckedChanged += new System.EventHandler(this.rbConfB_CheckedChanged);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(483, 37);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(36, 17);
+            this.radioButton1.TabIndex = 65;
+            this.radioButton1.Text = "All";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
             // LineGraph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(906, 366);
             this.Controls.Add(this.tblGraph);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -223,5 +262,8 @@
         private System.Windows.Forms.Button btnZoomOut;
         private System.Windows.Forms.Button btnZoomIn;
         private ToggleCheckBox cbYearAll;
+        private System.Windows.Forms.RadioButton rbConfB;
+        private System.Windows.Forms.RadioButton rbConfA;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }

@@ -42,6 +42,19 @@
             var c = new Central();
             c.GetProductionColor();
             cbYearAll.Checked = false;
+            if (Store.Default.sectorId != 1)
+            {
+                rbConfA.Visible = false;
+                rbConfB.Visible = false;
+                IsAll = true;
+                Department = Store.Default.selDept;
+            }
+            else
+            {
+                IsAll = true;
+                Department = Store.Default.selDept;
+            }
+
             for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
             {
                 cboYears.Items.Add(i);
@@ -59,6 +72,7 @@
             };
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
             cboMonth.SelectedIndex = DateTime.Now.Month - 1;
+
             base.OnLoad(e);
         }
         /// <summary>
@@ -83,6 +97,29 @@
 
                 _dataTable = new DataTable();
                 string q;
+                var hour = 0.0;
+                var hourW = 0.0;
+                switch (Store.Default.sectorId)
+                {
+                    case 1:
+                        hour = Store.Default.confHour;
+                        hourW = Store.Default.confHourW;
+                        break;
+                    case 2:
+                        hour = Store.Default.stiroHour;
+                        hourW = Store.Default.stioHourW;
+                        break;
+                    case 7:
+                        hour = Store.Default.tessHour;
+                        hourW = Store.Default.tessHourW;
+                        break;
+                    case 8:
+                        hour = Store.Default.sartHour;
+                        hourW = Store.Default.sartHourW;
+                        break;
+                }
+
+
                 if (cbYearAll.Checked)
                 {
                     q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
@@ -90,14 +127,15 @@
                     q += "select convert(date,data,101),line,qtyH,members,(cast(abatim as float)/100), ";
                     q += "capi,department from viewproduction ";
                     q += "where DATEPART(YEAR, data)= '" + year + "' ";
-                    q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
+                    q += "and charindex(+ ',' + department + ',', '" + Department + "' ) > 0 ";
                     q += "order by department,len(line),line,convert(date, data, 101) ";
                     q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
                     q += "insert into tmpSum ";
                     q += "select datas,line,sum((qtyH * members))producibili, ";
                     q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
                     q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                    q += "select datas,line, (produc / cnt * '" + Store.Default.confHour + "')producibili,(prevent / cnt * '" + Store.Default.confHour + "'),qty,dept  from tmpSum ";
+                    q += "select datas,line, (produc / cnt * case when datepart(DW,datas) <> 7 then '" + hour + "' else '" + hourW + "' end)producibili," +
+                        "(prevent / cnt *  case when datepart(DW,datas) <> 7 then '" + hour + "' else '" + hourW + "' end),qty,dept  from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
                 }
                 else
@@ -107,14 +145,15 @@
                     q += "select convert(date,data,101),line,qtyH,members,(cast(abatim as float)/100), ";
                     q += "capi,department from viewproduction ";
                     q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
-                    q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
+                    q += "and charindex(+ ',' + department + ',', '" + Department + "' ) > 0 ";
                     q += "order by department,len(line),line,convert(date, data, 101) ";
                     q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
                     q += "insert into tmpSum ";
                     q += "select datas,line,sum((qtyH * members))producibili, ";
                     q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
                     q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                    q += "select datas,line, (produc / cnt * '" + Store.Default.confHour + "')producibili,(prevent / cnt * '" + Store.Default.confHour + "'),qty,dept  from tmpSum ";
+                    q += "select datas,line, (produc / cnt * case when datepart(DW,datas) <> 7 then '" + hour + "' else '" + hourW + "' end)producibili," +
+                        "(prevent / cnt *  case when datepart(DW,datas) <> 7 then '" + hour + "' else '" + hourW + "' end),qty,dept  from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
                 }
                 using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
@@ -153,7 +192,8 @@
             dt.Columns.Add("75%");
             dt.Columns.Add("100%");
             dt.Columns.Add("Department");
-            
+            dt.Columns.Add("LineNr",typeof(int));
+
             if (_dataTable.Rows.Count <= 0) return;
             var ln =  Store.Default.sectorId == 1 ? _dataTable.Rows[0][1].ToString() + _dataTable.Rows[0][5].ToString().Split(' ')[1] : _dataTable.Rows[0][1].ToString();
             var totEff = 0.0;
@@ -184,6 +224,8 @@
                     if (eff > 120.0) eff = 120.0;
                     newRow[1] = eff;
                     newRow[7] = dept;
+                    int.TryParse(ln.Remove(0, 5), out var lnr);
+                    newRow[8] = lnr;
                     dt.Rows.Add(newRow);
                     MediaEff += eff;
                     totEff = 0.0;
@@ -200,11 +242,22 @@
             if (double.IsNaN(lastEff) || double.IsInfinity(lastEff)) lastEff = 0.0;
             if (lastEff > 120.0) lastEff = 120.0;
             newRow[1] = lastEff;
+            int.TryParse(ln.Remove(0, 5), out var lnrLast);
+            newRow[8] = lnrLast;
             dt.Rows.Add(newRow);
             MediaEff += lastEff;
             lineCount++;
 
-            dt.DefaultView.Sort = "Efficienza DESC";
+            if (IsAll)
+            {
+
+                dt.DefaultView.Sort = "Efficienza DESC";
+            }
+            else
+            {
+
+                dt.DefaultView.Sort = "LineNr ASC";
+            }
             dt = dt.DefaultView.ToTable();
             MediaEff /= lineCount;
             var mediaRow = dt.NewRow();
@@ -224,6 +277,7 @@
                     c.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
+            tblGraph.Columns[8].Visible = false;
             Invalidate();
         }
 
@@ -440,6 +494,32 @@
         private void tcbAb_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+
+        private string Department { get; set; }
+        private bool IsAll { get; set; }
+
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            Department = Store.Default.selDept;
+            IsAll = true;
+            LoadGraph();
+        }
+
+        private void rbConfA_CheckedChanged(object sender, EventArgs e)
+        {
+            Department = ",Confezione A,";
+            IsAll = false;
+            LoadGraph();
+        }
+
+        private void rbConfB_CheckedChanged(object sender, EventArgs e)
+        {
+            Department = ",Confezione B,";
+            IsAll = false;
+            LoadGraph();
         }
     }
 }

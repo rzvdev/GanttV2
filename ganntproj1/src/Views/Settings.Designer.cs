@@ -52,12 +52,21 @@
             this.tpSectors = new System.Windows.Forms.TabPage();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.grpSart = new System.Windows.Forms.GroupBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtHoursSartW = new System.Windows.Forms.TextBox();
             this.txtHoursSart = new System.Windows.Forms.TextBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.grpTess = new System.Windows.Forms.GroupBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.txtHoursTessW = new System.Windows.Forms.TextBox();
             this.txtHoursTess = new System.Windows.Forms.TextBox();
             this.rbStiro = new System.Windows.Forms.RadioButton();
             this.grpStiro = new System.Windows.Forms.GroupBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.txtHoursStiroW = new System.Windows.Forms.TextBox();
             this.txtHoursStiro = new System.Windows.Forms.TextBox();
             this.cbStiro2 = new ganntproj1.ToggleCheckBox();
             this.cbStiro1 = new ganntproj1.ToggleCheckBox();
@@ -65,6 +74,9 @@
             this.label19 = new System.Windows.Forms.Label();
             this.rbConfezione = new System.Windows.Forms.RadioButton();
             this.grpConfezione = new System.Windows.Forms.GroupBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.txtHoursConfW = new System.Windows.Forms.TextBox();
             this.txtHoursConf = new System.Windows.Forms.TextBox();
             this.cbConfB = new ganntproj1.ToggleCheckBox();
             this.cbConfA = new ganntproj1.ToggleCheckBox();
@@ -146,6 +158,12 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label40 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.toggleCheckBox2 = new ganntproj1.ToggleCheckBox();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -278,6 +296,12 @@
             // tpGeneral
             // 
             this.tpGeneral.BackColor = System.Drawing.SystemColors.Control;
+            this.tpGeneral.Controls.Add(this.label40);
+            this.tpGeneral.Controls.Add(this.label41);
+            this.tpGeneral.Controls.Add(this.label42);
+            this.tpGeneral.Controls.Add(this.label43);
+            this.tpGeneral.Controls.Add(this.toggleCheckBox1);
+            this.tpGeneral.Controls.Add(this.toggleCheckBox2);
             this.tpGeneral.Controls.Add(this.label6);
             this.tpGeneral.Controls.Add(this.label5);
             this.tpGeneral.Controls.Add(this.label3);
@@ -294,13 +318,13 @@
             this.tpGeneral.Name = "tpGeneral";
             this.tpGeneral.Size = new System.Drawing.Size(624, 368);
             this.tpGeneral.TabIndex = 4;
-            this.tpGeneral.Text = "Backup";
+            this.tpGeneral.Text = "General";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(71, 106);
+            this.label6.Location = new System.Drawing.Point(71, 84);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 18);
@@ -311,7 +335,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(71, 58);
+            this.label5.Location = new System.Drawing.Point(71, 36);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(122, 18);
@@ -321,7 +345,7 @@
             // label3
             // 
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label3.Location = new System.Drawing.Point(56, 140);
+            this.label3.Location = new System.Drawing.Point(56, 118);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(502, 2);
@@ -331,7 +355,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(71, 158);
+            this.label4.Location = new System.Drawing.Point(71, 136);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(178, 18);
@@ -343,7 +367,7 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(71, 261);
+            this.label20.Location = new System.Drawing.Point(71, 295);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(139, 18);
@@ -353,7 +377,7 @@
             // label8
             // 
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Location = new System.Drawing.Point(56, 89);
+            this.label8.Location = new System.Drawing.Point(56, 67);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(502, 2);
@@ -362,7 +386,7 @@
             // label17
             // 
             this.label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label17.Location = new System.Drawing.Point(56, 194);
+            this.label17.Location = new System.Drawing.Point(56, 172);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(502, 2);
@@ -375,7 +399,7 @@
             this.cbAutoSync.FlatAppearance.BorderSize = 0;
             this.cbAutoSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbAutoSync.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAutoSync.Location = new System.Drawing.Point(493, 57);
+            this.cbAutoSync.Location = new System.Drawing.Point(493, 35);
             this.cbAutoSync.Margin = new System.Windows.Forms.Padding(2);
             this.cbAutoSync.Name = "cbAutoSync";
             this.cbAutoSync.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -392,7 +416,7 @@
             this.cbBackupData.FlatAppearance.BorderSize = 0;
             this.cbBackupData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbBackupData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbBackupData.Location = new System.Drawing.Point(493, 105);
+            this.cbBackupData.Location = new System.Drawing.Point(493, 83);
             this.cbBackupData.Margin = new System.Windows.Forms.Padding(2);
             this.cbBackupData.Name = "cbBackupData";
             this.cbBackupData.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -409,7 +433,7 @@
             this.myCheckBox1.FlatAppearance.BorderSize = 0;
             this.myCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.myCheckBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.myCheckBox1.Location = new System.Drawing.Point(493, 157);
+            this.myCheckBox1.Location = new System.Drawing.Point(493, 135);
             this.myCheckBox1.Margin = new System.Windows.Forms.Padding(2);
             this.myCheckBox1.Name = "myCheckBox1";
             this.myCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -426,7 +450,7 @@
             this.cbFast.FlatAppearance.BorderSize = 0;
             this.cbFast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbFast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFast.Location = new System.Drawing.Point(493, 261);
+            this.cbFast.Location = new System.Drawing.Point(493, 295);
             this.cbFast.Margin = new System.Windows.Forms.Padding(2);
             this.cbFast.Name = "cbFast";
             this.cbFast.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -450,11 +474,11 @@
             this.tpSectors.Controls.Add(this.rbConfezione);
             this.tpSectors.Controls.Add(this.grpConfezione);
             this.tpSectors.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tpSectors.Location = new System.Drawing.Point(4, 44);
+            this.tpSectors.Location = new System.Drawing.Point(4, 24);
             this.tpSectors.Margin = new System.Windows.Forms.Padding(2);
             this.tpSectors.Name = "tpSectors";
             this.tpSectors.Padding = new System.Windows.Forms.Padding(2);
-            this.tpSectors.Size = new System.Drawing.Size(624, 368);
+            this.tpSectors.Size = new System.Drawing.Size(624, 388);
             this.tpSectors.TabIndex = 0;
             this.tpSectors.Text = "Sectors";
             // 
@@ -477,14 +501,43 @@
             // 
             this.grpSart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpSart.Controls.Add(this.label32);
+            this.grpSart.Controls.Add(this.label22);
+            this.grpSart.Controls.Add(this.txtHoursSartW);
             this.grpSart.Controls.Add(this.txtHoursSart);
             this.grpSart.Location = new System.Drawing.Point(26, 295);
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(549, 123);
+            this.grpSart.Size = new System.Drawing.Size(515, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(382, 87);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(54, 13);
+            this.label32.TabIndex = 46;
+            this.label32.Text = "Weekend";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(377, 58);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(58, 13);
+            this.label22.TabIndex = 45;
+            this.label22.Text = "Weekdays";
+            // 
+            // txtHoursSartW
+            // 
+            this.txtHoursSartW.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursSartW.Location = new System.Drawing.Point(442, 82);
+            this.txtHoursSartW.Name = "txtHoursSartW";
+            this.txtHoursSartW.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursSartW.TabIndex = 44;
             // 
             // txtHoursSart
             // 
@@ -513,14 +566,43 @@
             // 
             this.grpTess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpTess.Controls.Add(this.label38);
+            this.grpTess.Controls.Add(this.label39);
+            this.grpTess.Controls.Add(this.txtHoursTessW);
             this.grpTess.Controls.Add(this.txtHoursTess);
             this.grpTess.Location = new System.Drawing.Point(26, 20);
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(549, 123);
+            this.grpTess.Size = new System.Drawing.Size(515, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(378, 87);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(54, 13);
+            this.label38.TabIndex = 48;
+            this.label38.Text = "Weekend";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(373, 58);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(58, 13);
+            this.label39.TabIndex = 47;
+            this.label39.Text = "Weekdays";
+            // 
+            // txtHoursTessW
+            // 
+            this.txtHoursTessW.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursTessW.Location = new System.Drawing.Point(442, 82);
+            this.txtHoursTessW.Name = "txtHoursTessW";
+            this.txtHoursTessW.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursTessW.TabIndex = 44;
             // 
             // txtHoursTess
             // 
@@ -549,6 +631,9 @@
             // 
             this.grpStiro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpStiro.Controls.Add(this.label34);
+            this.grpStiro.Controls.Add(this.label35);
+            this.grpStiro.Controls.Add(this.txtHoursStiroW);
             this.grpStiro.Controls.Add(this.txtHoursStiro);
             this.grpStiro.Controls.Add(this.cbStiro2);
             this.grpStiro.Controls.Add(this.cbStiro1);
@@ -558,9 +643,35 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(549, 124);
+            this.grpStiro.Size = new System.Drawing.Size(515, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(383, 85);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(54, 13);
+            this.label34.TabIndex = 48;
+            this.label34.Text = "Weekend";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(378, 56);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(58, 13);
+            this.label35.TabIndex = 47;
+            this.label35.Text = "Weekdays";
+            // 
+            // txtHoursStiroW
+            // 
+            this.txtHoursStiroW.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursStiroW.Location = new System.Drawing.Point(442, 80);
+            this.txtHoursStiroW.Name = "txtHoursStiroW";
+            this.txtHoursStiroW.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursStiroW.TabIndex = 46;
             // 
             // txtHoursStiro
             // 
@@ -647,6 +758,9 @@
             // 
             this.grpConfezione.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpConfezione.Controls.Add(this.label36);
+            this.grpConfezione.Controls.Add(this.label37);
+            this.grpConfezione.Controls.Add(this.txtHoursConfW);
             this.grpConfezione.Controls.Add(this.txtHoursConf);
             this.grpConfezione.Controls.Add(this.cbConfB);
             this.grpConfezione.Controls.Add(this.cbConfA);
@@ -656,9 +770,37 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(549, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(515, 123);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(383, 88);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(54, 13);
+            this.label36.TabIndex = 48;
+            this.label36.Text = "Weekend";
+            this.label36.Click += new System.EventHandler(this.label36_Click);
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(378, 59);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(58, 13);
+            this.label37.TabIndex = 47;
+            this.label37.Text = "Weekdays";
+            this.label37.Click += new System.EventHandler(this.label37_Click);
+            // 
+            // txtHoursConfW
+            // 
+            this.txtHoursConfW.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHoursConfW.Location = new System.Drawing.Point(442, 82);
+            this.txtHoursConfW.Name = "txtHoursConfW";
+            this.txtHoursConfW.Size = new System.Drawing.Size(56, 23);
+            this.txtHoursConfW.TabIndex = 45;
             // 
             // txtHoursConf
             // 
@@ -737,11 +879,11 @@
             this.tpLines.Controls.Add(this.pbSave);
             this.tpLines.Controls.Add(this.pbAdd);
             this.tpLines.Controls.Add(this.dgvLines);
-            this.tpLines.Location = new System.Drawing.Point(4, 44);
+            this.tpLines.Location = new System.Drawing.Point(4, 24);
             this.tpLines.Margin = new System.Windows.Forms.Padding(2);
             this.tpLines.Name = "tpLines";
             this.tpLines.Padding = new System.Windows.Forms.Padding(2);
-            this.tpLines.Size = new System.Drawing.Size(624, 368);
+            this.tpLines.Size = new System.Drawing.Size(624, 388);
             this.tpLines.TabIndex = 2;
             this.tpLines.Text = "Lines";
             // 
@@ -881,7 +1023,7 @@
             // 
             this.pbDiscard.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbDiscard.Image = global::ganntproj1.Properties.Resources.discard_48;
-            this.pbDiscard.Location = new System.Drawing.Point(231, 104);
+            this.pbDiscard.Location = new System.Drawing.Point(231, 114);
             this.pbDiscard.Margin = new System.Windows.Forms.Padding(2);
             this.pbDiscard.Name = "pbDiscard";
             this.pbDiscard.Size = new System.Drawing.Size(36, 31);
@@ -894,7 +1036,7 @@
             // 
             this.pbSave.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbSave.Image = global::ganntproj1.Properties.Resources.save_48;
-            this.pbSave.Location = new System.Drawing.Point(231, 68);
+            this.pbSave.Location = new System.Drawing.Point(231, 78);
             this.pbSave.Margin = new System.Windows.Forms.Padding(2);
             this.pbSave.Name = "pbSave";
             this.pbSave.Size = new System.Drawing.Size(36, 31);
@@ -907,7 +1049,7 @@
             // 
             this.pbAdd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbAdd.Image = global::ganntproj1.Properties.Resources.add_48;
-            this.pbAdd.Location = new System.Drawing.Point(231, 32);
+            this.pbAdd.Location = new System.Drawing.Point(231, 42);
             this.pbAdd.Margin = new System.Windows.Forms.Padding(2);
             this.pbAdd.Name = "pbAdd";
             this.pbAdd.Size = new System.Drawing.Size(36, 31);
@@ -953,10 +1095,10 @@
             this.tpShifts.Controls.Add(this.pbSaveShift);
             this.tpShifts.Controls.Add(this.pbAddShift);
             this.tpShifts.Controls.Add(this.dgvShifts);
-            this.tpShifts.Location = new System.Drawing.Point(4, 44);
+            this.tpShifts.Location = new System.Drawing.Point(4, 24);
             this.tpShifts.Margin = new System.Windows.Forms.Padding(2);
             this.tpShifts.Name = "tpShifts";
-            this.tpShifts.Size = new System.Drawing.Size(624, 368);
+            this.tpShifts.Size = new System.Drawing.Size(624, 388);
             this.tpShifts.TabIndex = 5;
             this.tpShifts.Text = "Shifts";
             // 
@@ -1058,7 +1200,7 @@
             // 
             this.pbDiscardShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbDiscardShift.Image = global::ganntproj1.Properties.Resources.discard_48;
-            this.pbDiscardShift.Location = new System.Drawing.Point(235, 136);
+            this.pbDiscardShift.Location = new System.Drawing.Point(235, 146);
             this.pbDiscardShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbDiscardShift.Name = "pbDiscardShift";
             this.pbDiscardShift.Size = new System.Drawing.Size(36, 31);
@@ -1070,7 +1212,7 @@
             // 
             this.pbSaveShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbSaveShift.Image = global::ganntproj1.Properties.Resources.save_48;
-            this.pbSaveShift.Location = new System.Drawing.Point(235, 100);
+            this.pbSaveShift.Location = new System.Drawing.Point(235, 110);
             this.pbSaveShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbSaveShift.Name = "pbSaveShift";
             this.pbSaveShift.Size = new System.Drawing.Size(36, 31);
@@ -1082,7 +1224,7 @@
             // 
             this.pbAddShift.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbAddShift.Image = global::ganntproj1.Properties.Resources.add_48;
-            this.pbAddShift.Location = new System.Drawing.Point(235, 64);
+            this.pbAddShift.Location = new System.Drawing.Point(235, 74);
             this.pbAddShift.Margin = new System.Windows.Forms.Padding(2);
             this.pbAddShift.Name = "pbAddShift";
             this.pbAddShift.Size = new System.Drawing.Size(36, 31);
@@ -1115,10 +1257,10 @@
             // 
             this.tpModels.Controls.Add(this.dataGridView2);
             this.tpModels.Controls.Add(this.lblModelsTitle);
-            this.tpModels.Location = new System.Drawing.Point(4, 44);
+            this.tpModels.Location = new System.Drawing.Point(4, 24);
             this.tpModels.Margin = new System.Windows.Forms.Padding(2);
             this.tpModels.Name = "tpModels";
-            this.tpModels.Size = new System.Drawing.Size(624, 368);
+            this.tpModels.Size = new System.Drawing.Size(624, 388);
             this.tpModels.TabIndex = 3;
             this.tpModels.Text = "Models";
             this.tpModels.UseVisualStyleBackColor = true;
@@ -1141,7 +1283,7 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowTemplate.Height = 24;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(624, 344);
+            this.dataGridView2.Size = new System.Drawing.Size(624, 364);
             this.dataGridView2.TabIndex = 0;
             // 
             // lblModelsTitle
@@ -1651,6 +1793,82 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Location = new System.Drawing.Point(71, 192);
+            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(203, 18);
+            this.label40.TabIndex = 52;
+            this.label40.Text = "Use manually members input";
+            // 
+            // label41
+            // 
+            this.label41.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label41.Location = new System.Drawing.Point(56, 226);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(502, 2);
+            this.label41.TabIndex = 55;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label42.Location = new System.Drawing.Point(71, 244);
+            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(168, 18);
+            this.label42.TabIndex = 54;
+            this.label42.Text = "Use manually date input";
+            // 
+            // label43
+            // 
+            this.label43.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label43.Location = new System.Drawing.Point(56, 280);
+            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(502, 2);
+            this.label43.TabIndex = 57;
+            // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleCheckBox1.BackColor = System.Drawing.Color.Transparent;
+            this.toggleCheckBox1.FlatAppearance.BorderSize = 0;
+            this.toggleCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toggleCheckBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toggleCheckBox1.Location = new System.Drawing.Point(493, 191);
+            this.toggleCheckBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 53;
+            this.toggleCheckBox1.Text = "Chec";
+            this.toggleCheckBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toggleCheckBox1.UseVisualStyleBackColor = true;
+            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
+            // 
+            // toggleCheckBox2
+            // 
+            this.toggleCheckBox2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleCheckBox2.BackColor = System.Drawing.Color.Transparent;
+            this.toggleCheckBox2.FlatAppearance.BorderSize = 0;
+            this.toggleCheckBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toggleCheckBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toggleCheckBox2.Location = new System.Drawing.Point(493, 243);
+            this.toggleCheckBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.toggleCheckBox2.Name = "toggleCheckBox2";
+            this.toggleCheckBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.toggleCheckBox2.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox2.TabIndex = 56;
+            this.toggleCheckBox2.Text = "Chec";
+            this.toggleCheckBox2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toggleCheckBox2.UseVisualStyleBackColor = true;
+            this.toggleCheckBox2.CheckedChanged += new System.EventHandler(this.toggleCheckBox2_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1839,5 +2057,23 @@
         private System.Windows.Forms.TextBox txtHoursTess;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox txtDescriptionLine;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox txtHoursSartW;
+        private System.Windows.Forms.TextBox txtHoursTessW;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.TextBox txtHoursStiroW;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox txtHoursConfW;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Label label43;
+        private ToggleCheckBox toggleCheckBox1;
+        private ToggleCheckBox toggleCheckBox2;
     }
     }

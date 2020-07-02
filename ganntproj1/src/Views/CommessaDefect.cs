@@ -17,8 +17,11 @@ namespace ganntproj1.Views
 {
     public partial class CommessaDefect : Form
     {
+        private int Month { get; set; }
         private int Year { get; set; }
 
+
+        private BindingSource _bs = new BindingSource();
 
         private System.Data.DataTable _dataTable = new System.Data.DataTable();
         public CommessaDefect()
@@ -37,6 +40,11 @@ namespace ganntproj1.Views
                 LoadData();
             };
 
+            cboMonth.SelectedIndexChanged += (s, ev) =>
+            {
+                Month = cboMonth.SelectedIndex + 1;
+                LoadData();
+            };
             for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
             {
                 cboYears.Items.Add(i);
@@ -47,6 +55,7 @@ namespace ganntproj1.Views
                 LoadData();
             };
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
+            cboMonth.SelectedIndex = DateTime.Now.Month - 1;
         }
 
         private void LoadData()
@@ -100,11 +109,11 @@ namespace ganntproj1.Views
             string stateCondition;
             if (!isChiuso)
             {
-                stateCondition = "where comenzi.idstare=2 and comenzi.idsector is not null and DATEPART(YEAR, comenzi.DataLivrare)= '" + Year + "' order by comenzi.DataLivrare desc";
+                stateCondition = "where comenzi.idstare=2 and comenzi.idsector is not null and DATEPART(MONTH, comenzi.DataLivrare)= '" + Month + "' and DATEPART(YEAR, comenzi.DataLivrare)= '" + Year + "' order by comenzi.DataLivrare desc";
             }
             else
             {
-                stateCondition = "where comenzi.idstare<>2 and comenzi.idsector is not null and DATEPART(YEAR, comenzi.DataLivrare)= '" + Year + "' order by comenzi.DataLivrare desc";
+                stateCondition = "where comenzi.idstare<>2 and comenzi.idsector is not null and DATEPART(MONTH, comenzi.DataLivrare)= '" + Month + "' and DATEPART(YEAR, comenzi.DataLivrare)= '" + Year + "' order by comenzi.DataLivrare desc";
             }
 
             var q = @"select comenzi.nrcomanda,articole.articol,comenzi.cantitate,comenzi.consegnato,comenzi.Tessitura,comenzi.Confezione,comenzi.Department,comenzi.DataLivrare,comenzi.idstare from comenzi 
@@ -126,12 +135,20 @@ inner join articole on comenzi.idarticol = articole.id " + stateCondition;
 
             _dataTable.Rows.Add();
 
+
+            cbCom.Items.Clear();
+            cbAr.Items.Clear();
+            cbCom.Items.Add("<Reset>");
+            cbAr.Items.Add("<Reset>");
+
             foreach (DataRow row in dt.Rows)
             {
                 var key = "";
 
                 var commessa = row[0].ToString();
                 var article = row[1].ToString();
+                if (!cbCom.Items.Contains(commessa)) cbCom.Items.Add(commessa);
+                if (!cbAr.Items.Contains(article)) cbAr.Items.Add(article);
 
                 int.TryParse(row[2].ToString(), out var qty);
                 int.TryParse(row[3].ToString(), out var conseg);
@@ -149,7 +166,6 @@ inner join articole on comenzi.idarticol = articole.id " + stateCondition;
                 if (htbl.ContainsKey(key))
                 {
                     var j = Convert.ToInt32(htbl[key]);
-
 
                     if (department == "Stiro")
                     {
@@ -211,7 +227,9 @@ inner join articole on comenzi.idarticol = articole.id " + stateCondition;
                 }
             }
 
-            tableView1.DataSource = _dataTable;
+            _bs = new BindingSource();
+            _bs.DataSource = _dataTable;
+            tableView1.DataSource = _bs;
 
             CalculateTotals();
         }
@@ -376,16 +394,6 @@ inner join articole on comenzi.idarticol = articole.id " + stateCondition;
                 e.PaintContent(_rect);
                 e.Handled = true;
             }
-
-            //if (e.RowIndex > -1)
-            //{
-            //    if (tableView1.Rows[e.RowIndex].Cells[0].Value.ToString() == string.Empty)
-            //    {
-            //        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(161, 161, 161)), e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width, e.CellBounds.Height);
-            //        e.Graphics.FillRectangle(Brushes.White, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width, e.CellBounds.Height - 1);
-            //        e.Handled = true;
-            //    }
-            //}
         }
 
         private void DgvReport_Scroll(object sender, ScrollEventArgs e)
@@ -441,9 +449,50 @@ inner join articole on comenzi.idarticol = articole.id " + stateCondition;
                 }
             }
         }
+
         private void CommessaDefect_Load(object sender, EventArgs e)
         {
            
+        }
+
+        private void cbCom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbCom.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tableView1.DataSource = _bs;
+                tableView1.Refresh();
+                tableView1.Rows[0].Visible = true;
+                return;
+            }
+
+
+            _bs.Filter = string.Format("CONVERT(" + tableView1.Columns[1].DataPropertyName +
+                                ", System.String) = '" + cbCom.Text.Replace("'", "''") + "'");
+
+            tableView1.DataSource = _bs;
+            tableView1.Rows[0].Visible = false;
+            tableView1.Refresh();
+        }
+
+        private void cbAr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAr.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tableView1.DataSource = _bs;
+                tableView1.Refresh();
+
+                tableView1.Rows[0].Visible = true;
+                return;
+            }
+
+            _bs.Filter = string.Format("CONVERT(" + tableView1.Columns[2].DataPropertyName +
+                                ", System.String) = '" + cbAr.Text.Replace("'", "''") + "'");
+
+            tableView1.DataSource = _bs;
+            tableView1.Rows[0].Visible = false;
+            tableView1.Refresh();
         }
     }
 }

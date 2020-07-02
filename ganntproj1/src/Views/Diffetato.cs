@@ -21,8 +21,8 @@
             tableView1.DataBindingComplete += tableV_dbc;
             tableView1.EnableHeadersVisualStyles = false;
             tableView1.RowTemplate.Height = 18;
-            panel1.Visible = false;
-            if (Store.Default.sectorId == 2) panel1.Visible = true;
+
+            if (Store.Default.sectorId != 2) panel2.Visible = false;
 
             cbAbatim.CheckedChanged += (s, events) =>
             {
@@ -30,7 +30,7 @@
             };
         }
 
-
+        private BindingSource _bs = new BindingSource();
         /// <summary>
         /// Checks whether is by date selection
         /// </summary>
@@ -55,7 +55,7 @@
             var dt = new DataTable();
 
             dt.Columns.Add("C/A");
-            dt.Columns.Add("Comm.");
+            dt.Columns.Add("Commessa");
             dt.Columns.Add("Articolo");
             dt.Columns.Add("TOT Comm.");
             dt.Columns.Add("Data Arr.");
@@ -88,7 +88,10 @@
             var c4 = 0.0;
 
             var tblDb = new DataTable();
-
+            cbCom.Items.Clear();
+            cbAr.Items.Clear();
+            cbCom.Items.Add("<Reset>");
+            cbAr.Items.Add("<Reset>");
             string query;
             var from = $"{Central.DateFrom.Year}-{Central.DateFrom.Month}-{Central.DateFrom.Day}";
             var to = $"{Central.DateTo.Year}-{Central.DateTo.Month}-{Central.DateTo.Day}";
@@ -158,6 +161,8 @@
 
                 DateTime.TryParse(arr.GetValue(3).ToString(), out var arrivo);
                 DateTime.TryParse(arr.GetValue(5).ToString(), out var conseg);
+                if (!cbCom.Items.Contains(arr.GetValue(0).ToString())) cbCom.Items.Add(arr.GetValue(0).ToString());
+                if (!cbAr.Items.Contains(arr.GetValue(1).ToString())) cbAr.Items.Add(arr.GetValue(1).ToString());
 
                 if (carico == 0) carico = 1;
                 totcar += carico;
@@ -218,7 +223,9 @@
             totRow[18] = Math.Round(tot, 2).ToString();
             totRow[19] = Math.Round(totEff, 2).ToString();
 
-            tableView1.DataSource = dt;
+            _bs = new BindingSource();
+            _bs.DataSource = dt;
+            tableView1.DataSource = _bs;
 
             for (var c = 0; c <= tableView1.Columns.Count - 1; c++)
             {
@@ -239,7 +246,10 @@
         {
             tableView1.DataSource = null;
             var dt = new DataTable();
-         
+            cbCom.Items.Clear();
+            cbAr.Items.Clear();
+            cbCom.Items.Add("<Reset>");
+            cbAr.Items.Add("<Reset>");
             string query;
             var from = $"{Central.DateFrom.Year}-{Central.DateFrom.Month}-{Central.DateFrom.Day}";
             var to = $"{Central.DateTo.Year}-{Central.DateTo.Month}-{Central.DateTo.Day}";
@@ -294,7 +304,7 @@
             var tblView = new DataTable();
             tblView.Columns.Add("Id");
             tblView.Columns.Add("C/A");
-            tblView.Columns.Add("Comm.");
+            tblView.Columns.Add("Commessa");
             tblView.Columns.Add("Articolo");
             tblView.Columns.Add("Saldo");
             tblView.Columns.Add("Data Arr.");
@@ -333,6 +343,8 @@
 
                 DateTime.TryParse(arr[4].ToString(), out var dt1);
                 DateTime.TryParse(arr[6].ToString(), out var dt2);
+                if (!cbCom.Items.Contains(arr.GetValue(1).ToString())) cbCom.Items.Add(arr.GetValue(1).ToString());
+                if (!cbAr.Items.Contains(arr.GetValue(2).ToString())) cbAr.Items.Add(arr.GetValue(2).ToString());
 
                 newRow[0] = arr[0].ToString();
                 newRow[1] = i.ToString();
@@ -488,7 +500,7 @@
                 tb.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 if (Store.Default.sectorId == 2) return;
                 tb.Columns["C/A"].DefaultCellStyle.BackColor = Color.Gainsboro;
-                tb.Columns["Comm."].DefaultCellStyle.BackColor = Color.Gainsboro;
+                tb.Columns["Commessa"].DefaultCellStyle.BackColor = Color.Gainsboro;
                 tb.Columns["DIFF"].DefaultCellStyle.BackColor = Color.Gainsboro;
                 tb.Columns[0].Width = 30;
                 tb.Rows[0].DefaultCellStyle.BackColor = Color.White;
@@ -525,6 +537,47 @@
             {
                 LoadReportByDateStiro(CheckByDate);
             }            
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cbCom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbCom.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tableView1.DataSource = _bs;
+                tableView1.Refresh();
+                return;
+            }
+
+            var nr = Store.Default.sectorId != 2 ? 1 : 2;
+            _bs.Filter = string.Format("CONVERT(" + tableView1.Columns[nr].DataPropertyName +
+                                ", System.String) = '" + cbCom.Text.Replace("'", "''") + "'");
+
+            tableView1.DataSource = _bs;
+            tableView1.Refresh();
+        }
+
+        private void cbAr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAr.SelectedIndex == 0)
+            {
+                _bs.Filter = null;
+                tableView1.DataSource = _bs;
+                tableView1.Refresh();
+                return;
+            }
+
+            var nr = Store.Default.sectorId != 2 ? 2 : 3;
+            _bs.Filter = string.Format("CONVERT(" + tableView1.Columns[nr].DataPropertyName +
+                                ", System.String) = '" + cbAr.Text.Replace("'", "''") + "'");
+
+            tableView1.DataSource = _bs;
+            tableView1.Refresh();
         }
     }
 }

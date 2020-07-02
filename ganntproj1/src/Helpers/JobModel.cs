@@ -62,7 +62,7 @@
             DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, int dailyProd,
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
-            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, int workingdays)
+            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, int workingdays, int members, bool manualDate)
         {
             Name = name;
             Aim = aim;
@@ -98,6 +98,8 @@
             NewPrice = newPrice;
             Department = dept;
             WorkingDays = workingdays;
+            Members = members;
+            ManualDate = manualDate;
         }
 
         /// <summary>
@@ -260,6 +262,10 @@
 
         public int WorkingDays { get; set; }
 
+        public int Members { get; set; }
+
+        public bool ManualDate { get; set; }
+
         /// <summary>
         /// The GetDaysInRange
         /// </summary>
@@ -419,7 +425,10 @@
             if (qty == 0) return 0;
 
             var h = 0.0;
-            if (Store.Default.sectorId == 1) h = Store.Default.confHour; else h = Store.Default.stiroHour;
+            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
+            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
+            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
+            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
 
             var duration = Math.Round
                 (Convert.ToDouble(qty / (lineMembers * qtyH * h * abatimento)), 0);

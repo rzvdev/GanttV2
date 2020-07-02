@@ -576,7 +576,6 @@ namespace ganntproj1
             tableView1.ReadOnly = false;
             tableView1.Columns[4].ReadOnly = true;
             tableView1.Columns[4].Visible = false;
-            tableView1.Columns[5].ReadOnly = true;
             tableView1.Columns[1].DefaultCellStyle.BackColor = Color.LightYellow;
             tableView1.Columns[3].DefaultCellStyle.BackColor = Color.LightYellow;
             tableView1.Columns[8].DefaultCellStyle.BackColor = Color.LightYellow;
