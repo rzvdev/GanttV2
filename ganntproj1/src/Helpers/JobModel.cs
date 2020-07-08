@@ -62,7 +62,8 @@
             DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, int dailyProd,
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
-            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, int workingdays, int members, bool manualDate)
+            DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, 
+            int workingdays, int members, bool manualDate, int abatimen)
         {
             Name = name;
             Aim = aim;
@@ -100,6 +101,7 @@
             WorkingDays = workingdays;
             Members = members;
             ManualDate = manualDate;
+            Abatimen = abatimen;
         }
 
         /// <summary>
@@ -266,6 +268,8 @@
 
         public bool ManualDate { get; set; }
 
+        public int Abatimen { get; set; }
+
         /// <summary>
         /// The GetDaysInRange
         /// </summary>
@@ -369,35 +373,30 @@
             }
             return i;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
+
         public static long GetLSpan(DateTime dateTime)
         {
             return dateTime.Subtract(Config.MinimalDate).Ticks;
         }
-        /// <summary>
-        /// The CalculateDailyQty
-        /// </summary>
-        /// <param name="aim"></param>
-        /// <param name="qtyH"></param>
-        /// <returns></returns>
+
         public double CalculateDailyQty(string aim, double qtyH, string department)
         {
             var linesQuery = from lines in Models.Tables.Lines
                              where lines.Line == aim && lines.Department == department
                              select lines;
             var lineMembers = linesQuery.Select(x => x.Members).SingleOrDefault();
-            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
             if (lineMembers == 0) lineMembers = 1;
+            
+            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
             var abatimento = 0.0;
             if (lineAbatimento > 0.0)
                 abatimento = Math.Round(Convert.ToDouble(lineAbatimento) / 100, 2);
 
             var h = 0.0;
-            if (Store.Default.sectorId == 1) h = Store.Default.confHour; else h = Store.Default.stiroHour;
+            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
+            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
+            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
+            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
 
             return Math.Round(lineMembers * qtyH * h * abatimento, 0);
         }
@@ -416,9 +415,12 @@
             var linesQuery = from lines in Models.Tables.Lines
                              where lines.Line == aim && lines.Department == department
                              select lines;
+
             var lineMembers = linesQuery.Select(x => x.Members).SingleOrDefault();
-            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
             if (lineMembers == 0) lineMembers = 1;
+
+            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
+        
             var abatimento = 0.0;
             if (lineAbatimento > 0.0)
                 abatimento = Math.Round(Convert.ToDouble(lineAbatimento) / 100, 2);
@@ -439,6 +441,72 @@
             int.TryParse(Math.Round(duration, 0).ToString(), out var d);
             return d;
         }
+        public double CalculateDailyQty(string aim, double qtyH, string department, int members)
+        {
+            var linesQuery = from lines in Models.Tables.Lines
+                             where lines.Line == aim && lines.Department == department
+                             select lines;
+            var lineMembers = linesQuery.Select(x => x.Members).SingleOrDefault();
+            if (lineMembers == 0) lineMembers = 1;
+
+            if (members != lineMembers && members > 0) lineMembers = members;
+
+            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
+            var abatimento = 0.0;
+            if (lineAbatimento > 0.0)
+                abatimento = Math.Round(Convert.ToDouble(lineAbatimento) / 100, 2);
+
+            var h = 0.0;
+            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
+            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
+            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
+            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
+
+            return Math.Round(lineMembers * qtyH * h * abatimento, 0);
+        }
+
+        /// <summary>
+        /// The CalculateJobDuration
+        /// </summary>
+        /// <param name="aim"></param>
+        /// <param name="qty"></param>
+        /// <param name="qtyH"></param>
+        /// <returns></returns>
+        public int CalculateJobDuration(string aim,
+                                     int qty,
+                                     double qtyH, string department, int members)
+        {
+            var linesQuery = from lines in Models.Tables.Lines
+                             where lines.Line == aim && lines.Department == department
+                             select lines;
+
+            var lineMembers = linesQuery.Select(x => x.Members).SingleOrDefault();
+            if (lineMembers == 0) lineMembers = 1;
+            if (members != lineMembers && members > 0) lineMembers = members;
+
+            var lineAbatimento = linesQuery.Select(x => x.Abatimento).SingleOrDefault();
+
+            var abatimento = 0.0;
+            if (lineAbatimento > 0.0)
+                abatimento = Math.Round(Convert.ToDouble(lineAbatimento) / 100, 2);
+            if (qty == 0) return 0;
+
+            var h = 0.0;
+            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
+            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
+            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
+            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
+
+            var duration = Math.Round
+                (Convert.ToDouble(qty / (lineMembers * qtyH * h * abatimento)), 0);
+            if (duration <= 0)
+            {
+                duration = 1;
+            }
+            int.TryParse(Math.Round(duration, 0).ToString(), out var d);
+            return d;
+        }
+
         /// <summary>
         /// The GetJobContinum
         /// </summary>
@@ -591,25 +659,41 @@
         /// <returns></returns>
         public static DateTime GetLineLastDate(string line, string dept)
         {
-            var lng = 0L;
-            var q = "select max(enddate) from objects where aim='" + line + "' and department='" + dept + "'";
-            using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
-            {
-                var cmd = new System.Data.SqlClient.SqlCommand(q, c);
-                c.Open();
-                var dr = cmd.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    while (dr.Read())
-                    {
-                        long.TryParse(dr[0].ToString(), out lng);
-                    }
-                }
-                c.Close();
-            }
+            //var lng = 0L;
+            var query = from models in Central.ListOfModels
+                        where models.Aim == line && models.Department == dept
+                        select models;
 
-            var date = Config.MinimalDate.AddTicks(lng);
-            return date;
+            var lst = query.ToList();
+
+            var dt = new DateTime();
+            if (lst.Count == 0)
+            {
+                dt = Config.MinimalDate;
+            }
+            else
+            {
+                dt = lst.Max(e => e.EndDate);
+            }
+     
+            //var q = "select max(enddate) from objects where aim='" + line + "' and department='" + dept + "'";
+            //using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
+            //{
+            //    var cmd = new System.Data.SqlClient.SqlCommand(q, c);
+            //    c.Open();
+            //    var dr = cmd.ExecuteReader();
+            //    if (dr.HasRows)
+            //    {
+            //        while (dr.Read())
+            //        {
+            //            long.TryParse(dr[0].ToString(), out lng);
+            //        }
+            //    }
+            //    c.Close();
+            //}
+
+            //var date = maxDate; //Config.MinimalDate.AddTicks(lng);
+            return dt; //date;
         }
 
         /// <summary>

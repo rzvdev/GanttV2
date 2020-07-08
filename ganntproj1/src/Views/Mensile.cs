@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Data.Linq;
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Linq;
@@ -57,7 +58,7 @@
         /// </summary>
         /// <param name="e">The e<see cref="EventArgs"/></param>
         protected override void OnLoad(EventArgs e)
-        {
+        {            
             cboMonth.SelectedIndexChanged += (s, ev) =>
             {
                 Month = cboMonth.SelectedIndex + 1;
@@ -98,11 +99,24 @@
                 }
             };
 
+            toggleCheckBox1.CheckedChanged += (s, ev) =>
+            {
+                Ore = toggleCheckBox1.Checked;
+                //if (Mode == "mens")
+                //{
+                //    LoadDataMensile();
+                //}
+            };
+
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
             cboMonth.SelectedIndex = DateTime.Now.Month - 1;
+            toggleCheckBox1.Checked = false;
 
+            if (Mode != "mens")
+            {
+                toggleCheckBox1.Visible = false;
+            }
 
-            //LoadDataMensile();
 
             base.OnLoad(e);
         }
@@ -182,25 +196,54 @@
                         hourW = Store.Default.sartHourW;
                         break;
                 }
-                
-                var q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
-                q += "insert into tmpTable ";
-                q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
-                q += "capi,department from viewproduction ";
-                q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
-                q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
-                q += "order by department,len(line),line,convert(date, data, 101) ";
-                q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
-                q += "insert into tmpSum ";
-                q += "select datas,line,sum((qtyH * members))producibili, ";
-                q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
-                q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                q += "select datas,line, (produc / cnt * " +
-                    "case when DATEPART(DW, datas) <> 7 THEN '" + 
-                      hour + "' ELSE '" + hourW + "' END)producibili," +
-                    "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
-                      hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
-                q += "drop table tmpTable drop table tmpSum";
+
+                var q = "";
+
+                if (!Ore)
+                {
+                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
+                    q += "insert into tmpTable ";
+                    q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
+                    q += "capi,department from viewproduction ";
+                    q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
+                    q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
+                    q += "order by department,len(line),line,convert(date, data, 101) ";
+                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
+                    q += "insert into tmpSum ";
+                    q += "select datas,line,sum((qtyH * members))producibili, ";
+                    q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
+                    q += "group by datas,line,dept order by dept,len(line),line,datas ";
+                    q += "select datas,line, (produc / cnt * " +
+                        "case when DATEPART(DW, datas) <> 7 THEN '" +
+                          hour + "' ELSE '" + hourW + "' END)producibili," +
+                        "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
+                          hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
+                    q += "drop table tmpTable drop table tmpSum";
+
+                }
+                else
+                {
+                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
+                    q += "insert into tmpTable ";
+                    q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
+                    q += "capi,department from viewproduction ";
+                    q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
+                    q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
+                    q += "order by department,len(line),line,convert(date, data, 101) ";
+                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
+                    q += "insert into tmpSum ";
+                    q += "select datas,line,sum(7.5 * members)producibili, ";
+                    q += "sum((7.5 * members * abat))prevent, sum(capi / qtyH)qty,dept,count(1) from tmpTable ";
+                    q += "group by datas,line,dept order by dept,len(line),line,datas ";
+                    q += "select datas,line, (produc / cnt * " +
+                        "case when DATEPART(DW, datas) <> 7 THEN '" +
+                          hour + "' ELSE '" + hourW + "' END)producibili," +
+                        "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
+                          hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
+                    q += "drop table tmpTable drop table tmpSum";
+
+                }
+
 
                 var lst = new List<DataCollection>();
                 if (Mode == "mens")
@@ -1171,6 +1214,16 @@
                     }
                 con.Close();
             }            
+        }
+
+        private bool Ore { get; set; }
+        private void toggleCheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            //Ore = toggleCheckBox1.Checked;
+            //if (Mode == "mens")
+            //{
+            //    LoadDataMensile();
+            //}
         }
     }
 

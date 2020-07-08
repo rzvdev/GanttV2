@@ -33,8 +33,10 @@ namespace ganntproj1.src.Views
 
         private void ProgramationControl_Load(object sender, EventArgs e)
         {
+            dateTimePicker1.ShowCheckBox = Store.Default.manualDate;
             dateTimePicker1.Enabled = Store.Default.manualDate;
             numericUpDown1.Enabled = Store.Default.manualMembers;
+            
             SetDefaultValues();
 
             if (Store.Default.manualDate)
@@ -55,7 +57,7 @@ namespace ganntproj1.src.Views
             try
             {
                 var defaultMembers = from lines in Tables.Lines
-                                     where lines.Line == Line && lines.Department == Department
+                                     where lines.Description == Line && lines.Department == Department
                                      select lines;
                 var dm = defaultMembers.FirstOrDefault().Members;
                 decimal.TryParse(dm.ToString(), out var members);
@@ -75,7 +77,18 @@ namespace ganntproj1.src.Views
         private void SendValues()
         {
             DateTimes = dateTimePicker1.Value;
-            UseManualDate = dateTimePicker1.Checked;
+
+            var b = Store.Default.manualDate;
+            if (b)
+            {
+                b = dateTimePicker1.Checked;
+            }
+            else
+            {
+                b = false;
+            }
+            
+            UseManualDate = b;
             int.TryParse(numericUpDown1.Value.ToString(), out var memb);
             Members = memb;
             ByTotalQty = checkBox1.Checked;

@@ -302,7 +302,7 @@
                                 Workflow.Members = programDialog.Members;
                                 Workflow.ManualDateTime = programDialog.DateTimes;
                                 Workflow.ByQty = programDialog.ByTotalQty;
-
+   
                                 Close();
                             }
                             else
@@ -387,19 +387,19 @@
                 if (IsUpd)
                 {
                     queryCondition = "where Comenzi.DataProduzione is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.IdStare=4 and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and Comenzi.DataProduzione is null " +
+                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
                                       "and Comenzi.Line is null and Comenzi.isdeleted=0 " +
                                       "order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
                 }
                 else
                 {
                     queryCondition = "where Comenzi.DataProduzione is null and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
-                        "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.Line is null and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
-                        "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.IdStare=4 and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
-                        "and Comenzi.IdStare<>2 and Comenzi.DataProduzione is null " +
-                        "and Comenzi.Line is null and  Comenzi.isdeleted='0' " +
+                        "and Comenzi.IdStare=4 and Comenzi.isdeleted='0' or Comenzi.Line is null and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
+                        "and Comenzi.IdStare=4 and Comenzi.isdeleted='0' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
+                        "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
+                        "and Comenzi.Line is null and Comenzi.isdeleted='0' " +
                         "order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
                 }
             }
@@ -437,7 +437,8 @@
                      "Comenzi.ram_conf," +
                      "Comenzi.def_tess," +
                      "Comenzi.def_conf, " +
-                     "Articole.Prezzo " +
+                     "Articole.Prezzo, " +
+                     "Comenzi.Programmed as programmed " +
                      "from Comenzi" +
                      " inner join Articole on Comenzi.IdArticol = Articole.Id " + queryCondition;
 
@@ -489,7 +490,8 @@
                     }
                     prodStart = jobModel.StartDate;
                 }
-                newRow[0] = ReturnImageByState(row[0].ToString());
+                bool.TryParse(row["programmed"].ToString(), out var programmed);
+                newRow[0] = ReturnImageByState(row[0].ToString(),programmed);
                 newRow[1] = job;
                 newRow[2] = row[1].ToString();
                 newRow[3] = GetDescriptionInsteadOfLine(line, dept); // row[2].ToString(); //line
@@ -754,17 +756,30 @@
         /// </summary>
         /// <param name="ord">The ord<see cref="string"/></param>
         /// <returns>The <see cref="Image"/></returns>
-        private Image ReturnImageByState(string ord)
+        private Image ReturnImageByState(string ord, bool programmed = false)
         {
-            Image img1 = Properties.Resources.order_split_flag_16;
-            Image img2 = Properties.Resources.trash_16;
-            Image img3 = Properties.Resources.tick_icon_16;
+            Image img1 = Resources.order_split_flag_16;
+            Image img2 = Resources.trash_16;
+            Image img3 = Resources.tick_icon_16;
             Bitmap bmp = new Bitmap(24, 24); //empty
             Image img = bmp;
-            if (_lstOfSplittedOrd.Contains(ord + ".1")) img = img1;
-            else if (Workflow.ListOfRemovedOrders.Contains(ord)) img = img2;
-            else if (_listOfAcceptedOrder.Contains(ord)) img = img3;
-            return img;
+
+            if (!programmed)
+            {
+                if (_lstOfSplittedOrd.Contains(ord + ".1")) img = img1;
+                else if (Workflow.ListOfRemovedOrders.Contains(ord)) img = img2;
+                else if (_listOfAcceptedOrder.Contains(ord)) img = img3;
+                return img;
+            }
+            else
+            {
+                return img3;
+            }
+            //if (_lstOfSplittedOrd.Contains(ord + ".1")) img = img1;
+            //else if (Workflow.ListOfRemovedOrders.Contains(ord)) img = img2;
+            //else if (_listOfAcceptedOrder.Contains(ord)) img = img3;
+            //else if (programmed) img = img3;
+            //return img;
         }
         /// <summary>
         /// The ReturnImageByNote
@@ -1332,7 +1347,7 @@
         private Button _btnShowProd;
         private Button _btnShowFin;
         private DataTable _tmpTbl = new DataTable();
-        
+
         private void dgvReport_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex <= -1) return;
@@ -1355,14 +1370,6 @@
                     sph.ShowDialog();
                     sph.Dispose();
                 }
-
-                //if (_listOfAcceptedOrder.Contains(_orderToUpdate) && !_lstOfSplittedOrd.Contains(_orderToUpdate))
-                //{
-                //    var inf = new MyMessage("Status", "Accepted in the system");
-                //    //inf.InfoText = "Accepted in the system.";
-                //    inf.MessageIcon = ReturnImageByState(_orderToUpdate);
-                //    inf.Show();
-                //}
 
                 if (Workflow.ListOfRemovedOrders.Contains(_orderToUpdate) && !_lstOfSplittedOrd.Contains(_orderToUpdate))
                 {
@@ -1425,7 +1432,7 @@
                 _cbLineChange.DropDownWidth = 100;
                 _cbLineChange.DropDownHeight = 300;
                 _cbLineChange.BackColor = Color.LightYellow;
-                
+
                 _rowIdx = e.RowIndex;
                 _cellIdx = e.ColumnIndex;
                 _cbLineChange.Focus();
@@ -1514,13 +1521,48 @@
                     }
                 };
             }
-            
+
             _txtInput?.Focus();
 
-            if (e.ColumnIndex == 38 && Store.Default.sectorId == 8)
+            if (e.ColumnIndex == 0 && Store.Default.sectorId == 8 && dgvReport.Rows[e.RowIndex].Cells[38].Value.ToString() == "+" 
+                || e.ColumnIndex == 0 && Store.Default.sectorId == 8 && dgvReport.Rows[e.RowIndex].Cells[38].Value.ToString() == "-")
             {
-                if (dgvReport.Rows[e.RowIndex].Cells[38].Value.ToString() == string.Empty) return;
 
+                var isprog = false;
+                var q = "select programmed from comenzi where nrcomanda=@param1 and department=@param2";
+                using (var c = new SqlConnection(Central.ConnStr))
+                {
+                    var cmd = new SqlCommand(q, c);
+                    cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = dgvReport.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = "Sartoria";
+
+                    c.Open();
+                    var dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                        while (dr.Read()) bool.TryParse(dr[0].ToString(), out isprog);
+                    c.Close();
+                    dr.Close();
+                    cmd = null;
+                }
+
+                var mark = "MARK";
+                if (isprog) mark = "UNMARK";
+
+                var msg = MessageBox.Show("Do you want to " + mark + " this order as programmed?", "Carico lavoro", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (msg == DialogResult.Yes)
+                {
+                    using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
+                    {
+                        ctx.ExecuteCommand("update comenzi set Programmed={0} where NrComanda={1} and Department={2}", !isprog,
+                            dgvReport.Rows[e.RowIndex].Cells[1].Value.ToString(), "Sartoria");
+                    }
+
+                    dgvReport.Rows[e.RowIndex].Cells[0].Value = ReturnImageByState("", !isprog);
+                }
+            }
+
+            if (e.ColumnIndex == 38 && Store.Default.sectorId == 8)
+            {                
                 if (dgvReport.Rows[e.RowIndex].Cells[38].Value.ToString() == "+")
                 {
                     var art = dgvReport.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -1589,6 +1631,7 @@
                             newRow["Fin"] = string.Empty;
                         }
 
+                        newRow[3] = group;
                         newRow[13] = capiOra;
                         newRow[24] = ReturnImageByNote(dgvReport.Rows[e.RowIndex].Cells[3].Value.ToString());
                         newRow[38] = string.Empty;
@@ -1933,15 +1976,11 @@
             {
                 return;
             }
-
                             
             byQty = programDialog.ByTotalQty;
             d = programDialog.DateTimes;
             var members = programDialog.Members;
             var manualdate = programDialog.UseManualDate;
-           
-            //var dg = MessageBox.Show("Do you want to program by total qty?", "Produzione gantt", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            //if (dg == DialogResult.Yes) byQty = true;
  
             int qty;
             if (byQty)
@@ -1967,8 +2006,8 @@
 
             var j = new JobModel();
              
-            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept);    //production duration
-            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept).ToString(), out var dailyQty);
+            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);    //production duration
+            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members).ToString(), out var dailyQty);
             var price = j.GetPrice(article);
             DateTime startDate;
             DateTime endDate;
@@ -2159,6 +2198,7 @@
         /// The GetTotals
         /// </summary>
         /// <returns>The <see cref="object[]"/></returns>
+
         private object[] GetTotals()
         {
             var totQ = 0;
@@ -2266,6 +2306,7 @@
         /// </summary>
         /// <param name="sender">The sender<see cref="object"/></param>
         /// <param name="e">The e<see cref="DataGridViewCellPaintingEventArgs"/></param>
+
         private void DgvReport_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
                 
@@ -2603,10 +2644,11 @@
             }
 
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
-               "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department,membersnr,manualDate) values " +
+               "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
+               "membersnr,manualDate,abatimen) values " +
                "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
                "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32)";
+               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33)";
 
             var eDate = startDate.AddDays(+duration);
 
@@ -2615,6 +2657,8 @@
                        select lines).SingleOrDefault();
 
             var lineDescription = lineDesc != null ? lineDesc.Line : line;
+            var lineAbatimen = lineDesc != null ? lineDesc.Abatimento : 0;
+
             using (var con = new SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new SqlCommand(q, con);
@@ -2650,6 +2694,7 @@
                 cmd.Parameters.Add("@param30", SqlDbType.NVarChar).Value = dept;
                 cmd.Parameters.Add("@param31", SqlDbType.Int).Value = members;
                 cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
+                cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

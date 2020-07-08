@@ -128,6 +128,7 @@ namespace ganntproj1
         /// </summary>
         public static DateTime TargetModelStartDate { get; set; }
 
+
         /// <summary>
         /// Gets or sets the TargetModelColor
         /// </summary>
@@ -944,11 +945,10 @@ namespace ganntproj1
                     qty = orderQuery.Cantitate;
                     ByQty = true;
                 }
-                var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment);
+                var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Workflow.Members);
                 var eDate = ManualDateTime.AddDays(+dur);
-                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment);
+                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Workflow.Members);
                 int.TryParse(dailyQty.ToString(), out var dq);
-
 
                 loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dq, price, orderQuery.Department,Members, ByManualDate);
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))

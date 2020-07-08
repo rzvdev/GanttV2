@@ -27,6 +27,7 @@
 namespace ganntproj1
 {
     using ganntproj1.Models;
+    using ganntproj1.src.Views;
     using ganntproj1.Views;
     using System;
     using System.Collections.Generic;
@@ -720,6 +721,7 @@ namespace ganntproj1
                 int.TryParse(row[32].ToString(), out var workingDays);
                 int.TryParse(row[33].ToString(), out var members);
                 bool.TryParse(row[34].ToString(), out var manualDate);
+                int.TryParse(row[35].ToString(), out var abatimen);
 
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
@@ -776,7 +778,7 @@ namespace ganntproj1
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
              qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
              locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate));
+             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen));
 
                 if (updateProduction)
                 {
@@ -1087,6 +1089,19 @@ namespace ganntproj1
                 {
                     if (IsResetJobLoader) ResetStateFilters();
 
+                    LoadingInfo.CloseLoading();
+
+                    var frmPin = new PinInput();
+                    frmPin.StartPosition = FormStartPosition.CenterScreen;
+                    frmPin.ShowDialog();
+                    if (!frmPin.PinCorrect)
+                    {
+                        _fromNavigation = false;
+                        treeMenu.SelectedNode = treeMenu.Nodes[0].Nodes[0];
+                        treeMenu.Select();
+                        return;
+                    }
+                    frmPin.Dispose();
                     var frm = new Fatturato();
                     frm.WindowState = FormWindowState.Minimized;
                     frm.FormBorderStyle = FormBorderStyle.None;

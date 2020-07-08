@@ -328,10 +328,18 @@ namespace ganntproj1
             cbCommLinea.DisplayMember = "key";
             cbCommLinea.ValueMember = "value";
 
-            cbCommLinea.SelectedIndexChanged += (send, evargs) =>
-            {
-                txtPersone.Text = cbCommLinea.SelectedValue.ToString();
-            };
+            //cbCommLinea.SelectedIndexChanged += (send, evargs) =>
+            //{
+            //    txtPersone.Text = cbCommLinea.SelectedValue.ToString();
+            //};
+
+            var membersQuery = (from models in Central.ListOfModels
+                               where models.Name == Workflow.TargetOrder
+                               && models.Aim == Workflow.TargetLine
+                               && models.Department == Workflow.TargetDepartment
+                               select models).FirstOrDefault();
+
+            txtPersone.Text = membersQuery.Members.ToString();
 
             if (txtComm != null)
             {

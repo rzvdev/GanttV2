@@ -37,6 +37,8 @@
             this.cboMonth = new System.Windows.Forms.ComboBox();
             this.cbAbatim = new ganntproj1.ToggleCheckBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.tableView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +67,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.toggleCheckBox1);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.cboYears);
@@ -162,6 +166,33 @@
             this.label7.TabIndex = 41;
             this.label7.Text = "Abatimento 100%";
             // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleCheckBox1.BackColor = System.Drawing.Color.Transparent;
+            this.toggleCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toggleCheckBox1.Location = new System.Drawing.Point(465, 23);
+            this.toggleCheckBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 57;
+            this.toggleCheckBox1.Text = "Chec";
+            this.toggleCheckBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toggleCheckBox1.UseVisualStyleBackColor = true;
+            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Location = new System.Drawing.Point(431, 29);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.TabIndex = 56;
+            this.label3.Text = "ORE";
+            // 
             // Mensile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,5 +220,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboYears;
         private System.Windows.Forms.ComboBox cboMonth;
+        private ToggleCheckBox toggleCheckBox1;
+        private System.Windows.Forms.Label label3;
     }
 }
