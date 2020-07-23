@@ -1,30 +1,4 @@
-﻿/*
- * Copyright(c) 2017-2019 Necton Inc.All Rights Reserved.
- *
- * @NECTON_LICENSE_HEADER_START@
- *
- * This file contains Original Code and/or Modifications of Original Code
- * as defined in and that are subject to the Apple Public Source License
- * Version 2.0 (the 'License'). You may not use this file except in
- * compliance with the License.Please obtain a copy of the License at
- * http://www.opensource.necton.com/ncsl/ and read it before using this
- * file.
- *
- * The Original Code and all software distributed under the License are
- * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
- * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
- * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
- * Please see the License for the specific language governing rights and
- * limitations under the License.
- *
- * @NECTON_LICENSE_HEADER_END@
- */
-
-/*
- * sslKeyExchange.c - Support for key exchange and server key exchange
- */
-namespace ganntproj1
+﻿namespace ganntproj1
 {
     using ganntproj1.Models;
     using ganntproj1.src.Views;
@@ -45,129 +19,43 @@ namespace ganntproj1
     using System.Windows.Forms;
     using System.Xml.Linq;
 
-    /// <summary>
-    /// Defines the <see cref="Central" />
-    /// </summary>
     public partial class Central : Form
     {
-        /// <summary>
-        /// Defines the SettingsSys
-        /// </summary>
         public enum SettingsSys
         {
-            /// <summary>
-            /// Defines the Department
-            /// </summary>
             Department,
 
-            /// <summary>
-            /// Defines the Shift
-            /// </summary>
             Shift,
 
-            /// <summary>
-            /// Defines the Line
-            /// </summary>
             Line,
 
-            /// <summary>
-            /// Defines the Backup
-            /// </summary>
             Backup,
 
-            /// <summary>
-            /// Defines the Server
-            /// </summary>
             Server,
 
-            /// <summary>
-            /// Defines the Completed
-            /// </summary>
             Completed,
 
-            /// <summary>
-            /// Defines new update notification
-            /// </summary>
             NewUpdate,
         }
-        /// <summary>
-        /// Defines the _config
-        /// </summary>
         private readonly Config _config = new Config();
         private IntPtr _console = new IntPtr();
-        //public static string ConnStr = "data source=192.168.96.17;initial catalog=ONLYOU; User ID=sa; password=onlyouolimpias;";
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
-        /// <summary>
-        /// Defines the ConnStr
-        /// </summary>
-        //public static string ConnStr = "data source=quant\\quantnew;initial catalog=Ganttproj; User=boris; password=Provajder@123;";
-        /// <summary>
-        /// Defines the SpecialConnStr
-        /// </summary>
-        //public static string SpecialConnStr = "data source=quant\\quantnew;initial catalog=Ganttproj; User=boris; password=Provajder@123;";
-        /// <summary>
-        /// Gets or sets the ListOfModels
-        /// </summary>
         public static List<JobModel> ListOfModels { get; set; }
-        //private List<TreeNode> ListOfNodes { get; set; }
-        //private int CurrentNavIndex { get; set; }
-        /// <summary>
-        /// Gets the DateFrom
-        /// </summary>
         public static DateTime DateFrom { get; private set; }
-        /// <summary>
-        /// Gets the DateTo
-        /// </summary>
         public static DateTime DateTo { get; private set; }
-        /// <summary>
-        /// Gets the ShiftFrom
-        /// </summary>
         public static TimeSpan ShiftFrom { get; private set; }
-        /// <summary>
-        /// Gets the ShiftTo
-        /// </summary>
         public static TimeSpan ShiftTo { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsDvc
-        /// </summary>
         public static bool IsDvc { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsRdd
-        /// </summary>
         public static bool IsRdd { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsAcconto
-        /// </summary>
         public static bool IsAcconto { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsSaldo
-        /// </summary>
         public static bool IsSaldo { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsChiuso
-        /// </summary>
         public static bool IsChiuso { get; private set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether IsProgramare
-        /// </summary>
         public static bool IsProgramare { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether IsResetJobLoader
-        /// </summary>
         public static bool IsResetJobLoader { get; set; }
-        /// <summary>
-        /// Gets or sets the SettingsCompleted
-        /// </summary>
         public static SettingsSys SettingsCompleted { get; set; }
-        /// <summary>
-        /// Gets the IdStateArray
-        /// </summary>
         public static System.Text.StringBuilder IdStateArray { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether IsArticleSelection
-        /// </summary>
         public static bool IsArticleSelection { get; set; }
         public static bool IsQtySelection { get; set; }
         public static bool IsActiveOrdersSelection { get; set; }
@@ -191,29 +79,11 @@ namespace ganntproj1
 
         public string RefreshTitle { get; set; }
         public string SectorTitle { get; set; }
-        //console drivers
-        /// <summary>
-        /// The GetConsoleWindow
-        /// </summary>
-        /// <returns>The <see cref="IntPtr"/></returns>
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
-        /// <summary>
-        /// The ShowWindow
-        /// </summary>
-        /// <param name="hWnd">The hWnd<see cref="IntPtr"/></param>
-        /// <param name="nCmdShow">The nCmdShow<see cref="int"/></param>
-        /// <returns>The <see cref="bool"/></returns>
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-        /// <summary>
-        /// Defines the SwHide
-        /// </summary>
         private const int SwHide = 0;
-        //private const int SwShow = 5;
-        /// <summary>
-        /// 
-        /// </summary>
         private Settings _settings = new Settings();
 
         #region FormMovementService
@@ -348,10 +218,6 @@ namespace ganntproj1
 
         #endregion FormMovementService
 
-        /// <summary>
-        /// The Main
-        /// </summary>
-        /// <param name="args">The args<see cref="string[]"/></param>
         [STAThread]
         [Obsolete]
         private static void Main(string[] args)
@@ -364,30 +230,25 @@ namespace ganntproj1
             menu.WindowState = FormWindowState.Maximized;
             menu.ShowDialog();
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Central"/> class.
-        /// </summary>
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            {
+                return false;
+            }
+            return base.ProcessDialogKey(keyData);
+        }
         public Central()
         {
             InitializeComponent();
-            //this.SetBevel(false);
-
             pnForms.DoubleBuffered(true);
-            //pnTitlebar.DoubleBuffered(true);
             SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
-        /// <summary>
-        /// The Menu_Load
-        /// </summary>
-        /// <param name="sender">The sender<see c   ref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void Menu_Load(object send, EventArgs args)
         {
             if (Store.Default.UpdateSettings)
             {
-                //update user settings from previous version
                 Store.Default.Upgrade();
                 Store.Default.UpdateSettings = false;
                 Store.Default.Save();
@@ -411,7 +272,7 @@ namespace ganntproj1
                 }
             };
 
-            lblVersion.Text = "Ganntproj1.sector " + Application.ProductVersion;
+            lblVersion.Text = "Ganntproj1 " + Application.ProductVersion;
             foreach (var file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory))
             {
                 if (Path.GetExtension(file) != ".exe") continue;
@@ -443,7 +304,6 @@ namespace ganntproj1
             LoadingInfo.UpdateText("Obtaining holidays...");
             AddModels(false);
 
-            //LoadingInfo.UpdateText("Scaffolding...");
             var lst = (from models in ListOfModels
                        select models);
 
@@ -492,10 +352,10 @@ namespace ganntproj1
 
             IdStateArray = new System.Text.StringBuilder();
             IsDvc = false;
-            IsChiuso = false;    //3
+            IsChiuso = false;    
             IsResetJobLoader = true;
-            IsAcconto = true;   //2
-            IsSaldo = true; //1
+            IsAcconto = true;   
+            IsSaldo = true; 
             cbAcconto.Checked = true;
             cbSaldo.Checked = true;
             pbReload.Image = Properties.Resources.refresh_total_32;
@@ -526,8 +386,7 @@ namespace ganntproj1
             _console = GetConsoleWindow();  
             Cursor = Cursors.Default;
 
-            //LoadingInfo.UpdateText("Scaffolding...");
-            if (string.IsNullOrEmpty(Store.Default.selShift)) // == string.Empty)
+            if (string.IsNullOrEmpty(Store.Default.selShift))   
             {
                 MessageBox.Show("Shift must be configured.", "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 SettingsCompleted = SettingsSys.Shift;
@@ -544,17 +403,9 @@ namespace ganntproj1
                 settings.Dispose();
             }
 
-            //if (Store.Default.updateCheckRuntime)
-            //{
-            //    CheckSilentForUpdates();
-            //}
-
             GetProductionColor();
         }
 
-        /// <summary>
-        /// The LoadShifts
-        /// </summary>
         private void LoadShifts()
         {
             var q = "select starttime,endtime from shifts where shift='" + Store.Default.selShift + "'";
@@ -577,13 +428,7 @@ namespace ganntproj1
                 ShiftFrom.ToString(@"hh\:mm") + " - " + 
                 ShiftTo.ToString(@"hh\:mm");
         }
-        /// <summary>
-        /// Gets or sets the ListOfHolidays
-        /// </summary>
         public static List<LineHolidaysEmbeded> ListOfHolidays { get; set; }
-        /// <summary>
-        /// The LoadHolidays
-        /// </summary>.
         private void LoadHolidays()
         {
             var lst = new List<LineHolidaysEmbeded>();
@@ -623,10 +468,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The GetBase
-        /// </summary>
-        /// <param name="info">The info<see cref="object"/></param>
         public void GetBase()
         {
             try
@@ -639,7 +480,7 @@ namespace ganntproj1
                 AddModels(false);
                 var lst = (from models in ListOfModels
                            select models).OrderBy(x => x.Department)
-                          .ThenBy(x => Convert.ToInt32(x.Aim.Remove(0, 5)))
+                          .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
                           .ThenBy(x => x.StartDate);
                 ListOfModels = lst.ToList();
 
@@ -658,13 +499,10 @@ namespace ganntproj1
                     Application.ProductName,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                Close(); //exit program
+                Close();  
             }                       
         }
 
-        /// <summary>
-        /// The AddModels
-        /// </summary>
         private void AddModels(bool updateProduction)
         {
             var tbl = new System.Data.DataTable();
@@ -787,9 +625,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The CreateMenuTree
-        /// </summary>
         private void CreateMenuTree()
         {
             var root = new TreeNode("");
@@ -1171,7 +1006,6 @@ namespace ganntproj1
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
-                        //frm.LoadReportByDate(!IsResetJobLoader);
                         if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
 
                     };
@@ -1182,7 +1016,6 @@ namespace ganntproj1
                             ResetStateFilters();
                             IsResetJobLoader = false;
                         }
-                        //frm.LoadReportByDate(!IsResetJobLoader);
                         if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
 
                         pnReload.Visible = false;
@@ -1196,7 +1029,6 @@ namespace ganntproj1
                         IsSaldo = true;
                         cbAcconto.Checked = true;
                         cbSaldo.Checked = true;
-                        //frm.LoadReportByDate(!IsResetJobLoader);
                         if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
 
                         pnReload.Visible = false;
@@ -1225,8 +1057,6 @@ namespace ganntproj1
                     btnRespinte.BackColor = Color.FromArgb(125, 141, 161);
                     btnRespinte.ForeColor = Color.White;
                     btnRespinte.Image = Properties.Resources.switch_arrow_triangle_right_white;
-                    //btnRespinte.FlatStyle = FlatStyle.Flat;
-
                     btnExcel.Click += (se, e) =>
                     {
                         frm.ExportToExcel();
@@ -1365,7 +1195,19 @@ namespace ganntproj1
                 if (treeMenu.SelectedNode == node10)
                 {
                     if (IsResetJobLoader) ResetStateFilters();
+                    LoadingInfo.CloseLoading();
 
+                    var frmPin = new PinInput();
+                    frmPin.StartPosition = FormStartPosition.CenterScreen;
+                    frmPin.ShowDialog();
+                    if (!frmPin.PinCorrect)
+                    {
+                        _fromNavigation = false;
+                        treeMenu.SelectedNode = treeMenu.Nodes[0].Nodes[0];
+                        treeMenu.Select();
+                        return;
+                    }
+                    frmPin.Dispose();
                     var frm = new FatturatoLinea();
                     frm.WindowState = FormWindowState.Minimized;
                     frm.FormBorderStyle = FormBorderStyle.None;
@@ -1401,7 +1243,6 @@ namespace ganntproj1
                     frm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                     frm.Visible = false;
                     frm.Show();
-                    //frm.LoadData();
                     frm.TopLevel = false;
                     pnForms.Controls.Add(frm);
                     frm.Location = new Point(0, 0);
@@ -1411,10 +1252,6 @@ namespace ganntproj1
                     btnCommessaDefects.ForeColor = Color.White;
                     btnCommessaDefects.Image = Properties.Resources.switch_arrow_triangle_right_white;
 
-                    //btnExcel.Click += (se, e) =>
-                    //{
-                    //    frm.ExportToExcel();
-                    //};
                 }
                 if (treeMenu.SelectedNode == node12)
                 {
@@ -1476,7 +1313,6 @@ namespace ganntproj1
                 pnNavi.Enabled = true;
                 treeMenu.Enabled = true;
 
-                // Tests to see does user select node from treeMenu
                 if (eventArgs.Action != TreeViewAction.Unknown) return;
                 if (!_fromNavigation)
                 {
@@ -1499,36 +1335,22 @@ namespace ganntproj1
             treeMenu.EndUpdate();
         }
 
-        /// <summary>
-        /// The ResetStateFilters
-        /// </summary>
         private void ResetStateFilters()
         {
             cbAcconto.Checked = false;
             cbSaldo.Checked = false;
             cbChiuso.Checked = false;
-            //cbProgrammare.Checked = false;
             IsAcconto = false;
             IsSaldo = false;
             IsChiuso = false;
         }
 
-        /// <summary>
-        /// The CheckForCheckedChildrenHandler
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="TreeViewCancelEventArgs"/></param>
         private static void CheckForCheckedChildrenHandler(object sender,
             TreeViewCancelEventArgs e)
         {
             if (!HasCheckedChildNodes(e.Node)) e.Cancel = true;
         }
 
-        /// <summary>
-        /// The HasCheckedChildNodes
-        /// </summary>
-        /// <param name="node">The node<see cref="TreeNode"/></param>
-        /// <returns>The <see cref="bool"/></returns>
         private static bool HasCheckedChildNodes(TreeNode node)
         {
             if (node.Nodes.Count == 0) return false;
@@ -1540,11 +1362,6 @@ namespace ganntproj1
             return false;
         }
 
-        /// <summary>
-        /// The pictureBox1_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (pnDockBar.Width > 0)
@@ -1561,21 +1378,11 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The dtpFrom_ValueChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
             DateFrom = new DateTime(dtpFrom.Value.Year, dtpFrom.Value.Month, dtpFrom.Value.Day);
         }
 
-        /// <summary>
-        /// The dtpTo_ValueChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void dtpTo_ValueChanged(object sender, EventArgs e)
         {
             DateTo = new DateTime(dtpTo.Value.Year, dtpTo.Value.Month, dtpTo.Value.Day);
@@ -1586,47 +1393,24 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The ShowPopup
-        /// </summary>
-        /// <param name="frm">The frm<see cref="Form"/></param>
         private void ShowPopup(Form frm)
         {
             frm.StartPosition = FormStartPosition.CenterParent;
             frm.ShowDialog(this);
         }
-        /// <summary>
-        /// The btnSync_ButtonClick
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnSync_ButtonClick(object sender, EventArgs e)
         {
            
         }
-        /// <summary>
-        /// The btnFilters_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnFilters_Click(object sender, EventArgs e)
         {
             var flag = pnChecks.Visible;
             pnChecks.Visible = !flag;
         }
-        /// <summary>
-        /// Defines the WmParentnotify
-        /// </summary>
         private const int WmParentnotify = 0x210;
 
-        /// <summary>
-        /// Defines the WmLbuttondown
-        /// </summary>
         private const int WmLbuttondown = 0x201;
 
-        /// <summary>
-        /// The ClearReflectedHandlers
-        /// </summary>
         private void ClearReflectedHandlers()
         {
             for (var i = pnChecks.Controls.Count - 1; i >= 0; i--)
@@ -1674,8 +1458,6 @@ namespace ganntproj1
                         {
                             if (btn.Name != "btnExcel") continue;
 
-                            //if (btn.Name == "pbSettings" || btn.Name=="btnBack" 
-                            //    || btn.Name == "btnForward" || btn.Name == "btnLoadPan") continue;
                             var f1 = typeof(Control).GetField("EventClick", BindingFlags.Static | BindingFlags.NonPublic);
                             var obj = f1.GetValue(btn);
                             var pi = btn.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1686,33 +1468,18 @@ namespace ganntproj1
                 }
         }
 
-        /// <summary>
-        /// The pbMenu_MouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void pbMenu_MouseEnter(object sender, EventArgs e)
         {
             var btn = (PictureBox)sender;
             btn.BackColor = Color.Gainsboro;
         }
 
-        /// <summary>
-        /// The pbMenu_MouseLeave
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void pbMenu_MouseLeave(object sender, EventArgs e)
         {
             var btn = (PictureBox)sender;
             btn.BackColor = Color.FromArgb(235, 235, 235);
         }
 
-        /// <summary>
-        /// The btnProgram_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnProgram_Click(object sender, EventArgs e)
         {
             treeMenu.SelectedNode = treeMenu.Nodes[0];
@@ -1741,11 +1508,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The btnCarico_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnCarico_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1753,11 +1515,6 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
-        /// <summary>
-        /// The btnProduzioneGantt_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnProduzioneGantt_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1765,11 +1522,6 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
-        /// <summary>
-        /// The BtnProduzione_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnProduzione_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1777,11 +1529,6 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
-        /// <summary>
-        /// The BtnFatturato_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnFatturato_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1789,11 +1536,6 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
-        /// <summary>
-        /// The BtnDiffetato_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnDiffetato_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1801,11 +1543,6 @@ namespace ganntproj1
             treeMenu.Select();
         }
 
-        /// <summary>
-        /// The BtnRespinte_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnRespinte_Click(object sender, EventArgs e)
         {
             _fromNavigation = false;
@@ -1833,9 +1570,6 @@ namespace ganntproj1
             treeMenu.SelectedNode = treeMenu.Nodes[0].Nodes[11];
             treeMenu.Select();
         }
-        /// <summary>
-        /// The ResetMenuCommands
-        /// </summary>
         private void ResetMenuCommands()
         {
             btnCarico.Text = "Carico lavoro";
@@ -1889,9 +1623,6 @@ namespace ganntproj1
             btnGraphRespinte.Image = Properties.Resources.arrow_triangle_right;
         }
 
-        /// <summary>
-        /// The BackUpDataOnSync
-        /// </summary>
         private void BackUpDataOnSync()
         {
             var xEle = new XElement("ProduzioneGantt",
@@ -1899,13 +1630,10 @@ namespace ganntproj1
               select new XElement("Model",
               new XAttribute("Order", models.Name),
               new XElement("QtyH", models.QtyH),
-              //new XElement("Persons", models.MembersCount),
               new XElement("StartDate", models.StartDate),
-              //new XElement("Abatimento", models.BreakdownEff),
               new XElement("Duration", models.Duration),
               new XElement("EndDate", models.EndDate),
               new XElement("LoadQty", models.LoadedQty),
-              //new XElement("Delay", models.Delay),
               new XElement("ProdStart", models.ProductionStartDate),
               new XElement("ProdEnd", models.ProductionEndDate),
               new XElement("DailyProd", models.DailyProd)
@@ -1923,26 +1651,13 @@ namespace ganntproj1
                 + ".xml");
         }
 
-        /// <summary>
-        /// The button1_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void button1_Click(object sender, EventArgs e)
         {
             pnReload.Visible = true;
         }
 
-        /// <summary>
-        /// Defines the _geometry
-        /// </summary>
         private Geometry _geometry = new Geometry();
 
-        /// <summary>
-        /// The btnReloadItem_Paint
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="PaintEventArgs"/></param>
         private void btnReloadItem_Paint(object sender, PaintEventArgs e)
         {
             var btn = (Button)sender;
@@ -1958,11 +1673,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The pnReload_Paint
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="PaintEventArgs"/></param>
         private void pnReload_Paint(object sender, PaintEventArgs e)
         {
             using (GraphicsPath path = _geometry.RoundedRectanglePath(new Rectangle(0, 0, pnReload.Width, pnReload.Height), 10))
@@ -1977,11 +1687,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The label11_Paint
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="PaintEventArgs"/></param>
         private void label11_Paint(object sender, PaintEventArgs e)
         {
 
@@ -1998,96 +1703,48 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The btnResetItem_MouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnResetItem_MouseEnter(object sender, EventArgs e)
         {
             lblResetGlobal.BackColor = Color.Gainsboro;
         }
 
-        /// <summary>
-        /// The btnResetItem_MouseLeave
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnResetItem_MouseLeave(object sender, EventArgs e)
         {
             lblResetGlobal.BackColor = Color.White;
         }
 
-        /// <summary>
-        /// The btnReloadItem_MouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnReloadItem_MouseEnter(object sender, EventArgs e)
         {
             lblRefreshGlobal.BackColor = Color.Gainsboro;
         }
 
-        /// <summary>
-        /// The btnReloadItem_MouseLeave
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnReloadItem_MouseLeave(object sender, EventArgs e)
         {
             lblRefreshGlobal.BackColor = Color.White;
         }
 
-        /// <summary>
-        /// The lblResetGlobal_MouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void lblResetGlobal_MouseEnter(object sender, EventArgs e)
         {
             lblResetGlobal.BackColor = Color.Gainsboro;
         }
 
-        /// <summary>
-        /// The lblResetGlobal_MouseLeave
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void lblResetGlobal_MouseLeave(object sender, EventArgs e)
         {
 
             lblResetGlobal.BackColor = Color.WhiteSmoke;
         }
 
-        /// <summary>
-        /// The lblRefreshGlobal_MouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void lblRefreshGlobal_MouseEnter(object sender, EventArgs e)
         {
             lblRefreshGlobal.BackColor = Color.Gainsboro;
         }
 
-        /// <summary>
-        /// The lblRefreshGlobal_MouseLeave
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void lblRefreshGlobal_MouseLeave(object sender, EventArgs e)
         {
             lblRefreshGlobal.BackColor = Color.WhiteSmoke;
         }
 
-        /// <summary>
-        /// Defines the _fromNavigation
-        /// </summary>
         internal bool _fromNavigation = false;
-        /// <summary>
-        /// The BtnForward_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnForward_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex == listBox1.Items.Count - 1)
@@ -2104,11 +1761,6 @@ namespace ganntproj1
 
             treeMenu.SelectedNode = (TreeNode)listBox1.SelectedItem;
         }
-        /// <summary>
-        /// The BtnBack_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void BtnBack_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex == 0)
@@ -2127,11 +1779,6 @@ namespace ganntproj1
             treeMenu.SelectedNode = (TreeNode)listBox1.SelectedItem;
         }
 
-        /// <summary>
-        /// The FindLastNode
-        /// </summary>
-        /// <param name="x">The x<see cref="TreeNode"/></param>
-        /// <returns>The <see cref="TreeNode"/></returns>
         private TreeNode FindLastNode(TreeNode x)
         {
             return x;
@@ -2191,9 +1838,7 @@ namespace ganntproj1
             var logoRect = new Rectangle(10, 5, 102, 40);
             e.Graphics.DrawImage(Properties.Resources.Logo, logoRect);
 
-            SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
-            //var strSector = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
-
+            SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - ";       
             var refreshTitle = SectorTitle + RefreshTitle;
             var refreshTitleSize = e.Graphics.MeasureString(refreshTitle, fnt);
 
@@ -2253,7 +1898,7 @@ namespace ganntproj1
                     AddDepartmentsToCombo();
                     GetBase();
 
-                    SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - "; //Store.Default.sectorId == 1 ? "CONFEZIONE" : "STIRO";
+                    SectorTitle = Store.Default.selDept.Replace(',', '/').TrimStart('/').TrimEnd('/') + " - ";       
 
                     pnTitlebar.Invalidate();
                 }
@@ -2274,15 +1919,11 @@ namespace ganntproj1
 
         private void BtnSync_Click(object sender, EventArgs e)
         {
-            //try
-           // {
                 LoadingInfo.ShowLoading();
                 LoadingInfo.InfoText = "Computing...";
 
                 foreach (var model in ListOfModels)
                 {
-                    //if (model.ClosedByUser) continue;
-
                     DateTime.TryParse(model.StartDate.ToString(), out var start);
                     DateTime.TryParse(model.EndDate.ToString(), out var end);
 
@@ -2330,14 +1971,6 @@ namespace ganntproj1
                 ListOfModels = lst.ToList();
 
             LoadingInfo.CloseLoading();      
-            //}
-            //catch (Exception ex)
-            //{
-            //    Cursor = Cursors.Default;
-            //    MessageBox.Show(ex.Message, "Synchronization error",
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Error);
-            //}    
         }
 
         private void BtnHelp_Click(object sender, EventArgs e)
@@ -2364,17 +1997,6 @@ namespace ganntproj1
             var pH = pnS.Height + 4;
             e.Graphics.DrawRectangle(p, pX, pY, pW,  pH);
             p.Dispose();
-            //for (var i = 0; i <= 10; i++)
-            //{
-            //    var x = 5;
-            //    if (i > 5) x = 4;
-            //    var c = 230 - (i * x);
-            //    var brsh = new SolidBrush(Color.FromArgb(c, c, c));
-            //    var p = new Pen(brsh, 1);
-
-            //    e.Graphics.DrawRectangle(p, pX + resize, pY + resize, pW - resize * 2 + 4, pH - resize * 2);
-            //    resize++;
-            //}
         }
 
         private bool _hasNewUpdate = false;
@@ -2425,7 +2047,7 @@ namespace ganntproj1
         {
             var notif = 0;
             if (_hasNewUpdate) notif++;
-            else { return; }    //do not draw notification
+            else { return; }       
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;            
             var rect = new Rectangle(e.ClipRectangle.X  + e.ClipRectangle.Width - 20,2,17,17);
@@ -2437,18 +2059,6 @@ namespace ganntproj1
         private void BtnChart_Click(object sender, EventArgs e)
         {
         }
-
-        //private System.Threading.Timer _tmCheck;
-        //private void CheckSilentForUpdates()
-        //{
-        //    if (_tmCheck != null) _tmCheck.Dispose();
-
-        //    TimerCallback tcb = new TimerCallback(CheckForUpdates);
-        //    AutoResetEvent are = new AutoResetEvent(false);
-        //    //Application.DoEvents();
-
-        //    _tmCheck = new System.Threading.Timer(tcb, are, 120000, 1000);
-        //}
 
         private void lblResetGlobal_Click_1(object sender, EventArgs e)
         {
@@ -2486,6 +2096,14 @@ namespace ganntproj1
             MediumColor = ColorTranslator.FromHtml(c2);
             HighColor = ColorTranslator.FromHtml(c3);
         }
+
+        private void Central_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                return;
+            }
+        }
     }
 
     public class ReSize
@@ -2495,24 +2113,16 @@ namespace ganntproj1
         int Thickness = 6;
         int Area = 8;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="thickness">set thickness of form border</param>
         public ReSize(int thickness)
         {
             Thickness = thickness;
         }
 
-        /// <summary>
-        /// Constructor set thickness of form border=1
-        /// </summary>
         public ReSize()
         {
             Thickness = 10;
         }
 
-        //Get Mouse Position
         public string getMosuePosition(Point mouse, Form form)
         {
             if (form.WindowState == FormWindowState.Maximized) return "";

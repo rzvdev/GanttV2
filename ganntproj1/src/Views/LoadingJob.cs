@@ -17,88 +17,32 @@
     using System.Text;
     using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="LoadingJob" />
-    /// </summary>
     public partial class LoadingJob : Form
     {
-        /// <summary>
-        /// Defines the _config
-        /// </summary>
         private readonly Config _config = new Config();
 
-        /// <summary>
-        /// The FillGridDelegate
-        /// </summary>
-        /// <param name="reader">The reader<see cref="SqlDataReader"/></param>
         private delegate void FillGridDelegate(SqlDataReader reader);
 
-        ///// <summary>
-        ///// Defines the _connection
-        ///// </summary>
-        //private SqlConnection _connection;
-
-        /// <summary>
-        /// Defines the _tableCarico
-        /// </summary>
         private DataTable _tableCarico = new DataTable();
 
-        /// <summary>
-        /// Defines the _bs
-        /// </summary>
-        private BindingSource _bs = new BindingSource();
-
-        /// <summary>
-        /// Defines the _acsc
-        /// </summary>
         private AutoCompleteStringCollection _acsc = new AutoCompleteStringCollection();
 
-        /// <summary>
-        /// Defines the _acscArt
-        /// </summary>
         private AutoCompleteStringCollection _acscArt = new AutoCompleteStringCollection();
 
-        /// <summary>
-        /// Defines the _ascsLine
-        /// </summary>
         private AutoCompleteStringCollection _ascsLine = new AutoCompleteStringCollection();
 
-        /// <summary>
-        /// Defines the _listOfAcceptedOrder
-        /// </summary>
         private List<string> _listOfAcceptedOrder = new List<string>();
 
-        /// <summary>
-        /// Defines the _listOfOrdersWithNotes
-        /// </summary>
         private List<string> _listOfOrdersWithNotes = new List<string>();
 
-        /// <summary>
-        /// Defines the _listOfLinesComplete
-        /// </summary>
         private List<string> _listOfLinesComplete = new List<string>();
 
-        //
-        //Runtime
-        //
-        /// <summary>
-        /// Gets or sets a value indicating whether UseSingleFilter
-        /// </summary>
         public bool UseSingleFilter { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether IsUpdating
-        /// </summary>
         public bool IsUpd { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether HasOrderSelected
-        /// </summary>
         public static bool HasOrderSelected { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoadingJob"/> class.
-        /// </summary>
         public LoadingJob(bool updMode)
         {
             InitializeComponent();
@@ -117,9 +61,6 @@
             };
         }
 
-        /// <summary>
-        /// The CreateDataTable
-        /// </summary>
         private void CreateDataTable()
         {
             _tableCarico = new DataTable();
@@ -128,56 +69,48 @@
             _tableCarico.Columns["Flag"].DefaultValue = null;
             _tableCarico.Columns.Add("Commessa");
             _tableCarico.Columns.Add("Articol");
-            _tableCarico.Columns.Add("Linea");  //3
+            _tableCarico.Columns.Add("Linea");  
             _tableCarico.Columns.Add("Qty");
-            _tableCarico.Columns.Add("Carico"); //5
+            _tableCarico.Columns.Add("Carico"); 
             _tableCarico.Columns.Add("Diff_t");
             _tableCarico.Columns.Add("Lans");
             _tableCarico.Columns.Add("Prod");
             _tableCarico.Columns.Add("Fin");
             _tableCarico.Columns.Add("Liv");
-            _tableCarico.Columns.Add("Rdd");    //11
+            _tableCarico.Columns.Add("Rdd");    
             _tableCarico.Columns.Add("Dvc");
-            _tableCarico.Columns.Add("Minuti"); //13
+            _tableCarico.Columns.Add("Minuti"); 
             _tableCarico.Columns.Add("Giorni");
             _tableCarico.Columns.Add("Tess");
             _tableCarico.Columns.Add("Conf");
             _tableCarico.Columns.Add("Respinte");
             _tableCarico.Columns.Add("Conseg");
             _tableCarico.Columns.Add("Diff_c");
-            _tableCarico.Columns.Add("Department"); //20
+            _tableCarico.Columns.Add("Department"); 
             _tableCarico.Columns.Add("Note");
             _tableCarico.Columns.Add("IdState");
             _tableCarico.Columns.Add("Ritardo");
             _tableCarico.Columns.Add("FlagA", typeof(Image));
             _tableCarico.Columns["FlagA"].DefaultValue = null;
             _tableCarico.Columns.Add("FlagB", typeof(string));
-            //_tableCarico.Columns["FlagB"].DefaultValue = null;
             _tableCarico.Columns.Add("DataInizio Prod");
             _tableCarico.Columns.Add("DataFine Prod");
-            _tableCarico.Columns.Add("CaricoTrigger"); //28
-            _tableCarico.Columns.Add("TempStat"); //29
-            _tableCarico.Columns.Add("orderId"); //30
-            _tableCarico.Columns.Add("Ramm Tess"); //31
+            _tableCarico.Columns.Add("CaricoTrigger"); 
+            _tableCarico.Columns.Add("TempStat"); 
+            _tableCarico.Columns.Add("orderId"); 
+            _tableCarico.Columns.Add("Ramm Tess"); 
             _tableCarico.Columns.Add("Ramm Conf");
             _tableCarico.Columns.Add("Dft Tess");
-            _tableCarico.Columns.Add("Dft Conf"); //34
+            _tableCarico.Columns.Add("Dft Conf"); 
             _tableCarico.Columns.Add("TempoTotStaz");
-            _tableCarico.Columns.Add("RitardoMedia");   //36
-            _tableCarico.Columns.Add("Prezzo"); //37
+            _tableCarico.Columns.Add("RitardoMedia");   
+            _tableCarico.Columns.Add("Prezzo"); 
             _tableCarico.Columns.Add("FlagC", typeof(string));
             _tableCarico.Columns["FlagC"].DefaultValue = "+";
         }
 
-        /// <summary>
-        /// Defines the _lstOfListedArts
-        /// </summary>
         private List<string> _lstOfListedArts = new List<string>();
 
-        /// <summary>
-        /// The OnLoad
-        /// </summary>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         protected override void OnLoad(EventArgs e)
         {
             _lstOfListedArts = new List<string>();
@@ -231,17 +164,14 @@
                         var dur = jMod.CalculateJobDuration(Workflow.TargetLine, qty, qtyH, Workflow.TargetDepartment);
                         lbl.Paint += (s, pe) =>
                         {
-                            //draw commessa + rdd title
                             pe.Graphics.DrawString("Comm. ",
                                 new Font("Tahoma", 9, FontStyle.Regular), new SolidBrush(lbl.ForeColor), 5, 5);
                             pe.Graphics.DrawString("      " + name,
                               new Font("Tahoma", 9, FontStyle.Bold), new SolidBrush(lbl.ForeColor), 25, 5);
                             pe.Graphics.DrawString("                      RDD",
                         new Font("Tahoma", 9, FontStyle.Regular), new SolidBrush(lbl.ForeColor), 25, 5);
-                            //draws article
                             pe.Graphics.DrawString(art,
                                 new Font("tahoma", 9, FontStyle.Bold), new SolidBrush(lbl.ForeColor), 5, 25);
-                            //draws other info
                             pe.Graphics.DrawString(qty.ToString() + "-" + dur.ToString() + "gg" + "         " + strRdd,
                                 new Font("tahoma", 9, FontStyle.Bold), new SolidBrush(lbl.ForeColor), 5, 45);
                             var pen = new Pen(new SolidBrush(Color.Silver), 1);
@@ -292,17 +222,18 @@
                                 return;
                             }
 
-
                             Workflow.TargetOrder = lbl.Name.Split('_')[0];
 
-                            var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment, Workflow.ManualDateTime);
+                            var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment, 
+                                Workflow.ManualDateTime, Workflow.Article, qty, carico);
                             if (programDialog.ShowDialog() != DialogResult.Cancel)
                             {
                                 Workflow.ByManualDate = programDialog.UseManualDate;
                                 Workflow.Members = programDialog.Members;
                                 Workflow.ManualDateTime = programDialog.DateTimes;
                                 Workflow.ByQty = programDialog.ByTotalQty;
-   
+                                Workflow.TargetQtyH = programDialog.QtyH;
+
                                 Close();
                             }
                             else
@@ -323,18 +254,12 @@
             base.OnLoad(e);
         }
 
-        /// <summary>
-        /// The LoadCaricoLavoro
-        /// </summary>
         public void LoadCaricoLavoro()
         {
             Workflow.ListOfRemovedOrders.Clear();
             LoadCaricoLavoroInternal();
         }
 
-        /// <summary>
-        /// The LoadCaricoLavoroInternal
-        /// </summary>
         private void LoadCaricoLavoroInternal()
         {
             RemoveGridControls();
@@ -345,12 +270,12 @@
                 _listOfAcceptedOrder.Add(item.Name);
             foreach (var item in _lstOfSplittedOrd)
                 if (_listOfAcceptedOrder.Contains(item)) _listOfAcceptedOrder.Remove(item);
-            var sector = ""; // " charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0"		  //Store.Default.selDept;
+            var sector = "";              		  
             var from = $"{Central.DateFrom.Year}-{Central.DateFrom.Month}-{Central.DateFrom.Day}";
             var to = $"{Central.DateTo.Year}-{Central.DateTo.Month}-{Central.DateTo.Day}";
             Central.IdStateArray.Clear();
             if (!Central.IsAcconto && !Central.IsSaldo && !Central.IsChiuso)
-                Central.IdStateArray.Append(",1,2,3,4,"); // new array element (4-commessa da programmare) 
+                Central.IdStateArray.Append(",1,2,3,4,");        
             else
             {
                 if (Central.IsAcconto) Central.IdStateArray.Append(",1");
@@ -365,7 +290,7 @@
             if (!Central.IsResetJobLoader)
                 queryCondition = "where Comenzi.dataLivrare between '" +
                 from + "' and '" + to + "' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
-                sector +  //"'" +
+                sector +   
                 stateId + " order by Comenzi.dataLivrare DESC";
             else
                 queryCondition = "where charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
@@ -387,9 +312,9 @@
                 if (IsUpd)
                 {
                     queryCondition = "where Comenzi.DataProduzione is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
+                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare<>2 and Comenzi.DataProduzione is null " +
                                       "and Comenzi.Line is null and Comenzi.isdeleted=0 " +
                                       "order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
                 }
@@ -409,26 +334,26 @@
                     + "and comenzi.line='" + Workflow.TargetLine + "' and comenzi.department='" + Workflow.TargetDepartment + "'";
             }
             var query = "select " +
-                     "Comenzi.NrComanda," +      //0    
-                     "Articole.Articol," +       //1    
-                     "Comenzi.Line," +           //2
-                     "Comenzi.Cantitate," +      //3
-                     "Comenzi.Carico," +         //4    tiny
-                     "Comenzi.Diff_t," +         //5    tiny
-                     "Comenzi.DataLansare," +    //6    dt
-                     "Comenzi.DataProduzione," + //7    dt
-                     "Comenzi.DataFine," +       //8    dt
-                     "Comenzi.DataLivrare," +    //9    dt
-                     "Comenzi.RDD," +            //10    dt
-                     "Comenzi.DVC," +            //11   dt
-                     "Articole.Centes," +         //12   tiny
-                     "Comenzi.GiorniLavorati as Gironi, " + //13   tiny
-                     "Comenzi.Tessitura as Tess," +      //14 
-                     "Comenzi.Confezione as Conf," +     //15
-                     "Comenzi.Respinte," +       //16
-                     "Comenzi.Consegnato as Conseg, " +     //17
-                     "Comenzi.Diff_c," +         //18
-                     "Comenzi.Department," +     //19
+                     "Comenzi.NrComanda," +          
+                     "Articole.Articol," +           
+                     "Comenzi.Line," +           
+                     "Comenzi.Cantitate," +      
+                     "Comenzi.Carico," +             
+                     "Comenzi.Diff_t," +             
+                     "Comenzi.DataLansare," +        
+                     "Comenzi.DataProduzione," +     
+                     "Comenzi.DataFine," +           
+                     "Comenzi.DataLivrare," +        
+                     "Comenzi.RDD," +                
+                     "Comenzi.DVC," +               
+                     "Articole.Centes," +            
+                     "Comenzi.GiorniLavorati as Gironi, " +    
+                     "Comenzi.Tessitura as Tess," +       
+                     "Comenzi.Confezione as Conf," +     
+                     "Comenzi.Respinte," +       
+                     "Comenzi.Consegnato as Conseg, " +     
+                     "Comenzi.Diff_c," +         
+                     "Comenzi.Department," +     
                      "Comenzi.Note," +
                      "Comenzi.IdStare," +
                      "Comenzi.CaricoTrigger, " +
@@ -470,7 +395,7 @@
                 int.TryParse(row[18].ToString(), out var difc);
                 totCons += conseg;
                 totDifC += difc;
-
+                
                 var newRow = _tableCarico.NewRow();
                 var artFixRow = _tableCarico.NewRow();
                 var job = row[0].ToString();
@@ -479,6 +404,9 @@
                 var jobSpostStart = "";
                 var jobSpostEnd = "";
                 var jobModel = Central.ListOfModels.SingleOrDefault(x => x.Name == job && x.Aim == line && x.Department == dept);
+
+                if (IsUpd && jobModel != null) return;
+
                 var prodStart = DateTime.MinValue;
                 if (jobModel != null)
                 {
@@ -494,7 +422,7 @@
                 newRow[0] = ReturnImageByState(row[0].ToString(),programmed);
                 newRow[1] = job;
                 newRow[2] = row[1].ToString();
-                newRow[3] = GetDescriptionInsteadOfLine(line, dept); // row[2].ToString(); //line
+                newRow[3] = GetDescriptionInsteadOfLine(line, dept);   
 
                 int.TryParse(row[3].ToString(), out var qty);
                 int.TryParse(row[4].ToString(), out var carico);
@@ -505,15 +433,15 @@
                 newRow[6] = diff;
 
                 newRow[7] = UniParseDateTime(row[6]);
-                newRow[8] = UniParseDateTime(row[7]); //prod
-                newRow[9] = UniParseDateTime(row[8]); //fine
-                newRow[10] = UniParseDateTime(row[9]);    //cons
+                newRow[8] = UniParseDateTime(row[7]); 
+                newRow[9] = UniParseDateTime(row[8]); 
+                newRow[10] = UniParseDateTime(row[9]);    
                 newRow[11] = UniParseDateTime(row[10]);
                 newRow[12] = UniParseDateTime(row[11]);
                 newRow[13] = row[12].ToString();
                 newRow[14] = row[13].ToString();
-                newRow[15] = row[14].ToString();    //tess
-                newRow[16] = row[15].ToString();    //conf
+                newRow[15] = row[14].ToString();    
+                newRow[16] = row[15].ToString();    
                 newRow[17] = row[16].ToString();
                 newRow[18] = row[17].ToString();
                 newRow[19] = row[18].ToString();
@@ -521,7 +449,6 @@
                 newRow[21] = row[20].ToString();
                 newRow[22] = row[21].ToString();
                 newRow[24] = ReturnImageByNote(row[0].ToString());
-                //newRow[25] = row[22].ToString();
                 DateTime.TryParse(row[6].ToString(), out var arrivo);
                 DateTime.TryParse(row[7].ToString(), out var start);
                 DateTime.TryParse(row[8].ToString(), out var end);
@@ -530,7 +457,7 @@
                 {
                     var duration = end.Subtract(start).Days;
                     var strDuration = duration > 0 ? duration.ToString() : "1";
-                    newRow[25] = strDuration; // ReturnImageByCompletetion(row[0].ToString());
+                    newRow[25] = strDuration;  
                 }
                 else
                     newRow[25] = "";
@@ -568,7 +495,6 @@
                 newRow[34] = row[27].ToString();
                 newRow[37] = row[28].ToString();
 
-                //calculate ritardo
                 DateTime.TryParse(row[9].ToString(), out var dtCons);
                 DateTime.TryParse(row[10].ToString(), out var dtRdd);
                 if (dtCons != DateTime.MinValue && dtRdd != DateTime.MinValue)
@@ -579,9 +505,8 @@
                 }
                 _tableCarico.Rows.Add(newRow);
             }
-            _bs = new BindingSource { DataSource = _tableCarico };
             if (dgvReport.DataSource != null) dgvReport.DataSource = null;           
-            dgvReport.DataSource = _bs;
+            dgvReport.DataSource = _tableCarico;
             dgvReport.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvReport.Columns["Flag"].Width = 35;
             dgvReport.Columns["Flag"].HeaderText = "State";
@@ -634,8 +559,6 @@
             dgvReport.Columns[10].HeaderText = "Data Consegna";
             dgvReport.Columns[13].HeaderText = "Capi/\nOra\n" + GetTotals()[6].ToString();
             dgvReport.Columns[14].Visible = false;
-            //dgvReport.Columns[16].Visible = false;
-
             dgvReport.Columns[18].HeaderText = "Conseg.\n\n" + totCons.ToString();
             dgvReport.Columns[19].HeaderText = "Diff_c\n\n" + totDifC.ToString();
 
@@ -720,9 +643,16 @@
             dgvReport.Columns["Ritardo"].DisplayIndex = 15;
             dgvReport.Columns["Ritardo"].Width = 60;
 
-            dgvReport.Columns[38].Width = 20;
-            dgvReport.Columns[38].DefaultCellStyle.Font = new Font("Verdana", 8, FontStyle.Bold);
-            dgvReport.Columns[38].DefaultCellStyle.ForeColor = Color.Black;
+            if (Store.Default.sectorId != 8)
+            {
+                dgvReport.Columns[38].Visible = false;
+            }
+            else
+            {
+                dgvReport.Columns[38].Width = 20;
+                dgvReport.Columns[38].DefaultCellStyle.Font = new Font("Verdana", 8, FontStyle.Bold);
+                dgvReport.Columns[38].DefaultCellStyle.ForeColor = Color.Black;
+            }
 
             _acsc = new AutoCompleteStringCollection();
             _acscArt = new AutoCompleteStringCollection();
@@ -730,14 +660,7 @@
 
             CreateFilter();
         }
-        /// <summary>
-        /// Defines the _lstOfSplittedOrd
-        /// </summary>
         private List<string> _lstOfSplittedOrd = new List<string>();
-        /// <summary>
-        /// The GetSplittedOrders
-        /// </summary>
-        /// <returns>The <see cref="List{string}"/></returns>
         private List<string> GetSplittedOrders()
         {
             var query = from split in Central.ListOfModels
@@ -751,17 +674,12 @@
             }
             return lst;
         }
-        /// <summary>
-        /// The ReturnImageByState
-        /// </summary>
-        /// <param name="ord">The ord<see cref="string"/></param>
-        /// <returns>The <see cref="Image"/></returns>
         private Image ReturnImageByState(string ord, bool programmed = false)
         {
             Image img1 = Resources.order_split_flag_16;
             Image img2 = Resources.trash_16;
             Image img3 = Resources.tick_icon_16;
-            Bitmap bmp = new Bitmap(24, 24); //empty
+            Bitmap bmp = new Bitmap(24, 24); 
             Image img = bmp;
 
             if (!programmed)
@@ -775,17 +693,7 @@
             {
                 return img3;
             }
-            //if (_lstOfSplittedOrd.Contains(ord + ".1")) img = img1;
-            //else if (Workflow.ListOfRemovedOrders.Contains(ord)) img = img2;
-            //else if (_listOfAcceptedOrder.Contains(ord)) img = img3;
-            //else if (programmed) img = img3;
-            //return img;
         }
-        /// <summary>
-        /// The ReturnImageByNote
-        /// </summary>
-        /// <param name="ord">The ord<see cref="string"/></param>
-        /// <returns>The <see cref="Image"/></returns>
         private Image ReturnImageByNote(string ord)
         {
             Image img1 = Properties.Resources.exclamation_16;
@@ -794,11 +702,6 @@
             if (_listOfOrdersWithNotes.Contains(ord)) img = img1;
             return img;
         }
-        /// <summary>
-        /// The ReturnImageByCompletetion
-        /// </summary>
-        /// <param name="ord">The ord<see cref="string"/></param>
-        /// <returns>The <see cref="Image"/></returns>
         private Image ReturnImageByCompletetion(string ord)
         {
             Image img1 = Properties.Resources.inform_16;
@@ -811,15 +714,9 @@
         private Image ReturnImageByExpandBullet()
         {
             Image img1 = Properties.Resources.bullet_toggle_plus;
-            //Bitmap bmp = new Bitmap(24, 24);
             return img1;
         }
 
-        /// <summary>
-        /// The UniParseDateTime
-        /// </summary>
-        /// <param name="obj">The obj<see cref="object"/></param>
-        /// <returns>The <see cref="string"/></returns>
         private string UniParseDateTime(object obj)
         {
             DateTime.TryParse(obj.ToString(), out var dt);
@@ -837,9 +734,6 @@
             }
             return tmpStr;
         }
-        /// <summary>
-        /// The PrintGrid
-        /// </summary>
         public void PrintGrid()
         {
             var lbl = new PictureBox();
@@ -903,7 +797,6 @@
                 case -1:
                     for (var i = idx + 1; i <= dgvReport.Columns.Count - 1; i++)
                     {
-                        //if (dgvReport.Columns[i].HeaderText == "Info" || dgvReport.Columns[i].HeaderText == "Time") continue;
                         if (dgvReport.Columns[i].HeaderCell.Style.BackColor != Color.FromArgb(50, 52, 68))
                         {
                             dgvReport.Columns[i].Visible = false;
@@ -921,7 +814,6 @@
                         }
                     }
                     dgvReport.Columns[14].Visible = false;
-                    //dgvReport.Columns[16].Visible = false;
                     dgvReport.Columns[22].Visible = false;
                     dgvReport.Columns[26].Visible = false;
                     dgvReport.Columns[27].Visible = false;
@@ -940,9 +832,6 @@
             }
         }
 
-        /// <summary>
-        /// The RemoveFilters
-        /// </summary>
         private void RemoveFilters()
         {
             _filterCreated = false;
@@ -955,23 +844,11 @@
                 }
             }
         }
-        /// <summary>
-        /// Defines the _filterCreated
-        /// </summary>
         private bool _filterCreated;
-        /// <summary>
-        /// Defines the _txtArt
-        /// </summary>
         private TextBox _txtArt;
-        /// <summary>
-        /// Defines the _txtLin
-        /// </summary>
         private TextBox _txtLin;
 
         private ComboBox _cbNote;
-        /// <summary>
-        /// The CreateFilter
-        /// </summary>
         private void CreateFilter()
         {
             if (dgvReport.Rows.Count <= 0) return;
@@ -1066,10 +943,8 @@
                 }
                 RemoveGridControls();
                 CollectFiltersQuery();
-                _bs.Filter = _strFilter; //string.Format("CONVERT(" + dgvReport.Columns[txtComm.Name]?.DataPropertyName +
-                                         //", System.String) like '%" + txtComm.Text.Replace("'", "''") +
-                                         //"%'");
-                dgvReport.DataSource = _bs;
+                _tableCarico.DefaultView.RowFilter = _strFilter;
+                dgvReport.DataSource = _tableCarico;
                 dgvReport.Refresh();
             };
             _txtArt.TextChanged += (s, e) =>
@@ -1086,10 +961,9 @@
                 }
                 RemoveGridControls();
                 CollectFiltersQuery();
-                _bs.Filter = _strFilter;// string.Format("CONVERT(" + dgvReport.Columns[_txtArt.Name]?.DataPropertyName +
-                //                                ", System.String) like '%" + _txtArt.Text.Replace("'", "''") +
-                //                                "%'");
-                dgvReport.DataSource = _bs;
+
+                _tableCarico.DefaultView.RowFilter = _strFilter;
+                dgvReport.DataSource = _tableCarico;
                 dgvReport.Refresh();
             };
             _txtLin.TextChanged += (s, e) =>
@@ -1107,25 +981,24 @@
                 RemoveGridControls();
                 CollectFiltersQuery();
 
-                _bs.Filter = _strFilter; // string.Format("CONVERT(" + dgvReport.Columns[_txtLin.Name]?.DataPropertyName +
-                                         //     ", System.String) = '{0}'", _txtLin.Text.Replace("'", "''"));
-                dgvReport.DataSource = _bs;
+                _tableCarico.DefaultView.RowFilter = _strFilter;
+                dgvReport.DataSource = _tableCarico;
                 dgvReport.Refresh();
             };
             _cbNote.SelectedIndexChanged += (s, e) =>
             {
                 if (_cbNote.SelectedIndex == 0)
                 {
-                    _bs.Filter = null;
-                    dgvReport.DataSource = _bs;
+                    _tableCarico.DefaultView.RowFilter = _strFilter;
+                    dgvReport.DataSource = _tableCarico;
                     dgvReport.Refresh();
                     return;
                 }
 
                 var strF = string.Format("CONVERT(" + dgvReport.Columns[_cbNote.Name].DataPropertyName +
                                 ", System.String) = '" + _cbNote.Text.Replace("'", "''") + "'");
-                _bs.Filter = strF;
-                dgvReport.DataSource = _bs;
+                _tableCarico.DefaultView.RowFilter = _strFilter;
+                dgvReport.DataSource = _tableCarico;
                 dgvReport.Refresh();
             };
             _filterCreated = true;
@@ -1154,13 +1027,9 @@
                 }
             }
         }
-        /// <summary>
-        /// Defines the _strFilter
-        /// </summary>
-        private string _strFilter;
-        /// <summary>
-        /// The CollectFiltersQuery
-        /// </summary>
+
+        private string _strFilter = string.Empty;
+
         private void CollectFiltersQuery()
         {
             var i = 0;
@@ -1176,7 +1045,7 @@
                         if (i == 1)
                         {
                             _strFilter = string.Format("CONVERT(" + dgvReport.Columns[txt.Name].DataPropertyName +
-                                ", System.String) = '" + txt.Text.Replace("'", "''") + "'");
+                                ", System.String) like '%" + txt.Text.Replace("'", "''") + "%'");
                         }
                         else
                         {
@@ -1188,25 +1057,9 @@
                 }
             }
         }
-        /// <summary>
-        /// The SendMessage
-        /// </summary>
-        /// <param name="hWnd">The hWnd<see cref="IntPtr"/></param>
-        /// <param name="msg">The msg<see cref="int"/></param>
-        /// <param name="wp">The wp<see cref="IntPtr"/></param>
-        /// <param name="lp">The lp<see cref="IntPtr"/></param>
-        /// <returns>The <see cref="IntPtr"/></returns>
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
-        /// <summary>
-        /// Defines the _btnClearFilter
-        /// </summary>
         private Button _btnClearFilter;
-        /// <summary>
-        /// The AddClearFilterButton
-        /// </summary>
-        /// <param name="txt">The txt<see cref="TextBox"/></param>
-        /// <param name="name">The name<see cref="string"/></param>
         private void AddClearFilterButton(TextBox txt, string name)
         {
             _btnClearFilter = new Button
@@ -1214,7 +1067,6 @@
                 Size = new Size(25, txt.ClientSize.Height + 2)
             };
             _btnClearFilter.Location = new Point(txt.ClientSize.Width - _btnClearFilter.Width, -1);
-            //_btnClearFilter.Image = Properties.Resources.cleanse;
             _btnClearFilter.Cursor = Cursors.Default;
             _btnClearFilter.FlatStyle = FlatStyle.Flat;
             _btnClearFilter.FlatAppearance.BorderSize = 0;
@@ -1232,11 +1084,6 @@
 
             SendMessage(txt.Handle, 0xd3, (IntPtr)2, (IntPtr)(_btnClearFilter.Width << 16));
         }
-        /// <summary>
-        /// The dgvReport_CellDoubleClick
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellEventArgs"/></param>
         private void dgvReport_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -1302,7 +1149,9 @@
             }
             var byQty = false;
 
-            var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment, Workflow.ManualDateTime);
+            var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, 
+                Workflow.TargetDepartment, Workflow.ManualDateTime,art, qty, carico);
+
             if (programDialog.ShowDialog() != DialogResult.Cancel)
             {
                 Workflow.ByManualDate = programDialog.UseManualDate;
@@ -1330,6 +1179,7 @@
 
                 Workflow.ByQty = byQty;
                 Workflow.TargetOrder = selectedOrder;
+                if (Store.Default.sectorId == 2) Workflow.TargetQtyH = programDialog.QtyH;
 
                 Close();
             }
@@ -1429,7 +1279,7 @@
                 _cbLineChange.Location = new Point(Rectangle.X, Rectangle.Y);
                 _cbLineChange.SelectedIndexChanged += _cbLineChange_SelectedIndexChanged;
                 _cbLineChange.Visible = true;
-                _cbLineChange.DropDownWidth = 100;
+                _cbLineChange.DropDownWidth = 200;
                 _cbLineChange.DropDownHeight = 300;
                 _cbLineChange.BackColor = Color.LightYellow;
 
@@ -1446,7 +1296,7 @@
                 };
             }
 
-            if (e.ColumnIndex == 10) //(e.ColumnIndex == 8 || e.ColumnIndex == 10)
+            if (e.ColumnIndex == 10)       
             {
                 var dt = DateTime.Now;
 
@@ -1517,7 +1367,6 @@
                     if (g.KeyCode == Keys.Escape)
                     {
                         RemoveGridControls();
-                        //  _txtInput?.Dispose();
                     }
                 };
             }
@@ -1562,10 +1411,19 @@
             }
 
             if (e.ColumnIndex == 38 && Store.Default.sectorId == 8)
-            {                
+            {
                 if (dgvReport.Rows[e.RowIndex].Cells[38].Value.ToString() == "+")
                 {
+                    if (_strFilter != string.Empty && dgvReport.Rows.Count > 1)
+                    {
+                        MessageBox.Show("To expand this order, just one record must be filtered.","Carico lavoro",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     var art = dgvReport.Rows[e.RowIndex].Cells[2].Value.ToString();
+                    int.TryParse(dgvReport.Rows[e.RowIndex].Cells[4].Value.ToString(), out var totalQty);
+                    int.TryParse(dgvReport.Rows[e.RowIndex].Cells[5].Value.ToString(), out var carico);
 
                     var q = "select round(cast(6000 / sum(Op.Centes) as float),2), Op.GroupName from OperatiiArticol Op " +
                         "inner join Articole Art on Art.Articol='" + art + "' " +
@@ -1591,6 +1449,7 @@
                     if (_tmpTbl.Rows.Count == 0) return;
 
                     var idx = 1;
+                    
                     foreach (DataRow row in _tmpTbl.Rows)
                     {
                         var capiOra = row[0].ToString();
@@ -1609,6 +1468,7 @@
 
                         newRow[0] = ReturnImageByState(ord);                                               
                         newRow[1] = ord;
+                        newRow[2] = art;
 
                         var orderFromGant = (from orders in Central.ListOfModels
                                              where orders.Name == ord && orders.Department == "Sartoria"
@@ -1632,14 +1492,24 @@
                         }
 
                         newRow[3] = group;
+                        newRow[4] = totalQty;
+                        newRow[5] = carico;
                         newRow[13] = capiOra;
                         newRow[24] = ReturnImageByNote(dgvReport.Rows[e.RowIndex].Cells[3].Value.ToString());
                         newRow[38] = string.Empty;
 
-                        _tableCarico.Rows.InsertAt(newRow, e.RowIndex + idx); 
-
-                        dgvReport.Rows[e.RowIndex + idx].DefaultCellStyle.BackColor = Color.LightYellow;
-                        idx++;
+                        if (dgvReport.Rows.Count == idx)
+                        {
+                            _tableCarico.Rows.InsertAt(newRow, _tableCarico.Rows.Count + idx);
+                            dgvReport.Rows[0 + idx].DefaultCellStyle.BackColor = Color.LightYellow;
+                            idx++;
+                        }
+                        else
+                        {
+                            _tableCarico.Rows.InsertAt(newRow, e.RowIndex + idx);
+                            dgvReport.Rows[e.RowIndex + idx].DefaultCellStyle.BackColor = Color.LightYellow;
+                            idx++;
+                        }                       
                     }
 
                     dgvReport.Rows[e.RowIndex].Cells[38].Value = "-";
@@ -1660,10 +1530,13 @@
                         }
                     }
 
-                    var index = listOfInt.First();
-                    for (var i = 0; i<= listOfInt.Count - 1; i++)
+                    if (listOfInt.Count > 0)
                     {
-                        dgvReport.Rows.RemoveAt(index);
+                        var index = listOfInt.First();
+                        for (var i = 0; i <= listOfInt.Count - 1; i++)
+                        {
+                            dgvReport.Rows.RemoveAt(index);
+                        }
                     }
 
                     dgvReport.EndEdit();
@@ -1705,13 +1578,11 @@
             if (dgvReport.Controls.Contains(_btnShowProd))
             {
                 Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(8, -1, true);
-                //_btnShowProd.Size = new Size(30,20);
                 _btnShowProd.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
             }
             if (dgvReport.Controls.Contains(_btnShowFin))
             {
                 Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(9, -1, true);
-                // _btnShowFin.Size = new Size(30, 20);
                 _btnShowFin.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
             }
             if (dgvReport.Controls.Contains(_cbNote))
@@ -1726,9 +1597,6 @@
             _btnShowProd.Invalidate();
         }
 
-        /// <summary>
-        /// The AddHeaderButtons
-        /// </summary>
         private void AddHeaderButtons()
         {
             for (int i = dgvReport.Controls.Count - 1; i >= 0; i--)
@@ -1811,10 +1679,6 @@
             };
         }
 
-        /// <summary>
-        /// The SelectProgrammedCommessa
-        /// </summary>
-        /// <param name="target">The target<see cref="string"/></param>
         public void SelectProgrammedCommessa(string target)
         {
             LoadCaricoLavoroInternal();
@@ -1832,9 +1696,6 @@
                 dgvReport.FirstDisplayedScrollingRowIndex = idx;
         }
 
-        /// <summary>
-        /// The RemoveGridControls
-        /// </summary>
         private void RemoveGridControls()
         {
             if (dgvReport.Controls.Contains(_cbLineChange))
@@ -1908,22 +1769,13 @@
                 }
             }
         }
-        /// <summary>
-        /// Gets or sets the StartDateValue
-        /// </summary>
         public static DateTime StartDateValue { get; set; }
 
-        /// <summary>
-        /// The _cbLineChange_SelectedIndexChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="eventArgs">The eventArgs<see cref="EventArgs"/></param>
         private void _cbLineChange_SelectedIndexChanged(object sender, EventArgs eventArgs)
         {
             var cb = (ComboBox)sender;
 
             var art = dgvReport.CurrentRow.Cells[2].Value.ToString();
-
 
             var isParent = CheckOrderHasChildren(art);
 
@@ -1951,7 +1803,6 @@
                 MessageBox.Show("Programmation of an order with 'Chiuso' status can harm current display of the workflow.\n\nAction won't be performed.", "Stop", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
                 return;
             }
-            //check if all aprameters are greater zero
             if (qtyH < 1.0)
             {
                 MessageBox.Show("Capi/ora (" + qtyH.ToString() + ") is not accepted as an unity.", "Programming job", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -1970,7 +1821,7 @@
 
             var d = JobModel.GetLineLastDate(lineInsteadDescripton, dept);
 
-            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d);
+            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d, article, totalQty, carico);
 
             if (programDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -1981,11 +1832,11 @@
             d = programDialog.DateTimes;
             var members = programDialog.Members;
             var manualdate = programDialog.UseManualDate;
+            if (Store.Default.sectorId == 2) qtyH = programDialog.QtyH;
  
             int qty;
             if (byQty)
             {
-                //check qty are greater zero
                 if (totalQty == 0)
                 {
                     MessageBox.Show("Qty must be greater zero!", "Programming job", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1995,7 +1846,6 @@
             }
             else
             {
-                //check if all aprameters are greater zero
                 if (carico == 0)
                 {
                     MessageBox.Show("Carico must be greater zero!", "Programming job", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2006,15 +1856,14 @@
 
             var j = new JobModel();
              
-            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);    //production duration
-            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members).ToString(), out var dailyQty);
+            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);     
+            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty).ToString(), out var dailyQty);
             var price = j.GetPrice(article);
             DateTime startDate;
             DateTime endDate;
 
             if (d == Config.MinimalDate || d == DateTime.MinValue)
             {
-                //MessageBox.Show("Please choose order start date.", "Produzione gantt", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 var inputDate = new InputDate();
                 inputDate.ShowDialog();
                 inputDate.Dispose();
@@ -2041,7 +1890,6 @@
                 || Store.Default.sectorId != 8)
             {
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
-                // update job aim
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2}," +
                         "QtyInstead={3},Duration={4} where NrComanda={5} and Department={6}",
@@ -2049,18 +1897,6 @@
                         lineDesc.Line, byQty, jobDuration, _orderToUpdate, dept);
                 }
             }
-            //else
-            //{
-            //    using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
-            //    // update job aim
-            //    {
-            //        ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2}," +
-            //            "QtyInstead={3},Duration={4} where NrComanda={5} and Department={6}",
-            //            startDate, endDate,
-            //            lineDesc.Line, byQty, jobDuration, _orderToUpdate, dept);
-            //    }
-            //}
-            
             dgvReport.CurrentCell.Value = cb.Text;
             dgvReport.CurrentRow.Cells[8].Value = UniParseDateTime(startDate);
             dgvReport.CurrentRow.Cells[9].Value = UniParseDateTime(endDate);
@@ -2070,11 +1906,6 @@
             InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate);
         }
 
-        /// <summary>
-        /// The _dtpProdChange_ValueChange
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void _dtpProdChange_ValueChange(object sender, EventArgs e)
         {
             var dtp = (DateTimePicker)sender;
@@ -2099,11 +1930,6 @@
             }
         }
 
-        /// <summary>
-        /// The tmsiSplitCommessa_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void tmsiSplitCommessa_Click(object sender, EventArgs e)
         {
             IEnumerable<JobModel> modelQuery;
@@ -2153,7 +1979,6 @@
 
             si.FormClosing += (s, ev) =>
             {
-                //clear gantt parameters
                 Workflow.TargetOrder = string.Empty;
                 Workflow.TargetLine = string.Empty;
 
@@ -2167,11 +1992,6 @@
             };
         }
 
-        /// <summary>
-        /// The DgvReport_CellMouseEnter
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellEventArgs"/></param>
         private void DgvReport_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -2193,11 +2013,6 @@
             {
             }
         }
-
-        /// <summary>
-        /// The GetTotals
-        /// </summary>
-        /// <returns>The <see cref="object[]"/></returns>
 
         private object[] GetTotals()
         {
@@ -2301,21 +2116,35 @@
                 Convert.ToInt32(tempoStazMedia), 
                 Convert.ToInt32(tempoTotStazMedia),Convert.ToInt32(ritardoMedia), Math.Round(mediaCapiHour, 2 ), ritardo};
         }
-        /// <summary>
-        /// The DgvReport_CellPainting
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellPaintingEventArgs"/></param>
 
         private void DgvReport_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-                
+            if (Store.Default.sectorId != 8) return;
+
+            if (e.RowIndex > -1 && e.ColumnIndex == 38)
+            {
+                if (dgvReport.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != string.Empty)
+                {
+                    var rect = new RectangleF(e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width, e.CellBounds.Height);
+                    e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), rect);
+                    
+                    if (dgvReport.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "+")
+                    {
+                        e.Graphics.DrawImage(Resources.bullet_toggle_plus, rect.X - 6, rect.Y - 6);
+                    }
+                    else if (dgvReport.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "-")
+                    {
+                        e.Graphics.DrawImage(Resources.bullet_toggle_minus, rect.X - 6, rect.Y - 6);
+                    }
+
+                    e.Graphics.DrawLine(Pens.Silver, e.CellBounds.X, e.CellBounds.Y + e.CellBounds.Height - 1,
+                        e.CellBounds.X + e.CellBounds.Width, e.CellBounds.Y + e.CellBounds.Height - 1);
+
+                    e.Handled = true;
+                }
+            }
         }
-        /// <summary>
-        /// The ResetToolStripMenuItem_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
+
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var selIdx = dgvReport.CurrentCell.RowIndex;
@@ -2351,7 +2180,6 @@
             }
             var dept = dgvReport.Rows[selIdx].Cells["Department"].Value.ToString();
             using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
-            // update job aim
             {
                 ctx.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0}" +
                     " and Department={1}",
@@ -2359,7 +2187,6 @@
             }
             var line = dgvReport.Rows[selIdx].Cells[3].Value.ToString();
             using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
-            // update job aim
             {
                 ctx.ExecuteCommand("delete from objects where ordername={0} and aim={1} and department={2}",
                     _orderToUpdate, line, dept);
@@ -2379,9 +2206,6 @@
                 ReturnImageByState(_orderToUpdate);
         }
 
-        /// <summary>
-        /// The LoadExcelData
-        /// </summary>
         public void LoadExcelData()
         {
             var lbl = new Label();
@@ -2470,22 +2294,22 @@
                     difOre = Math.Round(Convert.ToDouble(diff) / capiOra, 0);
                 }
                 var newRow = dt.NewRow();
-                newRow[0] = tess; //a
+                newRow[0] = tess; 
                 newRow[1] = comm;
                 newRow[2] = art;
                 newRow[3] = collection;
                 newRow[4] = line;
-                newRow[5] = arrivo;     //f
+                newRow[5] = arrivo;     
                 newRow[6] = tess;
-                newRow[7] = conseg;     //h
-                newRow[8] = rdd;    //i
+                newRow[7] = conseg;     
+                newRow[8] = rdd;    
                 newRow[9] = finest;
                 newRow[10] = note;
-                newRow[11] = qty;  //l
+                newRow[11] = qty;  
                 newRow[12] = carico;
                 newRow[13] = diff;
                 newRow[14] = assegnOre;
-                newRow[15] = difOre; //p
+                newRow[15] = difOre; 
                 dt.Rows.Add(newRow);
             }
             Microsoft.Office.Interop.Excel._Application appExcel = new Microsoft.Office.Interop.Excel.Application();
@@ -2538,7 +2362,6 @@
             xlCells.Range["A1"].Font.Size = 20;
             xlCells.Range["A1"].Font.Bold = true;
             xlCells.Range["A1:H1"].Merge();
-            //f,h,i
             xlCells.Range["F3"].EntireColumn.NumberFormat = "dd-MM-yyyy";
             xlCells.Range["H3"].EntireColumn.NumberFormat = "dd-MM-yyyy";
             xlCells.Range["I3"].EntireColumn.NumberFormat = "dd-MM-yyyy";
@@ -2566,12 +2389,6 @@
             }
         }
 
-        /// <summary>
-        /// The Collection
-        /// </summary>
-        /// <param name="a">The a<see cref="string"/></param>
-        /// <param name="part">The part<see cref="int"/></param>
-        /// <returns>The <see cref="string"/></returns>
         private string Collection(string a, int part)
         {
             var str = "";
@@ -2592,57 +2409,6 @@
 
         public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,int duration, int dailyQty, double price, string dept, int members, bool manualDate) 
         {
-            if (Store.Default.selDept == ",Stiro,")
-            {
-                var id = 0;
-
-                var op = new OperationProgram();
-                if (op.ShowDialog() == DialogResult.OK)
-                {
-                    id = op.OperationId;
-                }
-
-                var artId = 0;
-                var artQuery = "select id from Articole where articol='" + article + "' and idsector=2";
-                using (var c = new SqlConnection(Central.ConnStr))
-                {
-                    var cmd = new SqlCommand(artQuery, c);
-                    c.Open();
-                    var dr = cmd.ExecuteReader();
-                    if (dr.HasRows)
-                    {
-                        while (dr.Read())
-                        {
-                            int.TryParse(dr[0].ToString(), out artId);
-                        }
-                    }
-                    c.Close();
-                }
-
-                var operatQuery = "select Centes from OperatiiArticol where idOperatie='" + id.ToString() + "' and IdSector=2" +
-                    " and idarticol='" + artId + "'";
-
-                using (var c = new SqlConnection(Central.ConnStr))
-                {
-                    var cmd = new SqlCommand(operatQuery, c);
-                    c.Open();
-                    var dr = cmd.ExecuteReader();
-                    if (dr.HasRows)
-                    {
-                        while (dr.Read())
-                        {
-                            double.TryParse(dr[0].ToString(), out qtyH);
-                        }
-                    }
-                    c.Close();
-                }
-
-                if (qtyH == 0.0)
-                {
-                    MessageBox.Show("QtyH is not valid, or operation isn't defined");
-                }
-            }
-
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
                "membersnr,manualDate,abatimen) values " +

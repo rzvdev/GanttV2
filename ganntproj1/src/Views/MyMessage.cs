@@ -84,7 +84,7 @@ namespace ganntproj1
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
 
-            Color colorhtm = System.Drawing.ColorTranslator.FromHtml(color);
+            Color colorhtm = ColorTranslator.FromHtml(color);
 
             lblInfo.BackColor = colorhtm;
             }

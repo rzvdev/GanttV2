@@ -189,10 +189,10 @@
             // 
             // lblVersion
             // 
-            this.lblVersion.BackColor = System.Drawing.Color.SteelBlue;
+            this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblVersion.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.White;
+            this.lblVersion.ForeColor = System.Drawing.Color.Black;
             this.lblVersion.Location = new System.Drawing.Point(1, 596);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(271, 21);
@@ -1399,6 +1399,7 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1311, 727);
             this.Name = "Central";

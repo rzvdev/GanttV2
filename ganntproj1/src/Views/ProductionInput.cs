@@ -240,7 +240,6 @@ namespace ganntproj1
             _dailyQty = models.DailyProd;
             _price = models.ArtPrice;
 
-
             lblTotalQty.Text = models.LoadedQty.ToString();
 
             var lineQuery = (from lin in Models.Tables.Lines
@@ -259,7 +258,7 @@ namespace ganntproj1
             txtCommCapi.TextChanged += delegate
             {
                 int.TryParse(txtCommCapi.Text, out var numberStyles);
-                var maxValue = models.LoadedQty; //number that will not be shown to the user 
+                var maxValue = models.LoadedQty;          
                 if (numberStyles > maxValue)
                 {
                     txtCommCapi.Clear();
@@ -328,11 +327,6 @@ namespace ganntproj1
             cbCommLinea.DisplayMember = "key";
             cbCommLinea.ValueMember = "value";
 
-            //cbCommLinea.SelectedIndexChanged += (send, evargs) =>
-            //{
-            //    txtPersone.Text = cbCommLinea.SelectedValue.ToString();
-            //};
-
             var membersQuery = (from models in Central.ListOfModels
                                where models.Name == Workflow.TargetOrder
                                && models.Aim == Workflow.TargetLine
@@ -397,9 +391,6 @@ namespace ganntproj1
             var selectedDate = dtpCommData.Value;
             tableView1.Invalidate();
             tableView1.EndEdit();
-            //
-            // Delete data by order
-            //
             var groupForDelete = from prod in Tables.Productions
                                  where prod.Commessa == Workflow.TargetOrder
                                  && prod.Line == Workflow.TargetLine
@@ -411,7 +402,6 @@ namespace ganntproj1
                 Tables.Productions.DeleteOnSubmit(item);
             }
             Config.GetGanttConn().SubmitChanges();
-            // Check if it's a new input
             if (!string.IsNullOrEmpty(txtCommCapi.Text) && !string.IsNullOrEmpty(txtPersone.Text))
             {
                 bool wantToSave = true;
@@ -467,7 +457,6 @@ namespace ganntproj1
                 {
                     using (var context = new System.Data.Linq.DataContext(Central.SpecialConnStr))
                     {
-                        // delete existing records
                         context.ExecuteCommand("update objects set " +
                             "startprod={0},endprod={1},prodqty={2},delayts={3}, delaystart={4},delayend={5} " +
                             "where ordername={6} and aim={7} and department={8}",
@@ -536,7 +525,7 @@ namespace ganntproj1
             _dtComm.Columns.Add("Abovenorm");
             _dtComm.Columns.Add("Time");
             _dtComm.Columns.Add("DailyQty");
-            _dtComm.Columns.Add("Price");   //10
+            _dtComm.Columns.Add("Price");   
             _dtComm.Columns.Add("IncludeHours");
             _dtComm.Columns.Add("Abatim");
             _dtComm.Columns.Add("QtyH");
@@ -555,7 +544,7 @@ namespace ganntproj1
                 var newRow = _dtComm.NewRow();
 
                 newRow[0] = p.Id;
-                newRow[1] = p.Data;//.ToString("yyyy-MM-dd");
+                newRow[1] = p.Data;
                 newRow[2] = p.Commessa;
                 newRow[3] = p.Capi;
                 newRow[4] = p.Line;
@@ -653,7 +642,6 @@ namespace ganntproj1
                 return;
             }
             var newRow = _dtComm.NewRow();
-            /*check for qty greater loadedQty*/
             var model = Central.ListOfModels
                 .Where(x => x.Name == Workflow.TargetOrder &&
                 x.Aim == Workflow.TargetLine && x.Department == Workflow.TargetDepartment).SingleOrDefault();
@@ -691,14 +679,12 @@ namespace ganntproj1
                 newRow[5] = txtPersone.Text;
                 newRow[6] = Workflow.TargetDepartment;
                 newRow[7] = false;
-                /*calculate production in hours */
-                var hh = 0; // default starthift
+                var hh = 0;   
                 int min = 0;
                 int sec = 0;
                 if (_includeHours)
                 {
                     if (insertedQty > 0) 
-                    //convert difference into hours
                     {
                         double.TryParse(insertedQty.ToString(), out var q);
                         double.TryParse(txtPersone.Text, out var members);
@@ -728,7 +714,6 @@ namespace ganntproj1
 
                 newRow[8] = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day,
                     hh, min, sec); 
-                //add additional column values
                 newRow[9] = _dailyQty;
                 newRow[10] = _price;
                 newRow[11] = _includeHours;
@@ -750,6 +735,7 @@ namespace ganntproj1
                 dtpCommData.Value = DateTime.Now;
             }
         } 
+
         private void btnDelete_Click(object sender, EventArgs e)
         {
             tableView1.Focus();
@@ -895,8 +881,6 @@ namespace ganntproj1
             {
                 SmoothingMode old = e.Graphics.SmoothingMode;
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-                // e.Graphics.DrawPath(pen, path);
 
                 lbl.Region = new Region(path);
                 e.Graphics.SmoothingMode = old;

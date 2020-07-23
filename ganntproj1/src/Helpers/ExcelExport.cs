@@ -25,24 +25,21 @@ namespace ganntproj1
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                // Copy DataGridView results to clipboard
                 CopyAlltoClipboard(dgv);
 
                 object misValue = System.Reflection.Missing.Value;
                 Excel.Application xlexcel = new Excel.Application();
 
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                xlexcel.DisplayAlerts = false;          
                 Excel.Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
                 Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                // Paste clipboard results to worksheet range
                 Excel.Range CR = (Excel.Range)xlWorkSheet.Cells[1, 1];
                 CR.Select();
                 xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
                 xlWorkSheet.Columns.AutoFit();
 
-                // Save the excel file under the captured location from the SaveFileDialog
                 xlWorkBook.SaveAs(sfd.FileName, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
                 xlexcel.DisplayAlerts = true;
                 xlWorkBook.Close(true, misValue, misValue);
@@ -52,11 +49,9 @@ namespace ganntproj1
                 RelComObject(xlWorkBook);
                 RelComObject(xlexcel);
 
-                // Clear Clipboard and DataGridView selection
                 Clipboard.Clear();
                 dgv.ClearSelection();
 
-                // Open the newly saved excel file
                 try
                 {
                     if (System.IO.File.Exists(sfd.FileName))

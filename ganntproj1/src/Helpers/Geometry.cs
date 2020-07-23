@@ -6,12 +6,6 @@ namespace ganntproj1
     {
     class Geometry
         {
-        /// <summary>
-        /// Function that controls bounds of geometric figures in a plane.
-        /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="rad"></param>
-        /// <returns></returns>
         public GraphicsPath RoundedRectanglePath(Rectangle bounds, int rad)
             {
             var diameter = rad * 2;
@@ -33,14 +27,13 @@ namespace ganntproj1
             arc.X = bounds.Left;
             path.AddArc(arc, 90, 90);
 
-            path.CloseFigure(); //be sure to close the figure
+            path.CloseFigure();      
 
             return path;
             }
         
         private Color HexToColor(string hexColor)
             {
-            //Remove # if present
             if (hexColor.IndexOf('#') != -1)
                 hexColor = hexColor.Replace("#", "");
 
@@ -50,20 +43,17 @@ namespace ganntproj1
 
             if (hexColor.Length == 8)
                 {
-                //We need to remove the preceding FF
                 hexColor = hexColor.Substring(2);
                 }
 
             if (hexColor.Length == 6)
                 {
-                //#RRGGBB
                 red = byte.Parse(hexColor.Substring(0, 2), NumberStyles.AllowHexSpecifier);
                 green = byte.Parse(hexColor.Substring(2, 2), NumberStyles.AllowHexSpecifier);
                 blue = byte.Parse(hexColor.Substring(4, 2), NumberStyles.AllowHexSpecifier);
                 }
             else if (hexColor.Length == 3)
                 {
-                //#RGB
                 red = byte.Parse(hexColor[0].ToString() + hexColor[0].ToString(), NumberStyles.AllowHexSpecifier);
                 green = byte.Parse(hexColor[1].ToString() + hexColor[1].ToString(), NumberStyles.AllowHexSpecifier);
                 blue = byte.Parse(hexColor[2].ToString() + hexColor[2].ToString(), NumberStyles.AllowHexSpecifier);
@@ -74,16 +64,7 @@ namespace ganntproj1
 
         public Color InvertColor(Color cl)
             {
-            //if (cl != null)
-            //    {
-            //    Color ColorToConvert = HexToColor(value);
-            //    Color invertedColor = Color.FromArgb((byte)~cl.R, (byte)~cl.G, (byte)~cl.B);
-            //    return invertedColor;
-            //    }
-            //else
-            //    {
                return Color.FromArgb(0, 0, 0);
-            //    }
             }
         }
     }

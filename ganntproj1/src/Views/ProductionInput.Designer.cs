@@ -155,13 +155,13 @@
             // txtPersone
             // 
             this.txtPersone.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPersone.ForeColor = System.Drawing.Color.Black;
+            this.txtPersone.ForeColor = System.Drawing.Color.Brown;
             this.txtPersone.Location = new System.Drawing.Point(264, 182);
             this.txtPersone.Margin = new System.Windows.Forms.Padding(2);
             this.txtPersone.Name = "txtPersone";
-            this.txtPersone.ReadOnly = true;
             this.txtPersone.Size = new System.Drawing.Size(78, 33);
             this.txtPersone.TabIndex = 15;
+            this.txtPersone.Text = "0";
             this.txtPersone.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPersone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
             // 
@@ -169,12 +169,12 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(261, 165);
+            this.label6.Location = new System.Drawing.Point(261, 149);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(68, 14);
+            this.label6.Size = new System.Drawing.Size(61, 28);
             this.label6.TabIndex = 14;
-            this.label6.Text = "Nr. Persone";
+            this.label6.Text = "Members/\r\nmachines";
             // 
             // pnHeader
             // 

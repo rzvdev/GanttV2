@@ -918,7 +918,7 @@
         /// <param name="ignoreScrollAndMousePosition">The ignoreScrollAndMousePosition<see cref="bool"/></param>
         private void DrawBars(Graphics grfx, bool ignoreScrollAndMousePosition = false)
         {
-            //grfx.SmoothingMode = SmoothingMode.AntiAlias;
+            grfx.SmoothingMode = SmoothingMode.AntiAlias;
             var geo = new Geometry();
             foreach (var bar in Bars)
             {                
@@ -1153,6 +1153,10 @@
                 _scrollBarArea = new Rectangle(Width - 57, 0, 57, maxHeight + 10);
                 grfx.FillRectangle(new SolidBrush(Color.WhiteSmoke), _scrollBarArea);
             }
+
+            grfx.SmoothingMode = SmoothingMode.HighSpeed;
+            grfx.CompositingMode = CompositingMode.SourceCopy;
+            grfx.CompositingQuality = CompositingQuality.HighSpeed;
         }
 
         /// <summary>

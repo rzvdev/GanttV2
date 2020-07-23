@@ -477,6 +477,8 @@ namespace ganntproj1
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@deptArr", SqlDbType.NVarChar).Value = Store.Default.arrDept;
+                cmd.Parameters.Add("@byHour", SqlDbType.Bit).Value = false;
+
                 con.Open();
 
                 var dr = cmd.ExecuteReader();

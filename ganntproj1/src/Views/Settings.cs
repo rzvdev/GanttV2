@@ -187,9 +187,16 @@ namespace ganntproj1
             var vp = new JobModel();
             var linesQuery = from lin in Models.Tables.Lines
                              where lin.Department == cbDept.Text
-                             select new { lin.Line, lin.Members, lin.Abatimento, lin.Description};
+                             select new { lin.Line, lin.Members, lin.Abatimento, lin.Description, lin.Groupby};
             dgvLines.DataSource = linesQuery;
-            }
+            dgvLines.Columns[0].Width = 80;
+            dgvLines.Columns[1].HeaderText = "Memb/\nMac";
+            dgvLines.Columns[1].Width = 60;
+            dgvLines.Columns[2].HeaderText = "Ab%";
+            dgvLines.Columns[2].Width = 40;
+            dgvLines.Columns[3].Width = 160;
+            dgvLines.Columns[4].Width = 80;
+        }
 
         private void button1_Click_1(object sender, EventArgs e)
             {
@@ -1076,6 +1083,11 @@ namespace ganntproj1
         {
             Store.Default.manualDate = toggleCheckBox2.Checked;
             Store.Default.Save();
+        }
+
+        private void btnUpdate_MouseEnter(object sender, EventArgs e)
+        {
+
         }
     }
 }

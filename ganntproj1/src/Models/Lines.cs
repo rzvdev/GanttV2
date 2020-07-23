@@ -93,5 +93,18 @@ namespace ganntproj1.Models
                 _Description = value;
             }
         }
+        private string _Groupby;
+        [Column(Storage = "_Groupby")]
+        public string Groupby
+        {
+            get
+            {
+                return _Groupby;
+            }
+            set
+            {
+                _Groupby = value;
+            }
+        }
     }    
 }    

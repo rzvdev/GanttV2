@@ -15,10 +15,6 @@ namespace ganntproj1
 
             }
 
-        /// <summary>
-        /// Static table that can be read-only, or downloadable.
-        /// It's used when the data and behavior of a class do not depend on object identity
-        /// </summary>
         public static DataTable ProcessingTable { get; set; }
 
         public IEnumerable<string[]> Content()
@@ -36,7 +32,6 @@ namespace ganntproj1
                 }
             catch
                 {
-                //reset output file
                 Store.Default.outputDir = string.Empty;
                 Store.Default.Save();
 
@@ -55,10 +50,6 @@ namespace ganntproj1
             return csvFile;
         }
 
-        /// <summary>
-        /// Formated array of resource data.
-        /// </summary>
-        /// <returns>Array</returns>
         public List<string> OutputFormater()
         {
             var lst = new List<string>();
@@ -71,16 +62,12 @@ namespace ganntproj1
                 for (var len = 0; len <= arr.Length - 1; len++)
                     sb.Append(arr[len] + " ");
 
-                //add environmental record
                 lst.Add(sb + "\n");    
             }
 
             return lst;
         }
 
-        /// <summary>
-        /// Constant string array of all existent columns in .xls file.
-        /// </summary>
         public string[] FileColumns { get; set; } = new string[] {"Commessa", "Articolo", "Finezza", "Capi commessa", 
             "Stagione", "Capi usciti da tessitura", "Diff(CapiComm-CapiTess)", "Diff% 1", "Data Arrivo Filato", 
             "Data Inizio Tessitura", "GG Staz Pre-Tess", "Data Fine Tessitura", "GG Lav 1", "Data Consegna Tessitura", 

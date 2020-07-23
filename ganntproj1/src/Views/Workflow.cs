@@ -1,30 +1,4 @@
-﻿/*
- * Copyright(c) 2017-2019 Necton Inc.All Rights Reserved.
- *
- * @NECTON_LICENSE_HEADER_START@
- *
- * This file contains Original Code and/or Modifications of Original Code
-* as defined in and that are subject to the Apple Public Source License
- * Version 2.0 (the 'License'). You may not use this file except in
- * compliance with the License.Please obtain a copy of the License at
- * http://www.opensource.necton.com/ncsl/ and read it before using this
- * file.
- *
- * The Original Code and all software distributed under the License are
- * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
- * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
- * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
- * Please see the License for the specific language governing rights and
- * limitations under the License.
- *
- * @NECTON_LICENSE_HEADER_END@
- */
-
-/*
- * sslKeyExchange.c - Support for key exchange and server key exchange
- */
-namespace ganntproj1
+﻿namespace ganntproj1
 {
     using ganntproj1.src.Views;
     using System;
@@ -39,99 +13,39 @@ namespace ganntproj1
     using System.Threading;
     using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="Workflow" />
-    /// </summary>
     public partial class Workflow : Form
     {
-        //
-        //Charting
-        //
-        /// <summary>
-        /// Defines the _gChart
-        /// </summary>
         private readonly Ganttogram _gChart = new Ganttogram();
 
-        /// <summary>
-        /// Defines the _objList
-        /// </summary>
         private List<Bar> _objList = new List<Bar>();
 
-        /// <summary>
-        /// Defines the _clonedIndexes
-        /// </summary>
         private List<Index> _clonedIndexes = new List<Index>();
 
-        /// <summary>
-        /// Defines the _lstExpanded
-        /// </summary>
         private readonly List<string> _lstExpanded = new List<string>();
 
-        /// <summary>
-        /// Defines the _ctxMenuStrip
-        /// </summary>
         private ContextMenuStrip _ctxMenuStrip = new ContextMenuStrip();
 
-        /// <summary>
-        /// Defines the _ctxActive
-        /// </summary>
         private bool _ctxActive = false;
 
-        /// <summary>
-        /// Defines the _clActive
-        /// </summary>
         private bool _clActive = false;
 
-        //
-        //Runtime
-        //
-        /// <summary>
-        /// Defines the _config
-        /// </summary>
         private readonly Config _config = new Config();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether IsTreeState
-        /// </summary>
         private bool IsTreeState { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether HoldCollapsedNodes
-        /// </summary>
         private bool HoldCollapsedNodes { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether ByQty
-        /// </summary>
         public static bool ByQty { get; set; }
 
-        /// <summary>
-        /// Gets or sets the TargetOrder
-        /// </summary>
         public static string TargetOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets the TargetLine
-        /// </summary>
         public static string TargetLine { get; set; }
-        /// <summary>
-        /// Gets or sets the target department
-        /// </summary>
         public static string TargetDepartment { get; set; }
-        /// <summary>
-        /// Gets or sets the TargetProgramDate
-        /// </summary>
         public static DateTime TargetProgramDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the TargetModelStartDate
-        /// </summary>
         public static DateTime TargetModelStartDate { get; set; }
 
 
-        /// <summary>
-        /// Gets or sets the TargetModelColor
-        /// </summary>
         public static Color TargetModelColor { get; set; }
 
         public static int Members { get; set; }
@@ -142,36 +56,22 @@ namespace ganntproj1
 
         public static bool TargetClosedByUser { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether TargetLocked
-        /// </summary>
         public static bool TargetLocked { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether TargetLockedProd
-        /// </summary>
         public static bool TargetLockedProd { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ListOfRemovedOrders
-        /// </summary>
+        public static double TargetQtyH { get; set; }
+
+        public static string Article { get; set; }
+
         public static List<string> ListOfRemovedOrders { get; set; }
 
-        /// <summary>
-        /// Gets or sets the DefaultAim
-        /// </summary>
         private string DefaultAim { get; set; }
 
         private string DefaultDept { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether IsDelayHidden
-        /// </summary>
         public static bool IsDelayHidden { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Workflow"/> class.
-        /// </summary>
         public Workflow()
         {
             InitializeComponent();
@@ -183,10 +83,7 @@ namespace ganntproj1
             _gChart.MouseMove += _gChart.Chart_MouseMove;
             _gChart.DoubleClick += Gantt_DoubleClick;
             _gChart.MouseMove += Gantt_MouseMove;
-            //_gChart.MouseLeave += (s, e) =>
-            //{
-            //    _gChart.Refresh();
-            //};
+
             _config.Set_sql_conn(new SqlConnection
                 (Config.GetOlyConn().Connection.ConnectionString));
             spContainer.Panel2Collapsed = true;
@@ -199,11 +96,6 @@ namespace ganntproj1
             };
         }
 
-        /// <summary>
-        /// The ProduzioneGantt_Load
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void ProduzioneGantt_Load(object sender, EventArgs e)
         {
             cbArticle.Checked = Central.IsArticleSelection;
@@ -226,9 +118,6 @@ namespace ganntproj1
             _gChart.FilteredRowAtt = string.Empty;
         }
  
-        /// <summary>
-        /// The LoadDataWithDateChange
-        /// </summary>
         public void LoadDataWithDateChange()
         {
             _gChart.FromDate = Central.DateFrom;
@@ -239,21 +128,13 @@ namespace ganntproj1
             AddTimelineObjects();
         }
 
-        /// <summary>
-        /// Defines the _indexerList
-        /// </summary>
         private List<Index> _indexerList = new List<Index>();
 
-        /// <summary>
-        /// The SetPrincipalBarIndex
-        /// </summary>
         private void SetPrincipalBarIndex(bool effColor)
         {
             _gChart.Bars = new List<BarProperty>();
             _gChart.HeaderList = new List<Header>();
             _objList = new List<Bar>();
-            //_gChart.FilteredRowText = string.Empty;
-            //_gChart.FilteredRowAtt = string.Empty;
 
             var jobModel = new JobModel();
             var c = new Central();
@@ -266,7 +147,6 @@ namespace ganntproj1
 
             var islocked = false;
 
-            /*Indexing of gantt objects*/
             var rowIdx = 0;
             var elementIdx = 0;
             foreach (var model in Central.ListOfModels)
@@ -289,13 +169,12 @@ namespace ganntproj1
                 DefaultDept = model.Department;
                 islocked = model.Locked;
             }
-            //if (cbComm.SelectedIndex > 0) _gChart.FilteredRowText = cbComm.Text;
 
             var timeToMoveForward = 0.0;
             var timeToMoveBack = 0.0;
             var objLockIndex = 0;
+
             foreach (var item in _indexerList)
-            // Specifies the index for each model added to the controller
             {
                 timeToMoveForward = 0.0;
                 timeToMoveBack = 0.0;
@@ -305,20 +184,26 @@ namespace ganntproj1
                 var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
                 if (modelBefore != null)
                 {
-                    var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);//.Days, modelBefore.DelayTime.Hours, modelBefore.DelayTime.Minutes,
-                    //delayBeforeSeconds, modelBefore.DelayTime.Milliseconds);
-                    var modelStartDate = model.StartDate;
+                    var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);
                     var tck = 0.0;
                     if (modelBefore.DelayEndDate == DateTime.MinValue) tck = 0;
                     else tck = modelBefore.DelayEndDate.Subtract(modelBefore.EndDate).TotalDays;
-                    var before = modelBefore.EndDate.AddDays(tck);
+                    var beforeFullEndTime = modelBefore.EndDate.AddDays(tck);      
                     if (!model.ManualDate)
                     {
-                        timeToMoveForward = before.Subtract(model.StartDate).TotalDays;
-                        timeToMoveBack = modelStartDate.Subtract(before).TotalDays;
+                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
+                        timeToMoveBack = model.StartDate.Subtract(beforeFullEndTime).TotalDays;
                         if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
                         if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
-                    }                   
+                    }     
+                    else
+                    {
+                        if (beforeFullEndTime > model.StartDate)
+                        {
+                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
+                            if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
+                        }
+                    }
                 }
                 else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
                 {
@@ -355,14 +240,12 @@ namespace ganntproj1
                 var spCarico = model.LoadedQty;
                 var delEnd = jobEnd.AddDays(delayTs.Days).AddHours(+delayTs.Hours);
                 var delayStart = new DateTime(jobEnd.Year, jobEnd.Month, jobEnd.Day, jobEnd.Hour, jobEnd.Minute, jobEnd.Second);
-                var delayEnd = delEnd; //jobEnd.AddDays(delayTs.Days).AddHours(+delayTs.Hours).AddMinutes(delayTs.Minutes).AddSeconds(delayTs.Seconds);
+                var delayEnd = delEnd;
                 if (prodQty > 0)
                 {
                     if (isClosed && prodEnd.Date <= jobEnd.Date)
-                    //closed model
                     {
-                        jobEnd = prodEnd; //new DateTime(prodEnd.Year, prodEnd.Month, prodEnd.Day,
-                                          //prodEnd.Hour, prodEnd.Minute, prodEnd.Second, prodEnd.Millisecond);
+                        jobEnd = prodEnd;
                         delayTs = new TimeSpan(0, 0, 0, 0, 0);
                         delayStart = DateTime.MinValue;
                         delayEnd = DateTime.MinValue;
@@ -378,24 +261,20 @@ namespace ganntproj1
                          prodEnd.Hour, prodEnd.Minute, prodEnd.Second, prodEnd.Millisecond);
                     }
                     else if (!isClosed && prodQty.Equals(spCarico) && prodEnd <= jobEnd)
-                    //finished model
                     {
-                        jobEnd = prodEnd; // new DateTime(prodEnd.Year, prodEnd.Month, prodEnd.Day,
-                                          //prodEnd.Hour, prodEnd.Minute, prodEnd.Second, prodEnd.Millisecond);
+                        jobEnd = prodEnd;
                         delayTs = new TimeSpan(0, 0, 0, 0, 0);
                         delayStart = Config.MinimalDate;
                         delayEnd = Config.MinimalDate;
                     }
                     else if (!isClosed && prodQty < spCarico && jobEnd < prodEnd)
                     {
-                        //var pe = prodEnd.Subtract(jobEnd.AddMinutes(+1));
-                        //delayTs = new TimeSpan(0, 0, 0, 0, 0);
                         delayStart = jobEnd.AddMinutes(+1);
                         delayEnd = prodEnd;
                     }
-                    else if (!isClosed && prodQty < spCarico && delayTs != new TimeSpan(0, 0, 0, 0, 0))// || delayTs.Hours > 0)
+                    else if (!isClosed && prodQty < spCarico && delayTs != new TimeSpan(0, 0, 0, 0, 0))
                     {
-                        var j = delayEnd; //jobEnd.AddDays(+delayTs.Days).AddHours(+delayTs.Hours);
+                        var j = delayEnd;
                         delayStart = jobEnd.AddMinutes(+1);
                         if (j.Hour > 15)
                         {
@@ -415,19 +294,17 @@ namespace ganntproj1
                         }
                         var delInc = JobModel.SkipDateRange(delayStart, delayEnd, model.Aim);
 
-                        //var si = JobModel.SkipWeekendRange(delayStart, delayEnd);
                         delayTs = new TimeSpan(delayTs.Days + delInc, delayTs.Hours, 0, 0, 0);
                         delayEnd = delayEnd.AddDays(+delInc);
                     }
                 }
 
-                // Update job model
                 var query = (from md in Central.ListOfModels
                              where md.Name == model.Name
                              select md)
                              .Update(st =>
                              {
-                                 st.StartDate = !model.ManualDate ? model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack) : model.StartDate;
+                                 st.StartDate = model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
                                  st.EndDate = jobEnd.AddMinutes(-1);
                                  st.DelayTime = delayTs.Ticks;
                                  st.DelayStartDate = delayStart;
@@ -444,8 +321,6 @@ namespace ganntproj1
                 var eff = (model.ProdQty / (model.DailyProd * workDays)) * 100;
 
                 var prodBarColor = new Color();
-
-                //get efficiency color
 
                 if (prodQtyDiff == 0 || model.ClosedByUser)
                 {
@@ -520,7 +395,6 @@ namespace ganntproj1
                     }
                 }
 
-                // Insert objects into chart object list
                 _objList.Add(new Bar(model.Name, model.Name + '_' + model.Aim,
                     model.StartDate,
                     model.EndDate,
@@ -539,7 +413,6 @@ namespace ganntproj1
                     model.Article, model.Department));
 
                 if (model.Locked || model.IsLockedProduction)
-                // get last index of the locked model
                 {
                     var idp = _indexerList.Where(x => x.ObjText == model.Name &&
                     x.ObjAim == model.Aim && x.ObjDept == model.Department).SingleOrDefault();
@@ -572,20 +445,12 @@ namespace ganntproj1
             _gChart.Refresh();
         }
 
-        /// <summary>
-        /// The AddTimelineObjects
-        /// </summary>
         public void AddTimelineObjects()
         {
             SetPrincipalBarIndex(false);
             ByQty = false;
         }
 
-        /// <summary>
-        /// The Gantt_DoubleClick
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void Gantt_DoubleClick(object sender, EventArgs e)
         {
             if (_gChart.MouseOverRowValue == null) return;
@@ -624,9 +489,6 @@ namespace ganntproj1
             AddTimelineObjects();
             _gChart.Refresh();
         }
-        /// <summary>
-        /// The AddGanttContextMenu
-        /// </summary>
         private void AddGanttContextMenu()
         {
             _ctxMenuStrip = new ContextMenuStrip();
@@ -754,7 +616,6 @@ namespace ganntproj1
                 }
                 else
                 {
-                    //show important message
                     MessageBox.Show("Cannot perform the SPLIT query from an unreachable field.",
                         "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -764,7 +625,6 @@ namespace ganntproj1
                 _tmTip?.Dispose();
                 if (_gChart.MouseOverRowValue == null)
                 {
-                    //show important message
                     MessageBox.Show("Cannot perform the DELETE query from an unreachable field.",
                         "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -777,7 +637,6 @@ namespace ganntproj1
             {
                 if (_gChart.MouseOverRowValue == null)
                 {
-                    //show important message
                     MessageBox.Show("Cannot perform the LOCK query from an unreachable field.",
                         "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -831,8 +690,6 @@ namespace ganntproj1
                                 true, true, lockDate, TargetOrder, TargetLine);
                         }
                     }
-                    //var c = new Central();
-                    //c.GetBase(null);
                     AddTimelineObjects();
                     _gChart.Refresh();
                     TargetOrder = string.Empty;
@@ -852,14 +709,8 @@ namespace ganntproj1
             _gChart.ContextMenuStrip = _ctxMenuStrip;
         }
 
-        /// <summary>
-        /// Defines the LineActiveArticlesList
-        /// </summary>
         public static List<string> LineActiveArticlesList = new List<string>();
 
-        /// <summary>
-        /// The InsertCommessaProgram
-        /// </summary>
         public void InsertCommessaProgram()
         {
             var loadingJob = new LoadingJob(true)
@@ -868,7 +719,6 @@ namespace ganntproj1
             };
             try
             {
-                //get mouse over date
                 TargetProgramDate = _gChart.MouseOverColumnDate;
 
                 if (TargetProgramDate == null || TargetProgramDate == DateTime.MinValue)
@@ -876,14 +726,11 @@ namespace ganntproj1
                     MessageBox.Show("Invalid selection.");
                     return;
                 }
-                // Gets dynamic value that is preeceding, next or greater index of the cursor
-                // If row has two or more, always will be the last
                 var nextValue = (Bar)_gChart.MouseOverNextValue;
-                // Finds the aim of the found cursor
-                //var nextValueModel = Central.ListOfModels.Where(x =>
-                //x.Name == nextValue.RowText && x.Aim == nextValue.Tag && x.Department == nextValue.Department).SingleOrDefault();
                 TargetLine = nextValue.Tag;
                 TargetDepartment = nextValue.Department;
+                Article = nextValue.Article;
+
                 var sDate = JobModel.GetLineLastDate(TargetLine, TargetDepartment);
                 ManualDateTime = sDate;
 
@@ -903,11 +750,9 @@ namespace ganntproj1
                 Central.IsProgramare = false;
                 _ctxMenuStrip = null;
                 if (TargetOrder == string.Empty)
-                // Check if user did not select an order
                 {
                     return;
                 }
-                /* Insert new order into objects table */
                 var orderQuery = (from ord in Models.Tables.Orders
                                   where ord.NrComanda == TargetOrder
                                   && ord.Department == TargetDepartment
@@ -921,7 +766,6 @@ namespace ganntproj1
                     return;
                 }
                 if (orderQuery == null)
-                // Check if orders query doesn't get some of the records
                 {
                     MessageBox.Show("Order fail.", "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -936,23 +780,22 @@ namespace ganntproj1
                 }
                 var jobMod = new JobModel();
                 double.TryParse(artQ.Centes.ToString(), out var qtyH);
+                if (Store.Default.sectorId == 2) qtyH = TargetQtyH;
                 double.TryParse(artQ.Prezzo.ToString(), out var price);
                 int.TryParse(orderQuery.Carico.ToString(), out var carico);
                 var qty = ByQty ? orderQuery.Cantitate : carico;
                 if (ByQty && carico <= 0)
                 {
-                    //select total qty automatic
                     qty = orderQuery.Cantitate;
                     ByQty = true;
                 }
-                var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Workflow.Members);
+                int.TryParse(jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Workflow.Members).ToString(), out var dur);
                 var eDate = ManualDateTime.AddDays(+dur);
-                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Workflow.Members);
+                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Workflow.Members, qty);
                 int.TryParse(dailyQty.ToString(), out var dq);
 
                 loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dq, price, orderQuery.Department,Members, ByManualDate);
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
-                // update job aim
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2},QtyInstead={3} where NrComanda={4} and department={5}",
                         sDate, eDate,
@@ -975,9 +818,6 @@ namespace ganntproj1
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
         }
-        /// <summary>
-        /// The DeleteCommessaProgram
-        /// </summary>
         private void DeleteCommessaProgram()
         {
             if (_gChart.MouseOverRowValue != null)
@@ -995,13 +835,11 @@ namespace ganntproj1
                     TargetDepartment = string.Empty;
                     return;
                 }
-                // Tests to see does order has production insertments
                 var prodComm = (from prod in Models.Tables.Productions
                                 where prod.Commessa == TargetOrder
                                 && prod.Line == TargetLine && prod.Department == TargetDepartment
                                 select prod).ToList();
                 if (prodComm.Count > 0)
-                // Disallow user to delete order which has production insertments
                 {
                     MessageBox.Show("Unable to delete a structured task.",
                         "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1039,7 +877,6 @@ namespace ganntproj1
                         var endDate = startdate.AddDays(+newDur);
 
                         using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
-                        // update job aim
                         {
                             ctx.ExecuteCommand("update objects set loadedQty={0}, StartDate={1}, duration={2}, endDate={3} where ordername={4} and aim={5} and department={6}",
                                 newQty, JobModel.GetLSpan(startdate), newDur, JobModel.GetLSpan(endDate), getOrder.Name, getOrder.Aim, getOrder.Department);
@@ -1047,26 +884,17 @@ namespace ganntproj1
                     }
                 }
 
-                /* Delete(reset) order sturucture */
                 using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
-                // update job aim
                 {
                     ctx.ExecuteCommand("delete from objects where ordername={0} and aim={1} and department={2}",
                         TargetOrder, TargetLine, TargetDepartment);
                 }
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
-                // update job aim
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0}" +
                         " and Department={1}",
                         TargetOrder, TargetDepartment);
                 }
-                //using (var context = new System.Data.Linq.DataContext(Central.ConnStr))
-                //{
-                //    // delete existing records
-                //    context.ExecuteCommand("update comenzi set DataProduzione=null,DataFine=null,Line=null,QtyInstead=null where NrComanda={0} and line={1} and department={2}",
-                //        TargetOrder, TargetLine, TargetDepartment);
-                //}
                 ListOfRemovedOrders.Add(TargetOrder);
                 Config.InsertOperationLog("manual_programmingremoval",
                     TargetOrder + "-" + TargetLine + "-" + Store.Default.selDept, "workflowcontroller");
@@ -1079,11 +907,6 @@ namespace ganntproj1
                 TargetDepartment = string.Empty;
             }
         }
-        /// <summary>
-        /// The cbDvc_CheckedChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void cbDvc_CheckedChanged(object sender, EventArgs e)
         {
             if (((CheckBox)sender).Checked)
@@ -1095,36 +918,8 @@ namespace ganntproj1
             AddTimelineObjects();
         }
 
-        /// <summary>
-        /// The myCheckBox1_CheckedChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
-        //private void myCheckBox1_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (((CheckBox)sender).Checked)
-        //    {
-        //        HoldCollapsedNodes = true;
-
-        //        if (IsTreeState) cbTree.Checked = false;
-        //    }
-        //    else
-        //    {
-        //        HoldCollapsedNodes = false;
-        //        cbTree.Checked = true;
-        //    }
-        //}
-
-        /// <summary>
-        /// Defines the _loadingJobForm
-        /// </summary>
         private LoadingJob _loadingJobForm = null;
 
-        /// <summary>
-        /// The btnCallCarico_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnCallCarico_Click(object sender, EventArgs e)
         {
             if (_loadingJobForm == null)
@@ -1207,18 +1002,8 @@ namespace ganntproj1
                 _clActive = false;
             }
         }
-        /// <summary>
-        /// Defines the _dgvTip
-        /// </summary>
         private DataGridView _dgvTip = new DataGridView();
-        /// <summary>
-        /// Defines the _tmTip
-        /// </summary>
         private System.Threading.Timer _tmTip = null;
-        /// <summary>
-        /// The ShowLabelTip
-        /// </summary>
-        /// <param name="info">The info<see cref="object"/></param>
         private void ShowTableTip(object info)
         { 
             var coord = _gChart.PointToClient(Cursor.Position);
@@ -1276,6 +1061,7 @@ namespace ganntproj1
                     dt.Rows.Add(new[] { "Data Fine Produzione", model.EndDate.ToString("dd/MM/yyyy HH:mm") });
                     dt.Rows.Add(new[] { "Duration", model.Duration.ToString() });
                     dt.Rows.Add(new[] { "Days on holiday", model.HolidayRange.ToString() });
+                    dt.Rows.Add(new[] { "Members/machines", model.Members.ToString() });
                 }
                 else if (val.Color == Color.Orange)
                 {
@@ -1332,11 +1118,6 @@ namespace ganntproj1
                 }
             }
         }
-        /// <summary>
-        /// The Gantt_MouseMove
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="eventArgs">The eventArgs<see cref="MouseEventArgs"/></param>
         private void Gantt_MouseMove(object sender, MouseEventArgs eventArgs)
         {
             if (_ctxActive) return;
@@ -1347,9 +1128,6 @@ namespace ganntproj1
             AutoResetEvent are = new AutoResetEvent(true);
             _tmTip = new System.Threading.Timer(tcb, are, 1000, 0);
         }
-        /// <summary>
-        /// The PopulateFilters
-        /// </summary>
         private void PopulateFilters()
         {
             cbComm.Items.Clear();
@@ -1365,11 +1143,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The cbComm_SelectedIndexChanged_1
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void cbComm_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             try
@@ -1408,11 +1181,6 @@ namespace ganntproj1
            
         }
 
-        /// <summary>
-        /// The cbArt_SelectedIndexChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void cbArt_SelectedIndexChanged(object sender, EventArgs e)
         {
             vScrollBar1.Value = 0;
@@ -1423,18 +1191,12 @@ namespace ganntproj1
             _gChart.Refresh();
         }
 
-        /// <summary>
-        /// The NavigateBack
-        /// </summary>
         private void NavigateBack()
         {
             _gChart.FromDate = _gChart.FromDate.AddDays(-1);
             _gChart.ToDate = _gChart.ToDate.AddDays(-1);
             _gChart.Refresh();
         }
-        /// <summary>
-        /// The NavigateBackMega
-        /// </summary>
         private void NavigateBackMega()
         {
             _gChart.FromDate = _gChart.FromDate.AddDays(-7);
@@ -1442,27 +1204,18 @@ namespace ganntproj1
 
             _gChart.Refresh();
         }
-        /// <summary>
-        /// The NavigateForw
-        /// </summary>
         private void NavigateForw()
         {
             _gChart.FromDate = _gChart.FromDate.AddDays(+1);
             _gChart.ToDate = _gChart.ToDate.AddDays(+1);
             _gChart.Refresh();
         }
-        /// <summary>
-        /// The NavigateForwMega
-        /// </summary>
         private void NavigateForwMega()
         {
             _gChart.FromDate = _gChart.FromDate.AddDays(+7);
             _gChart.ToDate = _gChart.ToDate.AddDays(+7);
             _gChart.Refresh();
         }
-        /// <summary>
-        /// The ZoomIn
-        /// </summary>
         private void ZoomIn()
         {
             if (_gChart.ToDate.Subtract(_gChart.FromDate).TotalDays < 3)
@@ -1497,13 +1250,7 @@ namespace ganntproj1
                 btnZoomOut.BackColor = Color.FromArgb(235, 235, 235);
             }
         }
-        /// <summary>
-        /// Defines the _isOutZoomed
-        /// </summary>
         private bool _isOutZoomed = false;
-        /// <summary>
-        /// The ZoomOut
-        /// </summary>
         private void ZoomOut()
         {
             if (_gChart._barHeight == 28) return;
@@ -1517,11 +1264,6 @@ namespace ganntproj1
             else if (_gChart._barHeight == 40)
                 btnZoomIn.BackColor = Color.WhiteSmoke;
         }
-        /// <summary>
-        /// The HScrollBar1_Scroll
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="ScrollEventArgs"/></param>
         private void HScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.NewValue == e.OldValue)
@@ -1546,11 +1288,6 @@ namespace ganntproj1
             }
         }
 
-        /// <summary>
-        /// The vScrollBar1_Scroll
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="ScrollEventArgs"/></param>
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             try
@@ -1561,85 +1298,48 @@ namespace ganntproj1
             }
             catch
             {
-                // ignored
             }
         }
 
-        /// <summary>
-        /// The btnBack_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnBack_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             NavigateBack();
         }
 
-        /// <summary>
-        /// The btnMegaBack_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnMegaBack_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             NavigateBackMega();
         }
 
-        /// <summary>
-        /// The btnMegaFow_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnMegaFow_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             NavigateForwMega();
         }
 
-        /// <summary>
-        /// The btnFow_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnFow_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             NavigateForw();
         }
 
-        /// <summary>
-        /// The btnZoomIn_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnZoomIn_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             ZoomIn();
         }
 
-        /// <summary>
-        /// The btnZoomOut_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnZoomOut_Click(object sender, EventArgs e)
         {
             if (_gChart.Focused) return;
             ZoomOut();
         }
 
-        /// <summary>
-        /// The btnDayInfo_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnDayInfo_Click(object sender, EventArgs e)
         {
             btnDayInfo.BackColor = Color.FromArgb(235, 235, 235);
-            // _gChart.RectangleSelectorActivated = !_gChart.RectangleSelectorActivated;
             _gChart.HideClosedTask = !_gChart.HideClosedTask;
             if (_gChart.HideClosedTask)
             {
@@ -1648,21 +1348,11 @@ namespace ganntproj1
             _gChart.Refresh();
         }
 
-        /// <summary>
-        /// The btnSchedule_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnSchedule_Click(object sender, EventArgs e)
         {
 
         }
 
-        /// <summary>
-        /// The btnHideDelay_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnHideDelay_Click(object sender, EventArgs e)
         {
             _gChart.HideDelay = !_gChart.HideDelay;
@@ -1674,39 +1364,18 @@ namespace ganntproj1
             _gChart.Refresh();
         }
 
-        /// <summary>
-        /// The WorkflowController_Paint
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="PaintEventArgs"/></param>
         private void WorkflowController_Paint(object sender, PaintEventArgs e)
         {
         }
 
-        /// <summary>
-        /// The WorkflowController_KeyDown
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="KeyEventArgs"/></param>
         private void WorkflowController_KeyDown(object sender, KeyEventArgs e)
         {
         }
 
-        /// <summary>
-        /// Gets or sets the ListOfLinesSelected
-        /// </summary>
         public static List<string> ListOfLinesSelected { get; set; }
 
-        /// <summary>
-        /// Defines the SkipLines
-        /// </summary>
         public static bool SkipLines = false;
 
-        /// <summary>
-        /// The Button1_Click
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void Button1_Click(object sender, EventArgs e)
         {
             var b = (Button)sender;

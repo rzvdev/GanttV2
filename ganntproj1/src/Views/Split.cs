@@ -247,9 +247,8 @@ namespace ganntproj1
                 return;
                 }
             
-            try
-                {
-
+            try  
+            {                
                 using (var con = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
                 {
                     //startdate,duration,enddate
@@ -281,16 +280,23 @@ namespace ganntproj1
                 var end = JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment);
                 var eDate = end.AddDays(+jobDuration);
 
+                var splitStartDate = JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment);
+
+                if (splitStartDate == Config.MinimalDate)
+                {
+                    splitStartDate = dtpCommData.Value;
+                }
+
                 using (var con = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
                 {
                     var cmd = new System.Data.SqlClient.SqlCommand(q, con);
-                    cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = Order + ".1";
+                    cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = Order + "_1";
                     cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = cbCommLinea.Text;
                     cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = jobModel.Article;
                     cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
                     cmd.Parameters.Add("@param5", SqlDbType.Int).Value = newCapi;
                     cmd.Parameters.Add("@param6", SqlDbType.Float).Value = jobModel.QtyH; ;
-                    cmd.Parameters.Add("@param7", System.Data.SqlDbType.BigInt).Value = JobModel.GetLSpan(JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment));
+                    cmd.Parameters.Add("@param7", System.Data.SqlDbType.BigInt).Value = splitStartDate;
                     cmd.Parameters.Add("@param8", System.Data.SqlDbType.Int).Value = jobDuration;
                     cmd.Parameters.Add("@param9", System.Data.SqlDbType.BigInt).Value = JobModel.GetLSpan(eDate);
                     cmd.Parameters.Add("@param10", System.Data.SqlDbType.BigInt).Value = 0;

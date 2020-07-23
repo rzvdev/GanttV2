@@ -232,8 +232,8 @@
                     q += "order by department,len(line),line,convert(date, data, 101) ";
                     q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
                     q += "insert into tmpSum ";
-                    q += "select datas,line,sum(7.5 * members)producibili, ";
-                    q += "sum((7.5 * members * abat))prevent, sum(capi / qtyH)qty,dept,count(1) from tmpTable ";
+                    q += "select datas,line,sum(members) as producibili, ";
+                    q += "sum(members * abat) as prevent, sum(capi / qtyH)qty,dept,count(1) from tmpTable ";
                     q += "group by datas,line,dept order by dept,len(line),line,datas ";
                     q += "select datas,line, (produc / cnt * " +
                         "case when DATEPART(DW, datas) <> 7 THEN '" +
@@ -243,7 +243,6 @@
                     q += "drop table tmpTable drop table tmpSum";
 
                 }
-
 
                 var lst = new List<DataCollection>();
                 if (Mode == "mens")
@@ -1118,6 +1117,8 @@
             dt.Columns.Add("dept");
             dt.Columns.Add("price");
 
+            var tcb = toggleCheckBox1.Checked ? 1 : 0;
+
             using (var con = new SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new SqlCommand();
@@ -1125,6 +1126,8 @@
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@deptArr", SqlDbType.NVarChar).Value = Store.Default.arrDept;
+                cmd.Parameters.Add("@byHour", SqlDbType.Bit).Value = tcb;
+
                 con.Open();
 
                 var dr = cmd.ExecuteReader();
