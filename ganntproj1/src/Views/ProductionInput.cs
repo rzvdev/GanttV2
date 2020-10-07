@@ -624,7 +624,7 @@ namespace ganntproj1
         }
         private void InsertNewRecord()
         {
-            if (dtpCommData.Value.Date < Workflow.TargetModelStartDate.Date)
+            if (dtpCommData.Value.Date < Workflow.TargetModelStartDate.Date.AddDays(-1))
             {
                 MessageBox.Show("Not possible to add production before planned date.",
                     "Workflow controller", MessageBoxButtons.OK,
@@ -633,7 +633,7 @@ namespace ganntproj1
             }
             var selDate = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day);
             var checkHoliday = Central.ListOfHolidays
-                .Where(x => x.Holiday == selDate && x.Line == Workflow.TargetLine).SingleOrDefault();
+                .Where(x => x.Holiday == selDate && x.Line == Workflow.TargetLine && x.Department == Workflow.TargetDepartment).SingleOrDefault();
             if (checkHoliday != null)
             {
                 MessageBox.Show("Not possible to add production during holiday.",
@@ -765,6 +765,7 @@ namespace ganntproj1
             var startDelay = new DateTime();
             var endDelay = new DateTime();
             var aim = "";
+            var dept = "";
             foreach (var q in query)
             {
                 qty = q.ProdQty;
@@ -773,6 +774,7 @@ namespace ganntproj1
                 startDelay = q.DelayStartDate;
                 endDelay = q.DelayEndDate;
                 aim = q.Aim;
+                dept = q.Department;
             }
             lblProdQty.Text = qty.ToString();
             lblDifQty.Text = (loadedQty - qty).ToString();
@@ -781,7 +783,7 @@ namespace ganntproj1
             if (overQty < 0 || qty <= 0) overQty = 0;
             lblOverQty.Text = overQty.ToString();
 
-            var delDiff = JobModel.SkipDateRange(startDelay, endDelay, aim);
+            var delDiff = JobModel.SkipDateRange(startDelay, endDelay, aim, dept);
             var delDateDiff = endDelay.Subtract(startDelay);
          
             string strTime;
@@ -812,8 +814,8 @@ namespace ganntproj1
                 {
                     using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
                     {
-                        ctx.ExecuteCommand("update objects set closedord='false' where ordername={0} and aim={1}",
-                            Workflow.TargetOrder, Workflow.TargetLine);
+                        ctx.ExecuteCommand("update objects set closedord='false' where ordername={0} and aim={1} and department={2}",
+                            Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment);
 
                     }
                     var c = new Central();

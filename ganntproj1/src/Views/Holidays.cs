@@ -55,6 +55,19 @@ namespace ganntproj1
                     LoadData();
                 };
 
+            foreach (var str in Store.Default.arrDept.Split(','))
+            {
+                if (!string.IsNullOrEmpty(str))
+                {
+                    cboDepartment.Items.Add(str);
+                }
+            }
+
+            if (cboDepartment.Items.Count > 0)
+            {
+                cboDepartment.SelectedIndex = 0;
+            }
+
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
             cboMonth.SelectedIndex = DateTime.Now.Month - 1;
 
@@ -99,10 +112,9 @@ namespace ganntproj1
                 _dataTable.Columns.Add(col.ColumnName, typeof(string));
                 }
 
-            var dept = Store.Default.sectorId == 1 ? "Confezione B" : "Stiro";
+            //var dept = Store.Default.sectorId == 1 ? "Confezione B" : "Stiro";
             var lstLines = (from lines in Models.Tables.Lines
-                            where lines.Department == dept
-                            orderby Convert.ToInt32(lines.Line.Substring(5, lines.Line.Length - 1))
+                            where lines.Department == cboDepartment.Text
                             select lines).ToList();
 
             foreach (var item in lstLines)
@@ -175,7 +187,13 @@ namespace ganntproj1
             }
         private void SaveData()
             {
-            var q = "delete from holidays where month='" + Month + "' and year='" + Year + "'"; // and department='" + Store.Default.selDept + "'";
+            if (cboDepartment.Text == string.Empty)
+            {
+                MessageBox.Show("Please select one department.");
+                return;
+            }
+
+            var q = "delete from holidays where month='" + Month + "' and year='" + Year + "' and department='" + cboDepartment.Text + "'"; // and department='" + Store.Default.selDept + "'";
             var nQ = "insert into holidays (line,hdate,note,month,year,department,idsector) values (@param1,@param2,@param3,@param4,@param5,@param6,@param7)";
 
             using (var con = new SqlConnection(Central.SpecialConnStr))
@@ -199,8 +217,6 @@ namespace ganntproj1
                             strBuil.Append("," + Convert.ToDateTime(dgvCheck.Columns[cell.ColumnIndex].Name)
                                 .ToString("dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture));
 
-                    var dept = Store.Default.sectorId == 1 ? "Confezione" : "Stiro";
-
                     if (strBuil.ToString() == string.Empty) continue;
                     var dateArr = strBuil.ToString();
                     dateArr = dateArr.Remove(0, 1);
@@ -209,7 +225,7 @@ namespace ganntproj1
                     cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = "hld";
                     cmd.Parameters.Add("@param4", SqlDbType.Int).Value = Month;
                     cmd.Parameters.Add("@param5", SqlDbType.Int).Value = Year;
-                    cmd.Parameters.Add("@param6", SqlDbType.NVarChar).Value = dept;
+                    cmd.Parameters.Add("@param6", SqlDbType.NVarChar).Value = cboDepartment.Text;
                     cmd.Parameters.Add("@param7", SqlDbType.Int).Value = Store.Default.sectorId;
 
                     cmd.ExecuteNonQuery();
@@ -224,7 +240,7 @@ namespace ganntproj1
             {
             var hld = new LineHolidays();
             lst = new List<LineHolidays>();
-            var q = "select line,hdate from holidays where month='" + Month + "' and year='" + Year + "' and idsector='" + Store.Default.sectorId + "'"; // and department='" + Store.Default.selDept + "'";
+            var q = "select line,hdate from holidays where month='" + Month + "' and year='" + Year + "' and department='" + cboDepartment.Text + "'";
             using (var con = new SqlConnection(Central.SpecialConnStr))
                 {
                 var cmd = new SqlCommand(q, con);
@@ -259,8 +275,8 @@ namespace ganntproj1
             {
                 var cl = dgvCheck.Columns[c];
                 cl.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
-            }
+            }           
+        }
         private void dgvCheck_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
             {   
             if (e.RowIndex < 0 || e.ColumnIndex < 1) return;
@@ -325,6 +341,16 @@ namespace ganntproj1
         private void PnControlSave_Paint(object sender, PaintEventArgs e)
         {
         }
+
+        private void Holidays_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboDepartment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadData();
+        }
     }
     public class LineHolidays
         {
@@ -333,6 +359,7 @@ namespace ganntproj1
             }
         public string Line { get; set; }
         public DateTime Holiday { get; set; }
+        public string Department { get; set; }
         public LineHolidays(string line, DateTime hd)
             {
             Line = line;

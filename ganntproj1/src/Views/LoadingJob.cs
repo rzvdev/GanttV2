@@ -2,6 +2,7 @@
 {
     using ganntproj1.Models;
     using ganntproj1.Properties;
+    using ganntproj1.src.Helpers;
     using ganntproj1.src.Views;
     using ganntproj1.Views;
     using System;
@@ -215,11 +216,27 @@
                         {
                             if (!IsUpd) return;
 
-                            var isParent = CheckOrderHasChildren(art);
-                            if (isParent)
+                            if (Store.Default.sectorId == 8)
                             {
-                                MessageBox.Show("Cannot program from main order.");
+
+                                foreach (DataGridViewRow dRow in dgvReport.Rows)
+                                {
+                                    if (dRow.Cells[1].Value.ToString() == lbl.Name.Split('_')[0])
+                                    {
+                                        dgvReport.CurrentCell = dRow.Cells[0];
+                                    }
+                                }
+
                                 return;
+                            }
+                            else
+                            {
+                                var isParent = CheckOrderHasChildren(art);
+                                if (isParent)
+                                {
+                                    MessageBox.Show("Cannot program from main order.");
+                                    return;
+                                }
                             }
 
                             Workflow.TargetOrder = lbl.Name.Split('_')[0];
@@ -1501,13 +1518,13 @@
                         if (dgvReport.Rows.Count == idx)
                         {
                             _tableCarico.Rows.InsertAt(newRow, _tableCarico.Rows.Count + idx);
-                            dgvReport.Rows[0 + idx].DefaultCellStyle.BackColor = Color.LightYellow;
+                            dgvReport.Rows[0 + idx].DefaultCellStyle.BackColor = Color.FromArgb(200, 255, 200);
                             idx++;
                         }
                         else
                         {
                             _tableCarico.Rows.InsertAt(newRow, e.RowIndex + idx);
-                            dgvReport.Rows[e.RowIndex + idx].DefaultCellStyle.BackColor = Color.LightYellow;
+                            dgvReport.Rows[e.RowIndex + idx].DefaultCellStyle.BackColor = Color.FromArgb(200, 255, 200);
                             idx++;
                         }                       
                     }
@@ -1524,7 +1541,7 @@
                     foreach (DataGridViewRow item in dgvReport.Rows)
                     {
                         if (item.Cells[1].Value.ToString().Split('_')[0] == ord && item.Cells[2].Value.ToString() == art
-                            && item.DefaultCellStyle.BackColor == Color.LightYellow)
+                            && item.DefaultCellStyle.BackColor == Color.FromArgb(200, 255, 200))
                         {
                             listOfInt.Add(item.Index);
                         }
@@ -1827,7 +1844,7 @@
             {
                 return;
             }
-                            
+
             byQty = programDialog.ByTotalQty;
             d = programDialog.DateTimes;
             var members = programDialog.Members;
@@ -1855,9 +1872,10 @@
             }
 
             var j = new JobModel();
-             
-            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);     
-            int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty).ToString(), out var dailyQty);
+
+            var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);
+            var dailyQty = j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty);
+            //int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty).ToString(), out var dailyQty);
             var price = j.GetPrice(article);
             DateTime startDate;
             DateTime endDate;
@@ -2407,8 +2425,10 @@
             HideLightColumns();
         }
 
-        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,int duration, int dailyQty, double price, string dept, int members, bool manualDate) 
+        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate) 
         {
+            var checkShift = new ShiftRecognition();
+
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
                "membersnr,manualDate,abatimen) values " +
@@ -2416,7 +2436,11 @@
                "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
                "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33)";
 
-            var eDate = startDate.AddDays(+duration);
+            var durationTicks = TimeSpan.FromDays(duration).Ticks;
+            var eDate = startDate.AddTicks(durationTicks);
+            eDate = new DateTime(eDate.Year, eDate.Date.Month, eDate.Day, eDate.Hour, eDate.Minute, 0, 0);
+            
+            eDate = checkShift.GetEndTimeInShift(startDate, eDate);
 
             var lineDesc = (from lines in Tables.Lines
                        where lines.Description == line && lines.Department == dept
@@ -2435,7 +2459,7 @@
                 cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;
                 cmd.Parameters.Add("@param6", SqlDbType.Float).Value = qtyH;
                 cmd.Parameters.Add("@param7", SqlDbType.BigInt).Value = JobModel.GetLSpan(startDate);
-                cmd.Parameters.Add("@param8", SqlDbType.Int).Value = duration;
+                cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
                 cmd.Parameters.Add("@param9", SqlDbType.BigInt).Value = JobModel.GetLSpan(eDate);
                 cmd.Parameters.Add("@param10", SqlDbType.BigInt).Value = 0;
                 cmd.Parameters.Add("@param11", SqlDbType.BigInt).Value = 0;

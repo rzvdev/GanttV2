@@ -33,24 +33,28 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Holidays));
             this.pnMasthead = new System.Windows.Forms.Panel();
             this.pnControlSave = new System.Windows.Forms.Panel();
+            this.pbCheck = new System.Windows.Forms.PictureBox();
+            this.pbDiscard = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cboYears = new System.Windows.Forms.ComboBox();
             this.cboMonth = new System.Windows.Forms.ComboBox();
             this.lblSavedInfo = new System.Windows.Forms.Label();
             this.dgvCheck = new ganntproj1.TableView();
-            this.pbCheck = new System.Windows.Forms.PictureBox();
-            this.pbDiscard = new System.Windows.Forms.PictureBox();
+            this.cboDepartment = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.pnMasthead.SuspendLayout();
             this.pnControlSave.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCheck)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCheck)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDiscard)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCheck)).BeginInit();
             this.SuspendLayout();
             // 
             // pnMasthead
             // 
             this.pnMasthead.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.pnMasthead.Controls.Add(this.label3);
+            this.pnMasthead.Controls.Add(this.cboDepartment);
             this.pnMasthead.Controls.Add(this.pnControlSave);
             this.pnMasthead.Controls.Add(this.label2);
             this.pnMasthead.Controls.Add(this.label1);
@@ -58,7 +62,7 @@
             this.pnMasthead.Controls.Add(this.cboMonth);
             this.pnMasthead.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnMasthead.Location = new System.Drawing.Point(0, 0);
-            this.pnMasthead.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnMasthead.Margin = new System.Windows.Forms.Padding(2);
             this.pnMasthead.Name = "pnMasthead";
             this.pnMasthead.Size = new System.Drawing.Size(862, 67);
             this.pnMasthead.TabIndex = 0;
@@ -68,12 +72,36 @@
             this.pnControlSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.pnControlSave.Controls.Add(this.pbCheck);
             this.pnControlSave.Controls.Add(this.pbDiscard);
-            this.pnControlSave.Location = new System.Drawing.Point(288, 0);
-            this.pnControlSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnControlSave.Location = new System.Drawing.Point(468, 0);
+            this.pnControlSave.Margin = new System.Windows.Forms.Padding(2);
             this.pnControlSave.Name = "pnControlSave";
             this.pnControlSave.Size = new System.Drawing.Size(132, 67);
             this.pnControlSave.TabIndex = 54;
             this.pnControlSave.Paint += new System.Windows.Forms.PaintEventHandler(this.PnControlSave_Paint);
+            // 
+            // pbCheck
+            // 
+            this.pbCheck.Image = global::ganntproj1.Properties.Resources.check;
+            this.pbCheck.Location = new System.Drawing.Point(14, 21);
+            this.pbCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.pbCheck.Name = "pbCheck";
+            this.pbCheck.Size = new System.Drawing.Size(32, 34);
+            this.pbCheck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbCheck.TabIndex = 0;
+            this.pbCheck.TabStop = false;
+            this.pbCheck.Click += new System.EventHandler(this.pbCheck_Click_1);
+            // 
+            // pbDiscard
+            // 
+            this.pbDiscard.Image = global::ganntproj1.Properties.Resources.close;
+            this.pbDiscard.Location = new System.Drawing.Point(61, 21);
+            this.pbDiscard.Margin = new System.Windows.Forms.Padding(2);
+            this.pbDiscard.Name = "pbDiscard";
+            this.pbDiscard.Size = new System.Drawing.Size(32, 34);
+            this.pbDiscard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbDiscard.TabIndex = 1;
+            this.pbDiscard.TabStop = false;
+            this.pbDiscard.Click += new System.EventHandler(this.pbDiscard_Click_1);
             // 
             // label2
             // 
@@ -102,7 +130,7 @@
             this.cboYears.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
             this.cboYears.FormattingEnabled = true;
             this.cboYears.Location = new System.Drawing.Point(165, 25);
-            this.cboYears.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboYears.Margin = new System.Windows.Forms.Padding(2);
             this.cboYears.Name = "cboYears";
             this.cboYears.Size = new System.Drawing.Size(92, 29);
             this.cboYears.TabIndex = 1;
@@ -127,7 +155,7 @@
             "Novembre",
             "Dicembre"});
             this.cboMonth.Location = new System.Drawing.Point(25, 25);
-            this.cboMonth.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboMonth.Margin = new System.Windows.Forms.Padding(2);
             this.cboMonth.Name = "cboMonth";
             this.cboMonth.Size = new System.Drawing.Size(137, 29);
             this.cboMonth.TabIndex = 0;
@@ -161,7 +189,7 @@
             this.dgvCheck.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCheck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCheck.Location = new System.Drawing.Point(0, 67);
-            this.dgvCheck.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvCheck.Margin = new System.Windows.Forms.Padding(2);
             this.dgvCheck.MultiSelect = false;
             this.dgvCheck.Name = "dgvCheck";
             this.dgvCheck.ReadOnly = true;
@@ -184,29 +212,28 @@
             this.dgvCheck.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCheck_CellContentClick);
             this.dgvCheck.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvCheck_CellPainting);
             // 
-            // pbCheck
+            // cboDepartment
             // 
-            this.pbCheck.Image = global::ganntproj1.Properties.Resources.check;
-            this.pbCheck.Location = new System.Drawing.Point(14, 21);
-            this.pbCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.pbCheck.Name = "pbCheck";
-            this.pbCheck.Size = new System.Drawing.Size(32, 34);
-            this.pbCheck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbCheck.TabIndex = 0;
-            this.pbCheck.TabStop = false;
-            this.pbCheck.Click += new System.EventHandler(this.pbCheck_Click_1);
+            this.cboDepartment.BackColor = System.Drawing.Color.White;
+            this.cboDepartment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDepartment.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
+            this.cboDepartment.FormattingEnabled = true;
+            this.cboDepartment.Location = new System.Drawing.Point(261, 25);
+            this.cboDepartment.Margin = new System.Windows.Forms.Padding(2);
+            this.cboDepartment.Name = "cboDepartment";
+            this.cboDepartment.Size = new System.Drawing.Size(203, 29);
+            this.cboDepartment.TabIndex = 55;
+            this.cboDepartment.SelectedIndexChanged += new System.EventHandler(this.cboDepartment_SelectedIndexChanged);
             // 
-            // pbDiscard
+            // label3
             // 
-            this.pbDiscard.Image = global::ganntproj1.Properties.Resources.close;
-            this.pbDiscard.Location = new System.Drawing.Point(61, 21);
-            this.pbDiscard.Margin = new System.Windows.Forms.Padding(2);
-            this.pbDiscard.Name = "pbDiscard";
-            this.pbDiscard.Size = new System.Drawing.Size(32, 34);
-            this.pbDiscard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbDiscard.TabIndex = 1;
-            this.pbDiscard.TabStop = false;
-            this.pbDiscard.Click += new System.EventHandler(this.pbDiscard_Click_1);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(258, 6);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 13);
+            this.label3.TabIndex = 56;
+            this.label3.Text = "Department";
             // 
             // Holidays
             // 
@@ -217,15 +244,16 @@
             this.Controls.Add(this.lblSavedInfo);
             this.Controls.Add(this.pnMasthead);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Holidays";
             this.Text = "Holidays checker";
+            this.Load += new System.EventHandler(this.Holidays_Load);
             this.pnMasthead.ResumeLayout(false);
             this.pnMasthead.PerformLayout();
             this.pnControlSave.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCheck)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCheck)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDiscard)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCheck)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,5 +270,7 @@
         private System.Windows.Forms.Panel pnControlSave;
         private System.Windows.Forms.PictureBox pbCheck;
         private System.Windows.Forms.PictureBox pbDiscard;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cboDepartment;
     }
     }

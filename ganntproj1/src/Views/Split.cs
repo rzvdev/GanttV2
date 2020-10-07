@@ -40,7 +40,7 @@ namespace ganntproj1
 
         private string _originalLine;
         private int _originalCapi;
-        private int _originalDuration;
+        private double _originalDuration;
         private DateTime _orginalStart;
         private DateTime _orginalEnd;
 

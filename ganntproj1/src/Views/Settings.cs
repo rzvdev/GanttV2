@@ -331,7 +331,13 @@ namespace ganntproj1
             txtMembers.Text = dgvLines.SelectedRows[0].Cells[1].Value.ToString();
             txtAbatimentoEff.Text = dgvLines.SelectedRows[0].Cells[2].Value.ToString();
             txtDescriptionLine.Text = dgvLines.SelectedRows[0].Cells[3].Value.ToString();
+
+            if (dgvLines.SelectedRows[0].Cells[4].Value != null)
+            {
+                txtGroup.Text = dgvLines.SelectedRows[0].Cells[4].Value.ToString();
             }
+
+        }
 
         private bool _isNew = false;
         private bool _isNewShift = false;
@@ -379,6 +385,7 @@ namespace ganntproj1
                     lines.Abatimento = ab;
                     lines.Department = cbDept.Text;
                     lines.Description = txtDescriptionLine.Text;
+                    lines.Groupby = txtGroup.Text != string.Empty ? txtGroup.Text : null;
 
                     Tables.Lines.InsertOnSubmit(lines);
                     Config.GetGanttConn().SubmitChanges();
@@ -415,7 +422,8 @@ namespace ganntproj1
                     Members = nrp,
                     Abatimento = ab,
                     Department = cbDept.Text,
-                    Description =txtDescriptionLine.Text
+                    Description =txtDescriptionLine.Text,
+                    Groupby = txtGroup.Text != string.Empty ? txtGroup.Text : null
                 };
 
                 Tables.Lines.InsertOnSubmit(lines);
@@ -426,6 +434,7 @@ namespace ganntproj1
             txtMembers.Text = "";
             txtAbatimentoEff.Text = "";
             txtDescriptionLine.Text = "";
+            txtGroup.Text = "";
 
             LoadLines();
             }

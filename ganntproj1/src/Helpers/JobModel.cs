@@ -15,7 +15,7 @@
         {
         }
 
-        public JobModel(string name, string aim, string article, int stateId, int loadedQty, double qtyH, DateTime startDate, int duration,
+        public JobModel(string name, string aim, string article, int stateId, int loadedQty, double qtyH, DateTime startDate, double duration,
             DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, int dailyProd,
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
@@ -74,7 +74,7 @@
 
         public DateTime StartDate { get; set; }
 
-        public int Duration { get; set; }
+        public double Duration { get; set; }
 
         public DateTime EndDate { get; set; }
 
@@ -181,10 +181,10 @@
         }
 
         public static int SkipDateRange(DateTime dateFrom,
-                                    DateTime dateTo, string aim)
+                                    DateTime dateTo, string aim, string department)
         {
             var lstOfHld = (from hld in Central.ListOfHolidays
-                            where hld.Line == aim
+                            where hld.Line == aim && hld.Department == department
                             select hld).ToList();
             var hldList = new List<DateTime>();
             foreach (var h in lstOfHld)
@@ -218,7 +218,7 @@
             return dateTime.Subtract(Config.MinimalDate).Ticks;
         }
 
-        public double CalculateDailyQty(string aim, double qtyH, string department, int members = 0, int qty = 0)
+        public int CalculateDailyQty(string aim, double qtyH, string department, int members = 0, int qty = 0)
         {
             var linesQuery = from lines in Models.Tables.Lines
                              where lines.Line == aim && lines.Department == department
@@ -239,11 +239,11 @@
             else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
             else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
 
-            var dailyQty = 0.0D;
+            var dailyQty = 0;
 
             if (Store.Default.sectorId != 7)
             {
-                dailyQty = Math.Round(lineMembers * qtyH * h * abatimento, 0);
+                dailyQty = Convert.ToInt32(lineMembers * qtyH * h * abatimento);
             }
             else
             {
@@ -253,7 +253,7 @@
             return dailyQty;
         }
 
-        public int CalculateJobDuration(string aim,
+        public double CalculateJobDuration(string aim,
                                      int qty,
                                      double qtyH, string department, int members = 0)
         {
@@ -281,24 +281,18 @@
             else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
 
             var duration = 0.0;
-            var durationFinal = 0;
-
+            
             if (Store.Default.sectorId != 7)
             {
-                duration = Math.Round             
-                    (Convert.ToDouble(qty / (lineMembers * qtyH * h * abatimento)), 0);
-
-                if (duration <= 0) duration = 1;                
-                int.TryParse(Math.Round(duration, 0).ToString(), out durationFinal);
+                duration = Convert.ToDouble(qty / (lineMembers * qtyH * h * abatimento));
             }
             else
             {
                 var dailyQty = (qty / lineMembers) / qtyH;
                 duration = dailyQty * abatimento;
-                int.TryParse(Math.Round(duration, 0).ToString(), out durationFinal);
             }
 
-            return durationFinal;
+            return duration;
         }
 
         public object[] GetJobContinum(string job,
@@ -443,7 +437,7 @@
             var lst = query.ToList();
 
             return lst.Count == 0 ? 
-                Config.MinimalDate : lst.Max(e => e.EndDate);
+                Config.MinimalDate : lst.Max(e => e.EndDate.AddTicks(e.DelayTime));
         }
 
         public double GetPrice(string article)

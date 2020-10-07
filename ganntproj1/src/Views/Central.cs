@@ -6,7 +6,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Configuration;
     using System.Data.Linq;
     using System.Data.SqlClient;
     using System.Drawing;
@@ -24,19 +23,14 @@
         public enum SettingsSys
         {
             Department,
-
             Shift,
-
             Line,
-
             Backup,
-
             Server,
-
             Completed,
-
             NewUpdate,
         }
+
         private readonly Config _config = new Config();
         private IntPtr _console = new IntPtr();
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
@@ -61,7 +55,6 @@
         public static bool IsActiveOrdersSelection { get; set; }
 
         public static List<Lines> ListOfLines = new List<Lines>();
-
 
         #region ProductionEff
 
@@ -238,6 +231,7 @@
             }
             return base.ProcessDialogKey(keyData);
         }
+
         public Central()
         {
             InitializeComponent();
@@ -532,7 +526,7 @@
                 int.TryParse(row[5].ToString(), out var qty);
                 double.TryParse(row[6].ToString(), out var qtyH);
                 long.TryParse(row[7].ToString(), out var startDate);
-                int.TryParse(row[8].ToString(), out var duration);
+                double.TryParse(row[8].ToString(), out var duration);
                 long.TryParse(row[9].ToString(), out var endDate);
                 long.TryParse(row[10].ToString(), out var dvc);
                 long.TryParse(row[11].ToString(), out var rdd);

@@ -33,6 +33,7 @@
             this.tpConfig = new System.Windows.Forms.TabPage();
             this.lblError = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.txtConn1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -89,6 +90,8 @@
             this.lblConfB = new System.Windows.Forms.Label();
             this.lblConfA = new System.Windows.Forms.Label();
             this.tpLines = new System.Windows.Forms.TabPage();
+            this.label44 = new System.Windows.Forms.Label();
+            this.txtGroup = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.txtDescriptionLine = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -121,21 +124,22 @@
             this.dataGridView2 = new ganntproj1.TableView();
             this.lblModelsTitle = new System.Windows.Forms.Label();
             this.tpUpdate = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.lblCopyrightTit = new System.Windows.Forms.Label();
+            this.lblProductName = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblProduct = new System.Windows.Forms.Label();
+            this.lblRelDate = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.lblCopyright = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblpop = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.lblCulture = new System.Windows.Forms.Label();
-            this.lblProduct = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.lblCopyright = new System.Windows.Forms.Label();
-            this.lblRelDate = new System.Windows.Forms.Label();
-            this.lblVersion = new System.Windows.Forms.Label();
-            this.lblProductName = new System.Windows.Forms.Label();
-            this.lblCopyrightTit = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
@@ -163,10 +167,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.label44 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -191,12 +191,12 @@
             this.tpModels.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.tpUpdate.SuspendLayout();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpEffColors.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc1
@@ -226,10 +226,10 @@
             this.tpConfig.BackColor = System.Drawing.SystemColors.Control;
             this.tpConfig.Controls.Add(this.lblError);
             this.tpConfig.Controls.Add(this.groupBox1);
-            this.tpConfig.Location = new System.Drawing.Point(4, 44);
+            this.tpConfig.Location = new System.Drawing.Point(4, 42);
             this.tpConfig.Margin = new System.Windows.Forms.Padding(2);
             this.tpConfig.Name = "tpConfig";
-            this.tpConfig.Size = new System.Drawing.Size(755, 368);
+            this.tpConfig.Size = new System.Drawing.Size(755, 370);
             this.tpConfig.TabIndex = 1;
             this.tpConfig.Text = "Connection";
             // 
@@ -261,6 +261,16 @@
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connection strings";
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(24, 196);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(165, 14);
+            this.linkLabel2.TabIndex = 32;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Add more administration keys";
             // 
             // label1
             // 
@@ -590,7 +600,7 @@
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(686, 123);
+            this.grpSart.Size = new System.Drawing.Size(669, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
@@ -655,7 +665,7 @@
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(686, 123);
+            this.grpTess.Size = new System.Drawing.Size(669, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
@@ -724,7 +734,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(686, 124);
+            this.grpStiro.Size = new System.Drawing.Size(669, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -851,7 +861,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(686, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(669, 123);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -948,7 +958,7 @@
             this.tpLines.AutoScroll = true;
             this.tpLines.BackColor = System.Drawing.SystemColors.Control;
             this.tpLines.Controls.Add(this.label44);
-            this.tpLines.Controls.Add(this.textBox1);
+            this.tpLines.Controls.Add(this.txtGroup);
             this.tpLines.Controls.Add(this.label16);
             this.tpLines.Controls.Add(this.txtDescriptionLine);
             this.tpLines.Controls.Add(this.groupBox2);
@@ -969,6 +979,26 @@
             this.tpLines.Size = new System.Drawing.Size(755, 370);
             this.tpLines.TabIndex = 2;
             this.tpLines.Text = "Lines";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(16, 198);
+            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(59, 14);
+            this.label44.TabIndex = 18;
+            this.label44.Text = "Group by:";
+            // 
+            // txtGroup
+            // 
+            this.txtGroup.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
+            this.txtGroup.Location = new System.Drawing.Point(101, 188);
+            this.txtGroup.Margin = new System.Windows.Forms.Padding(2);
+            this.txtGroup.Name = "txtGroup";
+            this.txtGroup.Size = new System.Drawing.Size(116, 36);
+            this.txtGroup.TabIndex = 17;
+            this.txtGroup.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label16
             // 
@@ -1387,6 +1417,144 @@
             this.tpUpdate.TabIndex = 6;
             this.tpUpdate.Text = "Update";
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.panel2.Controls.Add(this.label23);
+            this.panel2.Controls.Add(this.label26);
+            this.panel2.Controls.Add(this.label27);
+            this.panel2.Controls.Add(this.lblCopyrightTit);
+            this.panel2.Controls.Add(this.lblProductName);
+            this.panel2.Controls.Add(this.lblVersion);
+            this.panel2.Controls.Add(this.lblProduct);
+            this.panel2.Controls.Add(this.lblRelDate);
+            this.panel2.Controls.Add(this.label33);
+            this.panel2.Controls.Add(this.lblCopyright);
+            this.panel2.Location = new System.Drawing.Point(404, 166);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(323, 139);
+            this.panel2.TabIndex = 81;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.Color.Transparent;
+            this.label23.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.ForeColor = System.Drawing.Color.Black;
+            this.label23.Location = new System.Drawing.Point(88, 10);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(40, 14);
+            this.label23.TabIndex = 64;
+            this.label23.Text = "Name:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.Transparent;
+            this.label26.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.ForeColor = System.Drawing.Color.Black;
+            this.label26.Location = new System.Drawing.Point(78, 62);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(50, 14);
+            this.label26.TabIndex = 65;
+            this.label26.Text = "Version:";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.ForeColor = System.Drawing.Color.Black;
+            this.label27.Location = new System.Drawing.Point(52, 88);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(76, 14);
+            this.label27.TabIndex = 66;
+            this.label27.Text = "Release date:";
+            // 
+            // lblCopyrightTit
+            // 
+            this.lblCopyrightTit.AutoSize = true;
+            this.lblCopyrightTit.BackColor = System.Drawing.Color.Transparent;
+            this.lblCopyrightTit.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCopyrightTit.ForeColor = System.Drawing.Color.Black;
+            this.lblCopyrightTit.Location = new System.Drawing.Point(66, 114);
+            this.lblCopyrightTit.Name = "lblCopyrightTit";
+            this.lblCopyrightTit.Size = new System.Drawing.Size(62, 14);
+            this.lblCopyrightTit.TabIndex = 67;
+            this.lblCopyrightTit.Text = "Copyright:";
+            // 
+            // lblProductName
+            // 
+            this.lblProductName.AutoSize = true;
+            this.lblProductName.BackColor = System.Drawing.Color.Transparent;
+            this.lblProductName.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProductName.ForeColor = System.Drawing.Color.Black;
+            this.lblProductName.Location = new System.Drawing.Point(146, 10);
+            this.lblProductName.Name = "lblProductName";
+            this.lblProductName.Size = new System.Drawing.Size(22, 14);
+            this.lblProductName.TabIndex = 68;
+            this.lblProductName.Text = "</>";
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.BackColor = System.Drawing.Color.Transparent;
+            this.lblVersion.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.Black;
+            this.lblVersion.Location = new System.Drawing.Point(146, 62);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(22, 14);
+            this.lblVersion.TabIndex = 69;
+            this.lblVersion.Text = "</>";
+            // 
+            // lblProduct
+            // 
+            this.lblProduct.AutoSize = true;
+            this.lblProduct.BackColor = System.Drawing.Color.Transparent;
+            this.lblProduct.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProduct.ForeColor = System.Drawing.Color.Black;
+            this.lblProduct.Location = new System.Drawing.Point(146, 36);
+            this.lblProduct.Name = "lblProduct";
+            this.lblProduct.Size = new System.Drawing.Size(22, 14);
+            this.lblProduct.TabIndex = 73;
+            this.lblProduct.Text = "</>";
+            // 
+            // lblRelDate
+            // 
+            this.lblRelDate.AutoSize = true;
+            this.lblRelDate.BackColor = System.Drawing.Color.Transparent;
+            this.lblRelDate.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRelDate.ForeColor = System.Drawing.Color.Black;
+            this.lblRelDate.Location = new System.Drawing.Point(146, 88);
+            this.lblRelDate.Name = "lblRelDate";
+            this.lblRelDate.Size = new System.Drawing.Size(22, 14);
+            this.lblRelDate.TabIndex = 70;
+            this.lblRelDate.Text = "</>";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.BackColor = System.Drawing.Color.Transparent;
+            this.label33.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.ForeColor = System.Drawing.Color.Black;
+            this.label33.Location = new System.Drawing.Point(76, 36);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(52, 14);
+            this.label33.TabIndex = 72;
+            this.label33.Text = "Product:";
+            // 
+            // lblCopyright
+            // 
+            this.lblCopyright.AutoSize = true;
+            this.lblCopyright.BackColor = System.Drawing.Color.Transparent;
+            this.lblCopyright.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCopyright.ForeColor = System.Drawing.Color.Black;
+            this.lblCopyright.Location = new System.Drawing.Point(146, 114);
+            this.lblCopyright.Name = "lblCopyright";
+            this.lblCopyright.Size = new System.Drawing.Size(22, 14);
+            this.lblCopyright.TabIndex = 71;
+            this.lblCopyright.Text = "</>";
+            // 
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Gainsboro;
@@ -1445,126 +1613,6 @@
             this.lblCulture.Size = new System.Drawing.Size(755, 17);
             this.lblCulture.TabIndex = 74;
             this.lblCulture.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblProduct
-            // 
-            this.lblProduct.AutoSize = true;
-            this.lblProduct.BackColor = System.Drawing.Color.Transparent;
-            this.lblProduct.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProduct.ForeColor = System.Drawing.Color.Black;
-            this.lblProduct.Location = new System.Drawing.Point(146, 36);
-            this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(22, 14);
-            this.lblProduct.TabIndex = 73;
-            this.lblProduct.Text = "</>";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.BackColor = System.Drawing.Color.Transparent;
-            this.label33.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.ForeColor = System.Drawing.Color.Black;
-            this.label33.Location = new System.Drawing.Point(76, 36);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(52, 14);
-            this.label33.TabIndex = 72;
-            this.label33.Text = "Product:";
-            // 
-            // lblCopyright
-            // 
-            this.lblCopyright.AutoSize = true;
-            this.lblCopyright.BackColor = System.Drawing.Color.Transparent;
-            this.lblCopyright.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCopyright.ForeColor = System.Drawing.Color.Black;
-            this.lblCopyright.Location = new System.Drawing.Point(146, 114);
-            this.lblCopyright.Name = "lblCopyright";
-            this.lblCopyright.Size = new System.Drawing.Size(22, 14);
-            this.lblCopyright.TabIndex = 71;
-            this.lblCopyright.Text = "</>";
-            // 
-            // lblRelDate
-            // 
-            this.lblRelDate.AutoSize = true;
-            this.lblRelDate.BackColor = System.Drawing.Color.Transparent;
-            this.lblRelDate.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRelDate.ForeColor = System.Drawing.Color.Black;
-            this.lblRelDate.Location = new System.Drawing.Point(146, 88);
-            this.lblRelDate.Name = "lblRelDate";
-            this.lblRelDate.Size = new System.Drawing.Size(22, 14);
-            this.lblRelDate.TabIndex = 70;
-            this.lblRelDate.Text = "</>";
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.BackColor = System.Drawing.Color.Transparent;
-            this.lblVersion.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.Black;
-            this.lblVersion.Location = new System.Drawing.Point(146, 62);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(22, 14);
-            this.lblVersion.TabIndex = 69;
-            this.lblVersion.Text = "</>";
-            // 
-            // lblProductName
-            // 
-            this.lblProductName.AutoSize = true;
-            this.lblProductName.BackColor = System.Drawing.Color.Transparent;
-            this.lblProductName.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProductName.ForeColor = System.Drawing.Color.Black;
-            this.lblProductName.Location = new System.Drawing.Point(146, 10);
-            this.lblProductName.Name = "lblProductName";
-            this.lblProductName.Size = new System.Drawing.Size(22, 14);
-            this.lblProductName.TabIndex = 68;
-            this.lblProductName.Text = "</>";
-            // 
-            // lblCopyrightTit
-            // 
-            this.lblCopyrightTit.AutoSize = true;
-            this.lblCopyrightTit.BackColor = System.Drawing.Color.Transparent;
-            this.lblCopyrightTit.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCopyrightTit.ForeColor = System.Drawing.Color.Black;
-            this.lblCopyrightTit.Location = new System.Drawing.Point(66, 114);
-            this.lblCopyrightTit.Name = "lblCopyrightTit";
-            this.lblCopyrightTit.Size = new System.Drawing.Size(62, 14);
-            this.lblCopyrightTit.TabIndex = 67;
-            this.lblCopyrightTit.Text = "Copyright:";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.ForeColor = System.Drawing.Color.Black;
-            this.label27.Location = new System.Drawing.Point(52, 88);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(76, 14);
-            this.label27.TabIndex = 66;
-            this.label27.Text = "Release date:";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.BackColor = System.Drawing.Color.Transparent;
-            this.label26.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.ForeColor = System.Drawing.Color.Black;
-            this.label26.Location = new System.Drawing.Point(78, 62);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(50, 14);
-            this.label26.TabIndex = 65;
-            this.label26.Text = "Version:";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.BackColor = System.Drawing.Color.Transparent;
-            this.label23.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.ForeColor = System.Drawing.Color.Black;
-            this.label23.Location = new System.Drawing.Point(88, 10);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(40, 14);
-            this.label23.TabIndex = 64;
-            this.label23.Text = "Name:";
             // 
             // linkLabel1
             // 
@@ -1632,9 +1680,9 @@
             // tpEffColors
             // 
             this.tpEffColors.Controls.Add(this.groupBox3);
-            this.tpEffColors.Location = new System.Drawing.Point(4, 44);
+            this.tpEffColors.Location = new System.Drawing.Point(4, 42);
             this.tpEffColors.Name = "tpEffColors";
-            this.tpEffColors.Size = new System.Drawing.Size(755, 368);
+            this.tpEffColors.Size = new System.Drawing.Size(755, 370);
             this.tpEffColors.TabIndex = 7;
             this.tpEffColors.Text = "EColors";
             this.tpEffColors.UseVisualStyleBackColor = true;
@@ -1864,54 +1912,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
-            // linkLabel2
-            // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(24, 196);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(165, 14);
-            this.linkLabel2.TabIndex = 32;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "Add more administration keys";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(16, 198);
-            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(59, 14);
-            this.label44.TabIndex = 18;
-            this.label44.Text = "Group by:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold);
-            this.textBox1.Location = new System.Drawing.Point(101, 188);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(116, 36);
-            this.textBox1.TabIndex = 17;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.panel2.Controls.Add(this.label23);
-            this.panel2.Controls.Add(this.label26);
-            this.panel2.Controls.Add(this.label27);
-            this.panel2.Controls.Add(this.lblCopyrightTit);
-            this.panel2.Controls.Add(this.lblProductName);
-            this.panel2.Controls.Add(this.lblVersion);
-            this.panel2.Controls.Add(this.lblProduct);
-            this.panel2.Controls.Add(this.lblRelDate);
-            this.panel2.Controls.Add(this.label33);
-            this.panel2.Controls.Add(this.lblCopyright);
-            this.panel2.Location = new System.Drawing.Point(404, 166);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(323, 139);
-            this.panel2.TabIndex = 81;
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1971,6 +1971,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tpUpdate.ResumeLayout(false);
             this.tpUpdate.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpEffColors.ResumeLayout(false);
@@ -1978,8 +1980,6 @@
             this.groupBox3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
             }
@@ -2121,7 +2121,7 @@
         private ToggleCheckBox toggleCheckBox2;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtGroup;
         private System.Windows.Forms.Panel panel2;
     }
     }

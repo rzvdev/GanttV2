@@ -91,7 +91,16 @@ namespace ganntproj1.src.Views
                 lblQtyBox.Text = TotalQty.ToString();
                 lblCaricoSugg.Text = "Carico: " + Carico.ToString();
 
-                checkBox1.Checked = false;
+                if (Carico == 0)
+                {
+                    checkBox1.Enabled = false;
+                    checkBox1.Checked = true;
+                    ByTotalQty = true;
+                }
+                else
+                {
+                    checkBox1.Checked = false;
+                }
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿namespace ganntproj1
 {
+    using ganntproj1.Models;
     using ganntproj1.src.Views;
     using System;
     using System.Collections.Generic;
@@ -140,7 +141,9 @@
             var c = new Central();
             c.GetBase();
             c.GetProductionColor();
-            if (Central.ListOfModels.Count <= 0) return;
+            
+            if (!Central.ListOfModels.Any()) return;
+
             _indexerList = new List<Index>();
             DefaultAim = Central.ListOfModels.First().Aim;
             DefaultDept = Central.ListOfModels.First().Department;
@@ -186,23 +189,20 @@
                 {
                     var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);
                     var tck = 0.0;
-                    if (modelBefore.DelayEndDate == DateTime.MinValue) tck = 0;
+                    if (modelBefore.DelayEndDate == DateTime.MinValue) tck = 0.0;
                     else tck = modelBefore.DelayEndDate.Subtract(modelBefore.EndDate).TotalDays;
-                    var beforeFullEndTime = modelBefore.EndDate.AddDays(tck);      
+                    var beforeFullEndTime = modelBefore.EndDate.AddDays(tck);
                     if (!model.ManualDate)
                     {
                         timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
                         timeToMoveBack = model.StartDate.Subtract(beforeFullEndTime).TotalDays;
                         if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
                         if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
-                    }     
+                    }
                     else
                     {
-                        if (beforeFullEndTime > model.StartDate)
-                        {
-                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
-                            if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
-                        }
+                        timeToMoveForward = 0.0;
+                        timeToMoveBack = 0.0;
                     }
                 }
                 else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
@@ -231,7 +231,7 @@
                 }
                 var isClosed = model.ClosedByUser;
                 var jobEnd = model.EndDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
-                var h = JobModel.SkipDateRange(model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack), jobEnd.AddMinutes(-1), model.Aim);
+                var h = JobModel.SkipDateRange(model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack), jobEnd.AddMinutes(-1), model.Aim, model.Department);
                 jobEnd = jobEnd.AddDays(+h);
                 var prodEnd = new DateTime(model.ProductionEndDate.Year, model.ProductionEndDate.Month, model.ProductionEndDate.Day,
                     model.ProductionEndDate.Hour, model.ProductionEndDate.Minute, model.ProductionEndDate.Second);
@@ -292,7 +292,7 @@
                             delayEnd = new DateTime(delayEnd.Year, delayEnd.Month, delayEnd.Day, 0, 0, 0, 0);
                             delayEnd = delayEnd.AddHours(+delayTs.Hours).AddMinutes(+59).AddSeconds(+59);
                         }
-                        var delInc = JobModel.SkipDateRange(delayStart, delayEnd, model.Aim);
+                        var delInc = JobModel.SkipDateRange(delayStart, delayEnd, model.Aim, model.Department);
 
                         delayTs = new TimeSpan(delayTs.Days + delInc, delayTs.Hours, 0, 0, 0);
                         delayEnd = delayEnd.AddDays(+delInc);
@@ -300,7 +300,7 @@
                 }
 
                 var query = (from md in Central.ListOfModels
-                             where md.Name == model.Name
+                             where md.Name == model.Name && md.Aim == model.Aim && md.Department == model.Department
                              select md)
                              .Update(st =>
                              {
@@ -662,12 +662,6 @@
                         dr.Close();
                     }
 
-                    if (lockCounter > 2)
-                    {
-                        MessageBox.Show("This line has lock limit " + lockCounter.ToString());
-                        return;
-                    }
-
                     using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
                     {
                         var isLockedStatus = val.Locked;
@@ -684,7 +678,12 @@
                         }
                         else
                         {
-
+                            if (lockCounter > 2)
+                            {
+                                MessageBox.Show("This line has lock limit " + lockCounter.ToString());
+                                return;
+                            }
+                                    
                             var lockDate = DateTime.Now.Subtract(Config.MinimalDate).Ticks;
                             ctx.ExecuteCommand("update objects set locked={0},lockedprod={1},lockdate={2} where ordername={3} and aim={4}",
                                 true, true, lockDate, TargetOrder, TargetLine);
@@ -731,6 +730,13 @@
                 TargetDepartment = nextValue.Department;
                 Article = nextValue.Article;
 
+
+                var lineQuery = from lines in Tables.Lines
+                                where lines.Line == TargetLine && lines.Department == TargetDepartment
+                                select lines;
+                var lineDesc = lineQuery.Any() ? lineQuery.FirstOrDefault().Description : null;
+
+
                 var sDate = JobModel.GetLineLastDate(TargetLine, TargetDepartment);
                 ManualDateTime = sDate;
 
@@ -744,7 +750,7 @@
                     }
                 }
                 Central.IsProgramare = true;
-                loadingJob.Text = "Carico lavoro - Commessa da programmare (" + TargetLine + ")";
+                loadingJob.Text = "Carico lavoro - Commessa da programmare (" + TargetLine + " / " + lineDesc + ")";
                 loadingJob.ShowDialog();
                 loadingJob.Dispose();
                 Central.IsProgramare = false;
@@ -753,12 +759,18 @@
                 {
                     return;
                 }
+
                 var orderQuery = (from ord in Models.Tables.Orders
                                   where ord.NrComanda == TargetOrder
                                   && ord.Department == TargetDepartment
+                                  && ord.IsDeleted == false
                                   select ord).SingleOrDefault();
-                var exist = Central.ListOfModels.Where(x => x.Name == orderQuery.NrComanda && x.Department == orderQuery.Department).ToList();
-                if (exist.Count > 0)
+
+                var exist = Central.ListOfModels
+                    .Where(x => x.Name == orderQuery.NrComanda
+                    && x.Department == orderQuery.Department).ToList().Count;
+
+                if (exist > 0)
                 {
                     MessageBox.Show("Order already exist as an accepted model.\n" +
                         "Parametarized or cloning anomaly has been occurred.", "Workflow controller",
@@ -789,12 +801,13 @@
                     qty = orderQuery.Cantitate;
                     ByQty = true;
                 }
-                int.TryParse(jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Workflow.Members).ToString(), out var dur);
-                var eDate = ManualDateTime.AddDays(+dur);
-                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Workflow.Members, qty);
-                int.TryParse(dailyQty.ToString(), out var dq);
 
-                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dq, price, orderQuery.Department,Members, ByManualDate);
+                var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Members);
+                var eDate = ManualDateTime.AddDays(+dur);
+                var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Members, qty);
+                //int.TryParse(dailyQty.ToString(), out var dq);
+
+                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate);
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2},QtyInstead={3} where NrComanda={4} and department={5}",
@@ -808,11 +821,12 @@
                     _loadingJobForm.SelectProgrammedCommessa(TargetOrder);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 Central.IsProgramare = false;
                 _ctxMenuStrip = null;
-                MessageBox.Show("Unreachable field selected.",
+                MessageBox.Show("Order has been doubled or interrupted from another device.",
                     "Workflow controller",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
@@ -1059,7 +1073,7 @@
                     dt.Rows.Add(new[] { "Daily qty", model.DailyProd.ToString() });
                     dt.Rows.Add(new[] { "Data Inizio Produzione", model.StartDate.ToString("dd/MM/yyyy HH:mm") });
                     dt.Rows.Add(new[] { "Data Fine Produzione", model.EndDate.ToString("dd/MM/yyyy HH:mm") });
-                    dt.Rows.Add(new[] { "Duration", model.Duration.ToString() });
+                    dt.Rows.Add(new[] { "Duration", TimeSpan.FromDays(model.Duration).ToString(@"dd\ hh\:mm")});
                     dt.Rows.Add(new[] { "Days on holiday", model.HolidayRange.ToString() });
                     dt.Rows.Add(new[] { "Members/machines", model.Members.ToString() });
                 }

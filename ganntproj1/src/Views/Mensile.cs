@@ -376,6 +376,10 @@
             var htbl = new System.Collections.Hashtable();
             var idx = tpMax + 2;
             var tmpIdx = 0;
+
+            var lineQuery = (from lines in Tables.Lines
+                            select lines).ToList();
+
             foreach (var item in data)
             {
                 var hKey = string.Empty;
@@ -386,6 +390,8 @@
                
                 var cProducibili = Math.Round(item.Producibili,0);
                 var cPreventivati = Math.Round(item.Preventivati,0);
+
+                var lineDesc = lineQuery.Where(l => l.Line == item.Line && l.Department == item.Department).FirstOrDefault(); 
 
                 if (htbl.Contains(hKey))
                 {
@@ -425,11 +431,13 @@
                     var newRow = dt.NewRow();
 
                     //add line string in the first row when new line start
-                    if (_cboType.SelectedIndex <= 0 &&
-                        (idx - tmpIdx) % tpMax == 2)
+                    if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 2)
                         newRow[0] = line;
+                    else if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 3)
+                        newRow[0] = lineDesc.Description;
                     else if (_cboType.SelectedIndex > 0)
-                        newRow[0] = line;
+                        newRow[0] = lineDesc.Description;
+
                     newRow[1] = item.Type;
                     switch (item.Type)
                     {
@@ -527,6 +535,11 @@
             var htbl = new System.Collections.Hashtable();
             var idx = tpMax + 2;
             var tmpIdx = 0;
+
+            var lineQuery = (from lines in Tables.Lines
+                             select lines).ToList();
+
+
             foreach (var item in data)
             {
                 var maxEff = 100.0;
@@ -536,9 +549,11 @@
                 var hKey = string.Empty;
                 var line = Store.Default.sectorId == 1 ? (item.Line + item.Department.Split(' ')[1]) : item.Line;
 
-                hKey = line + item.Type;
-             
+                hKey = line + item.Type;             
                 var dateIdx = item.Datex.ToString("yyyy-MM-dd");
+
+                var lineDesc = lineQuery.Where(l => l.Line == item.Line && l.Department == item.Department).FirstOrDefault();
+
                 if (htbl.Contains(hKey))
                 {
                     var j = Convert.ToInt32(htbl[hKey]);
@@ -567,9 +582,12 @@
                     }
                     lastLine = line;
                     var newRow = dt.NewRow();
-                    if (_cboType.SelectedIndex <= 0 &&
-                        (idx - tmpIdx) % tpMax == 2) newRow[0] = line;
-                    else if (_cboType.SelectedIndex > 0) newRow[0] = line;
+                    if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 2) 
+                        newRow[0] = line;
+                    else if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 0)
+                        newRow[0] = lineDesc.Description;
+                    else if (_cboType.SelectedIndex > 0) newRow[0] = lineDesc.Description;
+
                     newRow[1] = item.Type;
                     switch (item.Type)
                     {
