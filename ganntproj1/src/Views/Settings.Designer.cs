@@ -167,6 +167,9 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
+            this.cbOrderArrivo = new ganntproj1.ToggleCheckBox();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -310,7 +313,12 @@
             // 
             // tpGeneral
             // 
+            this.tpGeneral.AutoScroll = true;
+            this.tpGeneral.AutoScrollMargin = new System.Drawing.Size(20, 20);
             this.tpGeneral.BackColor = System.Drawing.SystemColors.Control;
+            this.tpGeneral.Controls.Add(this.label7);
+            this.tpGeneral.Controls.Add(this.label45);
+            this.tpGeneral.Controls.Add(this.cbOrderArrivo);
             this.tpGeneral.Controls.Add(this.label40);
             this.tpGeneral.Controls.Add(this.label41);
             this.tpGeneral.Controls.Add(this.label42);
@@ -339,7 +347,7 @@
             // 
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label40.Location = new System.Drawing.Point(141, 197);
+            this.label40.Location = new System.Drawing.Point(133, 253);
             this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(203, 18);
@@ -349,7 +357,7 @@
             // label41
             // 
             this.label41.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label41.Location = new System.Drawing.Point(126, 231);
+            this.label41.Location = new System.Drawing.Point(118, 295);
             this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(502, 2);
@@ -359,7 +367,7 @@
             // 
             this.label42.AutoSize = true;
             this.label42.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label42.Location = new System.Drawing.Point(141, 249);
+            this.label42.Location = new System.Drawing.Point(133, 329);
             this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(168, 18);
@@ -369,7 +377,7 @@
             // label43
             // 
             this.label43.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label43.Location = new System.Drawing.Point(126, 285);
+            this.label43.Location = new System.Drawing.Point(118, 373);
             this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(502, 2);
@@ -382,7 +390,7 @@
             this.toggleCheckBox1.FlatAppearance.BorderSize = 0;
             this.toggleCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.toggleCheckBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggleCheckBox1.Location = new System.Drawing.Point(563, 196);
+            this.toggleCheckBox1.Location = new System.Drawing.Point(555, 251);
             this.toggleCheckBox1.Margin = new System.Windows.Forms.Padding(2);
             this.toggleCheckBox1.Name = "toggleCheckBox1";
             this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -400,7 +408,7 @@
             this.toggleCheckBox2.FlatAppearance.BorderSize = 0;
             this.toggleCheckBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.toggleCheckBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggleCheckBox2.Location = new System.Drawing.Point(563, 248);
+            this.toggleCheckBox2.Location = new System.Drawing.Point(555, 327);
             this.toggleCheckBox2.Margin = new System.Windows.Forms.Padding(2);
             this.toggleCheckBox2.Name = "toggleCheckBox2";
             this.toggleCheckBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -415,7 +423,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(141, 89);
+            this.label6.Location = new System.Drawing.Point(133, 97);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 18);
@@ -426,7 +434,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(141, 41);
+            this.label5.Location = new System.Drawing.Point(133, 25);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(122, 18);
@@ -436,7 +444,7 @@
             // label3
             // 
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label3.Location = new System.Drawing.Point(126, 123);
+            this.label3.Location = new System.Drawing.Point(118, 139);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(502, 2);
@@ -446,7 +454,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(141, 141);
+            this.label4.Location = new System.Drawing.Point(133, 173);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(178, 18);
@@ -458,7 +466,7 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(141, 300);
+            this.label20.Location = new System.Drawing.Point(133, 401);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(139, 18);
@@ -468,7 +476,7 @@
             // label8
             // 
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Location = new System.Drawing.Point(126, 72);
+            this.label8.Location = new System.Drawing.Point(118, 64);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(502, 2);
@@ -477,7 +485,7 @@
             // label17
             // 
             this.label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label17.Location = new System.Drawing.Point(126, 177);
+            this.label17.Location = new System.Drawing.Point(118, 217);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(502, 2);
@@ -490,7 +498,7 @@
             this.cbAutoSync.FlatAppearance.BorderSize = 0;
             this.cbAutoSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbAutoSync.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAutoSync.Location = new System.Drawing.Point(563, 40);
+            this.cbAutoSync.Location = new System.Drawing.Point(555, 23);
             this.cbAutoSync.Margin = new System.Windows.Forms.Padding(2);
             this.cbAutoSync.Name = "cbAutoSync";
             this.cbAutoSync.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -507,7 +515,7 @@
             this.cbBackupData.FlatAppearance.BorderSize = 0;
             this.cbBackupData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbBackupData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbBackupData.Location = new System.Drawing.Point(563, 88);
+            this.cbBackupData.Location = new System.Drawing.Point(555, 95);
             this.cbBackupData.Margin = new System.Windows.Forms.Padding(2);
             this.cbBackupData.Name = "cbBackupData";
             this.cbBackupData.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -524,7 +532,7 @@
             this.myCheckBox1.FlatAppearance.BorderSize = 0;
             this.myCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.myCheckBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.myCheckBox1.Location = new System.Drawing.Point(563, 140);
+            this.myCheckBox1.Location = new System.Drawing.Point(555, 171);
             this.myCheckBox1.Margin = new System.Windows.Forms.Padding(2);
             this.myCheckBox1.Name = "myCheckBox1";
             this.myCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -541,7 +549,7 @@
             this.cbFast.FlatAppearance.BorderSize = 0;
             this.cbFast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbFast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFast.Location = new System.Drawing.Point(563, 300);
+            this.cbFast.Location = new System.Drawing.Point(555, 399);
             this.cbFast.Margin = new System.Windows.Forms.Padding(2);
             this.cbFast.Name = "cbFast";
             this.cbFast.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -600,7 +608,7 @@
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(669, 123);
+            this.grpSart.Size = new System.Drawing.Size(652, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
@@ -665,7 +673,7 @@
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(669, 123);
+            this.grpTess.Size = new System.Drawing.Size(652, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
@@ -734,7 +742,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(669, 124);
+            this.grpStiro.Size = new System.Drawing.Size(652, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -861,7 +869,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(669, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(652, 123);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -1912,6 +1920,45 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
+            // label7
+            // 
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label7.Location = new System.Drawing.Point(118, 449);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(502, 2);
+            this.label7.TabIndex = 60;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label45.ForeColor = System.Drawing.Color.Black;
+            this.label45.Location = new System.Drawing.Point(133, 475);
+            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(343, 18);
+            this.label45.TabIndex = 58;
+            this.label45.Text = "Order \'Commesse da programmare\' by DataArrivo";
+            // 
+            // cbOrderArrivo
+            // 
+            this.cbOrderArrivo.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbOrderArrivo.BackColor = System.Drawing.Color.Transparent;
+            this.cbOrderArrivo.FlatAppearance.BorderSize = 0;
+            this.cbOrderArrivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbOrderArrivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbOrderArrivo.Location = new System.Drawing.Point(555, 473);
+            this.cbOrderArrivo.Margin = new System.Windows.Forms.Padding(2);
+            this.cbOrderArrivo.Name = "cbOrderArrivo";
+            this.cbOrderArrivo.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbOrderArrivo.Size = new System.Drawing.Size(42, 24);
+            this.cbOrderArrivo.TabIndex = 59;
+            this.cbOrderArrivo.Text = "Chec";
+            this.cbOrderArrivo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbOrderArrivo.UseVisualStyleBackColor = true;
+            this.cbOrderArrivo.CheckedChanged += new System.EventHandler(this.cbOrderArrivo_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2123,5 +2170,8 @@
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.TextBox txtGroup;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label45;
+        private ToggleCheckBox cbOrderArrivo;
     }
     }

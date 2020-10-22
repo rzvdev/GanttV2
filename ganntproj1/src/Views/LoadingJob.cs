@@ -326,6 +326,16 @@
                 stateId + " order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
             else if (Central.IsProgramare)
             {
+                var strFilter = "";
+                if (Store.Default.arrivoOrder)
+                {
+                    strFilter = "Comenzi.DataLansare";
+                }
+                else
+                {
+                    strFilter = "Comenzi.Rdd";
+                }
+
                 if (IsUpd)
                 {
                     queryCondition = "where Comenzi.DataProduzione is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
@@ -333,7 +343,7 @@
                                       "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
                                       "and Comenzi.IdStare<>2 and Comenzi.DataProduzione is null " +
                                       "and Comenzi.Line is null and Comenzi.isdeleted=0 " +
-                                      "order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
+                                      "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
                 else
                 {
@@ -342,7 +352,7 @@
                         "and Comenzi.IdStare=4 and Comenzi.isdeleted='0' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
                         "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
                         "and Comenzi.Line is null and Comenzi.isdeleted='0' " +
-                        "order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
+                        "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
             }
             if (UseSingleFilter)

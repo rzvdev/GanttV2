@@ -580,10 +580,10 @@
                 {
                     var nArt = (from art in Models.Tables.Articles
                                 where art.Articol == article && art.Idsector == Store.Default.sectorId
-                                select art).SingleOrDefault();
+                                select art).FirstOrDefault();
                     var nLine = (from line in Models.Tables.Lines
                                  where line.Line == aim && line.Department == dept
-                                 select line).SingleOrDefault();
+                                 select line).FirstOrDefault();
 
                     if (nArt == null || nLine == null) continue;
 
@@ -1958,10 +1958,15 @@
                 LoadHolidays();
                 LoadingInfo.UpdateText("Synchronizing data... Please wait...");
                 AddModels(true);
-                var lst = from models in ListOfModels
-                          orderby Convert.ToInt32(models.Aim.Remove(0, 5)),
-                          models.StartDate
-                          select models;
+            var lst = (from models in ListOfModels
+                       select models).OrderBy(x => x.Department)
+                      .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
+                      .ThenBy(x => x.StartDate);
+
+            //var lst = from models in ListOfModels
+            //              orderby Convert.ToDouble(models.Aim.Remove(0, 5)),
+            //              models.StartDate
+            //              select models;
                 ListOfModels = lst.ToList();
 
             LoadingInfo.CloseLoading();      

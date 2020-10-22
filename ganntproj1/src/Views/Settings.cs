@@ -180,6 +180,7 @@ namespace ganntproj1
 
             toggleCheckBox1.Checked = Store.Default.manualMembers;
             toggleCheckBox2.Checked = Store.Default.manualDate;
+            cbOrderArrivo.Checked = Store.Default.arrivoOrder;
         }
 
         private void LoadLines()
@@ -1097,6 +1098,12 @@ namespace ganntproj1
         private void btnUpdate_MouseEnter(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbOrderArrivo_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.arrivoOrder = cbOrderArrivo.Checked;
+            Store.Default.Save();
         }
     }
 }

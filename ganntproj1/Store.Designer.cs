@@ -370,5 +370,17 @@ namespace ganntproj1 {
                 this["manualDate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool arrivoOrder {
+            get {
+                return ((bool)(this["arrivoOrder"]));
+            }
+            set {
+                this["arrivoOrder"] = value;
+            }
+        }
     }
 }

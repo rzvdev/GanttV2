@@ -181,7 +181,7 @@
             {
                 timeToMoveForward = 0.0;
                 timeToMoveBack = 0.0;
-                var model = Central.ListOfModels.SingleOrDefault(x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept);
+                var model = Central.ListOfModels.FirstOrDefault(x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept);
              
                 var modelBefore = JobModel.GetModelIndex(model.Name, _indexerList, -1);
                 var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
@@ -200,8 +200,9 @@
                         if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
                     }
                     else
+                    //just in case when delay goes over manually programmed order
                     {
-                        timeToMoveForward = 0.0;
+                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;  
                         timeToMoveBack = 0.0;
                     }
                 }

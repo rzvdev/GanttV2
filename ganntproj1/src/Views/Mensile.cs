@@ -876,8 +876,8 @@
             {
                 if (row.Cells[1].Value.ToString() == "CAPI PRODOTI")
                 {
-                    row.DefaultCellStyle.BackColor = Color.FromArgb(125, 141, 161);
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                    row.DefaultCellStyle.BackColor = Color.LightSteelBlue;
+                    //row.DefaultCellStyle.ForeColor = Color.Black;
                 }
                 if (Mode == "mens" && row.Index > 0 && row.Index <= 5)
                 {
@@ -947,7 +947,7 @@
 
                 if (c.HeaderText.Contains("^ SETT"))
                 {
-                    c.DefaultCellStyle.BackColor = Color.LightSteelBlue;
+                    c.DefaultCellStyle.BackColor = Color.FromArgb(125, 141, 161); ;
                 }
                 
             }
