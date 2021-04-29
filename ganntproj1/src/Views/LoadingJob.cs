@@ -32,6 +32,8 @@
 
         private AutoCompleteStringCollection _ascsLine = new AutoCompleteStringCollection();
 
+        private AutoCompleteStringCollection _ascsTest = new AutoCompleteStringCollection();
+
         private List<string> _listOfAcceptedOrder = new List<string>();
 
         private List<string> _listOfOrdersWithNotes = new List<string>();
@@ -243,6 +245,7 @@
 
                             var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment, 
                                 Workflow.ManualDateTime, Workflow.Article, qty, carico);
+                         
                             if (programDialog.ShowDialog() != DialogResult.Cancel)
                             {
                                 Workflow.ByManualDate = programDialog.UseManualDate;
@@ -250,6 +253,7 @@
                                 Workflow.ManualDateTime = programDialog.DateTimes;
                                 Workflow.ByQty = programDialog.ByTotalQty;
                                 Workflow.TargetQtyH = programDialog.QtyH;
+                                Workflow.TargetLaunched = programDialog.Launched;
 
                                 Close();
                             }
@@ -339,9 +343,9 @@
                 if (IsUpd)
                 {
                     queryCondition = "where Comenzi.DataProduzione is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
-                                      "and Comenzi.IdStare<>2 and Comenzi.DataProduzione is null " +
+                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
+                                      "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
                                       "and Comenzi.Line is null and Comenzi.isdeleted=0 " +
                                       "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
@@ -360,10 +364,13 @@
                 queryCondition = "where Comenzi.NrComanda='" + Workflow.TargetOrder + "' "
                     + "and comenzi.line='" + Workflow.TargetLine + "' and comenzi.department='" + Workflow.TargetDepartment + "'";
             }
+
+            var strLine = IsUpd ? "case when Comenzi.Line is not null then null else Comenzi.Line end as Line," : "Comenzi.Line,";
+
             var query = "select " +
                      "Comenzi.NrComanda," +          
-                     "Articole.Articol," +           
-                     "Comenzi.Line," +           
+                     "Articole.Articol," +
+                     strLine +           
                      "Comenzi.Cantitate," +      
                      "Comenzi.Carico," +             
                      "Comenzi.Diff_t," +             
@@ -511,7 +518,7 @@
                     {
                         var delayDuration = jobModel.DelayEndDate.Subtract(jobModel.DelayStartDate).Days;
                         newRow[36] = (timeDuration + delayDuration).ToString();
-                    }                    
+                    }
                 }
                 else newRow[29] = "";
 
@@ -532,8 +539,10 @@
                 }
                 _tableCarico.Rows.Add(newRow);
             }
+
             if (dgvReport.DataSource != null) dgvReport.DataSource = null;           
             dgvReport.DataSource = _tableCarico;
+
             dgvReport.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvReport.Columns["Flag"].Width = 35;
             dgvReport.Columns["Flag"].HeaderText = "State";
@@ -638,7 +647,6 @@
             dgvReport.Columns[18].Width = 60;
             for (int i = 0; i < dgvReport.Rows.Count; i++)
             {
-
                 if (i % 2 == 0)
                 {
                     dgvReport.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.Gainsboro;
@@ -874,6 +882,7 @@
         private bool _filterCreated;
         private TextBox _txtArt;
         private TextBox _txtLin;
+        private TextBox _txtTess;
 
         private ComboBox _cbNote;
         private void CreateFilter()
@@ -882,6 +891,7 @@
             _acsc.Clear();
             _ascsLine.Clear();
             _acscArt.Clear();
+            _ascsTest.Clear();
 
             if (!dgvReport.Controls.Contains(_cbNote))
             {
@@ -893,11 +903,24 @@
                     Font = new Font("Microsoft Sans Serif", 10, FontStyle.Regular),
                     Parent = dgvReport
                 };
-                _cbNote.DoubleBuffered(true);
                 _cbNote.Items.Clear();
                 _cbNote.Items.Add("<Reset>");
 
                 dgvReport.Controls.Add(_cbNote);
+            }
+
+            if (!dgvReport.Controls.Contains(_txtTess))
+            {
+                _txtTess = new TextBox
+                {
+                    Name = dgvReport.Columns["Tess"].Name,
+                    BorderStyle = BorderStyle.None,
+                    BackColor = Color.White,
+                    Font = new Font("Microsoft Sans Serif", 10, FontStyle.Regular),
+                    Parent = dgvReport
+                };
+                
+                dgvReport.Controls.Add(_txtTess);
             }
 
             foreach (DataGridViewRow row in dgvReport.Rows)
@@ -905,6 +928,7 @@
                 _acsc.Add(row.Cells[1].Value.ToString());
                 _acscArt.Add(row.Cells[2].Value.ToString());
                 _ascsLine.Add(row.Cells[3].Value.ToString());
+                _ascsTest.Add(row.Cells[15].Value.ToString());
                 
                 if (_cbNote.Items.Contains(row.Cells[21].Value.ToString())) continue;
                 _cbNote.Items.Add(row.Cells[21].Value.ToString());
@@ -949,6 +973,11 @@
             headerRect = dgvReport.GetColumnDisplayRectangle(3, true);
             _txtLin.Location = new Point(headerRect.Location.X + 1, 50 - _txtLin.Height - 2);
             _txtLin.Size = new Size(headerRect.Width - 3, dgvReport.ColumnHeadersHeight);
+
+
+            headerRect = dgvReport.GetColumnDisplayRectangle(15, true);
+            _txtTess.Location = new Point(headerRect.Location.X + 1, 50 - _txtTess.Height - 2);
+            _txtTess.Size = new Size(headerRect.Width - 3, dgvReport.ColumnHeadersHeight);
 
             headerRect = dgvReport.GetColumnDisplayRectangle(21, true);
             _cbNote.Location = new Point(headerRect.Location.X + 1, 50 - _cbNote.Height - 2);
@@ -1012,6 +1041,25 @@
                 dgvReport.DataSource = _tableCarico;
                 dgvReport.Refresh();
             };
+            _txtTess.TextChanged += (s, e) =>
+            {
+                if (_txtTess.Controls.Contains(_btnClearFilter))
+                {
+                    _txtTess.Controls.Remove(_btnClearFilter);
+                    _btnClearFilter.Dispose();
+                }
+                if (_txtTess.Text != string.Empty)
+                {
+                    AddClearFilterButton(_txtTess, "btnTess");
+                    _txtTess.Controls.Add(_btnClearFilter);
+                }
+                RemoveGridControls();
+                CollectFiltersQuery();
+
+                _tableCarico.DefaultView.RowFilter = _strFilter;
+                dgvReport.DataSource = _tableCarico;
+                dgvReport.Refresh();
+            };
             _cbNote.SelectedIndexChanged += (s, e) =>
             {
                 if (_cbNote.SelectedIndex == 0)
@@ -1051,6 +1099,12 @@
                     txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                     txt.AutoCompleteSource = AutoCompleteSource.CustomSource;
                     txt.AutoCompleteCustomSource = _ascsLine;
+                }
+                else if (txt.Name == dgvReport.Columns[15].Name)
+                {
+                    txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    txt.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                    txt.AutoCompleteCustomSource = _ascsTest;
                 }
             }
         }
@@ -1206,6 +1260,8 @@
 
                 Workflow.ByQty = byQty;
                 Workflow.TargetOrder = selectedOrder;
+                Workflow.TargetLaunched = programDialog.Launched;
+
                 if (Store.Default.sectorId == 2) Workflow.TargetQtyH = programDialog.QtyH;
 
                 Close();
@@ -1584,48 +1640,65 @@
 
         private void dgvReport_Scroll(object sender, ScrollEventArgs e)
         {
-            if (dgvReport.Controls.Contains(_cbLineChange))
+            try
             {
-                Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
-                _cbLineChange.Size = new Size(Rectangle.Width, Rectangle.Height);
-                _cbLineChange.Location = new Point(Rectangle.X, Rectangle.Y);
-            }
-            if (dgvReport.Controls.Contains(_dtProdChange))
-            {
-                Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
-                _dtProdChange.Size = new Size(Rectangle.Width, Rectangle.Height);
-                _dtProdChange.Location = new Point(Rectangle.X, Rectangle.Y);
-            }
-            if (dgvReport.Controls.Contains(_txtInput))
-            {
-                Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
-                _txtInput.Size = new Size(Rectangle.Width, Rectangle.Height);
-                _txtInput.Location = new Point(Rectangle.X, Rectangle.Y);
-            }
-            if (dgvReport.Controls.Contains(_btnShowProd))
-            {
-                Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(8, -1, true);
-                _btnShowProd.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
-            }
-            if (dgvReport.Controls.Contains(_btnShowFin))
-            {
-                Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(9, -1, true);
-                _btnShowFin.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
-            }
-            if (dgvReport.Controls.Contains(_cbNote))
-            {
-                var headerRect = dgvReport.GetColumnDisplayRectangle(21, true);
-                _cbNote.Location = new Point(headerRect.Location.X + 1, 50 - _cbNote.Height - 2);
-                _cbNote.Size = new Size(headerRect.Width - 3, dgvReport.ColumnHeadersHeight);
-            }
+                if (dgvReport.Controls.Contains(_cbLineChange))
+                {
+                    Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
+                    _cbLineChange.Size = new Size(Rectangle.Width, Rectangle.Height);
+                    _cbLineChange.Location = new Point(Rectangle.X, Rectangle.Y);
+                }
+                if (dgvReport.Controls.Contains(_dtProdChange))
+                {
+                    Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
+                    _dtProdChange.Size = new Size(Rectangle.Width, Rectangle.Height);
+                    _dtProdChange.Location = new Point(Rectangle.X, Rectangle.Y);
+                }
+                if (dgvReport.Controls.Contains(_txtInput))
+                {
+                    Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(_cellIdx, _rowIdx, true);
+                    _txtInput.Size = new Size(Rectangle.Width, Rectangle.Height);
+                    _txtInput.Location = new Point(Rectangle.X, Rectangle.Y);
+                }
+                if (dgvReport.Controls.Contains(_btnShowProd))
+                {
+                    Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(8, -1, true);
+                    _btnShowProd.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
+                    _btnShowProd.Invalidate();
+                }
+                if (dgvReport.Controls.Contains(_btnShowFin))
+                {
+                    Rectangle Rectangle = dgvReport.GetCellDisplayRectangle(9, -1, true);
+                    _btnShowFin.Location = new Point(Rectangle.X + Rectangle.Width - 30, Rectangle.Y + Rectangle.Height - 20);
+                    _btnShowFin.Invalidate();
+                }
 
-            dgvReport.Invalidate();
-            _btnShowFin.Invalidate();
-            _btnShowProd.Invalidate();
+                if (dgvReport.Controls.Contains(_txtTess))
+                {
+                    var headerRect = dgvReport.GetColumnDisplayRectangle(15, true);
+                    _txtTess.Location = new Point(headerRect.Location.X + 1, 50 - _txtTess.Height - 2);
+                    _txtTess.Size = new Size(headerRect.Width - 3, dgvReport.ColumnHeadersHeight);
+                }
+
+                if (dgvReport.Controls.Contains(_cbNote))
+                {
+                    var headerRect = dgvReport.GetColumnDisplayRectangle(21, true);
+                    _cbNote.Location = new Point(headerRect.Location.X + 1, 50 - _cbNote.Height - 2);
+                    _cbNote.Size = new Size(headerRect.Width - 3, dgvReport.ColumnHeadersHeight);
+                }
+
+                dgvReport.Invalidate(); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }      
         }
 
         private void AddHeaderButtons()
         {
+            if (IsUpd) return;
+
             for (int i = dgvReport.Controls.Count - 1; i >= 0; i--)
             {
                 if ((dgvReport.Controls[i] is Button ctrl) && (ctrl.Name != "XXXXXXX"))
@@ -1848,7 +1921,7 @@
 
             var d = JobModel.GetLineLastDate(lineInsteadDescripton, dept);
 
-            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d, article, totalQty, carico);
+            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d, article, totalQty, carico, qtyH);
 
             if (programDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -1859,7 +1932,16 @@
             d = programDialog.DateTimes;
             var members = programDialog.Members;
             var manualdate = programDialog.UseManualDate;
-            if (Store.Default.sectorId == 2) qtyH = programDialog.QtyH;
+            var launched = programDialog.Launched;
+
+            if (Store.Default.sectorId == 2)
+            {
+                qtyH = programDialog.QtyH;
+            }
+            else if (Store.Default.sectorId == 8)
+            {
+                qtyH = programDialog.QtyHSartoria;
+            }
  
             int qty;
             if (byQty)
@@ -1920,7 +2002,7 @@
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2}," +
-                        "QtyInstead={3},Duration={4} where NrComanda={5} and Department={6}",
+                        "QtyInstead={3},Duration={4},IdStare=1 where NrComanda={5} and Department={6}",
                         startDate, endDate,
                         lineDesc.Line, byQty, jobDuration, _orderToUpdate, dept);
                 }
@@ -1931,7 +2013,7 @@
             dgvReport.CurrentRow.Cells[0].Value =
                 Properties.Resources.tick_icon_16;
 
-            InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate);
+            InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate, launched);
         }
 
         private void _dtpProdChange_ValueChange(object sender, EventArgs e)
@@ -2435,16 +2517,16 @@
             HideLightColumns();
         }
 
-        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate) 
+        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched) 
         {
             var checkShift = new ShiftRecognition();
 
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
-               "membersnr,manualDate,abatimen) values " +
+               "membersnr,manualDate,abatimen,launched) values " +
                "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
                "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33)";
+               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34)";
 
             var durationTicks = TimeSpan.FromDays(duration).Ticks;
             var eDate = startDate.AddTicks(durationTicks);
@@ -2468,9 +2550,9 @@
                 cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
                 cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;
                 cmd.Parameters.Add("@param6", SqlDbType.Float).Value = qtyH;
-                cmd.Parameters.Add("@param7", SqlDbType.BigInt).Value = JobModel.GetLSpan(startDate);
+                cmd.Parameters.Add("@param7", SqlDbType.BigInt).Value = startDate.Ticks;
                 cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
-                cmd.Parameters.Add("@param9", SqlDbType.BigInt).Value = JobModel.GetLSpan(eDate);
+                cmd.Parameters.Add("@param9", SqlDbType.BigInt).Value = eDate.Ticks;
                 cmd.Parameters.Add("@param10", SqlDbType.BigInt).Value = 0;
                 cmd.Parameters.Add("@param11", SqlDbType.BigInt).Value = 0;
                 cmd.Parameters.Add("@param12", SqlDbType.BigInt).Value = 0;
@@ -2495,6 +2577,8 @@
                 cmd.Parameters.Add("@param31", SqlDbType.Int).Value = members;
                 cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
                 cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
+                cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
+
 
                 con.Open();
                 cmd.ExecuteNonQuery();

@@ -31,7 +31,6 @@
             NewUpdate,
         }
 
-        private readonly Config _config = new Config();
         private IntPtr _console = new IntPtr();
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
@@ -257,6 +256,7 @@
                     SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
             };
+
             lblShiftInfo.MouseMove += (s, mv) =>
             {
                 if (mv.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
@@ -500,6 +500,7 @@
         private void AddModels(bool updateProduction)
         {
             var tbl = new System.Data.DataTable();
+
             var q = "select * from [dbo].[viewobjects] where charindex(+',' + department + ',', '" + Store.Default.selDept + "') > 0 " +
                 "order by department";
 
@@ -554,7 +555,9 @@
                 int.TryParse(row[33].ToString(), out var members);
                 bool.TryParse(row[34].ToString(), out var manualDate);
                 int.TryParse(row[35].ToString(), out var abatimen);
-
+                 
+                bool.TryParse(row[36].ToString(), out var launched);
+               
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
                 var dvcDt = Config.MinimalDate.AddTicks(dvc);
@@ -576,7 +579,7 @@
 
                 endDt = Config.MinimalDate.AddTicks(endDate);
 
-                if (updateProduction)
+                if (updateProduction && Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
                 {
                     var nArt = (from art in Models.Tables.Articles
                                 where art.Articol == article && art.Idsector == Store.Default.sectorId
@@ -588,8 +591,10 @@
                     if (nArt == null || nLine == null) continue;
 
                     double.TryParse(nArt.Centes.ToString(), out var qtyHSync);
-                    double.TryParse(nArt.Prezzo.ToString(), out var priceSync);
+                    if (Store.Default.sectorId == 2) qtyHSync = qtyH; //get from objects
 
+                    double.TryParse(nArt.Prezzo.ToString(), out var priceSync);
+                    
                     using (var context = new DataContext(SpecialConnStr))
                     {
                         context.ExecuteCommand("update produzione set " +
@@ -608,14 +613,9 @@
                 }
 
                 ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
-             qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
-             locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-             delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen));
-
-                if (updateProduction)
-                {
-                    jb.GetJobContinum(name, aim, dept);
-                }
+                    qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
+                    locked, holiday, isClosed, artPrice, hasProd, lockedProd,
+                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen, launched));
             }
         }
 
@@ -837,10 +837,22 @@
 
                     pbReload.Click += (se, e) =>
                     {
+                        if (cbDept.SelectedIndex == 0)
+                        {
+                            MessageBox.Show("not allowed");
+                            return;
+                        }
+
                         frm.LoadDataWithDateChange();
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
+                        if (cbDept.SelectedIndex == 0)
+                        {
+                            MessageBox.Show("not allowed");
+                            return;
+                        }
+
                         IsResetJobLoader = false;
                         frm.LoadDataWithDateChange();
                         pnReload.Visible = false;
@@ -850,6 +862,12 @@
                     };
                     lblResetGlobal.Click += (se, e) =>
                     {
+                        if (cbDept.SelectedIndex == 0)
+                        {
+                            MessageBox.Show("not allowed");
+                            return;
+                        }
+
                         IsResetJobLoader = true;
                         frm.LoadDataWithDateChange();
                         pnReload.Visible = false;
@@ -1799,6 +1817,7 @@
             var dpt = Store.Default.arrDept.Split(',');
 
             cbDept.Items.Add("<Multiple>");
+
             for (var i = 0; i <= dpt.Length - 1; i++)
             {
                 if (dpt[i] == string.Empty) continue;
@@ -1985,8 +2004,7 @@
         }
 
         private void Central_Paint(object sender, PaintEventArgs e)
-        { 
-               
+        {                
             var pn = pnForms.Location;   
             var pnS = pnForms.Size;
             var p = new Pen(Brushes.Silver, 2);
@@ -2077,6 +2095,11 @@
                 dt.Load(dr);
                 c.Close();
                 dr.Close();
+            }
+
+            if (dt.Rows.Count == 0)
+            {
+                return;
             }
 
             int.TryParse(dt.Rows[0][2].ToString(), out var leff);

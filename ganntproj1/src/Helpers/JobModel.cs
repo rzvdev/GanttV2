@@ -20,7 +20,7 @@
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
             DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, 
-            int workingdays, int members, bool manualDate, int abatimen)
+            int workingdays, int members, bool manualDate, int abatimen, bool launched)
         {
             Name = name;
             Aim = aim;
@@ -58,6 +58,7 @@
             Members = members;
             ManualDate = manualDate;
             Abatimen = abatimen;
+            Launched = launched;
         }
 
         public string Name { get; set; }
@@ -133,6 +134,8 @@
         public bool ManualDate { get; set; }
 
         public int Abatimen { get; set; }
+
+        public bool Launched { get; set; }
 
         public IEnumerable<DateTime> GetDaysInRange(DateTime from,
                                                     DateTime to)
@@ -398,12 +401,12 @@
         {
             JobModel jMod = default;
             foreach (var item in lst)
-            {
+            {//TODO check if there is some error
                 if (item.ObjText != model) continue;
                 var jIndex = lst.SingleOrDefault(x => x.RowIndex == item.RowIndex && x.ObjIndex == item.ObjIndex + index);
                 if (jIndex != null)
                     jMod = Central.ListOfModels
-                        .SingleOrDefault(x => x.Name == jIndex.ObjText &&
+                        .FirstOrDefault(x => x.Name == jIndex.ObjText &&
                         x.Aim == jIndex.ObjAim && x.Department == jIndex.ObjDept);
                 else
                     jMod = null;
@@ -415,12 +418,12 @@
         {
             JobModel jMod = default;
             foreach (var item in lst)
-            {
+            {//TODO check if there is some error
                 if (item.ObjText != model) continue;
                 var jIndex = lst.SingleOrDefault(x => x.RowIndex == item.RowIndex + rIndex && x.ObjIndex == oIndex);
                 if (jIndex != null)
                     jMod = Central.ListOfModels
-                        .SingleOrDefault(x => x.Name == jIndex.ObjText &&
+                        .FirstOrDefault(x => x.Name == jIndex.ObjText &&
                         x.Aim == jIndex.ObjAim && x.Department == jIndex.ObjDept);
                 else
                     jMod = null;
@@ -432,23 +435,40 @@
         {
             var query = from models in Central.ListOfModels
                         where models.Aim == line && models.Department == dept
+                        orderby models.DelayEndDate
                         select models;
 
             var lst = query.ToList();
 
-            return lst.Count == 0 ? 
-                Config.MinimalDate : lst.Max(e => e.EndDate.AddTicks(e.DelayTime));
+            if (lst.Count > 0)
+            {
+                DateTime lastDate;
+                if (lst.Last().DelayEndDate > Config.MinimalDate)
+                {
+                    lastDate = lst.Last().DelayEndDate;
+                }
+                else
+                {
+                    lastDate = lst.Last().EndDate;
+                }
+
+                return lastDate;
+            }
+            else
+            {
+                return Config.MinimalDate;
+            }
         }
 
         public double GetPrice(string article)
         {
             var artQuery = from art in Models.Tables.Articles
-                           where art.Articol == article && art.Idsector == Store.Default.sectorId
+                           where art.Articol == article && art.Idsector == Store.Default.sectorId && art.IsDeleted != true
                            select art;
 
             if (artQuery != null)
             {
-                var price = artQuery.Select(x => x.Prezzo).SingleOrDefault();
+                var price = artQuery.Select(x => x.Prezzo).FirstOrDefault();
                 double.TryParse(price.ToString(), out var p);
                 return p;
             }

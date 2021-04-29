@@ -39,6 +39,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtConn2 = new System.Windows.Forms.TextBox();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
+            this.cbOrderArrivo = new ganntproj1.ToggleCheckBox();
             this.label40 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
@@ -167,9 +170,8 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label7 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.cbOrderArrivo = new ganntproj1.ToggleCheckBox();
+            this.cbConfC = new ganntproj1.ToggleCheckBox();
+            this.lblConfC = new System.Windows.Forms.Label();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -342,6 +344,45 @@
             this.tpGeneral.Size = new System.Drawing.Size(755, 370);
             this.tpGeneral.TabIndex = 4;
             this.tpGeneral.Text = "General";
+            // 
+            // label7
+            // 
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label7.Location = new System.Drawing.Point(118, 449);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(502, 2);
+            this.label7.TabIndex = 60;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label45.ForeColor = System.Drawing.Color.Black;
+            this.label45.Location = new System.Drawing.Point(133, 475);
+            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(343, 18);
+            this.label45.TabIndex = 58;
+            this.label45.Text = "Order \'Commesse da programmare\' by DataArrivo";
+            // 
+            // cbOrderArrivo
+            // 
+            this.cbOrderArrivo.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbOrderArrivo.BackColor = System.Drawing.Color.Transparent;
+            this.cbOrderArrivo.FlatAppearance.BorderSize = 0;
+            this.cbOrderArrivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbOrderArrivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbOrderArrivo.Location = new System.Drawing.Point(555, 473);
+            this.cbOrderArrivo.Margin = new System.Windows.Forms.Padding(2);
+            this.cbOrderArrivo.Name = "cbOrderArrivo";
+            this.cbOrderArrivo.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbOrderArrivo.Size = new System.Drawing.Size(42, 24);
+            this.cbOrderArrivo.TabIndex = 59;
+            this.cbOrderArrivo.Text = "Chec";
+            this.cbOrderArrivo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbOrderArrivo.UseVisualStyleBackColor = true;
+            this.cbOrderArrivo.CheckedChanged += new System.EventHandler(this.cbOrderArrivo_CheckedChanged);
             // 
             // label40
             // 
@@ -587,7 +628,7 @@
             this.radioButton2.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.radioButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.radioButton2.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2.Location = new System.Drawing.Point(49, 289);
+            this.radioButton2.Location = new System.Drawing.Point(49, 337);
             this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(105, 29);
@@ -604,11 +645,11 @@
             this.grpSart.Controls.Add(this.label22);
             this.grpSart.Controls.Add(this.txtHoursSartW);
             this.grpSart.Controls.Add(this.txtHoursSart);
-            this.grpSart.Location = new System.Drawing.Point(30, 295);
+            this.grpSart.Location = new System.Drawing.Point(30, 343);
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(652, 123);
+            this.grpSart.Size = new System.Drawing.Size(635, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
@@ -673,7 +714,7 @@
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(652, 123);
+            this.grpTess.Size = new System.Drawing.Size(635, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
@@ -717,7 +758,7 @@
             this.rbStiro.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbStiro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rbStiro.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbStiro.Location = new System.Drawing.Point(49, 425);
+            this.rbStiro.Location = new System.Drawing.Point(49, 473);
             this.rbStiro.Margin = new System.Windows.Forms.Padding(2);
             this.rbStiro.Name = "rbStiro";
             this.rbStiro.Size = new System.Drawing.Size(74, 29);
@@ -738,11 +779,11 @@
             this.grpStiro.Controls.Add(this.cbStiro1);
             this.grpStiro.Controls.Add(this.label18);
             this.grpStiro.Controls.Add(this.label19);
-            this.grpStiro.Location = new System.Drawing.Point(30, 432);
+            this.grpStiro.Location = new System.Drawing.Point(30, 480);
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(652, 124);
+            this.grpStiro.Size = new System.Drawing.Size(635, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -857,6 +898,8 @@
             // 
             this.grpConfezione.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpConfezione.Controls.Add(this.cbConfC);
+            this.grpConfezione.Controls.Add(this.lblConfC);
             this.grpConfezione.Controls.Add(this.label36);
             this.grpConfezione.Controls.Add(this.label37);
             this.grpConfezione.Controls.Add(this.txtHoursConfW);
@@ -869,7 +912,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(652, 123);
+            this.grpConfezione.Size = new System.Drawing.Size(635, 177);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -1920,44 +1963,31 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
-            // label7
+            // cbConfC
             // 
-            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label7.Location = new System.Drawing.Point(118, 449);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(502, 2);
-            this.label7.TabIndex = 60;
+            this.cbConfC.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbConfC.BackColor = System.Drawing.Color.Transparent;
+            this.cbConfC.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbConfC.Location = new System.Drawing.Point(192, 121);
+            this.cbConfC.Margin = new System.Windows.Forms.Padding(2);
+            this.cbConfC.Name = "cbConfC";
+            this.cbConfC.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbConfC.Size = new System.Drawing.Size(42, 24);
+            this.cbConfC.TabIndex = 50;
+            this.cbConfC.Text = "Chec";
+            this.cbConfC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbConfC.UseVisualStyleBackColor = true;
             // 
-            // label45
+            // lblConfC
             // 
-            this.label45.AutoSize = true;
-            this.label45.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label45.ForeColor = System.Drawing.Color.Black;
-            this.label45.Location = new System.Drawing.Point(133, 475);
-            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(343, 18);
-            this.label45.TabIndex = 58;
-            this.label45.Text = "Order \'Commesse da programmare\' by DataArrivo";
-            // 
-            // cbOrderArrivo
-            // 
-            this.cbOrderArrivo.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cbOrderArrivo.BackColor = System.Drawing.Color.Transparent;
-            this.cbOrderArrivo.FlatAppearance.BorderSize = 0;
-            this.cbOrderArrivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbOrderArrivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbOrderArrivo.Location = new System.Drawing.Point(555, 473);
-            this.cbOrderArrivo.Margin = new System.Windows.Forms.Padding(2);
-            this.cbOrderArrivo.Name = "cbOrderArrivo";
-            this.cbOrderArrivo.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cbOrderArrivo.Size = new System.Drawing.Size(42, 24);
-            this.cbOrderArrivo.TabIndex = 59;
-            this.cbOrderArrivo.Text = "Chec";
-            this.cbOrderArrivo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbOrderArrivo.UseVisualStyleBackColor = true;
-            this.cbOrderArrivo.CheckedChanged += new System.EventHandler(this.cbOrderArrivo_CheckedChanged);
+            this.lblConfC.AutoSize = true;
+            this.lblConfC.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblConfC.Location = new System.Drawing.Point(55, 125);
+            this.lblConfC.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblConfC.Name = "lblConfC";
+            this.lblConfC.Size = new System.Drawing.Size(104, 19);
+            this.lblConfC.TabIndex = 49;
+            this.lblConfC.Text = "Confezione C";
             // 
             // Settings
             // 
@@ -2173,5 +2203,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label45;
         private ToggleCheckBox cbOrderArrivo;
+        private ToggleCheckBox cbConfC;
+        private System.Windows.Forms.Label lblConfC;
     }
     }

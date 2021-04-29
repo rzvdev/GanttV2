@@ -22,7 +22,7 @@ namespace ganntproj1.src.Views
             button2.DialogResult = DialogResult.Cancel;
         }
 
-        public ProgramationControl (string order,string line,string depart,DateTime date, string article, int totalQty = 0, int carico = 0)
+        public ProgramationControl (string order,string line,string depart,DateTime date, string article, int totalQty = 0, int carico = 0, double qtyH = 0.0)
         {
             InitializeComponent();
             button1.DialogResult = DialogResult.OK;
@@ -34,6 +34,13 @@ namespace ganntproj1.src.Views
             Article = article;
             TotalQty = totalQty;
             Carico = carico;
+
+            if (Store.Default.sectorId == 8)
+            {
+                QtyHSartoria = qtyH;
+            }
+
+            lblQtyHSart.Text = QtyHSartoria.ToString();
         }
 
         private void ProgramationControl_Load(object sender, EventArgs e)
@@ -51,6 +58,8 @@ namespace ganntproj1.src.Views
                 comboBox1.SelectedIndex = 0;
             }
 
+            cbLaunched.Visible = Store.Default.sectorId == 7;
+           
             SetDefaultValues();
 
             if (Store.Default.manualDate)
@@ -125,6 +134,8 @@ namespace ganntproj1.src.Views
                 return;
             }
 
+            Launched = Store.Default.sectorId != 7 ? false : cbLaunched.Checked;
+
             DateTimes = dateTimePicker1.Value;
 
             var b = Store.Default.manualDate;
@@ -139,6 +150,10 @@ namespace ganntproj1.src.Views
             
             UseManualDate = b;
             ByTotalQty = checkBox1.Checked;
+            if (Store.Default.sectorId == 2) {
+                double.TryParse(lblQtyH.Text, out var qth);
+                QtyH = qth;
+            }
         }
 
         public string Order { get; set; }
@@ -151,10 +166,13 @@ namespace ganntproj1.src.Views
         public string Operation { get; set; }
         public int OperationId { get; set; }
         public double QtyH { get; set; }
+        public double QtyHSartoria { get; set; }
         public string Article { get; set; }
 
         public int TotalQty { get; set; }
         public int Carico { get; set; }
+
+        public bool Launched { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -230,7 +248,7 @@ namespace ganntproj1.src.Views
             }
             else
             {
-                lblQtyH.Text = "QtyH: " + QtyH.ToString();
+                lblQtyH.Text = QtyH.ToString();
             }
         }
 

@@ -10,14 +10,8 @@
     using System.Linq;
     using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="Mensile" />
-    /// </summary>
     public partial class Mensile : Form
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Mensile"/> class.
-        /// </summary>
         public Mensile(string mode)
         {
             InitializeComponent();
@@ -28,35 +22,18 @@
             Mode = mode;
         }
 
-        /// <summary>
-        /// Defines the dc
-        /// </summary>
         private readonly DataCollection dc = new DataCollection();
 
-        /// <summary>
-        /// Gets or sets the Mode
-        /// </summary>
         public string Mode { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Month
-        /// </summary>
         private int Month { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Year
-        /// </summary>
         private int Year { get; set; }
 
-        /// <summary>
-        /// Defines the firstRead
-        /// </summary>
         private bool firstRead = true;
 
-        /// <summary>
-        /// The OnLoad
-        /// </summary>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private bool Ore { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {            
             cboMonth.SelectedIndexChanged += (s, ev) =>
@@ -102,10 +79,13 @@
             toggleCheckBox1.CheckedChanged += (s, ev) =>
             {
                 Ore = toggleCheckBox1.Checked;
-                //if (Mode == "mens")
-                //{
-                //    LoadDataMensile();
-                //}
+                if (Mode == "mens")
+                {
+                    LoadingInfo.ShowLoading();
+                    LoadingInfo.InfoText = Ore ? "Loading by ORE" : "Loading data mensile";
+                    LoadDataMensile();
+                    LoadingInfo.CloseLoading();
+                }
             };
 
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
@@ -121,10 +101,6 @@
             base.OnLoad(e);
         }
 
-        /// <summary>
-        /// The ListOfTypes
-        /// </summary>
-        /// <returns>The <see cref="List{string}"/></returns>
         private List<string> ListOfTypesMensile()
         {
             var lst = new List<string>
@@ -139,10 +115,6 @@
             return lst;
         }
 
-        /// <summary>
-        /// The ListOfTypesEff
-        /// </summary>
-        /// <returns>The <see cref="List{string}"/></returns>
         private List<string> ListOfTypesEff()
         {
             var lst = new List<string>
@@ -154,12 +126,6 @@
             return lst;
         }
 
-        /// <summary>
-        /// The GetDataMensile
-        /// </summary>
-        /// <param name="month">The month<see cref="int"/></param>
-        /// <param name="year">The year<see cref="int"/></param>
-        /// <returns>The <see cref="List{DataCollection}"/></returns>
         public List<DataCollection> GetData(int month, int year)
         {
             try
@@ -219,7 +185,6 @@
                         "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
                           hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
-
                 }
                 else
                 {
@@ -241,7 +206,6 @@
                         "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
                           hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
-
                 }
 
                 var lst = new List<DataCollection>();
@@ -313,16 +277,12 @@
                 return new List<DataCollection>();
             }           
         }
-        /// <summary>
-        /// The LoadDataMensile
-        /// </summary>
         public void LoadDataMensile()
         {
             tableView1.DataSource = null;
             var month = cboMonth.SelectedIndex + 1;
             int.TryParse(cboYears.Text, out var year);
             var dt = new DataTable();
-            /*DATA*/
             dt.Columns.Add("Linea");
             dt.Columns.Add("Type");
             var tpMax = ListOfTypesMensile().Count;
@@ -344,7 +304,6 @@
                 }
             }
             dt.Columns.Add("TOTAL");
-            //add row with weekday first character
             var weekDayRow = dt.NewRow();
             foreach (DataColumn dcol in dt.Columns)
             {
@@ -423,14 +382,11 @@
                         emptyRow = dt.NewRow();
                         dt.Rows.Add(emptyRow);
                         idx++;
-                        //after first block of types
-                        //increase tmpIdx for each indexed splitter
                         if (idx > 12) tmpIdx++;  
                     }
                     lastLine = line;
                     var newRow = dt.NewRow();
 
-                    //add line string in the first row when new line start
                     if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 2)
                         newRow[0] = line;
                     else if (_cboType.SelectedIndex <= 0 && (idx - tmpIdx) % tpMax == 3)
@@ -472,16 +428,12 @@
             CreateFilter(ListOfTypesMensile());
         }
 
-        /// <summary>
-        /// The LoadEff
-        /// </summary>
         public void LoadEff()
         {
             tableView1.DataSource = null;
             var month = cboMonth.SelectedIndex + 1;
             int.TryParse(cboYears.Text, out var year);
             var dt = new DataTable();
-            /*DATA*/
             dt.Columns.Add("Linea");
             dt.Columns.Add("Type");
             var tpMax = ListOfTypesEff().Count;
@@ -503,7 +455,6 @@
                 }
             }
             dt.Columns.Add("TOT");
-            //add row with weekday first character
             var weekDayRow = dt.NewRow();
             foreach (DataColumn dcol in dt.Columns)
             {
@@ -515,7 +466,6 @@
             }
             dt.Rows.Add(weekDayRow);
             var x = 0;
-            //var totRow = dt.NewRow();
             foreach (var item in ListOfTypesEff())
             {
                 DataRow totRow = dt.NewRow();
@@ -573,7 +523,7 @@
                 }
                 else
                 {
-                    if (lastLine != line) // item.Line + item.Department.Split(' ')[1])
+                    if (lastLine != line)     
                     {
                         emptyRow = dt.NewRow();
                         dt.Rows.Add(emptyRow);
@@ -618,9 +568,6 @@
             CreateFilter(ListOfTypesEff());
         }
 
-        /// <summary>
-        /// The CalculateTotals
-        /// </summary>
         private void CalculateTotalsMens()
         {
             var idx1 = tableView1.Columns["1^ SETT"].Index;
@@ -729,9 +676,6 @@
             }
         }
 
-        /// <summary>
-        /// The CalculateTotalsEff
-        /// </summary>
         private void CalculateTotalsEff()
         {
             for (var c = 2; c <= tableView1.Columns.Count - 1; c++)
@@ -827,7 +771,6 @@
                 row.Cells[idx4].Value = result.ToString() + "%";
             }
 
-            //caluclate horizontal total value
             for (var r = 1; r <= tableView1.Rows.Count - 1; r++)
             {
                 var tot = 0.0;
@@ -844,21 +787,11 @@
             }
         }
 
-        /// <summary>
-        /// The CbAcconto_CheckedChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void CbAcconto_CheckedChanged(object sender, EventArgs e)
         {
             LoadDataMensile();
         }
 
-        /// <summary>
-        /// The TableView1_DataBindingComp
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewBindingCompleteEventArgs"/></param>
         private void TableView1_DataBindingComp(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (tableView1.Rows.Count <= 0) return;
@@ -877,7 +810,6 @@
                 if (row.Cells[1].Value.ToString() == "CAPI PRODOTI")
                 {
                     row.DefaultCellStyle.BackColor = Color.LightSteelBlue;
-                    //row.DefaultCellStyle.ForeColor = Color.Black;
                 }
                 if (Mode == "mens" && row.Index > 0 && row.Index <= 5)
                 {
@@ -953,11 +885,6 @@
             }
         }
 
-        /// <summary>
-        /// The TableView1_CellPainting
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellPaintingEventArgs"/></param>
         private void TableView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (Mode == "mens" && e.RowIndex > 5 || e.RowIndex > 1)
@@ -972,9 +899,6 @@
             }
         }
 
-        /// <summary>
-        /// The ExportToExcel
-        /// </summary>
         public void ExportToExcel()
         {
             tableView1.MultiSelect = true;
@@ -989,9 +913,6 @@
             tableView1.MultiSelect = false;
         }
 
-        /// <summary>
-        /// The PrintGrid
-        /// </summary>
         public void PrintGrid()
         {
             var lbl = new PictureBox
@@ -1038,29 +959,14 @@
             lbl.Dispose();
         }
 
-        /// <summary>
-        /// The TableView1_SelectionChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void TableView1_SelectionChanged(object sender, EventArgs e)
         {
         }
 
-        /// <summary>
-        /// Defines the _filterCreated
-        /// </summary>
         private bool _filterCreated = false;
 
-        /// <summary>
-        /// Defines the _cboType
-        /// </summary>
         private ComboBox _cboType = new ComboBox();
 
-        /// <summary>
-        /// The CreateFilter
-        /// </summary>
-        /// <param name="lst">The lst<see cref="List{string}"/></param>
         private void CreateFilter(List<string> lst)
         {
             if (tableView1.Rows.Count <= 0) return;
@@ -1190,8 +1096,11 @@
                     double.TryParse(row[3].ToString(), out var prev);
                     double.TryParse(row[5].ToString(), out var price);
 
+                    var checkHoliday = Central.ListOfHolidays.FirstOrDefault(x => x.Holiday.Date == date.Date && x.Line == row[1].ToString());
+                    if (checkHoliday != null) continue;
+
                     lst.Add(new DataCollection
-                        (date, row[1].ToString(),type, produc, prev,Convert.ToInt32(prev), row[4].ToString(), price
+                        (date, row[1].ToString(),type, produc, prev, 0, row[4].ToString(), price
                         ));
                 }
             }
@@ -1236,26 +1145,10 @@
                 con.Close();
             }            
         }
-
-        private bool Ore { get; set; }
-        private void toggleCheckBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            //Ore = toggleCheckBox1.Checked;
-            //if (Mode == "mens")
-            //{
-            //    LoadDataMensile();
-            //}
-        }
     }
 
-    /// <summary>
-    /// Defines the <see cref="DataCollection" />
-    /// </summary>
     public class DataCollection
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataCollection"/> class.
-        /// </summary>
         public DataCollection()
         {
         }
@@ -1263,18 +1156,6 @@
         public double Producibili { get; set; }
         public double Preventivati { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataCollection"/> class.
-        /// </summary>
-        /// <param name="date">The date<see cref="DateTime"/></param>
-        /// <param name="line">The line<see cref="string"/></param>
-        /// <param name="type">The type<see cref="string"/></param>
-        /// <param name="memb">The memb<see cref="int"/></param>
-        /// <param name="qh">The qh<see cref="double"/></param>
-        /// <param name="abatim">The abatim<see cref="int"/></param>
-        /// <param name="qtyToprod">The qtyToprod<see cref="int"/></param>
-        /// <param name="dQty">The dQty<see cref="int"/></param>
-        /// <param name="qtyProdIn">The qtyProdIn<see cref="double"/></param>
         public DataCollection(DateTime date, string line, string type,
             double produc, double prev, int qtyToprod, string dpt, double price)
         {
@@ -1288,14 +1169,8 @@
             Price = price;
         }
 
-        /// <summary>
-        /// Defines the _qtyToProd
-        /// </summary>
         internal double _qtyToProd;
 
-        /// <summary>
-        /// Gets or sets the QtyToProdIn
-        /// </summary>
         public double QtyToProdIn
         {
             get
@@ -1310,19 +1185,10 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _maxEff
-        /// </summary>
         internal double _maxEff;
 
-        /// <summary>
-        /// Defines the _diffEff
-        /// </summary>
         internal double _diffEff;
 
-        /// <summary>
-        /// Gets or sets the MaxEff
-        /// </summary>
         public double MaxEff
         {
             get
@@ -1335,14 +1201,8 @@
             }
         }
 
-        /// <summary>
-        /// Defines the _workEff
-        /// </summary>
         private double _workEff;
 
-        /// <summary>
-        /// Gets or sets the WorkEff
-        /// </summary>
         public double WorkEff
         {
             get
@@ -1354,13 +1214,30 @@
                 double.TryParse(Members.ToString(), out var m);
                 double.TryParse(QtyProdEff.ToString(), out var q);
                 double.TryParse(QtyH.ToString(), out var qh);
-                _workEff = q / (m * qh * 7.5) * 100.0;
+                var hour = 0.0;
+                var hourW = 0.0;
+                switch (Store.Default.sectorId) {
+                    case 1:
+                        hour = Store.Default.confHour;
+                        hourW = Store.Default.confHourW;
+                        break;
+                    case 2:
+                        hour = Store.Default.stiroHour;
+                        hourW = Store.Default.stioHourW;
+                        break;
+                    case 7:
+                        hour = Store.Default.tessHour;
+                        hourW = Store.Default.tessHourW;
+                        break;
+                    case 8:
+                        hour = Store.Default.sartHour;
+                        hourW = Store.Default.sartHourW;
+                        break;
+                }
+                _workEff = q / (m * qh * hour) * 100.0;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the DiffEff
-        /// </summary>
         public double DiffEff
         {
             get
@@ -1373,54 +1250,24 @@
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Datex
-        /// </summary>
         public DateTime Datex { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Line
-        /// </summary>
         public string Line { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Type
-        /// </summary>
         public string Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Members
-        /// </summary>
         public int Members { get; set; }
 
-        /// <summary>
-        /// Gets or sets the QtyH
-        /// </summary>
         public double QtyH { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Abatim
-        /// </summary>
         public int Abatim { get; set; }
 
-        /// <summary>
-        /// Gets or sets the QtyToProd
-        /// </summary>
         public int Qty { get; set; }
 
-        /// <summary>
-        /// Gets or sets the QtyProdEff
-        /// </summary>
         public double QtyProdEff { get; set; }
 
-        /// <summary>
-        /// Defines the _dailyQty
-        /// </summary>
         private double _dailyQty;
 
-        /// <summary>
-        /// Gets or sets the DailyQty
-        /// </summary>
         public double DailyQty
         {
             get
@@ -1430,7 +1277,6 @@
             set
             {
                 double.TryParse(Members.ToString(), out var m);
-                //double.TryParse(Abatim.ToString(), out var a);
                 _dailyQty = m * 7.5 * QtyH;
             }
         }

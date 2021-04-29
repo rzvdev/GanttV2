@@ -445,7 +445,7 @@
         public void AddBars(string rowText, string chain, object barValue,
             DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayFromTime, DateTime delayToTime,
             Color color, Color hoverColor, int rowIndex, bool isRoot, string tag, bool expanded, Image toggle, int fixQty, int dailyQty, int prodQty,
-            DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept)
+            DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept, bool launched)
         {
             if (string.IsNullOrEmpty(rowText)) return;
 
@@ -478,6 +478,7 @@
                 ProdColor = prodColor,
                 Article = art,
                 Department=dept,
+                Launched = launched,
             };
 
             Bars.Add(bar);
@@ -585,6 +586,8 @@
                     var borderPen = new Pen(Brushes.White, 1);
 
                     if (HideClosedTask && barColor != Color.FromArgb(80, 144, 169) && barColor != Color.FromArgb(27, 98, 124)) continue;
+
+                    if (bar.Launched == true) barColor = Color.DarkOrchid;
 
                     grfx.FillPath(new SolidBrush(barColor), geo.RoundedRectanglePath(barRect, 7));
                     grfx.DrawPath(borderPen, geo.RoundedRectanglePath(barRect, 7));
@@ -704,7 +707,7 @@
                         var strLine = "LINEA ";
                         var lineNum = bar.Tag.Remove(0, 5);
                         var deptChar = bar.Department == "Confezione A" 
-                            || bar.Department == "Confezione B" ? bar.Department.Split(' ')[1] : "";
+                            || bar.Department == "Confezione B" || bar.Department == "Confezione C" ? bar.Department.Split(' ')[1] : "";
                         var rowTitle = strLine + lineNum + deptChar;
 
                         grfx.DrawString(new string(' ', 10) + rowTitle, new Font("Bahnschrift", 9, FontStyle.Regular),
@@ -1130,6 +1133,7 @@
 
         public string Tag { get; set; }
         public string Department { get; set; }
+        public bool Launched { get; set; }
         public bool Expanded { get; set; }
 
         public Image Toggle { get; set; }
@@ -1212,8 +1216,8 @@
 
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayStart, DateTime delayEnd,
             Color color, Color hoverColor, int index, bool isRoot, string tag,
-            int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept)
-        {
+            int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept, bool launched)
+            {
             RowText = rowText;
             Chain = chain;
             FromTime = fromTime;
@@ -1238,6 +1242,7 @@
             ProdColor = prodColor;
             Article = art;
             Department = dept;
+            Launched = launched;
         }
 
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, Color color, Color hoverColor, int index, bool isRoot, string tag)
@@ -1293,6 +1298,9 @@
 
         public string Tag { get; set; }
         public string Department { get; set; }
+
+        public bool Launched { get; set; }
+
         public string Article { get; set; }
 
         public bool Expanded { get; set; }

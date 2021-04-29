@@ -27,7 +27,6 @@ namespace ganntproj1
         
         private void DataBindComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-
             foreach (DataGridViewColumn c in Columns)
             {
                 c.SortMode = DataGridViewColumnSortMode.NotSortable;

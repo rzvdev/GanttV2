@@ -46,6 +46,8 @@
 
         public static DateTime TargetModelStartDate { get; set; }
 
+        public static bool TargetLaunched { get; set; }
+
 
         public static Color TargetModelColor { get; set; }
 
@@ -95,6 +97,22 @@
                 _tmTip?.Dispose();
                 GC.Collect();
             };
+
+            var tlp = new ToolTip();
+            tlp.SetToolTip(btnBack, "Back");
+            tlp.SetToolTip(btnMegaBack, "Back one week");
+            tlp.SetToolTip(btnFow, "Forward");
+            tlp.SetToolTip(btnMegaFow, "Forward one week");
+            tlp.SetToolTip(btnZoomIn, "Zoom in");
+            tlp.SetToolTip(btnZoomOut, "Zoom out");
+            tlp.SetToolTip(btnZoomOut, "Zoom out");
+            tlp.SetToolTip(btnDayInfo, "Hide completed tasks");
+            tlp.SetToolTip(btnHideDelay, "Hide delay bars");
+            tlp.SetToolTip(btnZoomOut, "Zoom out");
+            tlp.SetToolTip(button1, "Lines filter");
+            tlp.SetToolTip(btnHolidays, "Holidays calendar");
+            tlp.SetToolTip(btnShowEff, "Show production efficiency");
+            tlp.SetToolTip(button2, "Hide lines where are no active orders");
         }
 
         private void ProduzioneGantt_Load(object sender, EventArgs e)
@@ -153,11 +171,13 @@
             var rowIdx = 0;
             var elementIdx = 0;
             foreach (var model in Central.ListOfModels)
-            {                
-                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;                
+            {
+                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
+                if (model.StartDate.Date <= DateTime.Now.Date.AddMonths(-4) &&
+                    model.EndDate.Date <= DateTime.Now.Date.AddMonths(-3)) continue;
 
                 if (model.Aim == DefaultAim && model.Department == DefaultDept && !islocked)
-                {                
+                {
                     _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));
                     elementIdx++;
                 }
@@ -202,7 +222,10 @@
                     else
                     //just in case when delay goes over manually programmed order
                     {
-                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;  
+                        if (Store.Default.sectorId == 1)
+                        {
+                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
+                        }
                         timeToMoveBack = 0.0;
                     }
                 }
@@ -306,7 +329,7 @@
                              .Update(st =>
                              {
                                  st.StartDate = model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
-                                 st.EndDate = jobEnd.AddMinutes(-1);
+                                 st.EndDate = jobEnd;
                                  st.DelayTime = delayTs.Ticks;
                                  st.DelayStartDate = delayStart;
                                  st.DelayEndDate = delayEnd;
@@ -411,7 +434,7 @@
                     model.Locked, model.IsLockedProduction,
                     model.ClosedByUser,
                     prodBarColor,
-                    model.Article, model.Department));
+                    model.Article, model.Department, model.Launched));
 
                 if (model.Locked || model.IsLockedProduction)
                 {
@@ -423,12 +446,11 @@
 
             foreach (var obj in _objList)
             {
-
                 if (!Central.IsResetJobLoader)
                 {
                     if (obj.FromTime.Date < Central.DateFrom.Date || obj.FromTime.Date > Central.DateTo.Date) continue;
                 }
-
+                //if (obj.FromTime < DateTime.Now.AddDays(-60)) continue;
                 _gChart.AddBars(obj.RowText, obj.RowText + "_" + obj.Tag, obj,
                     obj.FromTime, obj.ToTime,
                     obj.ProdFromTime, obj.ProdToTime,
@@ -441,7 +463,7 @@
                     obj.ProdOverFromTime,
                     obj.ProdOverToTime,
                     obj.Locked, obj.LockedProd, obj.ClosedOrd,
-                    obj.ProdColor, obj.Article, obj.Department);
+                    obj.ProdColor, obj.Article, obj.Department, obj.Launched);
             }
             _gChart.Refresh();
         }
@@ -713,10 +735,10 @@
 
         public void InsertCommessaProgram()
         {
-            var loadingJob = new LoadingJob(true)
-            {
-                WindowState = FormWindowState.Normal
-            };
+            //var loadingJob = new LoadingJob(true)
+            //{
+            //    WindowState = FormWindowState.Normal
+            //};
             try
             {
                 TargetProgramDate = _gChart.MouseOverColumnDate;
@@ -731,12 +753,10 @@
                 TargetDepartment = nextValue.Department;
                 Article = nextValue.Article;
 
-
                 var lineQuery = from lines in Tables.Lines
                                 where lines.Line == TargetLine && lines.Department == TargetDepartment
                                 select lines;
                 var lineDesc = lineQuery.Any() ? lineQuery.FirstOrDefault().Description : null;
-
 
                 var sDate = JobModel.GetLineLastDate(TargetLine, TargetDepartment);
                 ManualDateTime = sDate;
@@ -751,10 +771,12 @@
                     }
                 }
                 Central.IsProgramare = true;
-                loadingJob.Text = "Carico lavoro - Commessa da programmare (" + TargetLine + " / " + lineDesc + ")";
-                loadingJob.ShowDialog();
-                loadingJob.Dispose();
-                Central.IsProgramare = false;
+                //loadingJob.Text = "Carico lavoro - Commessa da programmare (" + TargetLine + " / " + lineDesc + ")";
+                //loadingJob.ShowDialog();
+                //loadingJob.Dispose();
+                OpenCaricoLavoro(true);
+
+                //Central.IsProgramare = false;
                 _ctxMenuStrip = null;
                 if (TargetOrder == string.Empty)
                 {
@@ -793,7 +815,7 @@
                 }
                 var jobMod = new JobModel();
                 double.TryParse(artQ.Centes.ToString(), out var qtyH);
-                if (Store.Default.sectorId == 2) qtyH = TargetQtyH;
+                if (Store.Default.sectorId == 2 || Store.Default.sectorId == 8) qtyH = TargetQtyH;
                 double.TryParse(artQ.Prezzo.ToString(), out var price);
                 int.TryParse(orderQuery.Carico.ToString(), out var carico);
                 var qty = ByQty ? orderQuery.Cantitate : carico;
@@ -807,8 +829,8 @@
                 var eDate = ManualDateTime.AddDays(+dur);
                 var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Members, qty);
                 //int.TryParse(dailyQty.ToString(), out var dq);
-
-                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate);
+                var loadingJob = new LoadingJob(false);
+                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate, TargetLaunched);
                 using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2},QtyInstead={3} where NrComanda={4} and department={5}",
@@ -935,7 +957,7 @@
 
         private LoadingJob _loadingJobForm = null;
 
-        private void btnCallCarico_Click(object sender, EventArgs e)
+        private void OpenCaricoLavoro(bool isUpdate = false)
         {
             if (_loadingJobForm == null)
             {
@@ -963,7 +985,8 @@
                 lbl.BringToFront();
                 spContainer.Refresh();
                 SuspendLayout();
-                _loadingJobForm = new LoadingJob(false);
+
+                _loadingJobForm = new LoadingJob(isUpdate);
                 var clr = _loadingJobForm.BackColor;
                 _loadingJobForm.Opacity = 0.0;
                 _loadingJobForm.FormBorderStyle = FormBorderStyle.None;
@@ -1005,6 +1028,7 @@
 
                 _loadingJobForm.Dispose();
                 _loadingJobForm = null;
+                if (Central.IsProgramare) Central.IsProgramare = false;
                 Thread.Sleep(400);
 
                 spContainer.Panel2Collapsed = true;
@@ -1017,6 +1041,12 @@
                 _clActive = false;
             }
         }
+
+        private void btnCallCarico_Click(object sender, EventArgs e)
+        {
+          OpenCaricoLavoro();
+        }
+
         private DataGridView _dgvTip = new DataGridView();
         private System.Threading.Timer _tmTip = null;
         private void ShowTableTip(object info)
@@ -1047,7 +1077,7 @@
             _dgvTip.RowHeadersVisible = false;
             _dgvTip.ColumnHeadersVisible = false;
 
-            var model = Central.ListOfModels.SingleOrDefault(x => x.Aim == val.Tag && x.Name == val.RowText 
+            var model = Central.ListOfModels.FirstOrDefault(x => x.Aim == val.Tag && x.Name == val.RowText 
             && x.Department == val.Department);
             if (model == null) return;
 

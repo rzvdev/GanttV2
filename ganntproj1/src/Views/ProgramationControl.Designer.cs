@@ -52,6 +52,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.cbLaunched = new System.Windows.Forms.CheckBox();
+            this.lblQtyHSart = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -305,12 +307,34 @@
             this.label7.TabIndex = 21;
             this.label7.Text = "Total qty";
             // 
+            // cbLaunched
+            // 
+            this.cbLaunched.AutoSize = true;
+            this.cbLaunched.Location = new System.Drawing.Point(27, 494);
+            this.cbLaunched.Name = "cbLaunched";
+            this.cbLaunched.Size = new System.Drawing.Size(128, 18);
+            this.cbLaunched.TabIndex = 22;
+            this.cbLaunched.Text = "Commessa lanciata";
+            this.cbLaunched.UseVisualStyleBackColor = true;
+            // 
+            // lblQtyHSart
+            // 
+            this.lblQtyHSart.AutoSize = true;
+            this.lblQtyHSart.Font = new System.Drawing.Font("Bahnschrift SemiBold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblQtyHSart.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblQtyHSart.Location = new System.Drawing.Point(434, 207);
+            this.lblQtyHSart.Name = "lblQtyHSart";
+            this.lblQtyHSart.Size = new System.Drawing.Size(0, 14);
+            this.lblQtyHSart.TabIndex = 23;
+            // 
             // ProgramationControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(642, 621);
+            this.Controls.Add(this.lblQtyHSart);
+            this.Controls.Add(this.cbLaunched);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
@@ -369,5 +393,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox cbLaunched;
+        private System.Windows.Forms.Label lblQtyHSart;
     }
 }

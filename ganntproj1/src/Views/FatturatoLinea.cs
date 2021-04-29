@@ -132,9 +132,9 @@ namespace ganntproj1
             var q = "select line,department from lines where " +
                 "charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0  order by department,len(line),line";
             var dtLine = new DataTable();
-            using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
+            using (var c = new SqlConnection(Central.SpecialConnStr))
             {
-                var cmd = new System.Data.SqlClient.SqlCommand(q, c);
+                var cmd = new SqlCommand(q, c);
                 c.Open();
                 var dr = cmd.ExecuteReader();
                 dtLine.Load(dr);
@@ -161,6 +161,7 @@ namespace ganntproj1
             }
             tbl.Columns.Add("TOTAL " + firstDept);
             _listOfTotalIdx.Add(tbl.Columns.IndexOf("TOTAL " + firstDept));
+
             tbl.Columns.Add("TOTAL");
             var totRow = tbl.NewRow();
             totRow[0] = "TOTAL PRICE";
@@ -280,10 +281,9 @@ namespace ganntproj1
             //calculate totals per department
 
             var startIdx = 1;
-            for (var i = 0; i <= _listOfTotalIdx.Count - 1; i++)
+            for (var i = 0; i <= _listOfTotalIdx.Count - 1 ; i++)
             {
                 var idx = _listOfTotalIdx[i];
-                //var bigTot = 0.0;
                 for (var r = 1; r <= tableView1.Rows.Count - 1; r++)
                 {
                     var t = 0.0;
@@ -298,11 +298,11 @@ namespace ganntproj1
                         {
                             double.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split(' ')[1], out var x);
                             t += x;
-                        }                       
+                        }
                     }
                     tableView1.Rows[r].Cells[idx].Value = "€ " + String.Format("{0:0.00}", Math.Round(t, 2));
                 }
-                startIdx += idx;
+                startIdx = idx + 1;
             }
 
             var tot = 0.0;
@@ -521,6 +521,9 @@ namespace ganntproj1
                 double.TryParse(row[2].ToString(), out var produc);
                 double.TryParse(row[3].ToString(), out var prev);
                 double.TryParse(row[5].ToString(), out var price);
+
+                var checkHoliday = Central.ListOfHolidays.FirstOrDefault(x => x.Holiday.Date == date.Date && x.Line == row[1].ToString());
+                if (checkHoliday != null) continue;
 
                 lst.Add(new DataCollection
                     (date, row[1].ToString(), "", produc, prev, Convert.ToInt32(prev), row[4].ToString(), price

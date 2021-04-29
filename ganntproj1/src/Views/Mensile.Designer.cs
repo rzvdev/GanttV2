@@ -180,7 +180,6 @@
             this.toggleCheckBox1.Text = "Chec";
             this.toggleCheckBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toggleCheckBox1.UseVisualStyleBackColor = true;
-            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
             // 
             // label3
             // 

@@ -372,10 +372,10 @@ namespace ganntproj1
 
         private bool CheckProductionExist()
         {
-            var selDate = dtpCommData.Value.Date;
+            var selDate = dtpCommData.Value;
 
             var q = from prod in Models.Tables.Productions
-                    where prod.Data >= selDate && prod.Line == cbCommLinea.Text && prod.Department == Department
+                    where prod.Data >= selDate.Date && prod.Line == cbCommLinea.Text && prod.Department == Department
                     select prod;
 
             if (q.ToList().Count > 0) return true;

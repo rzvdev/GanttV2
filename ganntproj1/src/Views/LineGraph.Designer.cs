@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LineGraph));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbConfB = new System.Windows.Forms.RadioButton();
+            this.rbConfA = new System.Windows.Forms.RadioButton();
             this.cbYearAll = new ganntproj1.ToggleCheckBox();
             this.btnZoomOut = new System.Windows.Forms.Button();
             this.btnZoomIn = new System.Windows.Forms.Button();
@@ -38,9 +41,7 @@
             this.cboYears = new System.Windows.Forms.ComboBox();
             this.cboMonth = new System.Windows.Forms.ComboBox();
             this.tblGraph = new ganntproj1.TableView();
-            this.rbConfA = new System.Windows.Forms.RadioButton();
-            this.rbConfB = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbConfC = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tblGraph)).BeginInit();
             this.SuspendLayout();
@@ -48,6 +49,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.rbConfC);
             this.panel1.Controls.Add(this.radioButton1);
             this.panel1.Controls.Add(this.rbConfB);
             this.panel1.Controls.Add(this.rbConfA);
@@ -64,6 +66,39 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(906, 72);
             this.panel1.TabIndex = 14;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(483, 37);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(36, 17);
+            this.radioButton1.TabIndex = 65;
+            this.radioButton1.Text = "All";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // rbConfB
+            // 
+            this.rbConfB.AutoSize = true;
+            this.rbConfB.Location = new System.Drawing.Point(635, 37);
+            this.rbConfB.Name = "rbConfB";
+            this.rbConfB.Size = new System.Drawing.Size(88, 17);
+            this.rbConfB.TabIndex = 64;
+            this.rbConfB.Text = "Confezione B";
+            this.rbConfB.UseVisualStyleBackColor = true;
+            this.rbConfB.CheckedChanged += new System.EventHandler(this.rbConfB_CheckedChanged);
+            // 
+            // rbConfA
+            // 
+            this.rbConfA.AutoSize = true;
+            this.rbConfA.Location = new System.Drawing.Point(534, 37);
+            this.rbConfA.Name = "rbConfA";
+            this.rbConfA.Size = new System.Drawing.Size(88, 17);
+            this.rbConfA.TabIndex = 63;
+            this.rbConfA.Text = "Confezione A";
+            this.rbConfA.UseVisualStyleBackColor = true;
+            this.rbConfA.CheckedChanged += new System.EventHandler(this.rbConfA_CheckedChanged);
             // 
             // cbYearAll
             // 
@@ -200,38 +235,16 @@
             this.tblGraph.SelectionChanged += new System.EventHandler(this.TblGraph_SelectionChanged);
             this.tblGraph.SizeChanged += new System.EventHandler(this.TblGraph_SizeChanged);
             // 
-            // rbConfA
+            // rbConfC
             // 
-            this.rbConfA.AutoSize = true;
-            this.rbConfA.Location = new System.Drawing.Point(534, 37);
-            this.rbConfA.Name = "rbConfA";
-            this.rbConfA.Size = new System.Drawing.Size(88, 17);
-            this.rbConfA.TabIndex = 63;
-            this.rbConfA.Text = "Confezione A";
-            this.rbConfA.UseVisualStyleBackColor = true;
-            this.rbConfA.CheckedChanged += new System.EventHandler(this.rbConfA_CheckedChanged);
-            // 
-            // rbConfB
-            // 
-            this.rbConfB.AutoSize = true;
-            this.rbConfB.Location = new System.Drawing.Point(635, 37);
-            this.rbConfB.Name = "rbConfB";
-            this.rbConfB.Size = new System.Drawing.Size(88, 17);
-            this.rbConfB.TabIndex = 64;
-            this.rbConfB.Text = "Confezione B";
-            this.rbConfB.UseVisualStyleBackColor = true;
-            this.rbConfB.CheckedChanged += new System.EventHandler(this.rbConfB_CheckedChanged);
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(483, 37);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(36, 17);
-            this.radioButton1.TabIndex = 65;
-            this.radioButton1.Text = "All";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.rbConfC.AutoSize = true;
+            this.rbConfC.Location = new System.Drawing.Point(729, 37);
+            this.rbConfC.Name = "rbConfC";
+            this.rbConfC.Size = new System.Drawing.Size(88, 17);
+            this.rbConfC.TabIndex = 66;
+            this.rbConfC.Text = "Confezione C";
+            this.rbConfC.UseVisualStyleBackColor = true;
+            this.rbConfC.CheckedChanged += new System.EventHandler(this.rbConfC_CheckedChanged);
             // 
             // LineGraph
             // 
@@ -265,5 +278,6 @@
         private System.Windows.Forms.RadioButton rbConfB;
         private System.Windows.Forms.RadioButton rbConfA;
         private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbConfC;
     }
 }

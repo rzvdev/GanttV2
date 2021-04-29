@@ -102,5 +102,15 @@ namespace ganntproj1.Models
                 _Stagione = value;
             }
         }
+        private bool? _IsDeleted;
+        [Column(Storage = "_IsDeleted")]
+        public bool? IsDeleted {
+            get {
+                return _IsDeleted;
+            }
+            set {
+                _IsDeleted = value;
+            }
+        }
     }
 }

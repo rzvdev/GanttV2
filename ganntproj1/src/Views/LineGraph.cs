@@ -46,6 +46,7 @@
             {
                 rbConfA.Visible = false;
                 rbConfB.Visible = false;
+                rbConfC.Visible = false;
                 IsAll = true;
                 Department = Store.Default.selDept;
             }
@@ -518,6 +519,13 @@
         private void rbConfB_CheckedChanged(object sender, EventArgs e)
         {
             Department = ",Confezione B,";
+            IsAll = false;
+            LoadGraph();
+        }
+
+        private void rbConfC_CheckedChanged(object sender, EventArgs e)
+        {
+            Department = ",Confezione C,";
             IsAll = false;
             LoadGraph();
         }

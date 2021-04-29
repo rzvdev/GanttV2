@@ -86,6 +86,7 @@ namespace ganntproj1
             var dept = Store.Default.arrDept;
             if (dept.Contains(lblConfA.Text)) cbConfA.Checked = true;
             if (dept.Contains(lblConfB.Text)) cbConfB.Checked = true;
+            if (dept.Contains(lblConfC.Text)) cbConfC.Checked = true;
             _suggest = Store.Default.suggestData;
             _autoSync = Store.Default.autoSync;
             _backupData = Store.Default.backupData;
@@ -689,7 +690,7 @@ namespace ganntproj1
             var sb = new System.Text.StringBuilder();
             if (Store.Default.sectorId == 1)
             {
-                if (!cbConfA.Checked && !cbConfB.Checked)
+                if (!cbConfA.Checked && !cbConfB.Checked && !cbConfC.Checked)
                 {
                     MessageBox.Show("Invalid department definition.", "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -702,6 +703,10 @@ namespace ganntproj1
                 if (cbConfB.Checked)
                 {
                     sb.Append(',' + lblConfB.Text);
+                }
+                if (cbConfC.Checked)
+                {
+                    sb.Append(',' + lblConfC.Text);
                 }
             }
             else if (Store.Default.sectorId == 2)
