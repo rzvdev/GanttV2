@@ -168,10 +168,8 @@ namespace ganntproj1.src.Views
         public double QtyH { get; set; }
         public double QtyHSartoria { get; set; }
         public string Article { get; set; }
-
         public int TotalQty { get; set; }
         public int Carico { get; set; }
-
         public bool Launched { get; set; }
 
         private void button1_Click(object sender, EventArgs e)

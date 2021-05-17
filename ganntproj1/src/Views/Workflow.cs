@@ -173,9 +173,7 @@
             foreach (var model in Central.ListOfModels)
             {
                 if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
-                if (model.StartDate.Date <= DateTime.Now.Date.AddMonths(-4) &&
-                    model.EndDate.Date <= DateTime.Now.Date.AddMonths(-3)) continue;
-
+                
                 if (model.Aim == DefaultAim && model.Department == DefaultDept && !islocked)
                 {
                     _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));

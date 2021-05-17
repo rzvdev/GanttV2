@@ -21,9 +21,6 @@ namespace ganntproj1
             tableView1.EnableHeadersVisualStyles = false;
             tableView1.RowTemplate.Height = 18;
         }
-        /// <summary>
-        /// The ExportToExcel
-        /// </summary>
         public void ExportToExcel()
         {
             tableView1.MultiSelect = true;
@@ -31,19 +28,10 @@ namespace ganntproj1
             tableView1.MultiSelect = false;
         }
 
-        /// <summary>
-        /// Gets or sets the Month
-        /// </summary>
         private int Month { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Year
-        /// </summary>
         private int Year { get; set; }
 
-        /// <summary>
-        /// Defines the firstRead
-        /// </summary>
         private bool firstRead = true;
 
         private void FatturatoLinea_Load(object sender, EventArgs e)
@@ -108,7 +96,6 @@ namespace ganntproj1
                         newRow[3] = Convert.ToDouble(dr[3]);
                         dt.Rows.Add(newRow);
                     }
-                //dt.Load(dr);
                 c.Close();
                 dr.Close();
             }
@@ -278,8 +265,6 @@ namespace ganntproj1
                 tableView1.Rows[tot4].Cells[c].Value = "€ " + String.Format("{0:0.00}", Math.Round(t, 2));
             }
            
-            //calculate totals per department
-
             var startIdx = 1;
             for (var i = 0; i <= _listOfTotalIdx.Count - 1 ; i++)
             {
@@ -319,7 +304,6 @@ namespace ganntproj1
                 tot = 0.0;
             }
 
-            //calculate total on top
             for (var c = 1; c <= tableView1.Columns.Count - 1; c++)
             {
                 var t = 0.0;

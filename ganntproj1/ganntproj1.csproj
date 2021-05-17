@@ -122,7 +122,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Helpers\SettingsDom.cs" />
     <Compile Include="src\Helpers\ShiftRecognition.cs" />
+    <Compile Include="src\Models\SettingsDict.cs" />
     <Compile Include="src\Printers\TableViewPrint.cs" />
     <Compile Include="src\Views\CommessaDefect.cs">
       <SubType>Form</SubType>

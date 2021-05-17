@@ -323,5 +323,26 @@
             }
         }
 
+
+        /// <summary>
+        /// Defines the _qtyH
+        /// </summary>
+        private double? _Settinghours;
+
+        /// <summary>
+        /// Gets or sets the QtyH
+        /// </summary>
+        [Column(Storage = "_Settinghours")]
+        public double? SettingHours
+        {
+            get
+            {
+                return _Settinghours;
+            }
+            set
+            {
+                _Settinghours = value;
+            }
+        }
     }
 }

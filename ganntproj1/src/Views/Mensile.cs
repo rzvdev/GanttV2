@@ -167,44 +167,38 @@
 
                 if (!Ore)
                 {
-                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
+                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50), hours float) ";
                     q += "insert into tmpTable ";
                     q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
-                    q += "capi,department from viewproduction ";
+                    q += "capi,department,settinghours from viewproduction ";
                     q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
                     q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
                     q += "order by department,len(line),line,convert(date, data, 101) ";
-                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
+                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int, shours float) ";
                     q += "insert into tmpSum ";
                     q += "select datas,line,sum((qtyH * members))producibili, ";
-                    q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1) from tmpTable ";
+                    q += "sum((qtyH * members * abat))prevent, sum(capi)qty,dept,count(1),sum(hours) from tmpTable ";
                     q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                    q += "select datas,line, (produc / cnt * " +
-                        "case when DATEPART(DW, datas) <> 7 THEN '" +
-                          hour + "' ELSE '" + hourW + "' END)producibili," +
-                        "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
-                          hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
+                    q += "select datas,line, (produc / cnt * (shours/ cnt))producibili," +
+                        "(prevent / cnt * (shours/ cnt)),qty,dept from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
                 }
                 else
                 {
-                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50)) ";
+                    q = "create table tmpTable (datas date, line nvarchar(50), qtyH float,members int, abat float, capi int, dept nvarchar(50), hours float) ";
                     q += "insert into tmpTable ";
                     q += "select convert(date,data,101),line,qtyH,members,case when @paramAb = 0 then (cast(abatim as float)/100) else 1 end, ";
-                    q += "capi,department from viewproduction ";
+                    q += "capi,department,settinghours from viewproduction ";
                     q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
                     q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
                     q += "order by department,len(line),line,convert(date, data, 101) ";
-                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int) ";
+                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int, shours float) ";
                     q += "insert into tmpSum ";
                     q += "select datas,line,sum(members) as producibili, ";
-                    q += "sum(members * abat) as prevent, sum(capi / qtyH)qty,dept,count(1) from tmpTable ";
+                    q += "sum(members * abat) as prevent, sum(capi / qtyH)qty,dept,count(1),sum(hours) from tmpTable ";
                     q += "group by datas,line,dept order by dept,len(line),line,datas ";
-                    q += "select datas,line, (produc / cnt * " +
-                        "case when DATEPART(DW, datas) <> 7 THEN '" +
-                          hour + "' ELSE '" + hourW + "' END)producibili," +
-                        "(prevent / cnt * case when DATEPART(DW, datas) <> 7 THEN '" +
-                          hour + "' ELSE '" + hourW + "' END),qty,dept from tmpSum ";
+                    q += "select datas,line, (produc / cnt * (shours / cnt))producibili," +
+                        "(prevent / cnt * (shours / cnt)),qty,dept from tmpSum ";
                     q += "drop table tmpTable drop table tmpSum";
                 }
 

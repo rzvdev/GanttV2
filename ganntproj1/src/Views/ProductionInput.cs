@@ -3,10 +3,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Drawing.Drawing2D;
 using ganntproj1.Models;
 using System.Runtime.InteropServices;
 using System.Data;
+using System.Drawing.Drawing2D;
 
 namespace ganntproj1
 {
@@ -35,7 +35,7 @@ namespace ganntproj1
         private int _abatim;
         private bool _enterActive = true;
         private double _qtyH;
-        private DataTable _dtComm = new DataTable();
+        private DataTable _dtComm = new System.Data.DataTable();
         #region FormMovementService
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -168,7 +168,7 @@ namespace ganntproj1
         private void LoadShift()
         {
             var q = "select shift from shifts where sectorid='" + Store.Default.sectorId + "'";
-            using  (var c = new SqlConnection(Central.SpecialConnStr))
+            using (var c = new SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new SqlCommand(q, c);
                 c.Open();
@@ -181,7 +181,7 @@ namespace ganntproj1
                 dr.Close();
             }
 
-            if (cboShift.Items.Count > 0 )
+            if (cboShift.Items.Count > 0)
             {
                 if (DateTime.Now.Hour > 14 && cboShift.Items.Count > 1)
                 {
@@ -214,7 +214,7 @@ namespace ganntproj1
                     SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
             };
-            var models = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine 
+            var models = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
             && x.Department == Workflow.TargetDepartment).SingleOrDefault();
 
             if (models == null)
@@ -243,7 +243,7 @@ namespace ganntproj1
             lblTotalQty.Text = models.LoadedQty.ToString();
 
             var lineQuery = (from lin in Models.Tables.Lines
-                             where lin.Line == Workflow.TargetLine && 
+                             where lin.Line == Workflow.TargetLine &&
                              lin.Department == Workflow.TargetDepartment
                              select new { lin.Abatimento }).SingleOrDefault();
             int.TryParse(lineQuery.Abatimento.ToString(), out _abatim);
@@ -258,7 +258,7 @@ namespace ganntproj1
             txtCommCapi.TextChanged += delegate
             {
                 int.TryParse(txtCommCapi.Text, out var numberStyles);
-                var maxValue = models.LoadedQty;          
+                var maxValue = models.LoadedQty;
                 if (numberStyles > maxValue)
                 {
                     txtCommCapi.Clear();
@@ -288,7 +288,7 @@ namespace ganntproj1
         }
         private void ShowProductionDateRange()
         {
-            var model = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine 
+            var model = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
             && x.Department == Workflow.TargetDepartment).SingleOrDefault();
 
             if (model == null) return;
@@ -328,10 +328,10 @@ namespace ganntproj1
             cbCommLinea.ValueMember = "value";
 
             var membersQuery = (from models in Central.ListOfModels
-                               where models.Name == Workflow.TargetOrder
-                               && models.Aim == Workflow.TargetLine
-                               && models.Department == Workflow.TargetDepartment
-                               select models).FirstOrDefault();
+                                where models.Name == Workflow.TargetOrder
+                                && models.Aim == Workflow.TargetLine
+                                && models.Department == Workflow.TargetDepartment
+                                select models).FirstOrDefault();
 
             txtPersone.Text = membersQuery.Members.ToString();
 
@@ -360,7 +360,7 @@ namespace ganntproj1
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-        } 
+        }
         private void pbCheck_MouseDown(object sender, MouseEventArgs e)
         {
             _pbExc = sender as PictureBox;
@@ -407,7 +407,7 @@ namespace ganntproj1
                 bool wantToSave = true;
                 if (!_deleting && selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    var diag = MessageBox.Show("Are you sure you want to add production for " + 
+                    var diag = MessageBox.Show("Are you sure you want to add production for " +
                         selectedDate.DayOfWeek.ToString() + "?", "Workflow controller", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     wantToSave = diag == DialogResult.Yes ? true : false;
                 }
@@ -430,6 +430,7 @@ namespace ganntproj1
                 int.TryParse(dr[12].ToString(), out var abatim);
                 double.TryParse(dr[13].ToString(), out var qtyH);
                 var shift = dr[14].ToString();
+                double.TryParse(dr[15].ToString(), out var settingHours);
 
                 var pd = new Production
                 {
@@ -447,11 +448,12 @@ namespace ganntproj1
                     Abatim = abatim,
                     QtyH = qtyH,
                     Shift = shift,
+                    SettingHours = settingHours,
                 };
                 Tables.Productions.InsertOnSubmit(pd);
             }
             try
-            {                
+            {
                 Config.GetGanttConn().SubmitChanges();
                 if (tableView1.Rows.Count <= 0)
                 {
@@ -462,8 +464,8 @@ namespace ganntproj1
                             "where ordername={6} and aim={7} and department={8}",
                             0L,
                             0L,
-                            0L,0L, 0L, 0L,
-                            Workflow.TargetOrder,Workflow.TargetLine, Workflow.TargetDepartment);
+                            0L, 0L, 0L, 0L,
+                            Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment);
                     }
                 }
                 else
@@ -471,7 +473,7 @@ namespace ganntproj1
                     var jMod = new JobModel();
                     jMod.GetJobContinum(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment);
                 }
-            
+
                 var menu = new Central();
                 menu.GetBase();
             }
@@ -525,11 +527,12 @@ namespace ganntproj1
             _dtComm.Columns.Add("Abovenorm");
             _dtComm.Columns.Add("Time");
             _dtComm.Columns.Add("DailyQty");
-            _dtComm.Columns.Add("Price");   
+            _dtComm.Columns.Add("Price");
             _dtComm.Columns.Add("IncludeHours");
             _dtComm.Columns.Add("Abatim");
             _dtComm.Columns.Add("QtyH");
             _dtComm.Columns.Add("Shift");
+            _dtComm.Columns.Add("SettingHours");
 
             var data = from prod in Tables.Productions
                        where prod.Commessa == Workflow.TargetOrder
@@ -558,6 +561,7 @@ namespace ganntproj1
                 newRow[12] = p.Abatim;
                 newRow[13] = p.QtyH;
                 newRow[14] = p.Shift;
+                newRow[15] = p.SettingHours;
 
                 _dtComm.Rows.Add(newRow);
             }
@@ -576,6 +580,7 @@ namespace ganntproj1
             tableView1.Columns[1].DefaultCellStyle.BackColor = Color.LightYellow;
             tableView1.Columns[3].DefaultCellStyle.BackColor = Color.LightYellow;
             tableView1.Columns[8].DefaultCellStyle.BackColor = Color.LightYellow;
+            tableView1.Columns[15].Visible = false;
 
             foreach (DataGridViewColumn c in tableView1.Columns)
             {
@@ -654,9 +659,9 @@ namespace ganntproj1
             if (testOverQty > bound) overQty = testOverQty - bound;
             if (overQty > 0)
             {
-                var msg = MessageBox.Show("Are you sure you want to add more qty than total commesa?", 
-                    "Produzione input", 
-                    MessageBoxButtons.YesNo, 
+                var msg = MessageBox.Show("Are you sure you want to add more qty than total commesa?",
+                    "Produzione input",
+                    MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
                 if (msg == DialogResult.No) insertedQty -= overQty;
             }
@@ -664,7 +669,7 @@ namespace ganntproj1
             var trgtStart = Workflow.TargetModelStartDate;
 
             if (dtpCommData.Value.Date == trgtStart.Date)
-                prodStartDt = new DateTime(trgtStart.Year, trgtStart.Month, trgtStart.Day, 
+                prodStartDt = new DateTime(trgtStart.Year, trgtStart.Month, trgtStart.Day,
                     trgtStart.Hour, trgtStart.Minute, trgtStart.Second);
             else
                 prodStartDt = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day,
@@ -679,12 +684,12 @@ namespace ganntproj1
                 newRow[5] = txtPersone.Text;
                 newRow[6] = Workflow.TargetDepartment;
                 newRow[7] = false;
-                var hh = 0;   
+                var hh = 0;
                 int min = 0;
                 int sec = 0;
                 if (_includeHours)
                 {
-                    if (insertedQty > 0) 
+                    if (insertedQty > 0)
                     {
                         double.TryParse(insertedQty.ToString(), out var q);
                         double.TryParse(txtPersone.Text, out var members);
@@ -696,10 +701,10 @@ namespace ganntproj1
                         sec = 0;
                         if (hh > 15)
                         {
-                            MessageBox.Show("Production per hour is in out of bounds. " +                                            
-                                "The system will switch to daily production.",                                 
-                                "Production input",                                 
-                                MessageBoxButtons.OK,   
+                            MessageBox.Show("Production per hour is in out of bounds. " +
+                                "The system will switch to daily production.",
+                                "Production input",
+                                MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                             rbDay.Checked = true;
                             _includeHours = false;
@@ -712,14 +717,21 @@ namespace ganntproj1
                 else
                     hh = 23; min = 59; sec = 59;
 
-                newRow[8] = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day,
-                    hh, min, sec); 
+                var endDate = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day,
+                    hh, min, sec);
+
+                var settignHours = prodStartDt.DayOfWeek == DayOfWeek.Saturday || 
+                    prodStartDt.DayOfWeek == DayOfWeek.Sunday ? 
+                    GetSettingHours().Item2 : GetSettingHours().Item1;
+
+                newRow[8] = endDate;
                 newRow[9] = _dailyQty;
                 newRow[10] = _price;
                 newRow[11] = _includeHours;
                 newRow[12] = _abatim;
                 newRow[13] = _qtyH;
                 newRow[14] = cboShift.Text;
+                newRow[15] = settignHours;
 
                 _dtComm.Rows.Add(newRow);
 
@@ -734,12 +746,12 @@ namespace ganntproj1
             {
                 dtpCommData.Value = DateTime.Now;
             }
-        } 
+        }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             tableView1.Focus();
-            if (tableView1.Rows.Count <= 0)             
+            if (tableView1.Rows.Count <= 0)
             {
                 MessageBox.Show("Nothing to delete.", "Production", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -785,7 +797,7 @@ namespace ganntproj1
 
             var delDiff = JobModel.SkipDateRange(startDelay, endDelay, aim, dept);
             var delDateDiff = endDelay.Subtract(startDelay);
-         
+
             string strTime;
             var dd = delDateDiff.Days - delDiff;
             var hh = delDateDiff.Hours;
@@ -940,6 +952,33 @@ namespace ganntproj1
             MessageBox.Show(txt, "Produzione", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             lbl.ForeColor = Color.ForestGreen;
             lbl.Refresh();
+        }
+
+        public (double, double) GetSettingHours()
+        {
+            var hour = 0.0;
+            var hourW = 0.0;
+            switch (Store.Default.sectorId)
+            {
+                case 1:
+                    hour = Store.Default.confHour;
+                    hourW = Store.Default.confHourW;
+                    break;
+                case 2:
+                    hour = Store.Default.stiroHour;
+                    hourW = Store.Default.stioHourW;
+                    break;
+                case 7:
+                    hour = Store.Default.tessHour;
+                    hourW = Store.Default.tessHourW;
+                    break;
+                case 8:
+                    hour = Store.Default.sartHour;
+                    hourW = Store.Default.sartHourW;
+                    break;
+            }
+
+            return (hour, hourW);
         }
     }
 }

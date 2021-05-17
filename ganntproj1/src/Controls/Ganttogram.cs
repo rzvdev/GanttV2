@@ -525,6 +525,8 @@
 
                 if (Central.IsActiveOrdersSelection && bar.ProdQty == bar.FixQty || Central.IsActiveOrdersSelection && bar.ProdQty == 0) continue;
 
+                if (bar.StartValue < DateTime.Now.AddMonths(-3)) continue;
+
                 var index = bar.RowIndex;
                 var scrollPos = ScrollPosition;
 

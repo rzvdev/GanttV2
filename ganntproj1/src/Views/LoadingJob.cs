@@ -437,7 +437,7 @@
                 var dept = row[19].ToString();
                 var jobSpostStart = "";
                 var jobSpostEnd = "";
-                var jobModel = Central.ListOfModels.SingleOrDefault(x => x.Name == job && x.Aim == line && x.Department == dept);
+                var jobModel = Central.ListOfModels.LastOrDefault(x => x.Name == job && x.Aim == line && x.Department == dept);
 
                 if (IsUpd && jobModel != null) return;
 

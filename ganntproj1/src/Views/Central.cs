@@ -1,6 +1,7 @@
 ﻿namespace ganntproj1
 {
     using ganntproj1.Models;
+    using ganntproj1.src.Helpers;
     using ganntproj1.src.Views;
     using ganntproj1.Views;
     using System;
@@ -296,6 +297,11 @@
             LoadHolidays();
 
             LoadingInfo.UpdateText("Obtaining holidays...");
+
+            var settDom = new SettingsDom();
+            settDom.SaveHoursToSettings();
+            LoadingInfo.UpdateText("Generating settings...");
+
             AddModels(false);
 
             var lst = (from models in ListOfModels
@@ -555,9 +561,9 @@
                 int.TryParse(row[33].ToString(), out var members);
                 bool.TryParse(row[34].ToString(), out var manualDate);
                 int.TryParse(row[35].ToString(), out var abatimen);
-                 
+
                 bool.TryParse(row[36].ToString(), out var launched);
-               
+
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
                 var dvcDt = Config.MinimalDate.AddTicks(dvc);
@@ -578,16 +584,57 @@
                 }
 
                 endDt = Config.MinimalDate.AddTicks(endDate);
+                var nLine = (from line in Models.Tables.Lines
+                             where line.Line == aim && line.Department == dept
+                             select line).FirstOrDefault();
 
-                if (updateProduction && Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
+                if (updateProduction && Store.Default.sectorId == 8)
+                {
+                    var qry = @"select round(cast(6000 / sum(Op.Centes) as float),2), Op.GroupName, MAX(Art.Prezzo) from OperatiiArticol Op
+inner join Articole Art on Art.Articol=@Article  
+where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8                        
+group by Op.GroupName";
+
+                    var qtyHSync = 0.0;
+                    var prezzoSync = 0.0;
+                    using (var con = new SqlConnection(ConnStr))
+                    {
+                        var cmd = new SqlCommand(qry, con);
+                        cmd.Parameters.Add("@Article", System.Data.SqlDbType.VarChar).Value = article;
+                        con.Open();
+                        var dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                            while (dr.Read())
+                            {
+                                double.TryParse(dr[0].ToString(), out  qtyHSync);
+                                double.TryParse(dr[2].ToString(), out prezzoSync);
+                            }
+                        con.Close();
+                        dr.Close();
+                    }
+ 
+                    using (var context = new DataContext(SpecialConnStr))
+                    {
+                        context.ExecuteCommand("update produzione set " +
+                            "qtyH={0},price={1},members={2},abatim={3} " +
+                            "where commessa={4} and line={5} and department={6}",
+                            qtyHSync, prezzoSync, nLine.Members, nLine.Abatimento, name, aim, dept);
+                    }
+
+                    using (var context = new DataContext(SpecialConnStr))
+                    {
+                        context.ExecuteCommand("update objects set " +
+                            "qtyh={0},artprice={1},closedord={5} " +
+                            "where ordername={2} and aim={3} and department={4}",
+                            qtyHSync, prezzoSync, name, aim, dept, isClosed);
+                    }
+                }
+                else if (updateProduction && Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
                 {
                     var nArt = (from art in Models.Tables.Articles
                                 where art.Articol == article && art.Idsector == Store.Default.sectorId
                                 select art).FirstOrDefault();
-                    var nLine = (from line in Models.Tables.Lines
-                                 where line.Line == aim && line.Department == dept
-                                 select line).FirstOrDefault();
-
+ 
                     if (nArt == null || nLine == null) continue;
 
                     double.TryParse(nArt.Centes.ToString(), out var qtyHSync);
@@ -1932,13 +1979,19 @@
 
         private void BtnSync_Click(object sender, EventArgs e)
         {
-                LoadingInfo.ShowLoading();
-                LoadingInfo.InfoText = "Computing...";
+            if (treeMenu.SelectedNode != treeMenu.Nodes[0].Nodes[1])
+            {
+                MessageBox.Show("Sync function works only when 'Produzione Gantt' is selected.", "Sync", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-                foreach (var model in ListOfModels)
-                {
-                    DateTime.TryParse(model.StartDate.ToString(), out var start);
-                    DateTime.TryParse(model.EndDate.ToString(), out var end);
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "Computing...";
+
+            foreach (var model in ListOfModels)
+            {
+                DateTime.TryParse(model.StartDate.ToString(), out var start);
+                DateTime.TryParse(model.EndDate.ToString(), out var end);
 
                 var dS = Config.MinimalDate;
                 var dE = Config.MinimalDate;
@@ -1955,7 +2008,7 @@
                 }
 
                 using (var context = new DataContext(SpecialConnStr))
-                    {
+                {
                     DateTime.TryParse(model.Dvc.ToString(), out var dvc);
                     DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
@@ -1966,26 +2019,23 @@
                             "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
                             "where ordername={6} and aim={7} and department={8}",
                             start, end,
-                            dS,dE,d,r,
+                            dS, dE, d, r,
                             model.Name, model.Aim, model.Department);
-                    }
                 }
+            }
 
-                Config.SetGanttConn(new DataContext(SpecialConnStr));
+            Config.SetGanttConn(new DataContext(SpecialConnStr));
                 Config.SetOlyConn(new DataContext(ConnStr));
                 LoadShifts();
                 LoadHolidays();
                 LoadingInfo.UpdateText("Synchronizing data... Please wait...");
                 AddModels(true);
+            
             var lst = (from models in ListOfModels
                        select models).OrderBy(x => x.Department)
                       .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
                       .ThenBy(x => x.StartDate);
 
-            //var lst = from models in ListOfModels
-            //              orderby Convert.ToDouble(models.Aim.Remove(0, 5)),
-            //              models.StartDate
-            //              select models;
                 ListOfModels = lst.ToList();
 
             LoadingInfo.CloseLoading();      
