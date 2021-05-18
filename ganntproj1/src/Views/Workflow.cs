@@ -166,7 +166,7 @@
             DefaultAim = Central.ListOfModels.First().Aim;
             DefaultDept = Central.ListOfModels.First().Department;
 
-            var islocked = false;
+            //var islocked = false;
 
             var rowIdx = 0;
             var elementIdx = 0;
@@ -174,7 +174,7 @@
             {
                 if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
                 
-                if (model.Aim == DefaultAim && model.Department == DefaultDept && !islocked)
+                if (model.Aim == DefaultAim && model.Department == DefaultDept)
                 {
                     _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));
                     elementIdx++;
@@ -188,72 +188,80 @@
                 }
                 DefaultAim = model.Aim;
                 DefaultDept = model.Department;
-                islocked = model.Locked;
+                //islocked = model.Locked;
             }
 
-            var timeToMoveForward = 0.0;
-            var timeToMoveBack = 0.0;
+            var timeToMoveForward = 0L;
+            var timeToMoveBack = 0L;
             var objLockIndex = 0;
 
             foreach (var item in _indexerList)
             {
-                timeToMoveForward = 0.0;
-                timeToMoveBack = 0.0;
+                timeToMoveForward = 0L;
+                timeToMoveBack = 0L;
                 var model = Central.ListOfModels.FirstOrDefault(x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept);
              
                 var modelBefore = JobModel.GetModelIndex(model.Name, _indexerList, -1);
                 var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
                 if (modelBefore != null)
                 {
-                    var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);
-                    var tck = 0.0;
-                    if (modelBefore.DelayEndDate == DateTime.MinValue) tck = 0.0;
-                    else tck = modelBefore.DelayEndDate.Subtract(modelBefore.EndDate).TotalDays;
-                    var beforeFullEndTime = modelBefore.EndDate.AddDays(tck);
+                    //var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);
+                    var delayTicks = 0L;
+                    if (modelBefore.DelayEndDate == DateTime.MinValue)
+                    {
+                        delayTicks = 0L;
+                    }
+                    else
+                    {
+                        delayTicks = modelBefore.DelayEndDate.Subtract(modelBefore.DelayStartDate).Ticks;
+                    }
+                    
+                    var beforeFullEndTime = modelBefore.EndDate.AddTicks(delayTicks);
+                     
                     if (!model.ManualDate)
                     {
-                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
-                        timeToMoveBack = model.StartDate.Subtract(beforeFullEndTime).TotalDays;
-                        if (timeToMoveForward < 0.0) timeToMoveForward = 0.0;
-                        if (timeToMoveBack < 0.0) timeToMoveBack = 0.0;
+                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
+                        timeToMoveBack = model.StartDate.Subtract(beforeFullEndTime).Ticks;
+                        if (timeToMoveForward < 0L) timeToMoveForward = 0L;
+                        if (timeToMoveBack < 0L) timeToMoveBack = 0L;
                     }
                     else
                     //just in case when delay goes over manually programmed order
                     {
                         if (Store.Default.sectorId == 1)
                         {
-                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).TotalDays;
+                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
                         }
-                        timeToMoveBack = 0.0;
+                        timeToMoveBack = 0L;
                     }
                 }
-                else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
-                {
-                    timeToMoveBack = 0;
-                    timeToMoveForward = 0;
-                    var d = model.Duration;
-                    if (lockedModelBefore.ProdQty > 0)
-                    {
-                        if (model.ProdQty == 0)
-                        {
-                            model.StartDate = lockedModelBefore.ProductionEndDate.AddMinutes(+2);
-                            model.EndDate = model.StartDate.AddDays(+d);
-                        }
-                        else
-                        {
-                            model.StartDate = model.ProductionStartDate;
-                            model.EndDate = model.StartDate.AddDays(+d);
-                        }
-                    }
-                    else
-                    {
-                        model.StartDate = lockedModelBefore.StartDate;
-                        model.EndDate = model.StartDate.AddDays(+d);
-                    }
-                }
+                //else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
+                //{
+                //    timeToMoveBack = 0;
+                //    timeToMoveForward = 0;
+                //    var d = model.Duration;
+                //    if (lockedModelBefore.ProdQty > 0)
+                //    {
+                //        if (model.ProdQty == 0)
+                //        {
+                //            model.StartDate = lockedModelBefore.ProductionEndDate.AddMinutes(+2);
+                //            model.EndDate = model.StartDate.AddDays(+d);
+                //        }
+                //        else
+                //        {
+                //            model.StartDate = model.ProductionStartDate;
+                //            model.EndDate = model.StartDate.AddDays(+d);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        model.StartDate = lockedModelBefore.StartDate;
+                //        model.EndDate = model.StartDate.AddDays(+d);
+                //    }
+                //}
                 var isClosed = model.ClosedByUser;
-                var jobEnd = model.EndDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
-                var h = JobModel.SkipDateRange(model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack), jobEnd.AddMinutes(-1), model.Aim, model.Department);
+                var jobEnd = model.EndDate.AddTicks(+timeToMoveForward).AddTicks(-timeToMoveBack);
+                var h = JobModel.SkipDateRange(model.StartDate.AddTicks(+timeToMoveForward).AddTicks(-timeToMoveBack), jobEnd.AddMinutes(-1), model.Aim, model.Department);
                 jobEnd = jobEnd.AddDays(+h);
                 var prodEnd = new DateTime(model.ProductionEndDate.Year, model.ProductionEndDate.Month, model.ProductionEndDate.Day,
                     model.ProductionEndDate.Hour, model.ProductionEndDate.Minute, model.ProductionEndDate.Second);
@@ -326,7 +334,7 @@
                              select md)
                              .Update(st =>
                              {
-                                 st.StartDate = model.StartDate.AddDays(+timeToMoveForward).AddDays(-timeToMoveBack);
+                                 st.StartDate = model.StartDate.AddTicks(+timeToMoveForward).AddTicks(-timeToMoveBack);
                                  st.EndDate = jobEnd;
                                  st.DelayTime = delayTs.Ticks;
                                  st.DelayStartDate = delayStart;

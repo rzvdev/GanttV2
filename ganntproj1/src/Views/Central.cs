@@ -404,6 +404,11 @@
             }
 
             GetProductionColor();
+
+            if (Store.Default.sectorId == 1)
+            {
+                Store.Default.manualDate = false;
+            }
         }
 
         private void LoadShifts()
@@ -590,29 +595,37 @@
 
                 if (updateProduction && Store.Default.sectorId == 8)
                 {
-                    var qry = @"select round(cast(6000 / sum(Op.Centes) as float),2), Op.GroupName, MAX(Art.Prezzo) from OperatiiArticol Op
+                    var qry = @"select Op.GroupName, sum(op.Prezzo) from OperatiiArticol Op
 inner join Articole Art on Art.Articol=@Article  
-where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8                        
+where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8                   
 group by Op.GroupName";
 
-                    var qtyHSync = 0.0;
                     var prezzoSync = 0.0;
                     using (var con = new SqlConnection(ConnStr))
                     {
                         var cmd = new SqlCommand(qry, con);
                         cmd.Parameters.Add("@Article", System.Data.SqlDbType.VarChar).Value = article;
+                        cmd.Parameters.Add("@groupName", System.Data.SqlDbType.NVarChar).Value = nLine.Description;
+
                         con.Open();
                         var dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                             while (dr.Read())
                             {
-                                double.TryParse(dr[0].ToString(), out  qtyHSync);
-                                double.TryParse(dr[2].ToString(), out prezzoSync);
+                                double.TryParse(dr[1].ToString(), out prezzoSync);
                             }
                         con.Close();
                         dr.Close();
                     }
- 
+
+                    var nArt = (from art in Models.Tables.Articles
+                                where art.Articol == article && art.Idsector == Store.Default.sectorId
+                                select art).FirstOrDefault();
+
+                    if (nArt == null || nLine == null) continue;
+
+                    double.TryParse(nArt.Centes.ToString(), out var qtyHSync);
+
                     using (var context = new DataContext(SpecialConnStr))
                     {
                         context.ExecuteCommand("update produzione set " +
@@ -884,11 +897,11 @@ group by Op.GroupName";
 
                     pbReload.Click += (se, e) =>
                     {
-                        if (cbDept.SelectedIndex == 0)
-                        {
-                            MessageBox.Show("not allowed");
-                            return;
-                        }
+                        //if (cbDept.SelectedIndex == 0)
+                        //{
+                        //    MessageBox.Show("not allowed");
+                        //    return;
+                        //}
 
                         frm.LoadDataWithDateChange();
                     };

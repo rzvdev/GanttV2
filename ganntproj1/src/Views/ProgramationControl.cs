@@ -45,6 +45,8 @@ namespace ganntproj1.src.Views
 
         private void ProgramationControl_Load(object sender, EventArgs e)
         {
+            if (Store.Default.sectorId == 1) Store.Default.manualDate = false;
+
             dateTimePicker1.ShowCheckBox = Store.Default.manualDate;
             dateTimePicker1.Enabled = Store.Default.manualDate;
             numericUpDown1.Enabled = Store.Default.manualMembers;

@@ -397,13 +397,13 @@
             return obj;
         }
 
-        public static JobModel GetModelIndex(string model, List<Index> lst, int index)
+        public static JobModel GetModelIndex(string modelText, List<Index> lst, int index)
         {
             JobModel jMod = default;
             foreach (var item in lst)
-            {//TODO check if there is some error
-                if (item.ObjText != model) continue;
-                var jIndex = lst.SingleOrDefault(x => x.RowIndex == item.RowIndex && x.ObjIndex == item.ObjIndex + index);
+            {
+                if (item.ObjText != modelText) continue;
+                var jIndex = lst.LastOrDefault(x => x.RowIndex == item.RowIndex && x.ObjIndex == item.ObjIndex + index);
                 if (jIndex != null)
                     jMod = Central.ListOfModels
                         .FirstOrDefault(x => x.Name == jIndex.ObjText &&
@@ -418,9 +418,9 @@
         {
             JobModel jMod = default;
             foreach (var item in lst)
-            {//TODO check if there is some error
+            {
                 if (item.ObjText != model) continue;
-                var jIndex = lst.SingleOrDefault(x => x.RowIndex == item.RowIndex + rIndex && x.ObjIndex == oIndex);
+                var jIndex = lst.LastOrDefault(x => x.RowIndex == item.RowIndex + rIndex && x.ObjIndex == oIndex);
                 if (jIndex != null)
                     jMod = Central.ListOfModels
                         .FirstOrDefault(x => x.Name == jIndex.ObjText &&
@@ -504,6 +504,7 @@
 
         public string ObjDept { get; set; }
     }
+
     public class LineHolidaysEmbeded
     {
         public string Line { get; set; }

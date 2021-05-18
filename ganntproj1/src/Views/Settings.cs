@@ -1103,6 +1103,12 @@ namespace ganntproj1
 
         private void toggleCheckBox2_CheckedChanged(object sender, EventArgs e)
         {
+            if (Store.Default.sectorId == 1)
+            {
+                toggleCheckBox2.Checked = false;
+                Store.Default.manualDate = false;
+                return;
+            }
             Store.Default.manualDate = toggleCheckBox2.Checked;
             Store.Default.Save();
         }
