@@ -717,6 +717,11 @@ namespace ganntproj1
                 else
                     hh = 23; min = 59; sec = 59;
 
+                if (dtpCommData.Value.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    hh = 14;
+                }
+
                 var endDate = new DateTime(dtpCommData.Value.Year, dtpCommData.Value.Month, dtpCommData.Value.Day,
                     hh, min, sec);
 

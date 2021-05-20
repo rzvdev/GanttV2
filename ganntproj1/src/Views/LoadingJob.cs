@@ -1967,7 +1967,6 @@
 
             var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);
             var dailyQty = j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty);
-            //int.TryParse(j.CalculateDailyQty(lineInsteadDescripton, qtyH, dept, members, qty).ToString(), out var dailyQty);
             var price = j.GetPrice(article);
             DateTime startDate;
             DateTime endDate;
@@ -2007,11 +2006,11 @@
                         lineDesc.Line, byQty, jobDuration, _orderToUpdate, dept);
                 }
             }
+
             dgvReport.CurrentCell.Value = cb.Text;
             dgvReport.CurrentRow.Cells[8].Value = UniParseDateTime(startDate);
             dgvReport.CurrentRow.Cells[9].Value = UniParseDateTime(endDate);
-            dgvReport.CurrentRow.Cells[0].Value =
-                Properties.Resources.tick_icon_16;
+            dgvReport.CurrentRow.Cells[0].Value = Properties.Resources.tick_icon_16;
 
             InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate, launched);
         }
@@ -2578,7 +2577,6 @@
                 cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
                 cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
                 cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
-
 
                 con.Open();
                 cmd.ExecuteNonQuery();

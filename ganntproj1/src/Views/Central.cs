@@ -897,11 +897,11 @@ group by Op.GroupName";
 
                     pbReload.Click += (se, e) =>
                     {
-                        //if (cbDept.SelectedIndex == 0)
-                        //{
-                        //    MessageBox.Show("not allowed");
-                        //    return;
-                        //}
+                        if (cbDept.SelectedIndex == 0)
+                        {
+                            MessageBox.Show("not allowed");
+                            return;
+                        }
 
                         frm.LoadDataWithDateChange();
                     };

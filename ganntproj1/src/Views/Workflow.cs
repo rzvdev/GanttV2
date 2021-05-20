@@ -205,7 +205,6 @@
                 var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
                 if (modelBefore != null)
                 {
-                    //var delayBefore = TimeSpan.FromTicks(modelBefore.DelayTime);
                     var delayTicks = 0L;
                     if (modelBefore.DelayEndDate == DateTime.MinValue)
                     {
@@ -226,8 +225,9 @@
                         if (timeToMoveBack < 0L) timeToMoveBack = 0L;
                     }
                     else
-                    //just in case when delay goes over manually programmed order
                     {
+                        //do this just in case when delay goes over manually programmed order
+
                         if (Store.Default.sectorId == 1)
                         {
                             timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
@@ -235,42 +235,19 @@
                         timeToMoveBack = 0L;
                     }
                 }
-                //else if (lockedModelBefore != null && model.Aim == lockedModelBefore.Aim && model.Department == lockedModelBefore.Department)
-                //{
-                //    timeToMoveBack = 0;
-                //    timeToMoveForward = 0;
-                //    var d = model.Duration;
-                //    if (lockedModelBefore.ProdQty > 0)
-                //    {
-                //        if (model.ProdQty == 0)
-                //        {
-                //            model.StartDate = lockedModelBefore.ProductionEndDate.AddMinutes(+2);
-                //            model.EndDate = model.StartDate.AddDays(+d);
-                //        }
-                //        else
-                //        {
-                //            model.StartDate = model.ProductionStartDate;
-                //            model.EndDate = model.StartDate.AddDays(+d);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        model.StartDate = lockedModelBefore.StartDate;
-                //        model.EndDate = model.StartDate.AddDays(+d);
-                //    }
-                //}
+
                 var isClosed = model.ClosedByUser;
                 var jobEnd = model.EndDate.AddTicks(+timeToMoveForward).AddTicks(-timeToMoveBack);
                 var h = JobModel.SkipDateRange(model.StartDate.AddTicks(+timeToMoveForward).AddTicks(-timeToMoveBack), jobEnd.AddMinutes(-1), model.Aim, model.Department);
                 jobEnd = jobEnd.AddDays(+h);
-                var prodEnd = new DateTime(model.ProductionEndDate.Year, model.ProductionEndDate.Month, model.ProductionEndDate.Day,
-                    model.ProductionEndDate.Hour, model.ProductionEndDate.Minute, model.ProductionEndDate.Second);
+                var prodEnd = new DateTime(model.ProductionEndDate.Year, model.ProductionEndDate.Month, model.ProductionEndDate.Day, model.ProductionEndDate.Hour, model.ProductionEndDate.Minute, model.ProductionEndDate.Second);
                 var delayTs = TimeSpan.FromTicks(model.DelayTime);
                 var prodQty = model.ProdQty;
                 var spCarico = model.LoadedQty;
                 var delEnd = jobEnd.AddDays(delayTs.Days).AddHours(+delayTs.Hours);
                 var delayStart = new DateTime(jobEnd.Year, jobEnd.Month, jobEnd.Day, jobEnd.Hour, jobEnd.Minute, jobEnd.Second);
                 var delayEnd = delEnd;
+
                 if (prodQty > 0)
                 {
                     if (isClosed && prodEnd.Date <= jobEnd.Date)
@@ -309,16 +286,14 @@
                         if (j.Hour > 15)
                         {
                             var dh = 7 + (j.Hour - 15);
-                            delayTs = new TimeSpan(delayTs.Days + 1, dh,
-                                59, 59, 59);
+                            delayTs = new TimeSpan(delayTs.Days + 1, dh, 59, 59, 59);
                             delayEnd = new DateTime(delayEnd.Year, delayEnd.Month, delayEnd.Day, 0, 0, 0, 0);
                             delayEnd = delayEnd.AddDays(+1).AddHours(+dh).AddMinutes(+59).AddSeconds(+59);
                         }
                         else if (j.Hour < 7)
                         {
                             var cs = 7 + j.Hour;
-                            delayTs = new TimeSpan(delayTs.Days, cs,
-                                59, 59, 59);
+                            delayTs = new TimeSpan(delayTs.Days, cs, 59, 59, 59);
                             delayEnd = new DateTime(delayEnd.Year, delayEnd.Month, delayEnd.Day, 0, 0, 0, 0);
                             delayEnd = delayEnd.AddHours(+delayTs.Hours).AddMinutes(+59).AddSeconds(+59);
                         }
@@ -440,7 +415,10 @@
                     model.Locked, model.IsLockedProduction,
                     model.ClosedByUser,
                     prodBarColor,
-                    model.Article, model.Department, model.Launched));
+                    model.Article, model.Department, model.Launched,
+
+                    //TODO implement operation while programming new order
+                    operation: null, idx: 1));
 
                 if (model.Locked || model.IsLockedProduction)
                 {
@@ -456,7 +434,7 @@
                 {
                     if (obj.FromTime.Date < Central.DateFrom.Date || obj.FromTime.Date > Central.DateTo.Date) continue;
                 }
-                //if (obj.FromTime < DateTime.Now.AddDays(-60)) continue;
+
                 _gChart.AddBars(obj.RowText, obj.RowText + "_" + obj.Tag, obj,
                     obj.FromTime, obj.ToTime,
                     obj.ProdFromTime, obj.ProdToTime,
@@ -469,7 +447,10 @@
                     obj.ProdOverFromTime,
                     obj.ProdOverToTime,
                     obj.Locked, obj.LockedProd, obj.ClosedOrd,
-                    obj.ProdColor, obj.Article, obj.Department, obj.Launched);
+                    obj.ProdColor, obj.Article, obj.Department, obj.Launched,
+
+                    //TODO implement operation while programming new order
+                    operation: obj.Operation, idx: obj.Idx);
             }
             _gChart.Refresh();
         }
@@ -547,7 +528,7 @@
                     _ctxActive = true;
 
                     tsmi4.Enabled = true;
-                    tsmi2.Enabled = true;
+                    tsmi2.Enabled = false;
                     tsmi3.Enabled = true;
                     if (_gChart.MouseOverRowValue != null)
                         if (((Bar)_gChart.MouseOverRowValue).Locked)

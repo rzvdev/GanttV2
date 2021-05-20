@@ -1,8 +1,10 @@
 ﻿namespace ganntproj1
 {
+    using ganntproj1.Models;
     using Microsoft.Office.Interop.Excel;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Linq;
 
     public class JobModel
@@ -20,7 +22,7 @@
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
             DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, 
-            int workingdays, int members, bool manualDate, int abatimen, bool launched)
+            int workingdays, int members, bool manualDate, int abatimen, bool launched, string operation = null, int idx = 1)
         {
             Name = name;
             Aim = aim;
@@ -59,6 +61,8 @@
             ManualDate = manualDate;
             Abatimen = abatimen;
             Launched = launched;
+            Operation = operation;
+            Idx = idx;
         }
 
         public string Name { get; set; }
@@ -137,6 +141,8 @@
 
         public bool Launched { get; set; }
 
+        public string Operation { get; set; }
+        public int Idx { get; set; }
         public IEnumerable<DateTime> GetDaysInRange(DateTime from,
                                                     DateTime to)
         {
@@ -163,6 +169,7 @@
                 hldList.Add(dt);
             }
             var i = 0;
+
             for (var day = dateFrom.Date; day.Date <= dateTo.Date; day = day.AddDays(+1))
             {
                 var dd = new DateTime(day.Year, day.Month, day.Day, 0, 0, 0);
@@ -476,7 +483,28 @@
             {
                 return 0.0;
             }
-        }       
+        }
+
+        public int GetObjectNextIndex(string ordername)
+        {
+            var idx = 0;
+            var q = $"select max(idx) from objects where ordername={ordername}";
+        
+            using (var c = new SqlConnection(Central.SpecialConnStr))
+            {
+                var cmd = new SqlCommand(q, c);
+                c.Open();
+                var dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                    while (dr.Read())
+                        int.TryParse(dr[0].ToString(), out idx);
+                c.Close();
+                dr.Close();
+                cmd = null;
+            }
+
+            return idx + 1;
+        }
     }
 
     public class Index

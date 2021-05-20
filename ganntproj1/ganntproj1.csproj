@@ -126,6 +126,12 @@
     <Compile Include="src\Helpers\ShiftRecognition.cs" />
     <Compile Include="src\Models\SettingsDict.cs" />
     <Compile Include="src\Printers\TableViewPrint.cs" />
+    <Compile Include="src\Views\BlockOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Views\BlockOrder.Designer.cs">
+      <DependentUpon>BlockOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Views\CommessaDefect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -542,6 +548,9 @@
     <None Include="Resources\back.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="src\Views\BlockOrder.resx">
+      <DependentUpon>BlockOrder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="src\Views\CommessaDefect.resx">
       <DependentUpon>CommessaDefect.cs</DependentUpon>
     </EmbeddedResource>

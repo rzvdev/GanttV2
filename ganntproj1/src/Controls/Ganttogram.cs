@@ -445,7 +445,8 @@
         public void AddBars(string rowText, string chain, object barValue,
             DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayFromTime, DateTime delayToTime,
             Color color, Color hoverColor, int rowIndex, bool isRoot, string tag, bool expanded, Image toggle, int fixQty, int dailyQty, int prodQty,
-            DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept, bool launched)
+            DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept, bool launched,
+            string operation, int idx)
         {
             if (string.IsNullOrEmpty(rowText)) return;
 
@@ -477,8 +478,10 @@
                 ClosedOrd = closed,
                 ProdColor = prodColor,
                 Article = art,
-                Department=dept,
+                Department = dept,
                 Launched = launched,
+                Operation = operation,
+                Idx = idx
             };
 
             Bars.Add(bar);
@@ -525,7 +528,8 @@
 
                 if (Central.IsActiveOrdersSelection && bar.ProdQty == bar.FixQty || Central.IsActiveOrdersSelection && bar.ProdQty == 0) continue;
 
-                if (bar.StartValue < DateTime.Now.AddMonths(-3)) continue;
+                // explicit -> do not load orders older then 3 months
+                if (bar.StartValue < DateTime.Now.AddMonths(-3)) continue;  
 
                 var index = bar.RowIndex;
                 var scrollPos = ScrollPosition;
@@ -1140,6 +1144,10 @@
 
         public Image Toggle { get; set; }
 
+        public string Operation { get; set; }
+         
+        public int Idx { get; set; }
+
         internal Location TopLocation { get; set; } = new Location();
 
         internal Location BottomLocation { get; set; } = new Location();
@@ -1218,7 +1226,8 @@
 
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayStart, DateTime delayEnd,
             Color color, Color hoverColor, int index, bool isRoot, string tag,
-            int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept, bool launched)
+            int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept, bool launched,
+            string operation, int idx)
             {
             RowText = rowText;
             Chain = chain;
@@ -1245,6 +1254,8 @@
             Article = art;
             Department = dept;
             Launched = launched;
+            Operation = operation;
+            Idx = idx;
         }
 
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, Color color, Color hoverColor, int index, bool isRoot, string tag)
@@ -1316,6 +1327,9 @@
         public bool ClosedOrd { get; set; }
 
         public Color ProdColor { get; set; }
+
+        public string Operation { get; set; }
+        public int Idx { get; set; }
     }
 
     public class TreeNode<T> : IEnumerable<TreeNode<T>>
