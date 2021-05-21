@@ -74,12 +74,12 @@ namespace ganntproj1
             dt.Columns.Add("department");
             dt.Columns.Add("price");
 
-            var query = "select data,line,department,sum(price * capi) from produzione " +
+            var query = "select convert(date,data,121),line,department,sum(price * capi)price from produzione " +
                         "where datepart(MONTH, data)='" + Month + "' " +
-                        "and datepart(YEAR,data)='" + Year + "' and " +
+                        "and datepart(YEAR, data)='" + Year + "' and " +
                         "charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0" +
-                        "group by data,line,department " +
-                        "order by data, line, department";
+                        "group by convert(date,data,121),line,department " +
+                        "order by convert(date,data,121), line, department";
            
             using (var c = new System.Data.SqlClient.SqlConnection(Central.SpecialConnStr))
             {
@@ -93,7 +93,8 @@ namespace ganntproj1
                         newRow[0] = Convert.ToDateTime(dr[0]);
                         newRow[1] = dr[1].ToString();
                         newRow[2] = dr[2].ToString();
-                        newRow[3] = Convert.ToDouble(dr[3]);
+                        double.TryParse(dr[3].ToString(), out var price);
+                        newRow[3] = price;
                         dt.Rows.Add(newRow);
                     }
                 c.Close();
@@ -109,10 +110,14 @@ namespace ganntproj1
                 newRow[1] = item.Line;
                 newRow[2] = item.Department;
                 var res = (item.Preventivati * item.Price);
-                if (res > 1000.0)
-                    res /= 2.0;
+                //if (res > 1000.0)
+                //    res /= 2.0;
 
-                newRow[3] = res;
+                if (item.Datex.Date > DateTime.Now.Date)
+                {
+                    newRow[3] = res;
+                }
+                
                 dt.Rows.Add(newRow);
             }
 
@@ -200,8 +205,8 @@ namespace ganntproj1
                     if (d == dx.ToString("dd/MM"))
                     {
                         double.TryParse(iRow[kit].ToString(), out var p);
-                        var g = (p + price);
-                        if (g > 1000.0) g /= 2.0;
+                        var g = price; // (p + price);
+                        //if (g > 1000.0) g /= 2.0;
 
                         iRow[kit] = String.Format("{0:0.00}", Math.Round(g, 5));
                     }

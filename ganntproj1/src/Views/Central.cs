@@ -595,17 +595,19 @@
 
                 if (updateProduction && Store.Default.sectorId == 8)
                 {
-                    var qry = @"select Op.GroupName, sum(op.Prezzo) from OperatiiArticol Op
+                    var qry = @"select Op.GroupName, sum(op.Prezzo), round(cast(6000 / sum(Op.Centes) as float),2) from OperatiiArticol Op
 inner join Articole Art on Art.Articol=@Article  
-where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8                   
+where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8 and op.groupname=@groupName
 group by Op.GroupName";
 
                     var prezzoSync = 0.0;
+                    var cpSync = 0.0;
+
                     using (var con = new SqlConnection(ConnStr))
                     {
                         var cmd = new SqlCommand(qry, con);
                         cmd.Parameters.Add("@Article", System.Data.SqlDbType.VarChar).Value = article;
-                        cmd.Parameters.Add("@groupName", System.Data.SqlDbType.NVarChar).Value = nLine.Description;
+                        cmd.Parameters.Add("@groupName", System.Data.SqlDbType.NVarChar).Value = nLine.Groupby;
 
                         con.Open();
                         var dr = cmd.ExecuteReader();
@@ -613,25 +615,18 @@ group by Op.GroupName";
                             while (dr.Read())
                             {
                                 double.TryParse(dr[1].ToString(), out prezzoSync);
+                                double.TryParse(dr[2].ToString(), out cpSync);
                             }
                         con.Close();
                         dr.Close();
                     }
-
-                    var nArt = (from art in Models.Tables.Articles
-                                where art.Articol == article && art.Idsector == Store.Default.sectorId
-                                select art).FirstOrDefault();
-
-                    if (nArt == null || nLine == null) continue;
-
-                    double.TryParse(nArt.Centes.ToString(), out var qtyHSync);
 
                     using (var context = new DataContext(SpecialConnStr))
                     {
                         context.ExecuteCommand("update produzione set " +
                             "qtyH={0},price={1},members={2},abatim={3} " +
                             "where commessa={4} and line={5} and department={6}",
-                            qtyHSync, prezzoSync, nLine.Members, nLine.Abatimento, name, aim, dept);
+                            cpSync, prezzoSync, nLine.Members, nLine.Abatimento, name, aim, dept);
                     }
 
                     using (var context = new DataContext(SpecialConnStr))
@@ -639,7 +634,7 @@ group by Op.GroupName";
                         context.ExecuteCommand("update objects set " +
                             "qtyh={0},artprice={1},closedord={5} " +
                             "where ordername={2} and aim={3} and department={4}",
-                            qtyHSync, prezzoSync, name, aim, dept, isClosed);
+                            cpSync, prezzoSync, name, aim, dept, isClosed);
                     }
                 }
                 else if (updateProduction && Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
