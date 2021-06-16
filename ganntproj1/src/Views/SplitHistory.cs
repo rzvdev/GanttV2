@@ -32,7 +32,7 @@ namespace ganntproj1
                          }
                      };
 
-            var splitQuery = (from split in Central.ListOfModels
+            var splitQuery = (from split in Central.TaskList
                               where split.Name == Order || split.Name == Order+".1" && split.Department == Dept
                               select split).ToList();
 

@@ -15,7 +15,6 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using System.Threading;
     using System.Windows.Forms;
     using System.Xml.Linq;
 
@@ -36,7 +35,7 @@
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
-        public static List<JobModel> ListOfModels { get; set; }
+        public static List<JobModel> TaskList { get; set; }
         public static DateTime DateFrom { get; private set; }
         public static DateTime DateTo { get; private set; }
         public static TimeSpan ShiftFrom { get; private set; }
@@ -53,23 +52,14 @@
         public static bool IsArticleSelection { get; set; }
         public static bool IsQtySelection { get; set; }
         public static bool IsActiveOrdersSelection { get; set; }
-
+        
         public static List<Lines> ListOfLines = new List<Lines>();
-
-        #region ProductionEff
-
         public static int LowEff { get; set; }
         public static int MediumEff { get; set; }
         public static int HighEff { get; set; }
-
         public static Color LowColor { get; set; }
-
         public static Color MediumColor { get; set; }
-
         public static Color HighColor { get; set; }
-
-        #endregion
-
         public string RefreshTitle { get; set; }
         public string SectorTitle { get; set; }
         [DllImport("kernel32.dll")]
@@ -304,10 +294,10 @@
 
             AddModels(false);
 
-            var lst = (from models in ListOfModels
+            var lst = (from models in TaskList
                        select models);
 
-            ListOfModels = lst.ToList();
+            TaskList = lst.ToList();
 
             treeMenu.Width = 0;
             pbReload.MouseEnter += delegate
@@ -441,9 +431,9 @@
             var q = "select line,hdate,month,year,department from holidays " +
                 "where idsector='" + Store.Default.sectorId + "' " +
                 "order by year, month,len(line),line";
-            using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
+            using (var con = new SqlConnection(SpecialConnStr))
             {
-                var cmd = new System.Data.SqlClient.SqlCommand(q, con);
+                var cmd = new SqlCommand(q, con);
                 con.Open();
                 var dr = cmd.ExecuteReader();
                 if (dr.HasRows)
@@ -451,9 +441,9 @@
                     while (dr.Read())
                     {
                         lst.Add(new LineHolidaysEmbeded(dr[0].ToString(),
-                            dr[1].ToString(), 
-                            Convert.ToInt32(dr[2]), 
-                            Convert.ToInt32(dr[3]), 
+                            dr[1].ToString(),
+                            Convert.ToInt32(dr[2]),
+                            Convert.ToInt32(dr[3]),
                             dr[4].ToString()));
                     }
                 }
@@ -483,11 +473,11 @@
                 LoadShifts();
                 LoadHolidays();
                 AddModels(false);
-                var lst = (from models in ListOfModels
+                var lst = (from models in TaskList
                            select models).OrderBy(x => x.Department)
                           .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
                           .ThenBy(x => x.StartDate);
-                ListOfModels = lst.ToList();
+                TaskList = lst.ToList();
 
                 var ln = from lines in Tables.Lines
                          select lines;
@@ -525,10 +515,11 @@
                 dr.Close();
             }
 
-            ListOfModels = new List<JobModel>();
+            TaskList = new List<JobModel>();
             var jb = new JobModel();
             foreach (System.Data.DataRow row in tbl.Rows)
             {
+                int.TryParse(row[0].ToString(), out var id);
                 var name = row[1].ToString();
                 var aim = row[2].ToString();
                 var dept = row[31].ToString();
@@ -569,6 +560,10 @@
 
                 bool.TryParse(row[36].ToString(), out var launched);
 
+                var operation = row[37].ToString();
+                int.TryParse(row[38].ToString(), out var idx);
+                int.TryParse(row[39].ToString(), out var parentIdx);
+
                 var startDt = Config.MinimalDate.AddTicks(startDate);
                 var endDt = Config.MinimalDate;
                 var dvcDt = Config.MinimalDate.AddTicks(dvc);
@@ -589,7 +584,7 @@
                 }
 
                 endDt = Config.MinimalDate.AddTicks(endDate);
-                var nLine = (from line in Models.Tables.Lines
+                var nLine = (from line in Tables.Lines
                              where line.Line == aim && line.Department == dept
                              select line).FirstOrDefault();
 
@@ -667,10 +662,11 @@ group by Op.GroupName";
                     }
                 }
 
-                ListOfModels.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
+                TaskList.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
                     qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
                     locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen, launched));
+                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen, launched,
+                    idx, parentIdx, operation, id));
             }
         }
 
@@ -1693,7 +1689,7 @@ group by Op.GroupName";
         private void BackUpDataOnSync()
         {
             var xEle = new XElement("ProduzioneGantt",
-              from models in ListOfModels
+              from models in TaskList
               select new XElement("Model",
               new XAttribute("Order", models.Name),
               new XElement("QtyH", models.QtyH),
@@ -1996,7 +1992,7 @@ group by Op.GroupName";
             LoadingInfo.ShowLoading();
             LoadingInfo.InfoText = "Computing...";
 
-            foreach (var model in ListOfModels)
+            foreach (var model in TaskList)
             {
                 DateTime.TryParse(model.StartDate.ToString(), out var start);
                 DateTime.TryParse(model.EndDate.ToString(), out var end);
@@ -2039,12 +2035,12 @@ group by Op.GroupName";
                 LoadingInfo.UpdateText("Synchronizing data... Please wait...");
                 AddModels(true);
             
-            var lst = (from models in ListOfModels
+            var lst = (from models in TaskList
                        select models).OrderBy(x => x.Department)
                       .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
                       .ThenBy(x => x.StartDate);
 
-                ListOfModels = lst.ToList();
+                TaskList = lst.ToList();
 
             LoadingInfo.CloseLoading();      
         }

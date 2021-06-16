@@ -6,14 +6,8 @@
     using System.Drawing;
     using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="LineGraph" />
-    /// </summary>
     public partial class LineGraph : Form
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineGraph"/> class.
-        /// </summary>
         public LineGraph()
         {
             InitializeComponent();
@@ -21,22 +15,9 @@
             tblGraph.DoubleBuffered(true);
             tblGraph.RowTemplate.Height = 28;
         }
-        /// <summary>
-        /// Defines the _dataTable
-        /// </summary>
         private DataTable _dataTable = new DataTable();
-        /// <summary>
-        /// Gets or sets the Month
-        /// </summary>
         private int Month { get; set; }
-        /// <summary>
-        /// Gets or sets the Year
-        /// </summary>
         private int Year { get; set; }
-        /// <summary>
-        /// The OnLoad
-        /// </summary>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         protected override void OnLoad(EventArgs e)
         {
             var c = new Central();
@@ -76,11 +57,6 @@
 
             base.OnLoad(e);
         }
-        /// <summary>
-        /// The GetLineEff
-        /// </summary>
-        /// <param name="month">The month<see cref="int"/></param>
-        /// <param name="year">The year<see cref="int"/></param>
         public void GetLineEff(int month, int year)
         {
             try
@@ -172,13 +148,7 @@
                 MessageBox.Show(ex.Message);
             }
         }
-        /// <summary>
-        /// Gets or sets the MediaEff
-        /// </summary>
         private double MediaEff { get; set; }
-        /// <summary>
-        /// The LoadGraph
-        /// </summary>
         public void LoadGraph()
         {
             tblGraph.DataSource = null;
@@ -200,7 +170,8 @@
             var totEff = 0.0;
             var count = 0;
             var lineCount = 0;
-            var newRow = dt.NewRow();
+            DataRow newRow;
+            
             foreach (DataRow row in _dataTable.Rows)
             {
                 newRow = dt.NewRow();
@@ -211,7 +182,7 @@
                 var lnCheck = Store.Default.sectorId == 1 ? arr[1].ToString() + arr[5].ToString().Split(' ')[1] : arr[1].ToString();
                 var dept = arr[5].ToString();
 
-                if (ln == lnCheck) //arr[1].ToString() + arr[5].ToString().Split(' ')[1])
+                if (ln == lnCheck)
                 {
                     totEff += (prodQty / qtyToProd * 100);
                     count++;
@@ -219,7 +190,6 @@
                 else
                 {
                     newRow[0] = ln;
-                    //var eff = Math.Round(prodQty / qtyToProd * 100, 2);
                     var eff = Math.Round(totEff / count, 2);
                     if (double.IsNaN(eff) || double.IsInfinity(eff)) eff = 0.0;
                     if (eff > 120.0) eff = 120.0;
@@ -235,7 +205,7 @@
                     totEff += (prodQty / qtyToProd * 100);
                     count++;
                 }
-                ln = lnCheck; // arr[1].ToString() + arr[5].ToString().Split(' ')[1] ;
+                ln = lnCheck;
             }
             newRow = dt.NewRow();
             newRow[0] = ln;
@@ -282,11 +252,6 @@
             Invalidate();
         }
 
-        /// <summary>
-        /// The TblGraph_CellPainting
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewCellPaintingEventArgs"/></param>
         private void TblGraph_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             var tb = (TableView)sender;
@@ -295,14 +260,16 @@
             if (e.RowIndex >= 0 && e.ColumnIndex >= 2)
             {
                 e.Graphics.FillRectangle(Brushes.White, e.CellBounds);
+
                 var graphWidth = tb.Columns[3].Width * 4;
                 var startsFromLeft = 182;
-                e.Graphics.DrawLine(Pens.Silver, e.CellBounds.X + e.CellBounds.Width - 1,
-                        e.CellBounds.Y, e.CellBounds.X + e.CellBounds.Width - 1, e.CellBounds.Y + e.CellBounds.Height);
+                
+                e.Graphics.DrawLine(Pens.Silver, e.CellBounds.X + e.CellBounds.Width - 1, e.CellBounds.Y, e.CellBounds.X + e.CellBounds.Width - 1, e.CellBounds.Y + e.CellBounds.Height);
+                
                 var dotPen = new Pen(Brushes.Silver, 1);
                 dotPen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
-                e.Graphics.DrawLine(dotPen, e.CellBounds.X + e.CellBounds.Width / 2,
-                e.CellBounds.Y, e.CellBounds.X + e.CellBounds.Width / 2, e.CellBounds.Y + e.CellBounds.Height);
+                e.Graphics.DrawLine(dotPen, e.CellBounds.X + e.CellBounds.Width / 2, e.CellBounds.Y, e.CellBounds.X + e.CellBounds.Width / 2, e.CellBounds.Y + e.CellBounds.Height);
+                
                 if (tb.Rows[e.RowIndex].Cells[0].Value.ToString() != "target" && tb.Rows[e.RowIndex].Cells[0].Value.ToString() != "media")
                 {
                     double.TryParse(tb.Rows[e.RowIndex].Cells[1].Value.ToString(), out var eff);
@@ -317,6 +284,7 @@
                        Brushes.WhiteSmoke, rect.X + barWidth - effText.Width - 5, e.CellBounds.Y + rect.Height / 2 - effText.Height / 2 + 11);
                     }                   
                 }
+                
                 float.TryParse((graphWidth * 90 / 100).ToString(), out var medF);
                 var medPen = new Pen(Color.Crimson, 3);
                 e.Graphics.DrawLine(medPen, startsFromLeft + medF, e.CellBounds.Y, startsFromLeft + medF, e.CellBounds.Y + e.CellBounds.Height);
@@ -334,17 +302,11 @@
                 var str = e.Value.ToString();
                 var cellFont = e.CellStyle.Font;
                 var strW = e.Graphics.MeasureString(str, cellFont);
-                e.Graphics.DrawString(str + "%", cellFont, Brushes.Black, e.CellBounds.X + (e.CellBounds.Width / 2 - strW.Width / 2),
-                    e.CellBounds.Y + (e.CellBounds.Height / 2 - strW.Height / 2) + 4);
+                e.Graphics.DrawString(str + "%", cellFont, Brushes.Black, e.CellBounds.X + (e.CellBounds.Width / 2 - strW.Width / 2),e.CellBounds.Y + (e.CellBounds.Height / 2 - strW.Height / 2) + 4);
                 e.Handled = true;
             }
         }
 
-        /// <summary>
-        /// The TblGraph_DataBindingComplete
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="DataGridViewBindingCompleteEventArgs"/></param>
         private void TblGraph_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             tblGraph.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -400,10 +362,6 @@
                     tblGraph.Rows[i].Cells[1].Style.BackColor = Central.HighColor;
                 }
 
-                //    if (eff > 93.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.FromArgb(138, 184, 44);
-                //if (eff < 93.2 && eff > 83.7) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Gold;
-                //if (eff < 83.7 && eff > 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.Orange;
-                //if (eff < 72.2) tblGraph.Rows[i].Cells[1].Style.BackColor = Color.OrangeRed;
             }
             tblGraph.Columns[0].Width = 90;
             tblGraph.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -418,20 +376,10 @@
             tblGraph.Columns[1].Frozen = true;
         }
 
-        /// <summary>
-        /// The TblGraph_SizeChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void TblGraph_SizeChanged(object sender, EventArgs e)
         {
         }
 
-        /// <summary>
-        /// The TblGraph_SelectionChanged
-        /// </summary>
-        /// <param name="sender">The sender<see cref="object"/></param>
-        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void TblGraph_SelectionChanged(object sender, EventArgs e)
         {
             ((TableView)sender).ClearSelection();

@@ -443,7 +443,7 @@
         private double GetPrice(string order, string line)
         {
             var p = 0.0;
-            var q = (from art in Central.ListOfModels
+            var q = (from art in Central.TaskList
                      where art.Name == order && art.Aim == line
                      select art).ToList();
 

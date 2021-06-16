@@ -22,7 +22,7 @@
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
             DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, 
-            int workingdays, int members, bool manualDate, int abatimen, bool launched, string operation = null, int idx = 1)
+            int workingdays, int members, bool manualDate, int abatimen, bool launched, int idx, int parentIdx, string operation = null, int id = 0)
         {
             Name = name;
             Aim = aim;
@@ -43,7 +43,6 @@
             ProdOverDays = prodOverDays;
             DelayTime = delayTs;
             ProdOverTime = prodOverTs;
-            Locked = locked;
             HolidayRange = holiday;
             ClosedByUser = closedord;
             ArtPrice = artPrice;
@@ -61,9 +60,13 @@
             ManualDate = manualDate;
             Abatimen = abatimen;
             Launched = launched;
-            Operation = operation;
             Idx = idx;
+            ParentIdx = parentIdx;
+            Operation = operation;
+            Id = id;
         }
+
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -103,8 +106,6 @@
 
         public long ProdOverTime { get; set; }
 
-        public bool Locked { get; set; }
-
         public int HolidayRange { get; set; }
 
         public bool ClosedByUser { get; set; }
@@ -143,6 +144,8 @@
 
         public string Operation { get; set; }
         public int Idx { get; set; }
+        public int ParentIdx { get; set; }
+
         public IEnumerable<DateTime> GetDaysInRange(DateTime from,
                                                     DateTime to)
         {
@@ -243,12 +246,7 @@
             if (lineAbatimento > 0.0)
                 abatimento = Math.Round(Convert.ToDouble(lineAbatimento) / 100, 2);
 
-            var h = 0.0;
-            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
-            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
-            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
-            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
-
+            var h = GetHoursBySector();
             var dailyQty = 0;
 
             if (Store.Default.sectorId != 7)
@@ -284,12 +282,7 @@
 
             if (qty == 0) return 0;
 
-            var h = 0.0;
-            if (Store.Default.sectorId == 1) h = Store.Default.confHour;
-            else if (Store.Default.sectorId == 2) h = Store.Default.stiroHour;
-            else if (Store.Default.sectorId == 7) h = Store.Default.tessHour;
-            else if (Store.Default.sectorId == 8) h = Store.Default.sartHour;
-
+            var h = GetHoursBySector();
             var duration = 0.0;
             
             if (Store.Default.sectorId != 7)
@@ -308,14 +301,14 @@
         public object[] GetJobContinum(string job,
             string aim, string dept)
         {
-            object[] obj = new object[] { };
+            //object[] obj = new object[] { };
             var production = from prod in Models.Tables.Productions
                              where prod.Commessa == job
                              && prod.Line == aim && prod.Department == dept
                              orderby prod.Data
                              select prod;
 
-            var jobMod = Central.ListOfModels.SingleOrDefault(x => x.Name == job && x.Aim == aim && x.Department == dept);
+            var jobMod = Central.TaskList.SingleOrDefault(x => x.Name == job && x.Aim == aim && x.Department == dept);
             var jobModEndProduction = jobMod.ProductionEndDate.Date;
             int.TryParse(jobMod.WorkingDays.ToString(), out var jobWorkingDays);
 
@@ -354,23 +347,7 @@
                 dymAlertTime = new TimeSpan(0, 0, 0, 0, 0);
             else
             {
-                var hour = 0;
-                switch (Store.Default.sectorId)
-                {
-                    case 1:
-                        hour = Convert.ToInt32(Store.Default.confHour);
-                        break;
-                    case 2:
-                        hour = Convert.ToInt32(Store.Default.stiroHour);
-                        break;
-                    case 7:
-                        hour = Convert.ToInt32(Store.Default.tessHour);
-                        break;
-                    case 8:
-                        hour = Convert.ToInt32(Store.Default.sartHour);
-                        break;
-                }
-
+                var hour = Convert.ToInt32(GetHoursBySector());
                 var r = Convert.ToInt32(restQty / 60);  
                 var dd = r / hour;  
                 var hh = r % hour;                       
@@ -379,13 +356,12 @@
                 if (dd == 0 && hh == 0)
                     dymAlertTime = new TimeSpan(0, 0, 0, 0, 0);
             }
-            obj = new object[]
+
+            var obj = new object[]
             {
-                prodStart, prodEnd,
-                dymQty,prodOverDays,
-                dymOverQty,
-                dymOverTime,dymAlertTime
+                prodStart, prodEnd, dymQty, prodOverDays, dymOverQty, dymOverTime, dymAlertTime
             };
+
             DateTime.TryParse(prodEnd.ToString(), out var endDate);
             if (endDate.Date > jobModEndProduction) jobWorkingDays += 1;
             using (var context = new System.Data.Linq.DataContext(Central.SpecialConnStr))
@@ -412,35 +388,18 @@
                 if (item.ObjText != modelText) continue;
                 var jIndex = lst.LastOrDefault(x => x.RowIndex == item.RowIndex && x.ObjIndex == item.ObjIndex + index);
                 if (jIndex != null)
-                    jMod = Central.ListOfModels
+                    jMod = Central.TaskList
                         .FirstOrDefault(x => x.Name == jIndex.ObjText &&
-                        x.Aim == jIndex.ObjAim && x.Department == jIndex.ObjDept);
+                        x.Aim == jIndex.ObjAim && x.Department == jIndex.ObjDept && x.Idx == jIndex.Idx);
                 else
                     jMod = null;
             }
             return jMod;
         }
 
-        public static JobModel GetIndexAfterLock(string model, List<Index> lst, int rIndex, int oIndex)
+        public static DateTime GetLineNextDate(string line, string dept)
         {
-            JobModel jMod = default;
-            foreach (var item in lst)
-            {
-                if (item.ObjText != model) continue;
-                var jIndex = lst.LastOrDefault(x => x.RowIndex == item.RowIndex + rIndex && x.ObjIndex == oIndex);
-                if (jIndex != null)
-                    jMod = Central.ListOfModels
-                        .FirstOrDefault(x => x.Name == jIndex.ObjText &&
-                        x.Aim == jIndex.ObjAim && x.Department == jIndex.ObjDept);
-                else
-                    jMod = null;
-            }
-            return jMod;
-        }
-
-        public static DateTime GetLineLastDate(string line, string dept)
-        {
-            var query = from models in Central.ListOfModels
+            var query = from models in Central.TaskList
                         where models.Aim == line && models.Department == dept
                         orderby models.DelayEndDate
                         select models;
@@ -485,11 +444,11 @@
             }
         }
 
-        public int GetObjectNextIndex(string ordername)
+        public int GetObjectNextIndex(string ordername, string aim, string department)
         {
             var idx = 0;
-            var q = $"select max(idx) from objects where ordername={ordername}";
-        
+            var q = $"select max(idx) from objects where ordername='{ordername.Split('+')[0]}' and aim='{aim}' and department='{department}'";
+
             using (var c = new SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new SqlCommand(q, c);
@@ -505,6 +464,28 @@
 
             return idx + 1;
         }
+
+        private double GetHoursBySector()
+        {
+            var hour = 0;
+            switch (Store.Default.sectorId)
+            {
+                case 1:
+                    hour = Convert.ToInt32(Store.Default.confHour);
+                    break;
+                case 2:
+                    hour = Convert.ToInt32(Store.Default.stiroHour);
+                    break;
+                case 7:
+                    hour = Convert.ToInt32(Store.Default.tessHour);
+                    break;
+                case 8:
+                    hour = Convert.ToInt32(Store.Default.sartHour);
+                    break;
+            }
+
+            return hour;
+        }
     }
 
     public class Index
@@ -513,13 +494,14 @@
         {
         }
 
-        public Index(int rowIndex, int objIndex, string objText, string objAim, string objDept)
+        public Index(int rowIndex, int objIndex, string objText, string objAim, string objDept, int idx)
         {
             RowIndex = rowIndex;
             ObjIndex = objIndex;
             ObjText = objText;
             ObjAim = objAim;
             ObjDept = objDept;
+            Idx = idx;
         }
 
         public int RowIndex { get; set; }
@@ -531,8 +513,11 @@
         public string ObjAim { get; set; }
 
         public string ObjDept { get; set; }
+
+        public int Idx { get; set; }
     }
 
+    //holidays
     public class LineHolidaysEmbeded
     {
         public string Line { get; set; }

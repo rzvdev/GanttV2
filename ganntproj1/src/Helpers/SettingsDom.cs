@@ -1,22 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using ganntproj1.src.Models;
 
 namespace ganntproj1.src.Helpers
 {
     public class SettingsDom
     {
-        public void UpdateSettingsHours(string department, string value1, string value2)
+        public void UpdateSettingsHours(string department, double value1, double value2)
         {
+            var q = @"
+update settings set settingvalue=@value1, settingvalue2=@value2 where settingkey=@department
+";
             using (var con = new SqlConnection(Central.SpecialConnStr))
             {
                 var cmd = new SqlCommand
                 {
-                    CommandText = $"update settings set settingvalue='{value1}',settingvalue2='{value2}' where settingkey='{department}'",
+                    CommandText = q,
                     Connection = con,
                     CommandType = CommandType.Text
                 };
+
+                cmd.Parameters.Add("@value1", SqlDbType.Float).Value = value1;
+                cmd.Parameters.Add("@value2", SqlDbType.Float).Value = value2;
+                cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = department;
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -35,7 +43,7 @@ namespace ganntproj1.src.Helpers
                         Store.Default.confHour = item.Value1;
                         Store.Default.confHourW = item.Value2;
                         break;
-                    case "Stiro" :
+                    case "Stiro":
                         Store.Default.stiroHour = item.Value1;
                         Store.Default.stioHourW = item.Value2;
                         break;
@@ -65,15 +73,15 @@ namespace ganntproj1.src.Helpers
                     Connection = con,
                     CommandType = CommandType.Text
                 };
-                
+
                 con.Open();
                 var dr = cmd.ExecuteReader();
                 if (dr.HasRows)
                     while (dr.Read())
                     {
                         var key = dr[0].ToString();
-                        double.TryParse(dr[1].ToString(), out var v1);
-                        double.TryParse(dr[2].ToString(), out var v2); 
+                        double.TryParse(dr[1].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v1);
+                        double.TryParse(dr[2].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v2);
                         lst.Add(new SettingsDict(key, v1, v2));
                     }
 

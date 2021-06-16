@@ -1,71 +1,42 @@
-﻿namespace ganntproj1
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace ganntproj1
 {
-    using ganntproj1.Models;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
-    using System.Drawing.Imaging;
-    using System.Linq;
-    using System.Windows.Forms;
-
-    internal class Ganttogram : UserControl
+    internal class Ganttchart : UserControl
     {
-        public List<BarProperty> Bars = new List<BarProperty>();
-
         private const int HeaderHeight = 50;
-
         private int _widthPerItem;
-
         private int _barStartLeft = 100;
-
         private const int BarStartTop = 49;
-
         private const int BarStartRight = 20;
-
         private int _barSpace = 8;
-
-        public int _barHeight = 40;
-
         private int _barsViewable = -1;
-
         private const int HeaderTimeStartTop = 20;
-
         private int _lastLineStop;
-
         private int _mouseHoverBarIndex = -1;
+        private bool _mouseHoverScrollBar;
+        private bool _mouseHoverScrollBarArea;
+        private Bitmap _objBmp;
+        private Graphics _objGraphics;
+        private Rectangle _scroll, _scrollBarArea;
 
         private enum MouseOver
         {
             Empty,
-
             Bar,
-
             BarLeftSide,
-
             BarRightSide
         }
-
         private MouseOver _mouseHover = MouseOver.Empty;
 
-        private bool _mouseHoverScrollBar;
-
-        private bool _mouseHoverScrollBarArea;
-
-        private Bitmap _objBmp;
-
-        private Graphics _objGraphics;
-
-        private Rectangle _scroll, _scrollBarArea;
-
-        public int ScrollPosition;
-
-        public List<Header> HeaderList;
-
-        public int BarsCount = 0;
-
-        public Ganttogram()
+        public Ganttchart()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.ContainerControl, true);
@@ -82,60 +53,40 @@
             BarsCount = GetBarIdxByRowText();
         }
 
+        public List<BarProperty> Bars = new List<BarProperty>();
+        public int ScrollPosition;
+        public int BarsCount = 0;
+        public int BarHeight = 40;
+        public List<Header> HeaderList;
+
         public DateTime FromDate { get; set; }
-
         public DateTime ToDate { get; set; }
-
         private bool AllowManualEditBar { get; set; }
-
         private bool AllowChange { get; set; }
-
         public bool HideDelay { get; set; }
-
         public bool HideClosedTask { get; set; }
-
         public bool AllowRowSelection { get; set; }
-
         public bool IsMouseOverRowText { get; set; }
-
         public bool IsMouseOverRowLine { get; set; }
         public bool IsMouseOverToggle { get; private set; }
-
         public bool IsMouseOverProductionBar { get; set; }
-
         public string MouseOverRowText { get; set; }
-
         public object MouseOverRowValue { get; set; }
-
         public object MouseOverToggleValue { get; private set; }
-
         public int MouseOverRowIndex { get; private set; }
-
         public bool RectangleSelectorActivated { get; set; }
-
         public object MouseOverNextValue { get; private set; }
-
         public List<string> MouseOverRowElements { get; private set; }
-
         public DateTime MouseOverColumnDate { get; set; }
-
         public object MouseOverProductionBar { get; set; }
-
         public string FilteredRowText { get; set; }
-
         public string FilteredRowAtt { get; set; }
         private Pen GridColor { get; } = Pens.LightGray;
-
         private Color ChartBackColor { get; } = Color.WhiteSmoke;     
-
         private Brush ChartBackBrush { get; } = new SolidBrush(Color.WhiteSmoke);   
-
         private readonly Font _barFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
-
         private Font TimeFont { get; } = new Font("Bahnschrift", 8, FontStyle.Regular);
-
         private Font RowFont { get; } = new Font("Bahnschrift", 9, FontStyle.Regular);
-
         private Font DateFont { get; } = new Font("Bahnschrift", 9, FontStyle.Regular);
 
         private int ScrollPosY
@@ -378,7 +329,7 @@
 
         public int GetScrollHeigh()
         {
-            _barsViewable = (Height - BarStartTop) / (_barHeight + _barSpace);
+            _barsViewable = (Height - BarStartTop) / (BarHeight + _barSpace);
 
             var barCount = GetBarIdxByRowText();
             if (barCount == 0)
@@ -393,7 +344,7 @@
         private void DrawScrollBar(Graphics grfx)
         {
 
-            _barsViewable = (Height - BarStartTop) / (_barHeight + _barSpace);
+            _barsViewable = (Height - BarStartTop) / (BarHeight + _barSpace);
             var barCount = GetBarIdxByRowText();
             if (barCount == 0)
                 return;
@@ -446,7 +397,7 @@
             DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayFromTime, DateTime delayToTime,
             Color color, Color hoverColor, int rowIndex, bool isRoot, string tag, bool expanded, Image toggle, int fixQty, int dailyQty, int prodQty,
             DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept, bool launched,
-            string operation, int idx)
+            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id)
         {
             if (string.IsNullOrEmpty(rowText)) return;
 
@@ -481,7 +432,12 @@
                 Department = dept,
                 Launched = launched,
                 Operation = operation,
-                Idx = idx
+                Idx = idx,
+                ParentIdx = parentIdx,
+                LoadedQty = loadedQty,
+                Members = members,
+                QtyH = qtyH,
+                Id = id
             };
 
             Bars.Add(bar);
@@ -535,18 +491,18 @@
                 var scrollPos = ScrollPosition;
 
                 var x = _barStartLeft + GetBarStartLocation(bar.StartValue);
-                var y = BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 5;
+                var y = BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 5;
                 var w = GetBarEndLocation(bar.StartValue, bar.EndValue);
-                int h = _barHeight - 25;
+                int h = BarHeight - 25;
                 var dx = _barStartLeft + GetBarStartLocation(bar.DelayStartValue);
-                var dy = BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 5;
+                var dy = BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 5;
                 var dw = GetBarEndLocation(bar.DelayStartValue, bar.DelayEndValue);
-                int dh = _barHeight - 25;
+                int dh = BarHeight - 25;
 
                 var pw = GetBarEndLocation(bar.ProdStartValue, bar.ProdEndValue);
                 var px = _barStartLeft + GetBarStartLocation(bar.ProdStartValue);
                 var py = y + 17;    
-                var ph = _barHeight - 30;
+                var ph = BarHeight - 30;
                 if (ph <= 0)
                 {
                     ph = 2; py -= 7;
@@ -554,7 +510,7 @@
                 var ow = GetBarEndLocation(bar.ProdOverStartValue, bar.ProdOverEndValue);
                 var ox = _barStartLeft + GetBarStartLocation(bar.ProdOverStartValue) + 1;
                 var oy = y + 20;    
-                var oh = _barHeight - 30;
+                var oh = BarHeight - 30;
 
                 var findCenterByY = py + (ph / 2 - 5);
 
@@ -602,7 +558,7 @@
                     {
                         if (bar.DelayStartValue != DateTime.MinValue && bar.DelayEndValue != DateTime.MinValue && bar.DelayStartValue < bar.DelayEndValue)
                         {
-                            grfx.FillPath(new SolidBrush(Color.FromArgb(255,155,63)), geo.RoundedRectanglePath(delayBarRect, 7));
+                            grfx.FillPath(new SolidBrush(Color.FromArgb(255,155,63)), geo.RoundedRectanglePath(delayBarRect, dw > 0 ? 7 : 1));
                             grfx.DrawPath(borderPen, geo.RoundedRectanglePath(delayBarRect, 7));
                         }
                     }
@@ -633,7 +589,7 @@
 
                     var brshProdText = bar.ProdColor == Color.FromArgb(175, 175, 175) ? Brushes.DimGray : Brushes.WhiteSmoke;
 
-                    if (_barHeight >= 36)
+                    if (BarHeight >= 36)
                     {
                         if (!Central.IsArticleSelection)
                         {
@@ -684,7 +640,7 @@
                     }
 
                     var lineRect = new Rectangle(new Point(0,
-                              BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1), new Size(100, _barHeight + 7));
+                              BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1), new Size(100, BarHeight + 7));
 
                     grfx.FillRectangle(new SolidBrush(Color.FromArgb(50, 52, 68)), lineRect);
                     var p2 = new Pen(Brushes.WhiteSmoke, 2);
@@ -698,7 +654,7 @@
                                            throw new ArgumentNullException(nameof(grfx)))
                     {
                         var destRect1 = new Rectangle(7,
-                            (BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 7, 20, 20);
+                            (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 7, 20, 20);
                         const GraphicsUnit units = GraphicsUnit.Pixel;
 
                         grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
@@ -718,23 +674,23 @@
 
                         grfx.DrawString(new string(' ', 10) + rowTitle, new Font("Bahnschrift", 9, FontStyle.Regular),
                             new SolidBrush(Color.FromArgb(242,242,242)), 1,
-                            ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 2));
+                            ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 2));
                         
                         grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
                        new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
-                       ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 + 12));
+                       ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 + 12));
 
                     }
                     else
                     {
                         grfx.DrawString(new string(' ', 10) + bar.Tag, new Font("Bahnschrift", 9, FontStyle.Regular),
                            new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
-                           (BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 - 2);
+                           (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 2);
 
 
                         grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
                       new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
-                      ((BarStartTop + _barHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + _barHeight / 2 + 12));
+                      ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 + 12));
                     }
                 }
 
@@ -864,12 +820,12 @@
             {
                 foreach (var bar in Bars)
                 {
-                    grfx.DrawLine(GridColor, 0, BarStartTop + _barHeight * index + _barSpace * index, width,
-                    BarStartTop + _barHeight * index + _barSpace * index);
+                    grfx.DrawLine(GridColor, 0, BarStartTop + BarHeight * index + _barSpace * index, width,
+                    BarStartTop + BarHeight * index + _barSpace * index);
                 }
             }
 
-            _lastLineStop = BarStartTop + _barHeight * (index - 1) + _barSpace * (index - 1);
+            _lastLineStop = BarStartTop + BarHeight * (index - 1) + _barSpace * (index - 1);
         }
 
         public void Chart_MouseMove(object sender, MouseEventArgs e)
@@ -959,7 +915,6 @@
                             (_mouseHover != MouseOver.BarRightSide)) _mouseHover = MouseOver.Bar;
 
                     }
-
                 }
 
                 index += 1;
@@ -1147,6 +1102,12 @@
         public string Operation { get; set; }
          
         public int Idx { get; set; }
+        public int ParentIdx { get; set; }
+
+        public int LoadedQty { get; set; }
+        public int Members { get; set; }
+        public double QtyH { get; set; }
+        public int Id { get; set; }
 
         internal Location TopLocation { get; set; } = new Location();
 
@@ -1174,60 +1135,10 @@
         {
         }
 
-        public Bar(string rowText, int index, bool isRoot, bool expanded, Image toggle)
-        {
-            RowText = rowText;
-            Index = index;
-            IsRoot = isRoot;
-            Expanded = expanded;
-            Toggle = toggle;
-        }
-
-        public Bar(string rowText, DateTime fromTime, DateTime toTime, DateTime rdd, Color color, Color hoverColor, int index)
-        {
-            RowText = rowText;
-            FromTime = fromTime;
-            ToTime = toTime;
-            ToRealTime = rdd;
-            Color = color;
-            HoverColor = hoverColor;
-            Index = index;
-        }
-
-        public Bar(string rowText, DateTime fromTime, DateTime toTime, DateTime rdd, DateTime dvc, Color color, Color hoverColor, int index)
-        {
-            RowText = rowText;
-            FromTime = fromTime;
-            ToTime = toTime;
-            ToRealTime = rdd;
-            ToDvc = dvc;
-            Color = color;
-            HoverColor = hoverColor;
-            Index = index;
-        }
-
-        public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, Color color, Color hoverColor, int index, bool isRoot, string tag, int fixQty, int dailyQty, int prodQty)
-        {
-            RowText = rowText;
-            Chain = chain;
-            FromTime = fromTime;
-            ToTime = toTime;
-            ProdFromTime = prodFromTime;
-            ProdToTime = prodToTime;
-            Color = color;
-            HoverColor = hoverColor;
-            Index = index;
-            IsRoot = isRoot;
-            Tag = tag;
-            FixedQty = fixQty;
-            DailyQty = dailyQty;
-            ProductionQty = prodQty;
-        }
-
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayStart, DateTime delayEnd,
             Color color, Color hoverColor, int index, bool isRoot, string tag,
             int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept, bool launched,
-            string operation, int idx)
+            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id)
             {
             RowText = rowText;
             Chain = chain;
@@ -1256,19 +1167,11 @@
             Launched = launched;
             Operation = operation;
             Idx = idx;
-        }
-
-        public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, Color color, Color hoverColor, int index, bool isRoot, string tag)
-        {
-            RowText = rowText;
-            Chain = chain;
-            FromTime = fromTime;
-            ToTime = toTime;
-            Color = color;
-            HoverColor = hoverColor;
-            Index = index;
-            IsRoot = isRoot;
-            Tag = tag;
+            ParentIdx = parentIdx;
+            LoadedQty = loadedQty;
+            Members = members;
+            QtyH = qtyH;
+            Id = id;
         }
 
         public string RowText { get; set; }
@@ -1330,6 +1233,11 @@
 
         public string Operation { get; set; }
         public int Idx { get; set; }
+        public int ParentIdx { get; set; }
+        public int LoadedQty { get; set; }
+        public int Members { get; set; }
+        public double QtyH { get; set; }
+        public int Id { get; set; }
     }
 
     public class TreeNode<T> : IEnumerable<TreeNode<T>>

@@ -287,7 +287,7 @@
             _listOfAcceptedOrder = new List<string>();
             _listOfOrdersWithNotes = new List<string>();
             _listOfLinesComplete = new List<string>();
-            foreach (var item in Central.ListOfModels)
+            foreach (var item in Central.TaskList)
                 _listOfAcceptedOrder.Add(item.Name);
             foreach (var item in _lstOfSplittedOrd)
                 if (_listOfAcceptedOrder.Contains(item)) _listOfAcceptedOrder.Remove(item);
@@ -437,7 +437,7 @@
                 var dept = row[19].ToString();
                 var jobSpostStart = "";
                 var jobSpostEnd = "";
-                var jobModel = Central.ListOfModels.LastOrDefault(x => x.Name == job && x.Aim == line && x.Department == dept);
+                var jobModel = Central.TaskList.LastOrDefault(x => x.Name == job && x.Aim == line && x.Department == dept);
 
                 if (IsUpd && jobModel != null) return;
 
@@ -698,7 +698,7 @@
         private List<string> _lstOfSplittedOrd = new List<string>();
         private List<string> GetSplittedOrders()
         {
-            var query = from split in Central.ListOfModels
+            var query = from split in Central.TaskList
                         where split.IsBase == false
                         select split;
             var lstOfSplit = query.ToList();
@@ -1293,7 +1293,7 @@
 
             if (e.ColumnIndex == 0)
             {
-                if ((from split in Central.ListOfModels
+                if ((from split in Central.TaskList
                      where split.Name == _orderToUpdate
                      select split).ToList().Count > 0)
                 {
@@ -1553,7 +1553,7 @@
                         newRow[1] = ord;
                         newRow[2] = art;
 
-                        var orderFromGant = (from orders in Central.ListOfModels
+                        var orderFromGant = (from orders in Central.TaskList
                                              where orders.Name == ord && orders.Department == "Sartoria"
                                              select orders).SingleOrDefault();
 
@@ -1908,7 +1908,7 @@
                 MessageBox.Show("Capi/ora (" + qtyH.ToString() + ") is not accepted as an unity.", "Programming job", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-            var exist = Central.ListOfModels.Where(x => x.Name == _orderToUpdate && x.Department == dept).ToList();
+            var exist = Central.TaskList.Where(x => x.Name == _orderToUpdate && x.Department == dept).ToList();
             if (exist.Count > 0)
             {
                 MessageBox.Show("Order already exist as an accepted model.\n" +
@@ -1919,7 +1919,7 @@
 
             var byQty = false;
 
-            var d = JobModel.GetLineLastDate(lineInsteadDescripton, dept);
+            var d = JobModel.GetLineNextDate(lineInsteadDescripton, dept);
 
             var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d, article, totalQty, carico, qtyH);
 
@@ -2045,14 +2045,14 @@
 
             if (UseSingleFilter)
             {
-                modelQuery = from model in Central.ListOfModels
+                modelQuery = from model in Central.TaskList
                              where model.Name == Workflow.TargetOrder
                              && model.Aim == Workflow.TargetLine
                              select model;
             }
             else
             {
-                modelQuery = from model in Central.ListOfModels
+                modelQuery = from model in Central.TaskList
                              where model.Name == _orderToUpdate
                              && model.Aim == _line
                              select model;
@@ -2273,7 +2273,7 @@
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-            var modelQuery = (from model in Central.ListOfModels
+            var modelQuery = (from model in Central.TaskList
                               where model.Name == _orderToUpdate
                               select model).ToList();
             foreach (var model in modelQuery)
@@ -2516,16 +2516,16 @@
             HideLightColumns();
         }
 
-        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched) 
+        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched, int idx = 1) 
         {
             var checkShift = new ShiftRecognition();
 
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
-               "membersnr,manualDate,abatimen,launched) values " +
+               "membersnr,manualDate,abatimen,launched, idx) values " +
                "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
                "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34)";
+               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35)";
 
             var durationTicks = TimeSpan.FromDays(duration).Ticks;
             var eDate = startDate.AddTicks(durationTicks);
@@ -2577,6 +2577,7 @@
                 cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
                 cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
                 cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
+                cmd.Parameters.Add("@param35", SqlDbType.Bit).Value = idx;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

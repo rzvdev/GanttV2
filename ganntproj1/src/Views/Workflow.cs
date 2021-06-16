@@ -16,7 +16,7 @@
 
     public partial class Workflow : Form
     {
-        private readonly Ganttogram _gChart = new Ganttogram();
+        private readonly Ganttchart _gChart = new Ganttchart();
 
         private List<Bar> _objList = new List<Bar>();
 
@@ -142,12 +142,41 @@
             _gChart.FromDate = Central.DateFrom;
             _gChart.ToDate = Central.DateTo;
             SkipLines = false;
-            _gChart._barHeight = 40;
+            _gChart.BarHeight = 40;
             ListOfLinesSelected = new List<string>();
             AddTimelineObjects();
         }
 
         private List<Index> _indexerList = new List<Index>();
+
+        private void GenerateBarsIndexer()
+        {
+            _indexerList = new List<Index>();
+            DefaultAim = Central.TaskList.First().Aim;
+            DefaultDept = Central.TaskList.First().Department;
+            
+            var rowIdx = 0;
+            var elementIdx = 0;
+            foreach (var model in Central.TaskList)
+            {
+                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
+
+                if (model.Aim == DefaultAim && model.Department == DefaultDept)
+                {
+                    _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department, model.Idx));
+                    elementIdx++;
+                }
+                else
+                {
+                    elementIdx = 0;
+                    rowIdx++;
+                    _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department, model.Idx));
+                    elementIdx++;
+                }
+                DefaultAim = model.Aim;
+                DefaultDept = model.Department;
+            }
+        }
 
         private void SetPrincipalBarIndex(bool effColor)
         {
@@ -160,49 +189,23 @@
             c.GetBase();
             c.GetProductionColor();
             
-            if (!Central.ListOfModels.Any()) return;
+            if (!Central.TaskList.Any()) return;
 
-            _indexerList = new List<Index>();
-            DefaultAim = Central.ListOfModels.First().Aim;
-            DefaultDept = Central.ListOfModels.First().Department;
-
-            //var islocked = false;
-
-            var rowIdx = 0;
-            var elementIdx = 0;
-            foreach (var model in Central.ListOfModels)
-            {
-                if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
-                
-                if (model.Aim == DefaultAim && model.Department == DefaultDept)
-                {
-                    _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));
-                    elementIdx++;
-                }
-                else
-                {
-                    elementIdx = 0;
-                    rowIdx++;
-                    _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department));
-                    elementIdx++;
-                }
-                DefaultAim = model.Aim;
-                DefaultDept = model.Department;
-                //islocked = model.Locked;
-            }
+            GenerateBarsIndexer();
 
             var timeToMoveForward = 0L;
             var timeToMoveBack = 0L;
-            var objLockIndex = 0;
+            //var objLockIndex = 0;
 
             foreach (var item in _indexerList)
             {
                 timeToMoveForward = 0L;
                 timeToMoveBack = 0L;
-                var model = Central.ListOfModels.FirstOrDefault(x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept);
+                var model = Central.TaskList.FirstOrDefault(
+                    x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept && x.Idx == item.Idx);
              
                 var modelBefore = JobModel.GetModelIndex(model.Name, _indexerList, -1);
-                var lockedModelBefore = JobModel.GetIndexAfterLock(model.Name, _indexerList, -1, objLockIndex);
+               
                 if (modelBefore != null)
                 {
                     var delayTicks = 0L;
@@ -226,8 +229,7 @@
                     }
                     else
                     {
-                        //do this just in case when delay goes over manually programmed order
-
+                        // Do this just in case when delay goes over manually programmed order
                         if (Store.Default.sectorId == 1)
                         {
                             timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
@@ -304,7 +306,7 @@
                     }
                 }
 
-                var query = (from md in Central.ListOfModels
+                var query = (from md in Central.TaskList
                              where md.Name == model.Name && md.Aim == model.Aim && md.Department == model.Department
                              select md)
                              .Update(st =>
@@ -412,20 +414,11 @@
                     false, model.Aim, model.LoadedQty, model.DailyProd, model.ProdQty,
                     model.ProductionEndDate,
                     model.ProductionEndDate.AddDays(+model.ProdOverDays),
-                    model.Locked, model.IsLockedProduction,
+                    false, false,
                     model.ClosedByUser,
                     prodBarColor,
                     model.Article, model.Department, model.Launched,
-
-                    //TODO implement operation while programming new order
-                    operation: null, idx: 1));
-
-                if (model.Locked || model.IsLockedProduction)
-                {
-                    var idp = _indexerList.Where(x => x.ObjText == model.Name &&
-                    x.ObjAim == model.Aim && x.ObjDept == model.Department).SingleOrDefault();
-                    objLockIndex = idp.ObjIndex;
-                }
+                    model.Operation, model.Idx, model.ParentIdx, model.LoadedQty, model.Members, model.QtyH, model.Id));
             }
 
             foreach (var obj in _objList)
@@ -448,9 +441,8 @@
                     obj.ProdOverToTime,
                     obj.Locked, obj.LockedProd, obj.ClosedOrd,
                     obj.ProdColor, obj.Article, obj.Department, obj.Launched,
-
-                    //TODO implement operation while programming new order
-                    operation: obj.Operation, idx: obj.Idx);
+                    obj.Operation, obj.Idx, obj.ParentIdx,
+                    obj.LoadedQty, obj.Members, obj.QtyH, obj.Id);
             }
             _gChart.Refresh();
         }
@@ -469,11 +461,11 @@
 
             var modBefore = JobModel.GetModelIndex(val.RowText, _indexerList, -1);
             if (modBefore != null && modBefore.ProdQty < modBefore.LoadedQty && !modBefore.ClosedByUser
-                    && modBefore.ProdQty < modBefore.LoadedQty && !modBefore.Locked)
+                    && modBefore.ProdQty < modBefore.LoadedQty)
             {
                 _tmTip?.Dispose();
                 MessageBox.Show("Cannot proceed to '" + val.RowText +
-                    "' before you lock or complete '" + modBefore.Name + "'.", Text,
+                    "' before you complete '" + modBefore.Name + "'.", Text,
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
@@ -511,15 +503,14 @@
             ToolStripMenuItem tsmiGroupOpt = new ToolStripMenuItem();
             ToolStripMenuItem tsmi2 = new ToolStripMenuItem();
             ToolStripMenuItem tsmi3 = new ToolStripMenuItem();
-            ToolStripMenuItem tsmi4 = new ToolStripMenuItem();
 
             tsmi0.Text = "Commessa details";
             tsmi0.Image = Properties.Resources.search_16;
             tsmi1.Text = "Commesse da programmare";
             tsmi1.Image = Properties.Resources.programmare_16;
             tsmiGroupOpt.Text = "Options";
-            tsmi2.Text = "Split commessa";
-            tsmi2.Image = Properties.Resources.split_16;
+            tsmi2.Text = "Fractionate";
+            tsmi2.Image = Properties.Resources.reprogram_16;
             tsmi3.Text = "Delete";
             tsmi3.Image = Properties.Resources.trash_16;
 
@@ -527,29 +518,8 @@
                 {
                     _ctxActive = true;
 
-                    tsmi4.Enabled = true;
-                    tsmi2.Enabled = false;
+                    tsmi2.Enabled = true;
                     tsmi3.Enabled = true;
-                    if (_gChart.MouseOverRowValue != null)
-                        if (((Bar)_gChart.MouseOverRowValue).Locked)
-                        {
-                            tsmi4.Text = "Unlock";
-                            tsmi4.Image = Properties.Resources.unlock_16;
-                        }
-                        else
-                        {
-                            tsmi4.Text = "Lock";
-                            tsmi4.Image = Properties.Resources.lock_16;
-                        }
-                    else
-                    {
-                        tsmi4.Text = "Lock";
-                        tsmi4.Image = Properties.Resources.lock_16;
-                        tsmi4.Enabled = false;
-
-                        tsmi2.Enabled = false;
-                        tsmi3.Enabled = false;
-                    }
                 };
             _ctxMenuStrip.Closed += (sender, e) =>
             {
@@ -587,47 +557,29 @@
                 if (_tmTip != null) _tmTip.Dispose();
                 if (_gChart.MouseOverRowValue != null)
                 {
-                    var val = (Bar)_gChart.MouseOverRowValue;
-                    TargetOrder = val.RowText;
-                    TargetLine = val.Tag;
-                    TargetDepartment = val.Department;
-                    var start = _gChart.FromDate;
-                    var end = _gChart.ToDate;
-                    var frmTransp = new Form
+                    var bar = (Bar)_gChart.MouseOverRowValue;
+               
+                    if (bar.ProductionQty > 0)
                     {
-                        Size = this.ClientRectangle.Size,
-                        BackColor = Color.Black,
-                        Opacity = 0.4,
-                        FormBorderStyle = FormBorderStyle.None,
-                        WindowState = FormWindowState.Maximized,
-                        ShowIcon = false,
-                        ShowInTaskbar = false
-                    };
-                    frmTransp.Show();
-                    var si = new Split(TargetOrder, TargetLine, TargetDepartment);
-                    si.StartPosition = FormStartPosition.CenterScreen;
-                    si.Show();
-                    si.FormClosing += (se, ev) =>
+                        MessageBox.Show("Not possible to block an order that has production.", "Workflow", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
+                    var bo = new BlockOrder(bar);
+                    bo.ShowDialog();
+                    bo.Dispose();
+
+                    // Reload chart only in case if user save changes in blocking order
+                    if (bo.DialogResult == DialogResult.OK)
                     {
-                        frmTransp.Close();
-                        AddTimelineObjects();
-                        _gChart.FromDate = start;
-                        _gChart.ToDate = end;
-                        TargetOrder = string.Empty;
-                        TargetLine = string.Empty;
-                        TargetDepartment = string.Empty;
+                        _ctxMenuStrip = null;
                         _gChart.Refresh();
-                    };
-                    frmTransp.Click += (se, ev) =>
-                    {
-                        si.Close();
-                        frmTransp.Close();
-                    };
+                        AddTimelineObjects();
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Cannot perform the SPLIT query from an unreachable field.",
-                        "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // Ignore empty selected field
                 }
             };
             tsmi3.Click += (s, e) =>
@@ -635,74 +587,12 @@
                 _tmTip?.Dispose();
                 if (_gChart.MouseOverRowValue == null)
                 {
-                    MessageBox.Show("Cannot perform the DELETE query from an unreachable field.",
+                    MessageBox.Show("Cannot perform the DELETE action from an unreachable field.",
                         "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else
                 {
                     DeleteCommessaProgram();
-                }
-            };
-            tsmi4.Click += (s, e) =>
-            {
-                if (_gChart.MouseOverRowValue == null)
-                {
-                    MessageBox.Show("Cannot perform the LOCK query from an unreachable field.",
-                        "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else
-                {
-                    var val = (Bar)_gChart.MouseOverRowValue;
-                    TargetOrder = val.RowText;
-                    TargetLine = val.Tag;
-                    TargetDepartment = val.Department;
-
-                    var lockCounter = 0;
-                    var q = "select count(*) from objects where locked = 1 and aim = '" + TargetLine + "' and department = '" + TargetDepartment + "'";
-                    using (var c = new SqlConnection(Central.SpecialConnStr))
-                    {
-                        var cmd = new SqlCommand(q, c);
-                        c.Open();
-                        var dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
-                            while (dr.Read())
-                                int.TryParse(dr[0].ToString(), out lockCounter);
-
-                        c.Close();
-                        dr.Close();
-                    }
-
-                    using (var ctx = new System.Data.Linq.DataContext(Central.SpecialConnStr))
-                    {
-                        var isLockedStatus = val.Locked;
-                        if (isLockedStatus)
-                        {
-                            var fLock = false;
-                            var modLock = JobModel.GetIndexAfterLock(val.RowText, _indexerList, 1, 0);
-                            if (modLock != null && modLock.ProdQty > 0)
-                            {
-                                fLock = true;
-                            }
-                            ctx.ExecuteCommand("update objects set locked={0},lockedprod={1} where ordername={2} and aim={3}",
-                                fLock, false, TargetOrder, TargetLine);
-                        }
-                        else
-                        {
-                            if (lockCounter > 2)
-                            {
-                                MessageBox.Show("This line has lock limit " + lockCounter.ToString());
-                                return;
-                            }
-                                    
-                            var lockDate = DateTime.Now.Subtract(Config.MinimalDate).Ticks;
-                            ctx.ExecuteCommand("update objects set locked={0},lockedprod={1},lockdate={2} where ordername={3} and aim={4}",
-                                true, true, lockDate, TargetOrder, TargetLine);
-                        }
-                    }
-                    AddTimelineObjects();
-                    _gChart.Refresh();
-                    TargetOrder = string.Empty;
-                    TargetLine = string.Empty;
                 }
             };
 
@@ -711,7 +601,6 @@
             _ctxMenuStrip.Items.Add(new ToolStripSeparator());
             _ctxMenuStrip.Items.Add(tsmiGroupOpt);
             tsmiGroupOpt.DropDownItems.Add(tsmi2);
-            tsmiGroupOpt.DropDownItems.Add(tsmi4);
             tsmiGroupOpt.DropDownItems.Add(new ToolStripSeparator());
             tsmiGroupOpt.DropDownItems.Add(tsmi3);
 
@@ -722,10 +611,6 @@
 
         public void InsertCommessaProgram()
         {
-            //var loadingJob = new LoadingJob(true)
-            //{
-            //    WindowState = FormWindowState.Normal
-            //};
             try
             {
                 TargetProgramDate = _gChart.MouseOverColumnDate;
@@ -745,10 +630,10 @@
                                 select lines;
                 var lineDesc = lineQuery.Any() ? lineQuery.FirstOrDefault().Description : null;
 
-                var sDate = JobModel.GetLineLastDate(TargetLine, TargetDepartment);
+                var sDate = JobModel.GetLineNextDate(TargetLine, TargetDepartment);
                 ManualDateTime = sDate;
 
-                var activeLineMembers = Central.ListOfModels.Where(x => x.Aim == nextValue.Tag && x.Department == nextValue.Department).ToList();
+                var activeLineMembers = Central.TaskList.Where(x => x.Aim == nextValue.Tag && x.Department == nextValue.Department).ToList();
                 LineActiveArticlesList = new List<string>();
                 foreach (var member in activeLineMembers)
                 {
@@ -758,12 +643,9 @@
                     }
                 }
                 Central.IsProgramare = true;
-                //loadingJob.Text = "Carico lavoro - Commessa da programmare (" + TargetLine + " / " + lineDesc + ")";
-                //loadingJob.ShowDialog();
-                //loadingJob.Dispose();
+
                 OpenCaricoLavoro(true);
 
-                //Central.IsProgramare = false;
                 _ctxMenuStrip = null;
                 if (TargetOrder == string.Empty)
                 {
@@ -776,7 +658,7 @@
                                   && ord.IsDeleted == false
                                   select ord).SingleOrDefault();
 
-                var exist = Central.ListOfModels
+                var exist = Central.TaskList
                     .Where(x => x.Name == orderQuery.NrComanda
                     && x.Department == orderQuery.Department).ToList().Count;
 
@@ -815,10 +697,10 @@
                 var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Members);
                 var eDate = ManualDateTime.AddDays(+dur);
                 var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Members, qty);
-                //int.TryParse(dailyQty.ToString(), out var dq);
+
                 var loadingJob = new LoadingJob(false);
                 loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate, TargetLaunched);
-                using (var ctx = new System.Data.Linq.DataContext(Central.ConnStr))
+                using (var ctx = new DataContext(Central.ConnStr))
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2},QtyInstead={3} where NrComanda={4} and department={5}",
                         sDate, eDate,
@@ -880,14 +762,14 @@
                     return;
                 }
 
-                var checkIsSplitted = (from split in Central.ListOfModels
+                var checkIsSplitted = (from split in Central.TaskList
                                        where split.Name == TargetOrder && split.Department == TargetDepartment && split.Aim == TargetLine
                                        && split.IsBase == false
                                        select split).SingleOrDefault();
 
                 if (checkIsSplitted != null)
                 {
-                    var getOrder = (from baseOrd in Central.ListOfModels
+                    var getOrder = (from baseOrd in Central.TaskList
                                     where baseOrd.Name == checkIsSplitted.Name.Split('.')[0] && baseOrd.Department == TargetDepartment
                                     select baseOrd).SingleOrDefault();
 
@@ -1064,7 +946,7 @@
             _dgvTip.RowHeadersVisible = false;
             _dgvTip.ColumnHeadersVisible = false;
 
-            var model = Central.ListOfModels.FirstOrDefault(x => x.Aim == val.Tag && x.Name == val.RowText 
+            var model = Central.TaskList.FirstOrDefault(x => x.Aim == val.Tag && x.Name == val.RowText
             && x.Department == val.Department);
             if (model == null) return;
 
@@ -1166,7 +1048,7 @@
             cbArt.Items.Clear();
             cbComm.Items.Add("");
             cbArt.Items.Add("");
-            foreach (var item in Central.ListOfModels)
+            foreach (var item in Central.TaskList)
             {
                 if (!cbComm.Items.Contains(item.Name))
                     cbComm.Items.Add(item.Name);
@@ -1191,7 +1073,7 @@
                 }
                 else
                 {
-                    var q = (from model in Central.ListOfModels
+                    var q = (from model in Central.TaskList
                              where model.Name == cb.Text
                              select model).SingleOrDefault();
                     var month = q.StartDate.Date.Month;
@@ -1254,9 +1136,9 @@
             {
                 return;
             }
-            if (_gChart._barHeight < 40)
+            if (_gChart.BarHeight < 40)
             {
-                _gChart._barHeight++;
+                _gChart.BarHeight++;
                 _gChart.Refresh();
             }
             else
@@ -1285,15 +1167,15 @@
         private bool _isOutZoomed = false;
         private void ZoomOut()
         {
-            if (_gChart._barHeight == 28) return;
-            _gChart._barHeight -= 1;
+            if (_gChart.BarHeight == 28) return;
+            _gChart.BarHeight -= 1;
             _gChart.FromDate = _gChart.FromDate.AddDays(-1);
             _gChart.ToDate = _gChart.ToDate.AddDays(+1);
             _gChart.Refresh();
             _isOutZoomed = true;
-            if (_gChart._barHeight < 40)
+            if (_gChart.BarHeight < 40)
                 btnZoomOut.BackColor = Color.LightBlue;
-            else if (_gChart._barHeight == 40)
+            else if (_gChart.BarHeight == 40)
                 btnZoomIn.BackColor = Color.WhiteSmoke;
         }
         private void HScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -1421,7 +1303,7 @@
 
         public bool CheckOrderSplitStatus(string order, string department)
         {
-            var check = (from split in Central.ListOfModels
+            var check = (from split in Central.TaskList
                          where split.Name.Split('.')[0] == order && split.Department == department && split.IsBase == false
                          select split).SingleOrDefault();
 

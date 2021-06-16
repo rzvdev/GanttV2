@@ -319,7 +319,7 @@
       <DependentUpon>Split.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Helpers\Channels.cs" />
-    <Compile Include="src\Controls\Ganttogram.cs">
+    <Compile Include="src\Controls\Ganttchart.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="src\Controls\TableView.cs">
@@ -386,7 +386,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
-    <Content Include="License-LGPL.txt" />
+    <None Include="Resources\reprogram_16.png" />
     <None Include="Resources\active_321.png" />
     <None Include="Resources\active_32.png" />
     <None Include="Resources\eff_color_32.png" />
@@ -596,8 +596,8 @@
     <EmbeddedResource Include="src\Views\MyMessage.resx">
       <DependentUpon>MyMessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Controls\Ganttogram.resx">
-      <DependentUpon>Ganttogram.cs</DependentUpon>
+    <EmbeddedResource Include="src\Controls\Ganttchart.resx">
+      <DependentUpon>Ganttchart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Views\LoadingJob.resx">
       <DependentUpon>LoadingJob.cs</DependentUpon>

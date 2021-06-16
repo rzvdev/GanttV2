@@ -71,7 +71,7 @@ namespace ganntproj1
                 {
                 txtComm.Text = Order;
 
-                var splitQuery = from split in Central.ListOfModels
+                var splitQuery = from split in Central.TaskList
                                  where split.Name == Order && 
                                  split.Department == Department && split.IsBase == false
                                  select split;
@@ -83,7 +83,7 @@ namespace ganntproj1
                 lblError.Visible = false;
                 pnSplitCommands.Enabled = true;
 
-                var orginal = Central.ListOfModels.SingleOrDefault(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine);
+                var orginal = Central.TaskList.SingleOrDefault(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine);
 
                 _originalLine = orginal.Aim;
                 _originalCapi = orginal.LoadedQty;
@@ -234,7 +234,7 @@ namespace ganntproj1
             var splitQty = _originalCapi - newCapi;
             var j = new JobModel();
 
-            var jobModel = (from jobs in Central.ListOfModels
+            var jobModel = (from jobs in Central.TaskList
                             where jobs.Name ==
                             Order &&
                             jobs.Aim == Aim &&
@@ -277,10 +277,10 @@ namespace ganntproj1
 
                 var jobDuration = j.CalculateJobDuration(cbCommLinea.Text, newCapi, jobModel.QtyH, Department);    //production duration
 
-                var end = JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment);
+                var end = JobModel.GetLineNextDate(cbCommLinea.Text, Workflow.TargetDepartment);
                 var eDate = end.AddDays(+jobDuration);
 
-                var splitStartDate = JobModel.GetLineLastDate(cbCommLinea.Text, Workflow.TargetDepartment);
+                var splitStartDate = JobModel.GetLineNextDate(cbCommLinea.Text, Workflow.TargetDepartment);
 
                 if (splitStartDate == Config.MinimalDate)
                 {

@@ -19,7 +19,7 @@ namespace ganntproj1
         {
             var asc = new AutoCompleteStringCollection();
 
-            foreach (var view in Central.ListOfModels)
+            foreach (var view in Central.TaskList)
             {
                 asc.Add(view.Name);
             }
@@ -214,7 +214,7 @@ namespace ganntproj1
                     SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
             };
-            var models = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
+            var models = Central.TaskList.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
             && x.Department == Workflow.TargetDepartment).SingleOrDefault();
 
             if (models == null)
@@ -248,7 +248,7 @@ namespace ganntproj1
                              select new { lin.Abatimento }).SingleOrDefault();
             int.TryParse(lineQuery.Abatimento.ToString(), out _abatim);
 
-            var qhQuery = (from m in Central.ListOfModels
+            var qhQuery = (from m in Central.TaskList
                            where m.Name == Workflow.TargetOrder
                            && m.Aim == Workflow.TargetLine
                            && m.Department == Workflow.TargetDepartment
@@ -288,7 +288,7 @@ namespace ganntproj1
         }
         private void ShowProductionDateRange()
         {
-            var model = Central.ListOfModels.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
+            var model = Central.TaskList.Where(x => x.Name == Workflow.TargetOrder && x.Aim == Workflow.TargetLine
             && x.Department == Workflow.TargetDepartment).SingleOrDefault();
 
             if (model == null) return;
@@ -327,8 +327,8 @@ namespace ganntproj1
             cbCommLinea.DisplayMember = "key";
             cbCommLinea.ValueMember = "value";
 
-            var membersQuery = (from models in Central.ListOfModels
-                                where models.Name == Workflow.TargetOrder
+            var membersQuery = (from models in Central.TaskList
+                                where models.Name == Workflow.TargetOrder.Split('+')[0]
                                 && models.Aim == Workflow.TargetLine
                                 && models.Department == Workflow.TargetDepartment
                                 select models).FirstOrDefault();
@@ -647,7 +647,7 @@ namespace ganntproj1
                 return;
             }
             var newRow = _dtComm.NewRow();
-            var model = Central.ListOfModels
+            var model = Central.TaskList
                 .Where(x => x.Name == Workflow.TargetOrder &&
                 x.Aim == Workflow.TargetLine && x.Department == Workflow.TargetDepartment).SingleOrDefault();
 
@@ -771,7 +771,7 @@ namespace ganntproj1
         }
         private void GetTotalQty()
         {
-            var query = (from models in Central.ListOfModels
+            var query = (from models in Central.TaskList
                          where models.Name == Workflow.TargetOrder
                          && models.Aim == Workflow.TargetLine
                          && models.Department == Workflow.TargetDepartment

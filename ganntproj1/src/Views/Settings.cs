@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -50,7 +51,7 @@ namespace ganntproj1
         private bool _fast = false;
 
         private void Settings_Load(object sender, EventArgs e)
-            {            
+            {
             LoadProductData();
 
             AddClearFilterButton(txtDownloadSource, "btnDownloadSourcePath");
@@ -118,7 +119,7 @@ namespace ganntproj1
 
             LoadLines();
             AddButtonEvents();
-            var table = Central.ListOfModels;
+            var table = Central.TaskList;
             dataGridView2.DataSource = table;
             dgvLines.ReadOnly = true;
             dgvLines.AllowUserToAddRows = false;
@@ -210,23 +211,9 @@ namespace ganntproj1
             Store.Default.backupData = cbBackupData.Checked;
             Store.Default.fastStart = cbFast.Checked;
             Store.Default.daysToFinish = Convert.ToInt32(npdComplet.Value);
-            //double.TryParse(txtHoursConf.Text, out var confh);
-            //Store.Default.confHour = confh;
-            //double.TryParse(txtHoursStiro.Text, out var stiroh);
-            //Store.Default.stiroHour = stiroh;
-            //double.TryParse(txtHoursTess.Text, out var tessh);
-            //Store.Default.tessHour = tessh;
-            //double.TryParse(txtHoursSart.Text, out var sarth);
-            //Store.Default.sartHour = sarth;
-            //double.TryParse(txtHoursConfW.Text, out var confhw);
-            //Store.Default.confHourW = confhw;
-            //double.TryParse(txtHoursStiroW.Text, out var stirohw);
-            //Store.Default.stioHourW = stirohw;
-            //double.TryParse(txtHoursTessW.Text, out var tesshw);
-            //Store.Default.tessHourW = tesshw;
-            //double.TryParse(txtHoursSartW.Text, out var sarthw);
+
             UpdateDepartmentHours();
-            //Store.Default.sartHourW = sarthw;
+
             Store.Default.downloadSource = txtDownloadSource.Text;
             Store.Default.updateCheckRuntime = cbUpdateRuntime.Checked;
             Store.Default.Save();
@@ -242,24 +229,6 @@ namespace ganntproj1
             Store.Default.fastStart = cbFast.Checked;
             Store.Default.daysToFinish = Convert.ToInt32(npdComplet.Value);
 
-            //double.TryParse(txtHoursConf.Text, out var confh);
-            //Store.Default.confHour = confh;
-            //double.TryParse(txtHoursStiro.Text, out var stiroh);
-            //Store.Default.stiroHour = stiroh;
-            //double.TryParse(txtHoursTess.Text, out var tessh);
-            //Store.Default.tessHour = tessh;
-            //double.TryParse(txtHoursSart.Text, out var sarth);
-            //Store.Default.sartHour = sarth;
-
-            //double.TryParse(txtHoursConfW.Text, out var confhw);
-            //Store.Default.confHourW = confhw;
-            //double.TryParse(txtHoursStiroW.Text, out var stirohw);
-            //Store.Default.stioHourW = stirohw;
-            //double.TryParse(txtHoursTessW.Text, out var tesshw);
-            //Store.Default.tessHourW = tesshw;
-            //double.TryParse(txtHoursSartW.Text, out var sarthw);
-            //Store.Default.sartHourW = sarthw;
-
             UpdateDepartmentHours();
 
             Store.Default.downloadSource = txtDownloadSource.Text;
@@ -273,7 +242,7 @@ namespace ganntproj1
             c.GetBase();
             c.GetProductionColor();
 
-            var table = Central.ListOfModels;
+            var table = Central.TaskList;
             dataGridView2.DataSource = table;
             }
 
@@ -1142,14 +1111,16 @@ namespace ganntproj1
             Store.Default.tessHour = tessh;
             double.TryParse(txtHoursSart.Text, out var sarth);
             Store.Default.sartHour = sarth;
-            double.TryParse(txtHoursConfW.Text, out var confhw);
+            double.TryParse(txtHoursConfW.Text,  out var confhw);
             Store.Default.confHourW = confhw;
-            double.TryParse(txtHoursStiroW.Text, out var stirohw);
+            double.TryParse(txtHoursStiroW.Text,  out var stirohw);
             Store.Default.stioHourW = stirohw;
             double.TryParse(txtHoursTessW.Text, out var tesshw);
             Store.Default.tessHourW = tesshw;
             double.TryParse(txtHoursSartW.Text, out var sarthw);
             Store.Default.sartHourW = sarthw;
+
+            Store.Default.Save();
 
             var settings = new SettingsDom();
 
@@ -1158,16 +1129,16 @@ namespace ganntproj1
                 switch (item)
                 {
                     case "Confezione":
-                        settings.UpdateSettingsHours(item, confh.ToString(), confhw.ToString());
+                        settings.UpdateSettingsHours(item, confh, confhw);
                         break;
                     case "Stiro":
-                        settings.UpdateSettingsHours(item, stiroh.ToString(),stirohw.ToString());
+                        settings.UpdateSettingsHours(item, stiroh, stirohw);
                         break;
                     case "Tessitura":
-                        settings.UpdateSettingsHours(item, tessh.ToString(), tesshw.ToString());
+                        settings.UpdateSettingsHours(item, tessh, tesshw);
                         break;
                     case "Sartoria":
-                        settings.UpdateSettingsHours(item, sarth.ToString(), sarthw.ToString());
+                        settings.UpdateSettingsHours(item, sarth, sarthw);
                         break;
                 }
             }
