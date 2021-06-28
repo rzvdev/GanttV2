@@ -7,6 +7,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Data;
     using System.Data.Linq;
     using System.Data.SqlClient;
     using System.Drawing;
@@ -32,7 +33,7 @@
         }
 
         private IntPtr _console = new IntPtr();
-        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
+        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
         public static List<JobModel> TaskList { get; set; }
@@ -500,174 +501,95 @@
 
         private void AddModels(bool updateProduction)
         {
+            try { 
             var tbl = new System.Data.DataTable();
 
             var q = "select * from [dbo].[viewobjects] where charindex(+',' + department + ',', '" + Store.Default.selDept + "') > 0 " +
                 "order by department";
 
-            using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
-            {
-                var cmd = new System.Data.SqlClient.SqlCommand(q, con);
-                con.Open();
-                var dr = cmd.ExecuteReader();
-                tbl.Load(dr);
-                con.Close();
-                dr.Close();
-            }
-
             TaskList = new List<JobModel>();
-            var jb = new JobModel();
-            foreach (System.Data.DataRow row in tbl.Rows)
-            {
-                int.TryParse(row[0].ToString(), out var id);
-                var name = row[1].ToString();
-                var aim = row[2].ToString();
-                var dept = row[31].ToString();
-
-                var article = row[3].ToString();
-                int.TryParse(row[4].ToString(), out var stateId);
-                int.TryParse(row[5].ToString(), out var qty);
-                double.TryParse(row[6].ToString(), out var qtyH);
-                long.TryParse(row[7].ToString(), out var startDate);
-                double.TryParse(row[8].ToString(), out var duration);
-                long.TryParse(row[9].ToString(), out var endDate);
-                long.TryParse(row[10].ToString(), out var dvc);
-                long.TryParse(row[11].ToString(), out var rdd);
-                long.TryParse(row[12].ToString(), out var startProd);
-                long.TryParse(row[13].ToString(), out var endProd);
-                int.TryParse(row[14].ToString(), out var qtyDaily);
-                int.TryParse(row[15].ToString(), out var qtyProd);
-                int.TryParse(row[16].ToString(), out var qtyOver);
-                int.TryParse(row[17].ToString(), out var prodOverDays);
-                long.TryParse(row[18].ToString(), out var delayTime);
-                long.TryParse(row[19].ToString(), out var prodOverTime);
-                bool.TryParse(row[20].ToString(), out var locked);
-                int.TryParse(row[21].ToString(), out var holiday);
-                bool.TryParse(row[22].ToString(), out var closedOrd);
-                double.TryParse(row[23].ToString(), out var artPrice);
-                bool.TryParse(row[24].ToString(), out var hasProd);
-                bool.TryParse(row[25].ToString(), out var lockedProd);
-                long.TryParse(row[26].ToString(), out var delayStart);
-                long.TryParse(row[27].ToString(), out var delayEnd);
-                bool.TryParse(row[28].ToString(), out var doneProd);
-                long.TryParse(row[29].ToString(), out var lockDate);
-                bool.TryParse(row[30].ToString(), out var based);
-
-                int.TryParse(row[32].ToString(), out var workingDays);
-                int.TryParse(row[33].ToString(), out var members);
-                bool.TryParse(row[34].ToString(), out var manualDate);
-                int.TryParse(row[35].ToString(), out var abatimen);
-
-                bool.TryParse(row[36].ToString(), out var launched);
-
-                var operation = row[37].ToString();
-                int.TryParse(row[38].ToString(), out var idx);
-                int.TryParse(row[39].ToString(), out var parentIdx);
-
-                var startDt = Config.MinimalDate.AddTicks(startDate);
-                var endDt = Config.MinimalDate;
-                var dvcDt = Config.MinimalDate.AddTicks(dvc);
-                var rddDt = Config.MinimalDate.AddTicks(rdd);
-                var startProdDt = Config.MinimalDate.AddTicks(startProd);
-                var endProdDt = Config.MinimalDate.AddTicks(endProd);
-                var delayStartDt = Config.MinimalDate.AddTicks(delayStart);
-                var delayEndDt = Config.MinimalDate.AddTicks(delayEnd);
-
-                var isClosed = false;
-                if (closedOrd)
+                using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
                 {
-                    isClosed = closedOrd;
-                }
-                else
-                {
-                    isClosed = qtyProd >= qty ? true : false;
-                }
+                    var cmd = new System.Data.SqlClient.SqlCommand(q, con);
+                    con.Open();
+                    var dtr = cmd.ExecuteReader();
+                    tbl.Load(dtr);
+                    con.Close();
+                    dtr.Close();
 
-                endDt = Config.MinimalDate.AddTicks(endDate);
-                var nLine = (from line in Tables.Lines
-                             where line.Line == aim && line.Department == dept
-                             select line).FirstOrDefault();
 
-                if (updateProduction && Store.Default.sectorId == 8)
-                {
-                    var qry = @"select Op.GroupName, sum(op.Prezzo), round(cast(6000 / sum(Op.Centes) as float),2) from OperatiiArticol Op
-inner join Articole Art on Art.Articol=@Article  
-where Op.IdArticol = Art.Id and groupName is not null and Art.IdSector=8 and Op.IdSector=8 and op.groupname=@groupName
-group by Op.GroupName";
+                    TaskList = (from DataRow dr in tbl.Rows
+                                select new JobModel()
+                                {
+                                    Name = dr["ordername"].ToString(),
+                                    Aim = dr["aim"].ToString(),
+                                    Article = dr["article"].ToString(),
+                                    StateId = int.Parse(dr["stateid"].ToString()),
+                                    LoadedQty = int.Parse(dr["loadedqty"].ToString()),
+                                    QtyH = double.Parse(dr["qtyh"].ToString()),
+                                    StartDate = Config.MinimalDate.AddTicks(long.Parse(dr["startdate"].ToString())),
+                                    Duration = double.Parse(dr["duration"].ToString()),
+                                    EndDate = Config.MinimalDate.AddTicks(long.Parse(dr["enddate"].ToString())),
+                                    Dvc = Config.MinimalDate.AddTicks(long.Parse(dr["dvc"].ToString())),
+                                    Rdd = Config.MinimalDate.AddTicks(long.Parse(dr["rdd"].ToString())),
+                                    ProductionStartDate = Config.MinimalDate.AddTicks(long.Parse(dr["startprod"].ToString())),
+                                    ProductionEndDate = Config.MinimalDate.AddTicks(long.Parse(dr["endprod"].ToString())),
+                                    DailyProd = int.Parse(dr["dailyprod"].ToString()),
+                                    ProdQty = int.Parse(dr["prodqty"].ToString()),
+                                    OverQty = int.Parse(dr["overqty"].ToString()),
+                                    ProdOverDays = int.Parse(dr["prodoverdays"].ToString()),
+                                    DelayTime = long.Parse(dr["delayts"].ToString()),
+                                    ProdOverTime = long.Parse(dr["prodoverts"].ToString()),
+                                    IsLockedProduction = bool.Parse(dr["locked"].ToString()),
+                                    HolidayRange = int.Parse(dr["holiday"].ToString()),
+                                    ClosedByUser = bool.Parse(dr["closedord"].ToString()),
+                                    ArtPrice = double.Parse(dr["artprice"].ToString()),
+                                    HasProduction = bool.Parse(dr["hasprod"].ToString()),
+                                    //= dr["lockedprod"]
+                                    DelayStartDate = Config.MinimalDate.AddTicks(long.Parse(dr["delaystart"].ToString())),
+                                    DelayEndDate = Config.MinimalDate.AddTicks(long.Parse(dr["delayend"].ToString())),
+                                    ProductionDone = bool.Parse(dr["doneprod"].ToString()),
+                                    // = dr["lockdate"]
+                                    IsBase = bool.Parse(dr["base"].ToString()),
+                                    Department = dr["department"].ToString(),
+                                    // WorkingDays =int.Parse( dr["workingdays"].ToString()),
+                                    Members = int.Parse(dr["membersnr"].ToString()),
+                                    ManualDate = bool.Parse(dr["manualDate"].ToString()),
+                                    Abatimen = int.Parse(dr["abatimen"].ToString()),
+                                    //Launched = bool.Parse(dr["launched"].ToString()),
+                                    //Operation = dr["operation"]
+                                    //Idx= dr["idx"]
+                                    ParentIdx = 0
+                                }
+                                ).ToList();
 
-                    var prezzoSync = 0.0;
-                    var cpSync = 0.0;
-
-                    using (var con = new SqlConnection(ConnStr))
+                    if (updateProduction)
                     {
-                        var cmd = new SqlCommand(qry, con);
-                        cmd.Parameters.Add("@Article", System.Data.SqlDbType.VarChar).Value = article;
-                        cmd.Parameters.Add("@groupName", System.Data.SqlDbType.NVarChar).Value = nLine.Groupby;
-
-                        con.Open();
-                        var dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
-                            while (dr.Read())
-                            {
-                                double.TryParse(dr[1].ToString(), out prezzoSync);
-                                double.TryParse(dr[2].ToString(), out cpSync);
-                            }
-                        con.Close();
-                        dr.Close();
-                    }
-
-                    using (var context = new DataContext(SpecialConnStr))
-                    {
-                        context.ExecuteCommand("update produzione set " +
-                            "qtyH={0},price={1},members={2},abatim={3} " +
-                            "where commessa={4} and line={5} and department={6}",
-                            cpSync, prezzoSync, nLine.Members, nLine.Abatimento, name, aim, dept);
-                    }
-
-                    using (var context = new DataContext(SpecialConnStr))
-                    {
-                        context.ExecuteCommand("update objects set " +
-                            "qtyh={0},artprice={1},closedord={5} " +
-                            "where ordername={2} and aim={3} and department={4}",
-                            cpSync, prezzoSync, name, aim, dept, isClosed);
+                        if (Store.Default.sectorId == 8)
+                        {
+                            var cmd1 = new SqlCommand("UpdatePricesSartoria", con);
+                            cmd1.CommandType = CommandType.StoredProcedure;
+                            con.Open();
+                            cmd1.ExecuteNonQuery();
+                            con.Close();
+                        }
+                        else if(Store.Default.sectorId!=2 && Store.Default.sectorId!=8)
+                        {
+                            var cmd2 = new SqlCommand("UpdatePrices", con);
+                            cmd2.CommandType = CommandType.StoredProcedure;
+                            cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
+                            con.Open();
+                            cmd2.ExecuteNonQuery();
+                            con.Close();
+                        }
                     }
                 }
-                else if (updateProduction && Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
-                {
-                    var nArt = (from art in Models.Tables.Articles
-                                where art.Articol == article && art.Idsector == Store.Default.sectorId
-                                select art).FirstOrDefault();
- 
-                    if (nArt == null || nLine == null) continue;
-
-                    double.TryParse(nArt.Centes.ToString(), out var qtyHSync);
-                    if (Store.Default.sectorId == 2) qtyHSync = qtyH; //get from objects
-
-                    double.TryParse(nArt.Prezzo.ToString(), out var priceSync);
-                    
-                    using (var context = new DataContext(SpecialConnStr))
-                    {
-                        context.ExecuteCommand("update produzione set " +
-                            "qtyH={0},price={1},members={2},abatim={3} " +
-                            "where commessa={4} and line={5} and department={6}",
-                            qtyHSync, priceSync, nLine.Members, nLine.Abatimento, name, aim, dept);
-                    }
-
-                    using (var context = new DataContext(SpecialConnStr))
-                    {
-                        context.ExecuteCommand("update objects set " +
-                            "qtyh={0},artprice={1},closedord={5} " +
-                            "where ordername={2} and aim={3} and department={4}",
-                            qtyHSync, priceSync, name, aim, dept,isClosed);
-                    }
-                }
-
-                TaskList.Add(new JobModel(name, aim, article, stateId, qty, qtyH, startDt, duration, endDt, dvcDt, rddDt, startProdDt, endProdDt,
-                    qtyDaily, qtyProd, qtyOver, prodOverDays, delayTime, prodOverTime,
-                    locked, holiday, isClosed, artPrice, hasProd, lockedProd,
-                    delayStartDt, delayEndDt, doneProd, based, qtyH, artPrice, dept, workingDays, members, manualDate, abatimen, launched,
-                    idx, parentIdx, operation, id));
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error");
+            }
+            
         }
 
         private void CreateMenuTree()
@@ -723,7 +645,7 @@ group by Op.GroupName";
                     var frm = new LoadingJob(false);
                     var wFlow = new Workflow();
                     LoadingInfo.UpdateText("Loading carico lavoro...");
-                    wFlow.LoadDataWithDateChange();
+                    //wFlow.LoadDataWithDateChange();
                     frm.WindowState = FormWindowState.Minimized;
                     frm.FormBorderStyle = FormBorderStyle.None;
                     frm.ShowInTaskbar = false;
@@ -1991,8 +1913,11 @@ group by Op.GroupName";
 
             LoadingInfo.ShowLoading();
             LoadingInfo.InfoText = "Computing...";
-
-            foreach (var model in TaskList)
+            // using (var context = new DataContext(SpecialConnStr))
+            using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
+            {
+                
+                foreach (var model in TaskList)
             {
                 DateTime.TryParse(model.StartDate.ToString(), out var start);
                 DateTime.TryParse(model.EndDate.ToString(), out var end);
@@ -2011,20 +1936,32 @@ group by Op.GroupName";
                     dE = Config.MinimalDate;
                 }
 
-                using (var context = new DataContext(SpecialConnStr))
-                {
+               
                     DateTime.TryParse(model.Dvc.ToString(), out var dvc);
                     DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
                     var d = dvc == DateTime.MinValue ? 0L : dvc.Subtract(Config.MinimalDate).Ticks;
                     var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate).Ticks;
-
-                    context.ExecuteCommand("update objects set " +
-                            "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
-                            "where ordername={6} and aim={7} and department={8}",
-                            start, end,
-                            dS, dE, d, r,
-                            model.Name, model.Aim, model.Department);
+                    var cmd = new SqlCommand("UpdateDelays", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@StartFlow", SqlDbType.DateTime).Value = start;
+                    cmd.Parameters.Add("@EndFlow", SqlDbType.DateTime).Value = end;
+                    cmd.Parameters.Add("@DelayStartFlow", SqlDbType.DateTime).Value = dS;
+                    cmd.Parameters.Add("@DelayEndFlow", SqlDbType.DateTime).Value = dE;
+                    cmd.Parameters.Add("@dvc", SqlDbType.BigInt).Value = d;
+                    cmd.Parameters.Add("@rdd", SqlDbType.BigInt).Value = r;
+                    cmd.Parameters.Add("@order", SqlDbType.NVarChar).Value = model.Name;
+                    cmd.Parameters.Add("@aim", SqlDbType.NVarChar).Value = model.Aim;
+                    cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = model.Department;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    //context.ExecuteCommand("update objects set " +
+                    //        "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
+                    //        "where ordername={6} and aim={7} and department={8}",
+                    //        start, end,
+                    //        dS, dE, d, r,
+                    //        model.Name, model.Aim, model.Department);
                 }
             }
 
