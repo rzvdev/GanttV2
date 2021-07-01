@@ -33,7 +33,8 @@
         }
 
         private IntPtr _console = new IntPtr();
-        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
+        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
+        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
         public static List<JobModel> TaskList { get; set; }
@@ -292,7 +293,7 @@
             var settDom = new SettingsDom();
             settDom.SaveHoursToSettings();
             LoadingInfo.UpdateText("Generating settings...");
-
+            GetProductionColor();
             AddModels(false);
 
             var lst = (from models in TaskList
@@ -376,7 +377,7 @@
 
             _console = GetConsoleWindow();  
             Cursor = Cursors.Default;
-
+           
             if (string.IsNullOrEmpty(Store.Default.selShift))   
             {
                 MessageBox.Show("Shift must be configured.", "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -393,8 +394,8 @@
                 settings.ShowDialog();
                 settings.Dispose();
             }
+            
 
-            GetProductionColor();
 
             if (Store.Default.sectorId == 1)
             {
@@ -563,26 +564,26 @@
                                 }
                                 ).ToList();
 
-                    if (updateProduction)
-                    {
-                        if (Store.Default.sectorId == 8)
-                        {
-                            var cmd1 = new SqlCommand("UpdatePricesSartoria", con);
-                            cmd1.CommandType = CommandType.StoredProcedure;
-                            con.Open();
-                            cmd1.ExecuteNonQuery();
-                            con.Close();
-                        }
-                        else if(Store.Default.sectorId!=2 && Store.Default.sectorId!=8)
-                        {
-                            var cmd2 = new SqlCommand("UpdatePrices", con);
-                            cmd2.CommandType = CommandType.StoredProcedure;
-                            cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
-                            con.Open();
-                            cmd2.ExecuteNonQuery();
-                            con.Close();
-                        }
-                    }
+                    //if (updateProduction)
+                    //{
+                    //    if (Store.Default.sectorId == 8)
+                    //    {
+                    //        var cmd1 = new SqlCommand("UpdatePricesSartoria", con);
+                    //        cmd1.CommandType = CommandType.StoredProcedure;
+                    //        con.Open();
+                    //        cmd1.ExecuteNonQuery();
+                    //        con.Close();
+                    //    }
+                    //    else if (Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
+                    //    {
+                    //        var cmd2 = new SqlCommand("UpdatePrices", con);
+                    //        cmd2.CommandType = CommandType.StoredProcedure;
+                    //        cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
+                    //        con.Open();
+                    //        cmd2.ExecuteNonQuery();
+                    //        con.Close();
+                    //    }
+                    //}
                 }
             }
             catch(Exception ex)
@@ -645,7 +646,7 @@
                     var frm = new LoadingJob(false);
                     var wFlow = new Workflow();
                     LoadingInfo.UpdateText("Loading carico lavoro...");
-                    //wFlow.LoadDataWithDateChange();
+                    wFlow.LoadDataWithDateChange();
                     frm.WindowState = FormWindowState.Minimized;
                     frm.FormBorderStyle = FormBorderStyle.None;
                     frm.ShowInTaskbar = false;
@@ -1910,60 +1911,98 @@
                 MessageBox.Show("Sync function works only when 'Produzione Gantt' is selected.", "Sync", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            
             LoadingInfo.ShowLoading();
             LoadingInfo.InfoText = "Computing...";
-            // using (var context = new DataContext(SpecialConnStr))
-            using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
-            {
-                
-                foreach (var model in TaskList)
-            {
-                DateTime.TryParse(model.StartDate.ToString(), out var start);
-                DateTime.TryParse(model.EndDate.ToString(), out var end);
+            //using (var context = new DataContext(SpecialConnStr))
+            //using (var con = new System.Data.SqlClient.SqlConnection(SpecialConnStr))
+            //{
+            //    string dep = string.Empty;
+            //    switch(Store.Default.sectorId)
+            //    {
+            //        case 2:
+            //            dep = "Stiro";
+            //            break;
+            //        case 7:
+            //            dep = "Tessitura";
+            //            break;
+            //        case 8:
+            //            dep = "Sartoria";
+            //            break;
+            //    }
+            //    if (Store.Default.sectorId == 1)
+            //    {
+            //        string department="Confezione B";
+            //        var cmd = new SqlCommand("UpdateDelays", con);
+            //        cmd.CommandType = CommandType.StoredProcedure;
+            //        cmd.Parameters.Add("@Department", SqlDbType.NVarChar).Value = department;
+            //        con.Open();
+            //        cmd.ExecuteNonQuery();
+            //        con.Close();
+            //        string department1 = "Confezione C";
+            //        var cmd1 = new SqlCommand("UpdateDelays", con);
+            //        cmd1.CommandType = CommandType.StoredProcedure;
+            //        cmd1.Parameters.Add("@Department", SqlDbType.NVarChar).Value = department1;
+            //        con.Open();
+            //        cmd1.ExecuteNonQuery();
+            //        con.Close();
+            //    }
+            //    else
+            //    {
+            //        var cmd = new SqlCommand("UpdateDelays", con);
+            //        cmd.CommandType = CommandType.StoredProcedure;
+            //        cmd.Parameters.Add("@Department", SqlDbType.NVarChar).Value = dep;
+            //        con.Open();
+            //        cmd.ExecuteNonQuery();
+            //        con.Close();
+            //    }
+                //    foreach (var model in TaskList)
+                //{
+                //    DateTime.TryParse(model.StartDate.ToString(), out var start);
+                //    DateTime.TryParse(model.EndDate.ToString(), out var end);
 
-                var dS = Config.MinimalDate;
-                var dE = Config.MinimalDate;
+                //    var dS = Config.MinimalDate;
+                //    var dE = Config.MinimalDate;
 
-                if (model.DelayStartDate != DateTime.MinValue && model.DelayEndDate != DateTime.MinValue)
-                {
-                    DateTime.TryParse(model.DelayStartDate.ToString(), out dS);
-                    DateTime.TryParse(model.DelayEndDate.ToString(), out dE);
-                }
-                else
-                {
-                    dS = Config.MinimalDate;
-                    dE = Config.MinimalDate;
-                }
+                //    if (model.DelayStartDate != DateTime.MinValue && model.DelayEndDate != DateTime.MinValue)
+                //    {
+                //        DateTime.TryParse(model.DelayStartDate.ToString(), out dS);
+                //        DateTime.TryParse(model.DelayEndDate.ToString(), out dE);
+                //    }
+                //    else
+                //    {
+                //        dS = Config.MinimalDate;
+                //        dE = Config.MinimalDate;
+                //    }
 
-               
-                    DateTime.TryParse(model.Dvc.ToString(), out var dvc);
-                    DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
-                    var d = dvc == DateTime.MinValue ? 0L : dvc.Subtract(Config.MinimalDate).Ticks;
-                    var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate).Ticks;
-                    var cmd = new SqlCommand("UpdateDelays", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@StartFlow", SqlDbType.DateTime).Value = start;
-                    cmd.Parameters.Add("@EndFlow", SqlDbType.DateTime).Value = end;
-                    cmd.Parameters.Add("@DelayStartFlow", SqlDbType.DateTime).Value = dS;
-                    cmd.Parameters.Add("@DelayEndFlow", SqlDbType.DateTime).Value = dE;
-                    cmd.Parameters.Add("@dvc", SqlDbType.BigInt).Value = d;
-                    cmd.Parameters.Add("@rdd", SqlDbType.BigInt).Value = r;
-                    cmd.Parameters.Add("@order", SqlDbType.NVarChar).Value = model.Name;
-                    cmd.Parameters.Add("@aim", SqlDbType.NVarChar).Value = model.Aim;
-                    cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = model.Department;
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    //context.ExecuteCommand("update objects set " +
-                    //        "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
-                    //        "where ordername={6} and aim={7} and department={8}",
-                    //        start, end,
-                    //        dS, dE, d, r,
-                    //        model.Name, model.Aim, model.Department);
-                }
-            }
+                //        DateTime.TryParse(model.Dvc.ToString(), out var dvc);
+                //        DateTime.TryParse(model.Rdd.ToString(), out var rdd);
+
+                //        var d = dvc == DateTime.MinValue ? 0L : dvc.Subtract(Config.MinimalDate).Ticks;
+                //        var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate).Ticks;
+                //        var cmd = new SqlCommand("UpdateDelays", con);
+                //        cmd.CommandType = CommandType.StoredProcedure;
+                //        cmd.Parameters.Add("@StartFlow", SqlDbType.DateTime).Value = start;
+                //        cmd.Parameters.Add("@EndFlow", SqlDbType.DateTime).Value = end;
+                //        cmd.Parameters.Add("@DelayStartFlow", SqlDbType.DateTime).Value = dS;
+                //        cmd.Parameters.Add("@DelayEndFlow", SqlDbType.DateTime).Value = dE;
+                //        cmd.Parameters.Add("@dvc", SqlDbType.BigInt).Value = d;
+                //        cmd.Parameters.Add("@rdd", SqlDbType.BigInt).Value = r;
+                //        cmd.Parameters.Add("@order", SqlDbType.NVarChar).Value = model.Name;
+                //        cmd.Parameters.Add("@aim", SqlDbType.NVarChar).Value = model.Aim;
+                //        cmd.Parameters.Add("@department", SqlDbType.NVarChar).Value = model.Department;
+                //        con.Open();
+                //        cmd.ExecuteNonQuery();
+                //        con.Close();
+                //        context.ExecuteCommand("update objects set " +
+                //                "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
+                //                "where ordername={6} and aim={7} and department={8}",
+                //                start, end,
+                //                dS, dE, d, r,
+                //                model.Name, model.Aim, model.Department);
+                //    }
+           // }
 
             Config.SetGanttConn(new DataContext(SpecialConnStr));
                 Config.SetOlyConn(new DataContext(ConnStr));
