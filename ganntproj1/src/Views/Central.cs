@@ -30,11 +30,11 @@
             Completed,
             NewUpdate,
         }
-
+        
         private IntPtr _console = new IntPtr();
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
-
+        
         public static List<JobModel> TaskList { get; set; }
         public static DateTime DateFrom { get; private set; }
         public static DateTime DateTo { get; private set; }

@@ -9,7 +9,6 @@
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
     using System.Windows.Forms;
@@ -32,6 +31,13 @@
 
         private readonly Config _config = new Config();
 
+        public static List<string> ListOfLinesSelected { get; set; }
+
+        private LoadingJob _loadingJobForm;
+        public LoadingJob LoadingJobForm { get => _loadingJobForm; set => _loadingJobForm = value; }
+
+        public int TaskId { get; set; }
+
         private bool IsTreeState { get; set; }
 
         private bool HoldCollapsedNodes { get; set; }
@@ -47,7 +53,6 @@
         public static DateTime TargetModelStartDate { get; set; }
 
         public static bool TargetLaunched { get; set; }
-
 
         public static Color TargetModelColor { get; set; }
 
@@ -74,6 +79,8 @@
         private string DefaultDept { get; set; }
 
         public static bool IsDelayHidden { get; set; }
+
+        public static bool SkipLines = false;
 
         public Workflow()
         {
@@ -559,13 +566,13 @@
                 {
                     var bar = (Bar)_gChart.MouseOverRowValue;
                
-                    if (bar.ProductionQty > 0)
+                    if (bar.ClosedOrd || bar.LoadedQty - bar.ProductionQty == 0)
                     {
-                        MessageBox.Show("Not possible to block an order that has production.", "Workflow", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Cannot block a closed order.", "Workflow", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     
-                    var bo = new BlockOrder(bar);
+                    var bo = new FractionateOrder(bar);
                     bo.ShowDialog();
                     bo.Dispose();
 
@@ -813,22 +820,10 @@
                 TargetDepartment = string.Empty;
             }
         }
-        private void cbDvc_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((CheckBox)sender).Checked)
-                IsTreeState = true;
-            else
-                if (!HoldCollapsedNodes)
-                _lstExpanded.Clear();
-            IsTreeState = false;
-            AddTimelineObjects();
-        }
-
-        private LoadingJob _loadingJobForm = null;
 
         private void OpenCaricoLavoro(bool isUpdate = false)
         {
-            if (_loadingJobForm == null)
+            if (LoadingJobForm == null)
             {
                 spContainer.Panel2Collapsed = false;
                 spContainer.SplitterDistance = 280;
@@ -844,7 +839,6 @@
                         {
                             form.Close();
                             form.Dispose();
-                            form = null;
                         }
                 }
                 lbl.Location = new Point(spContainer.Panel2.Width / 2 - lbl.Width / 2,
@@ -855,26 +849,26 @@
                 spContainer.Refresh();
                 SuspendLayout();
 
-                _loadingJobForm = new LoadingJob(isUpdate);
-                var clr = _loadingJobForm.BackColor;
-                _loadingJobForm.Opacity = 0.0;
-                _loadingJobForm.FormBorderStyle = FormBorderStyle.None;
-                _loadingJobForm.ShowInTaskbar = false;
-                _loadingJobForm.ControlBox = false;
-                _loadingJobForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                _loadingJobForm.Visible = false;
-                _loadingJobForm.Show();
-                _loadingJobForm.TopLevel = false;
-                spContainer.Panel2.Controls.Add(_loadingJobForm);
-                _loadingJobForm.Location = new Point(0, 0);
-                _loadingJobForm.Size = spContainer.Panel2.Size;
-                _loadingJobForm.Visible = true;
-                _loadingJobForm.BackColor = clr;
+                LoadingJobForm = new LoadingJob(isUpdate);
+                var clr = LoadingJobForm.BackColor;
+                LoadingJobForm.Opacity = 0.0;
+                LoadingJobForm.FormBorderStyle = FormBorderStyle.None;
+                LoadingJobForm.ShowInTaskbar = false;
+                LoadingJobForm.ControlBox = false;
+                LoadingJobForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                LoadingJobForm.Visible = false;
+                LoadingJobForm.Show();
+                LoadingJobForm.TopLevel = false;
+                spContainer.Panel2.Controls.Add(LoadingJobForm);
+                LoadingJobForm.Location = new Point(0, 0);
+                LoadingJobForm.Size = spContainer.Panel2.Size;
+                LoadingJobForm.Visible = true;
+                LoadingJobForm.BackColor = clr;
                 btnCallCarico.Text = "";
                 btnCallCarico.ImageAlign = ContentAlignment.MiddleCenter;
                 btnCallCarico.Image = Properties.Resources.back_3d_icon;
                 ResumeLayout(true);
-                _loadingJobForm.Opacity = 1.0;
+                LoadingJobForm.Opacity = 1.0;
                 lbl.Dispose();
 
                 _clActive = true;
@@ -895,8 +889,8 @@
                         }
                 }
 
-                _loadingJobForm.Dispose();
-                _loadingJobForm = null;
+                LoadingJobForm.Dispose();
+                LoadingJobForm = null;
                 if (Central.IsProgramare) Central.IsProgramare = false;
                 Thread.Sleep(400);
 
@@ -1277,18 +1271,6 @@
             }
             _gChart.Refresh();
         }
-
-        private void WorkflowController_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void WorkflowController_KeyDown(object sender, KeyEventArgs e)
-        {
-        }
-
-        public static List<string> ListOfLinesSelected { get; set; }
-
-        public static bool SkipLines = false;
 
         private void Button1_Click(object sender, EventArgs e)
         {

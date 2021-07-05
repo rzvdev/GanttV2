@@ -2520,12 +2520,14 @@
         {
             var checkShift = new ShiftRecognition();
 
+            var orderOrigin = order.Contains("_") ? order.Split('_')[0] : order;
+
             var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
-               "membersnr,manualDate,abatimen,launched, idx) values " +
+               "membersnr,manualDate,abatimen,launched, idx, orderorigin) values " +
                "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
                "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35)";
+               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35, @param36)";
 
             var durationTicks = TimeSpan.FromDays(duration).Ticks;
             var eDate = startDate.AddTicks(durationTicks);
@@ -2578,6 +2580,7 @@
                 cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
                 cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
                 cmd.Parameters.Add("@param35", SqlDbType.Bit).Value = idx;
+                cmd.Parameters.Add("@param36", SqlDbType.NVarChar).Value = orderOrigin;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

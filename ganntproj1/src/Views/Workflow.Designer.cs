@@ -440,8 +440,6 @@
             this.Text = "Workflow controller";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ProduzioneGantt_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.WorkflowController_Paint);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WorkflowController_KeyDown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.spContainer.Panel1.ResumeLayout(false);

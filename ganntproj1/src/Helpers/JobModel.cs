@@ -447,7 +447,7 @@
         public int GetObjectNextIndex(string ordername, string aim, string department)
         {
             var idx = 0;
-            var q = $"select max(idx) from objects where ordername='{ordername.Split('+')[0]}' and aim='{aim}' and department='{department}'";
+            var q = $"select max(idx) from objects where ordername='{ordername}' and aim='{aim}' and department='{department}'";
 
             using (var c = new SqlConnection(Central.SpecialConnStr))
             {

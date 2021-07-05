@@ -1,6 +1,6 @@
 ﻿namespace ganntproj1.src.Views
 {
-    partial class BlockOrder
+    partial class FractionateOrder
     {
         /// <summary>
         /// Required designer variable.
@@ -39,6 +39,7 @@
             this.lblCurrentLine = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnUndo = new System.Windows.Forms.Button();
             this.lblTotQty = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.lblArticle = new System.Windows.Forms.Label();
@@ -48,12 +49,14 @@
             this.lblOrder = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnResetSuggDate = new System.Windows.Forms.Button();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.label15 = new System.Windows.Forms.Label();
             this.lblDateInfo = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbOperation = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnResetSuggDate = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -156,18 +159,21 @@
             this.lblSave.ForeColor = System.Drawing.Color.Black;
             this.lblSave.Image = global::ganntproj1.Properties.Resources.save_multidm_48;
             this.lblSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblSave.Location = new System.Drawing.Point(473, 51);
+            this.lblSave.Location = new System.Drawing.Point(546, 52);
             this.lblSave.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSave.Name = "lblSave";
-            this.lblSave.Size = new System.Drawing.Size(209, 75);
+            this.lblSave.Size = new System.Drawing.Size(106, 75);
             this.lblSave.TabIndex = 38;
-            this.lblSave.Text = "Reprogram order";
+            this.lblSave.Text = "Save";
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
+            this.lblSave.MouseEnter += new System.EventHandler(this.lblSave_MouseEnter);
+            this.lblSave.MouseLeave += new System.EventHandler(this.lblSave_MouseLeave);
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panel1.BackColor = System.Drawing.Color.Linen;
+            this.panel1.Controls.Add(this.btnUndo);
             this.panel1.Controls.Add(this.lblTotQty);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.lblArticle);
@@ -181,6 +187,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(731, 152);
             this.panel1.TabIndex = 112;
+            // 
+            // btnUndo
+            // 
+            this.btnUndo.BackColor = System.Drawing.Color.Moccasin;
+            this.btnUndo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUndo.Location = new System.Drawing.Point(519, 12);
+            this.btnUndo.Name = "btnUndo";
+            this.btnUndo.Size = new System.Drawing.Size(199, 66);
+            this.btnUndo.TabIndex = 120;
+            this.btnUndo.Text = "Undo\r\n(Restore to previous order)";
+            this.btnUndo.UseVisualStyleBackColor = false;
+            this.btnUndo.Click += new System.EventHandler(this.button1_Click);
             // 
             // lblTotQty
             // 
@@ -271,6 +289,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Date and time";
             // 
+            // btnResetSuggDate
+            // 
+            this.btnResetSuggDate.BackgroundImage = global::ganntproj1.Properties.Resources.history_40;
+            this.btnResetSuggDate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnResetSuggDate.Location = new System.Drawing.Point(341, 44);
+            this.btnResetSuggDate.Name = "btnResetSuggDate";
+            this.btnResetSuggDate.Size = new System.Drawing.Size(25, 23);
+            this.btnResetSuggDate.TabIndex = 10;
+            this.btnResetSuggDate.UseVisualStyleBackColor = true;
+            this.btnResetSuggDate.Click += new System.EventHandler(this.btnResetSuggDate_Click);
+            // 
             // dtpStart
             // 
             this.dtpStart.Checked = false;
@@ -307,6 +336,8 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.cbOperation);
             this.panel2.Controls.Add(this.txtQty);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.label2);
@@ -322,6 +353,30 @@
             this.panel2.Size = new System.Drawing.Size(731, 100);
             this.panel2.TabIndex = 114;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(482, 10);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(64, 16);
+            this.label4.TabIndex = 113;
+            this.label4.Text = "Operation";
+            this.label4.Visible = false;
+            // 
+            // cbOperation
+            // 
+            this.cbOperation.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbOperation.FormattingEnabled = true;
+            this.cbOperation.Items.AddRange(new object[] {
+            "PRESSA",
+            "PIEGO"});
+            this.cbOperation.Location = new System.Drawing.Point(485, 34);
+            this.cbOperation.Name = "cbOperation";
+            this.cbOperation.Size = new System.Drawing.Size(207, 33);
+            this.cbOperation.TabIndex = 112;
+            this.cbOperation.Visible = false;
+            // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -333,18 +388,7 @@
             this.panel3.Size = new System.Drawing.Size(731, 167);
             this.panel3.TabIndex = 115;
             // 
-            // btnResetSuggDate
-            // 
-            this.btnResetSuggDate.BackgroundImage = global::ganntproj1.Properties.Resources.history_40;
-            this.btnResetSuggDate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnResetSuggDate.Location = new System.Drawing.Point(341, 44);
-            this.btnResetSuggDate.Name = "btnResetSuggDate";
-            this.btnResetSuggDate.Size = new System.Drawing.Size(25, 23);
-            this.btnResetSuggDate.TabIndex = 10;
-            this.btnResetSuggDate.UseVisualStyleBackColor = true;
-            this.btnResetSuggDate.Click += new System.EventHandler(this.btnResetSuggDate_Click);
-            // 
-            // BlockOrder
+            // FractionateOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -356,7 +400,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "BlockOrder";
+            this.Name = "FractionateOrder";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Reprogram order";
@@ -399,5 +443,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnResetSuggDate;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbOperation;
+        private System.Windows.Forms.Button btnUndo;
     }
 }

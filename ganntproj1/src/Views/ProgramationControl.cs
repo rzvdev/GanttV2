@@ -1,15 +1,9 @@
-﻿using ganntproj1.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
+using ganntproj1.Models;
 
 namespace ganntproj1.src.Views
 {
