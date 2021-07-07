@@ -237,6 +237,33 @@ where Id=@Id;";
             dtpStart.Value = suggDate;
         }
 
+        private void UndoFraction()
+        {
+            var order = _bar.RowText.Split('_')[0];
+
+            if (_bar.RowText.Split('_')[1] == "1")
+            {
+                var task = Central.TaskList.Where(x => x.Name == order &&
+                    x.Department == _bar.Department).FirstOrDefault();
+
+                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id, task.Aim, task.StartDate);
+            }
+            else
+            {
+                int.TryParse(_bar.RowText.Split('_')[1], out var index);
+
+                var task = Central.TaskList.Where(x => x.Name == order + '_' + (index - 1).ToString() &&
+                    x.Department == _bar.Department).FirstOrDefault();
+
+                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id, task.Aim, task.StartDate);
+            }
+
+            DeleteExsistingOrder();
+
+            this.DialogResult = DialogResult.OK;
+            Close();
+        }
+
         #endregion
 
         #region EventHandlers
@@ -281,33 +308,9 @@ where Id=@Id;";
             GetLineNextDate();
         }
 
-        #endregion
-
-        private void button1_Click(object sender, EventArgs e)
+        private void btnUndoFraction_Click(object sender, EventArgs e)
         {
-            var order = _bar.RowText.Split('_')[0];
-
-            if (_bar.RowText.Split('_')[1] == "1")
-            {
-                var task = Central.TaskList.Where(x => x.Name == _bar.RowText.Split('_')[0] && 
-                    x.Department == _bar.Department).FirstOrDefault();
-
-               UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id , task.Aim, task.StartDate);
-            }
-            else
-            {
-                int.TryParse(_bar.RowText.Split('_')[1], out var index);
-
-                var task = Central.TaskList.Where(x => x.Name == order + '_' + (index - 1).ToString() &&
-                    x.Department == _bar.Department).FirstOrDefault();
-
-                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id, task.Aim, task.StartDate);
-            }
-
-            DeleteExsistingOrder();
-
-            this.DialogResult = DialogResult.OK;
-            Close();
+            UndoFraction();
         }
 
         private void lblSave_MouseEnter(object sender, EventArgs e)
@@ -319,5 +322,7 @@ where Id=@Id;";
         {
             lblSave.BackColor = Color.Transparent;
         }
+
+        #endregion
     }
 }

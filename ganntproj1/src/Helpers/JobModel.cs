@@ -401,7 +401,7 @@
         {
             var query = from models in Central.TaskList
                         where models.Aim == line && models.Department == dept
-                        orderby models.DelayEndDate
+                        orderby models.EndDate
                         select models;
 
             var lst = query.ToList();
