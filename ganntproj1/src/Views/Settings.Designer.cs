@@ -39,6 +39,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtConn2 = new System.Windows.Forms.TextBox();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.cbProduction = new ganntproj1.ToggleCheckBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
             this.cbOrderArrivo = new ganntproj1.ToggleCheckBox();
@@ -84,6 +87,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.rbConfezione = new System.Windows.Forms.RadioButton();
             this.grpConfezione = new System.Windows.Forms.GroupBox();
+            this.cbConfC = new ganntproj1.ToggleCheckBox();
+            this.lblConfC = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.txtHoursConfW = new System.Windows.Forms.TextBox();
@@ -170,8 +175,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.cbDept = new ganntproj1.EventComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cbConfC = new ganntproj1.ToggleCheckBox();
-            this.lblConfC = new System.Windows.Forms.Label();
             this.tc1.SuspendLayout();
             this.tpConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -318,6 +321,9 @@
             this.tpGeneral.AutoScroll = true;
             this.tpGeneral.AutoScrollMargin = new System.Drawing.Size(20, 20);
             this.tpGeneral.BackColor = System.Drawing.SystemColors.Control;
+            this.tpGeneral.Controls.Add(this.cbProduction);
+            this.tpGeneral.Controls.Add(this.label47);
+            this.tpGeneral.Controls.Add(this.label46);
             this.tpGeneral.Controls.Add(this.label7);
             this.tpGeneral.Controls.Add(this.label45);
             this.tpGeneral.Controls.Add(this.cbOrderArrivo);
@@ -344,6 +350,45 @@
             this.tpGeneral.Size = new System.Drawing.Size(755, 370);
             this.tpGeneral.TabIndex = 4;
             this.tpGeneral.Text = "General";
+            // 
+            // cbProduction
+            // 
+            this.cbProduction.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbProduction.BackColor = System.Drawing.Color.Transparent;
+            this.cbProduction.FlatAppearance.BorderSize = 0;
+            this.cbProduction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbProduction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbProduction.Location = new System.Drawing.Point(555, 535);
+            this.cbProduction.Margin = new System.Windows.Forms.Padding(2);
+            this.cbProduction.Name = "cbProduction";
+            this.cbProduction.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbProduction.Size = new System.Drawing.Size(42, 24);
+            this.cbProduction.TabIndex = 63;
+            this.cbProduction.Text = "Chec";
+            this.cbProduction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbProduction.UseVisualStyleBackColor = true;
+            this.cbProduction.CheckedChanged += new System.EventHandler(this.cbProduction_CheckedChanged);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label47.ForeColor = System.Drawing.Color.Black;
+            this.label47.Location = new System.Drawing.Point(133, 537);
+            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(79, 18);
+            this.label47.TabIndex = 62;
+            this.label47.Text = "Production";
+            // 
+            // label46
+            // 
+            this.label46.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label46.Location = new System.Drawing.Point(122, 515);
+            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(502, 2);
+            this.label46.TabIndex = 61;
             // 
             // label7
             // 
@@ -649,7 +694,7 @@
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(635, 123);
+            this.grpSart.Size = new System.Drawing.Size(601, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
@@ -714,7 +759,7 @@
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(635, 123);
+            this.grpTess.Size = new System.Drawing.Size(601, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
@@ -783,7 +828,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(635, 124);
+            this.grpStiro.Size = new System.Drawing.Size(601, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -912,9 +957,35 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(635, 177);
+            this.grpConfezione.Size = new System.Drawing.Size(601, 177);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
+            // 
+            // cbConfC
+            // 
+            this.cbConfC.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbConfC.BackColor = System.Drawing.Color.Transparent;
+            this.cbConfC.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbConfC.Location = new System.Drawing.Point(192, 121);
+            this.cbConfC.Margin = new System.Windows.Forms.Padding(2);
+            this.cbConfC.Name = "cbConfC";
+            this.cbConfC.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbConfC.Size = new System.Drawing.Size(42, 24);
+            this.cbConfC.TabIndex = 50;
+            this.cbConfC.Text = "Chec";
+            this.cbConfC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbConfC.UseVisualStyleBackColor = true;
+            // 
+            // lblConfC
+            // 
+            this.lblConfC.AutoSize = true;
+            this.lblConfC.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblConfC.Location = new System.Drawing.Point(55, 125);
+            this.lblConfC.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblConfC.Name = "lblConfC";
+            this.lblConfC.Size = new System.Drawing.Size(104, 19);
+            this.lblConfC.TabIndex = 49;
+            this.lblConfC.Text = "Confezione C";
             // 
             // label36
             // 
@@ -1963,32 +2034,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Update silent control";
             // 
-            // cbConfC
-            // 
-            this.cbConfC.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cbConfC.BackColor = System.Drawing.Color.Transparent;
-            this.cbConfC.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbConfC.Location = new System.Drawing.Point(192, 121);
-            this.cbConfC.Margin = new System.Windows.Forms.Padding(2);
-            this.cbConfC.Name = "cbConfC";
-            this.cbConfC.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cbConfC.Size = new System.Drawing.Size(42, 24);
-            this.cbConfC.TabIndex = 50;
-            this.cbConfC.Text = "Chec";
-            this.cbConfC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbConfC.UseVisualStyleBackColor = true;
-            // 
-            // lblConfC
-            // 
-            this.lblConfC.AutoSize = true;
-            this.lblConfC.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblConfC.Location = new System.Drawing.Point(55, 125);
-            this.lblConfC.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblConfC.Name = "lblConfC";
-            this.lblConfC.Size = new System.Drawing.Size(104, 19);
-            this.lblConfC.TabIndex = 49;
-            this.lblConfC.Text = "Confezione C";
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2205,5 +2250,8 @@
         private ToggleCheckBox cbOrderArrivo;
         private ToggleCheckBox cbConfC;
         private System.Windows.Forms.Label lblConfC;
+        private ToggleCheckBox cbProduction;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label46;
     }
     }

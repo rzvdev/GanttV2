@@ -12,7 +12,7 @@ namespace ganntproj1 {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Store : global::System.Configuration.ApplicationSettingsBase {
         
         private static Store defaultInstance = ((Store)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Store())));
@@ -380,6 +380,18 @@ namespace ganntproj1 {
             }
             set {
                 this["arrivoOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool production {
+            get {
+                return ((bool)(this["production"]));
+            }
+            set {
+                this["production"] = value;
             }
         }
     }
