@@ -198,7 +198,7 @@
             this.btnUndo.TabIndex = 120;
             this.btnUndo.Text = "Undo\r\n(Restore to previous order)";
             this.btnUndo.UseVisualStyleBackColor = false;
-            this.btnUndo.Click += new System.EventHandler(this.button1_Click);
+            this.btnUndo.Click += new System.EventHandler(this.btnUndoFraction_Click);
             // 
             // lblTotQty
             // 

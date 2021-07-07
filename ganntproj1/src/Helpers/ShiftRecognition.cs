@@ -44,7 +44,7 @@ namespace ganntproj1.src.Helpers
             {
                 if (startShift + hb < endShift)
                 {
-                    endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, startShift.Hours + hb.Hours, hb.Minutes, 0, 0).AddDays(+1);
+                    endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, startShift.Hours + Math.Abs(hb.Hours),Math.Abs(hb.Minutes), 0, 0).AddDays(+1);
                 }
                 else
                 {

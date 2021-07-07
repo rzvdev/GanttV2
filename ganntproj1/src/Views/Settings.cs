@@ -187,6 +187,7 @@ namespace ganntproj1
             toggleCheckBox1.Checked = Store.Default.manualMembers;
             toggleCheckBox2.Checked = Store.Default.manualDate;
             cbOrderArrivo.Checked = Store.Default.arrivoOrder;
+            cbProduction.Checked = Store.Default.production;
         }
 
         private void LoadLines()
@@ -1142,6 +1143,12 @@ namespace ganntproj1
                         break;
                 }
             }
+        }
+
+        private void cbProduction_CheckedChanged(object sender, EventArgs e)
+        {
+            Store.Default.production = cbProduction.Checked;
+            Store.Default.Save();
         }
     }
 }

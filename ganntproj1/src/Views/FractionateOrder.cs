@@ -130,7 +130,7 @@ namespace ganntproj1.src.Views
             }
             else
             {
-                UpdateExsistingOrder(_bar.LoadedQty - _bar.ProductionQty - newQty);
+                UpdateExsistingOrder(_bar.LoadedQty - newQty, 0, cboLine.Text, _bar.FromTime);
                 InsertFractionatedOrder(newQty, newMembers);
             }
 
@@ -143,18 +143,19 @@ namespace ganntproj1.src.Views
             return true;
         }
 
-        private void UpdateExsistingOrder(int newQty, int id = 0)
+        private void UpdateExsistingOrder(int newQty, int id = 0, string line = "", DateTime date = default(DateTime))
         {
             var jobModel = new JobModel();
-            
-            var duration = jobModel.CalculateJobDuration(_bar.Tag, newQty, _bar.QtyH, _bar.Department, _bar.Members);
-            var dailyProd = jobModel.CalculateDailyQty(_bar.Tag, _bar.QtyH, _bar.Department, _bar.Members, newQty);
+            if (line == string.Empty) line = _bar.Tag;
+            if (date == default(DateTime)) date = _bar.FromTime;
+            var duration = jobModel.CalculateJobDuration(line, newQty, _bar.QtyH, _bar.Department, _bar.Members);
+            var dailyProd = jobModel.CalculateDailyQty(line, _bar.QtyH, _bar.Department, _bar.Members, newQty);
 
             var durationTick = TimeSpan.FromDays(duration).Ticks;
-            var eDate = _bar.FromTime.AddTicks(durationTick);
+            var eDate = date.AddTicks(durationTick);
 
             var shift = new ShiftRecognition();
-            eDate = shift.GetEndTimeInShift(_bar.FromTime, eDate);
+            eDate = shift.GetEndTimeInShift(date, eDate);
 
             //eDate = new DateTime(eDate.Year, eDate.Date.Month, eDate.Day, eDate.Hour, eDate.Minute, 0, 0);
 
@@ -236,6 +237,33 @@ where Id=@Id;";
             dtpStart.Value = suggDate;
         }
 
+        private void UndoFraction()
+        {
+            var order = _bar.RowText.Split('_')[0];
+
+            if (_bar.RowText.Split('_')[1] == "1")
+            {
+                var task = Central.TaskList.Where(x => x.Name == order &&
+                    x.Department == _bar.Department).FirstOrDefault();
+
+                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id, task.Aim, task.StartDate);
+            }
+            else
+            {
+                int.TryParse(_bar.RowText.Split('_')[1], out var index);
+
+                var task = Central.TaskList.Where(x => x.Name == order + '_' + (index - 1).ToString() &&
+                    x.Department == _bar.Department).FirstOrDefault();
+
+                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id, task.Aim, task.StartDate);
+            }
+
+            DeleteExsistingOrder();
+
+            this.DialogResult = DialogResult.OK;
+            Close();
+        }
+
         #endregion
 
         #region EventHandlers
@@ -280,33 +308,9 @@ where Id=@Id;";
             GetLineNextDate();
         }
 
-        #endregion
-
-        private void button1_Click(object sender, EventArgs e)
+        private void btnUndoFraction_Click(object sender, EventArgs e)
         {
-            var order = _bar.RowText.Split('_')[0];
-
-            if (_bar.RowText.Split('_')[1] == "1")
-            {
-                var task = Central.TaskList.Where(x => x.Name == _bar.RowText.Split('_')[0] && 
-                    x.Department == _bar.Department).FirstOrDefault();
-
-               UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id);
-            }
-            else
-            {
-                int.TryParse(_bar.RowText.Split('_')[1], out var index);
-
-                var task = Central.TaskList.Where(x => x.Name == order + '_' + (index - 1).ToString() &&
-                    x.Department == _bar.Department).FirstOrDefault();
-
-                UpdateExsistingOrder(_bar.LoadedQty + task.LoadedQty, task.Id);
-            }
-
-            DeleteExsistingOrder();
-
-            this.DialogResult = DialogResult.OK;
-            Close();
+            UndoFraction();
         }
 
         private void lblSave_MouseEnter(object sender, EventArgs e)
@@ -318,5 +322,7 @@ where Id=@Id;";
         {
             lblSave.BackColor = Color.Transparent;
         }
+
+        #endregion
     }
 }
