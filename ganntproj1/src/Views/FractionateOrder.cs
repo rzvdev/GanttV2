@@ -126,11 +126,13 @@ namespace ganntproj1.src.Views
 
             if (_bar.ProductionQty == 0 && newQty == _bar.LoadedQty)
             {
-                DeleteExsistingOrder();
+                MessageBox.Show("You are fractionating Total Quantity,\nyou should delete the order and reprogram.");
+                //DeleteExsistingOrder();
+                //InsertFractionatedOrder(newQty, newMembers);
             }
             else
             {
-                UpdateExsistingOrder(_bar.LoadedQty - newQty, 0, cboLine.Text, _bar.FromTime);
+                UpdateExsistingOrder(_bar.LoadedQty - newQty, 0, "", _bar.FromTime);
                 InsertFractionatedOrder(newQty, newMembers);
             }
 
