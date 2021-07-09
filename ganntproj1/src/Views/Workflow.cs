@@ -763,9 +763,10 @@
                 }
 
                 var check = CheckOrderSplitStatus(TargetOrder, TargetDepartment);
-                if (check)
+                var check2 = CheckOrderFractionated(TargetOrder);
+                if (check || check2)
                 {
-                    MessageBox.Show("Unable to delete a splitted base.", "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Unable to delete a splitted/fractionated base.", "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -1282,13 +1283,26 @@
             SkipLines = ListOfLinesSelected.Count > 0;
             AddTimelineObjects();
         }
-
+        public bool CheckOrderFractionated(string order)
+        {
+            var check = (from tasks in Central.TaskList
+                         where tasks.Name.Contains('_') && tasks.Name==order && tasks.Department!="Sartoria"
+                         select tasks).SingleOrDefault();
+            if(check==null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         public bool CheckOrderSplitStatus(string order, string department)
         {
             var check = (from split in Central.TaskList
                          where split.Name.Split('.')[0] == order && split.Department == department && split.IsBase == false
                          select split).SingleOrDefault();
-
+           
             if (check == null)
             {
                 return false;
