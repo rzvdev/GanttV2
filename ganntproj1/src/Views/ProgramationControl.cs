@@ -251,20 +251,20 @@ namespace ganntproj1.src.Views
 
         private double SettingsHour()
         {
-            var hour = 0;
+            var hour = 0.0;
             switch (Store.Default.sectorId)
             {
                 case 1:
-                    hour = Convert.ToInt32(Store.Default.confHour);
+                    hour = Convert.ToDouble(Store.Default.confHour);
                     break;
                 case 2:
-                    hour = Convert.ToInt32(Store.Default.stiroHour);
+                    hour = Convert.ToDouble(Store.Default.stiroHour);
                     break;
                 case 7:
-                    hour = Convert.ToInt32(Store.Default.tessHour);
+                    hour = Convert.ToDouble(Store.Default.tessHour);
                     break;
                 case 8:
-                    hour = Convert.ToInt32(Store.Default.sartHour);
+                    hour = Convert.ToDouble(Store.Default.sartHour);
                     break;
             }
 
