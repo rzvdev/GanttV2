@@ -132,7 +132,10 @@ namespace ganntproj1.src.Views
 
             Launched = Store.Default.sectorId != 7 ? false : cbLaunched.Checked;
 
-            DateTimes = dateTimePicker1.Value;
+            var dtPickerValue = dateTimePicker1.Value;
+            var startDate = new DateTime(dtPickerValue.Year, dtPickerValue.Month, dtPickerValue.Day, dtPickerValue.Hour, dtPickerValue.Minute, dtPickerValue.Second, dtPickerValue.Millisecond);
+
+            DateTimes = startDate;
 
             var b = Store.Default.manualDate;
             if (b)
