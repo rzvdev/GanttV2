@@ -170,7 +170,7 @@ where Id=@Id;";
                 var cmd = new System.Data.SqlClient.SqlCommand(updateQuery, con);
                 cmd.Parameters.Add("@LoadedQty", SqlDbType.Int).Value = newQty;
                 cmd.Parameters.Add("@Duration", SqlDbType.Float).Value = duration;
-                cmd.Parameters.Add("@EndDate", SqlDbType.BigInt).Value = eDate.Ticks;
+                cmd.Parameters.Add("@EndDate", SqlDbType.BigInt).Value = Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
                 cmd.Parameters.Add("@DailyProd", SqlDbType.Int).Value = dailyProd;
                 cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id == 0 ? _bar.Id : id;
 
@@ -237,6 +237,10 @@ where Id=@Id;";
         {
             var suggDate = JobModel.GetLineNextDate(cboLine.Text, _bar.Department);
             dtpStart.Value = suggDate;
+            //var linesQuery = from lines in Models.Tables.Lines
+            //                 where lines.Line == cboLine.Text && lines.Department == _bar.Department
+            //                 select lines;
+
         }
 
         private void UndoFraction()
