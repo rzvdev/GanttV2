@@ -734,11 +734,18 @@
                                     //Idx= int.Parse(dr["idx"].ToString() == null ? "0" : dr["idx"].ToString()),
                                    // ParentIdx = int.Parse(dr["parentidx"].ToString() == null ? "0" : dr["parentidx"].ToString()),
                                     Id = int.Parse(dr["Id"].ToString())
+                                   
 
                                 }
                                 ).ToList();
-
-                    if (updateProduction && Store.Default.production)
+                    string sector = string.Empty;
+                    List<string> sectors = Store.Default.arrDept.Split(',').ToList();
+                    foreach(var x in sectors.ToList())
+                    {
+                        if (x == string.Empty) sectors.Remove(x);
+                    }
+                   
+                    if(updateProduction && Store.Default.production)
                     {
                         if (Store.Default.sectorId == 8)
                         {
@@ -750,22 +757,19 @@
                         }
                         else if (Store.Default.sectorId != 2 && Store.Default.sectorId != 8)
                         {
-                            
-                                var cmd2 = new SqlCommand("UpdatePrices", con);
-                                cmd2.CommandType = CommandType.StoredProcedure;
-                                cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
-                                cmd2.Parameters.Add("@SectorName", SqlDbType.NVarChar).Value = "Confezione C";
-                                con.Open();
-                                cmd2.ExecuteNonQuery();
-                                con.Close();
-                                var cmd3 = new SqlCommand("UpdatePrices", con);
-                                cmd3.CommandType = CommandType.StoredProcedure;
-                                cmd3.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
-                                cmd3.Parameters.Add("@SectorName", SqlDbType.NVarChar).Value ="Confezione B";
-                                con.Open();
-                                cmd3.ExecuteNonQuery();
-                                con.Close();
-                            
+                            foreach (var currsector in sectors)
+                            {
+                                if (Store.Default.selSector == "Confezione")
+                                {
+                                    var cmd2 = new SqlCommand("UpdatePrices", con);
+                                    cmd2.CommandType = CommandType.StoredProcedure;
+                                    cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
+                                    cmd2.Parameters.Add("@SectorName", SqlDbType.NVarChar).Value = currsector;
+                                    con.Open();
+                                    cmd2.ExecuteNonQuery();
+                                    con.Close();
+                                }
+                            }
                         }
                     }
                 }
