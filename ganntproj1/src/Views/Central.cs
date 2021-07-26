@@ -759,16 +759,13 @@
                         {
                             foreach (var currsector in sectors)
                             {
-                                if (Store.Default.selSector == "Confezione")
-                                {
-                                    var cmd2 = new SqlCommand("UpdatePrices", con);
+                                  var cmd2 = new SqlCommand("UpdatePrices", con);
                                     cmd2.CommandType = CommandType.StoredProcedure;
                                     cmd2.Parameters.Add("@IdSector", SqlDbType.Int).Value = Store.Default.sectorId;
                                     cmd2.Parameters.Add("@SectorName", SqlDbType.NVarChar).Value = currsector;
                                     con.Open();
                                     cmd2.ExecuteNonQuery();
                                     con.Close();
-                                }
                             }
                         }
                     }
