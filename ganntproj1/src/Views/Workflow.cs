@@ -226,6 +226,7 @@
                     }
                     
                     var beforeFullEndTime = modelBefore.EndDate.AddTicks(delayTicks);
+                   
                      
                     if (!model.ManualDate)
                     {
@@ -236,12 +237,17 @@
                     }
                     else
                     {
-                        // Do this just in case when delay goes over manually programmed order
-                        if (Store.Default.sectorId == 1)
+                        if (beforeFullEndTime < model.StartDate)
                         {
-                            timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
+                            beforeFullEndTime = model.StartDate;
                         }
-                        timeToMoveBack = 0L;
+                        // Do this just in case when delay goes over manually programmed order
+                        //if ((model.StartDate-DateTime.Now.Date))
+                        //{
+
+                        timeToMoveForward = beforeFullEndTime.Subtract(model.StartDate).Ticks;
+                        //}
+                        //timeToMoveBack = 0L;
                     }
                 }
 

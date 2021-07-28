@@ -2551,9 +2551,9 @@
                 cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
                 cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;
                 cmd.Parameters.Add("@param6", SqlDbType.Float).Value = qtyH;
-                cmd.Parameters.Add("@param7", SqlDbType.BigInt).Value = Config.MinimalDate.AddTicks(startDate.Ticks).Ticks;
+                cmd.Parameters.Add("@param7", SqlDbType.BigInt).Value = startDate.Ticks; //Config.MinimalDate.AddTicks(startDate.Ticks).Ticks;
                 cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
-                cmd.Parameters.Add("@param9", SqlDbType.BigInt).Value = Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
+                cmd.Parameters.Add("@param9", SqlDbType.BigInt).Value = eDate.Ticks;//Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
                 cmd.Parameters.Add("@param10", SqlDbType.BigInt).Value = 0;
                 cmd.Parameters.Add("@param11", SqlDbType.BigInt).Value = 0;
                 cmd.Parameters.Add("@param12", SqlDbType.BigInt).Value = 0;
