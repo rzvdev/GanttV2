@@ -226,9 +226,9 @@
             return i;
         }
 
-        public static long GetLSpan(DateTime dateTime)
+        public static DateTime GetLSpan(DateTime dateTime)
         {
-            return dateTime.Subtract(Config.MinimalDate).Ticks;
+            return dateTime; //.Subtract(Config.MinimalDate).Ticks;
         }
 
         public int CalculateDailyQty(string aim, double qtyH, string department, int members = 0, int qty = 0)
@@ -369,12 +369,13 @@
                 context.ExecuteCommand("update objects set " +
                     "startprod={0},endprod={1},prodqty={2},delayts={3}, delaystart={4},delayend={5}, workingdays={9} " +
                     "where ordername={6} and aim={7} and department={8}", 
-                    GetLSpan(prodStart),
-                    GetLSpan(endDate), 
-                    dymQty,
-                    dymAlertTime.Ticks,
-                    GetLSpan(endDate),
-                    GetLSpan(endDate) + dymAlertTime.Ticks,
+                    GetLSpan(prodStart),//0
+                    GetLSpan(endDate), //1
+                    dymQty,//2
+                    dymAlertTime.Ticks,//3
+                    GetLSpan(endDate),//4
+                     //GetLSpan(endDate) + dymAlertTime.Ticks,
+                     GetLSpan(endDate).AddTicks(dymAlertTime.Ticks),//5
                     job,aim, dept, jobWorkingDays);
             }
             return obj;

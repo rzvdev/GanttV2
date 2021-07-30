@@ -697,44 +697,46 @@
                                     Name = dr["ordername"].ToString(),
                                     Aim = dr["aim"].ToString(),
                                     Article = dr["article"].ToString(),
-                                    StateId = int.Parse(dr["stateid"].ToString()),
-                                    LoadedQty = int.Parse(dr["loadedqty"].ToString()),
-                                    QtyH = double.Parse(dr["qtyh"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
-                                    StartDate = DateTime.MinValue.AddTicks(long.Parse(dr["startdate"].ToString())),
-                                    Duration = double.Parse(dr["duration"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
-                                    EndDate = DateTime.MinValue.AddTicks(long.Parse(dr["enddate"].ToString())),
-                                    Dvc = DateTime.MinValue.AddTicks(long.Parse(dr["dvc"].ToString())),
-                                    Rdd = DateTime.MinValue.AddTicks(long.Parse(dr["rdd"].ToString())),
-                                    ProductionStartDate = Config.MinimalDate.AddTicks(long.Parse(dr["startprod"].ToString())),
-                                    ProductionEndDate = Config.MinimalDate.AddTicks(long.Parse(dr["endprod"].ToString())),
-                                    DailyProd = int.Parse(dr["dailyprod"].ToString()),
-                                    ProdQty = int.Parse(dr["prodqty"].ToString()),
-                                    OverQty = int.Parse(dr["overqty"].ToString()),
-                                    ProdOverDays = int.Parse(dr["prodoverdays"].ToString()),
-                                    DelayTime = long.Parse(dr["delayts"].ToString()),
-                                    ProdOverTime = long.Parse(dr["prodoverts"].ToString()),
-                                    IsLockedProduction = bool.Parse(dr["locked"].ToString()),
-                                    HolidayRange = int.Parse(dr["holiday"].ToString()),
-                                    ClosedByUser = bool.Parse(dr["closedord"].ToString()),
-                                    ArtPrice = double.Parse(dr["artprice"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
-                                    HasProduction = bool.Parse(dr["hasprod"].ToString()),
+                                    StateId = dr["stateid"] == DBNull.Value ? 0 : Convert.ToInt32(dr["stateid"]),//int.Parse(dr["stateid"].ToString()),
+                                    LoadedQty = dr["loadedqty"] == DBNull.Value ? 0 : Convert.ToInt32(dr["loadedqty"]), //int.Parse(dr["loadedqty"].ToString()),
+                                    //QtyH = double.Parse(dr["qtyh"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
+                                    QtyH = dr["qtyh"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["qtyh"]), // double.Parse(dr["qtyh"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
+                                    StartDate = Convert.ToDateTime(dr["startdate"]),
+                                    Duration = dr["duration"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["duration"]), //double.Parse(dr["duration"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
+                                    EndDate = Convert.ToDateTime(dr["enddate"]),
+                                    Dvc = dr["dvc"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["dvc"]),// DateTime.MinValue.AddTicks(long.Parse(dr["dvc"].ToString())),
+                                    Rdd = dr["rdd"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["rdd"]),//DateTime.MinValue.AddTicks(long.Parse(dr["rdd"].ToString())),
+                                    ProductionStartDate = dr["startprod"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["startprod"]),//Config.MinimalDate.AddTicks(long.Parse(dr["startprod"].ToString())),
+                                    ProductionEndDate = dr["endprod"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["endprod"]), //Config.MinimalDate.AddTicks(long.Parse(dr["endprod"].ToString())),
+                                    DailyProd = dr["dailyprod"] == DBNull.Value ? 0 : Convert.ToInt32(dr["dailyprod"]), //int.Parse(dr["dailyprod"].ToString()),
+                                    ProdQty = dr["prodqty"] == DBNull.Value ? 0 : Convert.ToInt32(dr["prodqty"]), //int.Parse(dr["prodqty"].ToString()),
+                                    OverQty = dr["overqty"] == DBNull.Value ? 0 : Convert.ToInt32(dr["overqty"]),//int.Parse(dr["overqty"].ToString()),
+                                    ProdOverDays = dr["prodoverdays"] == DBNull.Value ? 0 : Convert.ToInt32(dr["prodoverdays"]),//int.Parse(dr["prodoverdays"].ToString()),
+                                    DelayTime = dr["delayts"] == DBNull.Value ? 0 : Convert.ToInt64(dr["delayts"]),//long.Parse(dr["delayts"].ToString()),
+                                    ProdOverTime = dr["prodoverts"] == DBNull.Value ? 0 : Convert.ToInt64(dr["prodoverts"]),//long.Parse(dr["prodoverts"].ToString()),
+                                    IsLockedProduction = dr["locked"] == DBNull.Value ? false : Convert.ToBoolean(dr["locked"]),//bool.Parse(dr["locked"].ToString()),
+                                    HolidayRange = dr["holiday"] == DBNull.Value ? 0 : Convert.ToInt32(dr["holiday"]),//int.Parse(dr["holiday"].ToString()),
+                                    ClosedByUser = dr["closedord"] == DBNull.Value ? false : Convert.ToBoolean(dr["closedord"]),//bool.Parse(dr["closedord"].ToString()),
+                                    ArtPrice = dr["artprice"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["artprice"]), //double.Parse(dr["artprice"].ToString() ?? "0.0", System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo),
+                                    HasProduction = dr["hasprod"] == DBNull.Value ? false : Convert.ToBoolean(dr["hasprod"]),//bool.Parse(dr["hasprod"].ToString()),
                                     //= dr["lockedprod"]
-                                    DelayStartDate = DateTime.MinValue.AddTicks(long.Parse(dr["delaystart"].ToString())),
-                                    DelayEndDate = DateTime.MinValue.AddTicks(long.Parse(dr["delayend"].ToString())),
-                                    ProductionDone = bool.Parse(dr["doneprod"].ToString()),
+                                    DelayStartDate = dr["delaystart"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["delaystart"]),//DateTime.MinValue.AddTicks(long.Parse(dr["delaystart"].ToString())),
+                                    DelayEndDate = dr["delayend"] == DBNull.Value ? Config.MinimalDate : Convert.ToDateTime(dr["delayend"]),//DateTime.MinValue.AddTicks(long.Parse(dr["delayend"].ToString())),
+                                    ProductionDone = dr["doneprod"] == DBNull.Value ? false : Convert.ToBoolean(dr["doneprod"]),//bool.Parse(dr["doneprod"].ToString()),
                                     // = dr["lockdate"]
-                                    IsBase = bool.Parse(dr["base"].ToString()),
+                                    IsBase = dr["base"] == DBNull.Value ? false : Convert.ToBoolean(dr["base"]),//bool.Parse(dr["base"].ToString()),
                                     Department = dr["department"].ToString(),
-                                    WorkingDays = int.Parse(dr["workingdays"].ToString()== string.Empty ? "0" : dr["workingdays"].ToString()),
-                                    Members = int.Parse(dr["membersnr"].ToString()),
-                                    ManualDate = bool.Parse(dr["manualDate"].ToString()),
-                                    Abatimen = int.Parse(dr["abatimen"].ToString()),
+                                    WorkingDays = dr["workingdays"] == DBNull.Value ? 0 : Convert.ToInt32(dr["workingdays"]),//int.Parse(dr["workingdays"].ToString() == string.Empty ? "0" : dr["workingdays"].ToString()),
+                                    Members = dr["membersnr"] == DBNull.Value ? 0 : Convert.ToInt32(dr["membersnr"]),//int.Parse(dr["membersnr"].ToString()),
+                                    ManualDate = dr["manualDate"] == DBNull.Value ? false : Convert.ToBoolean(dr["manualDate"]),//bool.Parse(dr["manualDate"].ToString()),
+                                    Abatimen = dr["abatimen"] == DBNull.Value ? 0 : Convert.ToInt32(dr["abatimen"]),//int.Parse(dr["abatimen"].ToString()),
                                     //Launched = bool.Parse(dr["launched"].ToString() == null ? "0" : dr["launched"].ToString()),
                                     //Operation = dr["operation"].ToString(),
                                     //Idx= int.Parse(dr["idx"].ToString() == null ? "0" : dr["idx"].ToString()),
-                                   // ParentIdx = int.Parse(dr["parentidx"].ToString() == null ? "0" : dr["parentidx"].ToString()),
-                                    Id = int.Parse(dr["Id"].ToString())
-                                   
+                                    // ParentIdx = int.Parse(dr["parentidx"].ToString() == null ? "0" : dr["parentidx"].ToString()),
+                                    Id = dr["Id"] == DBNull.Value ? 0 : Convert.ToInt32(dr["Id"])
+                                     //int.Parse(dr["Id"].ToString())
+
 
                                 }
                                 ).ToList();
@@ -2125,14 +2127,14 @@
                         DateTime.TryParse(model.Dvc.ToString(), out var dvc);
                         DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
-                        var d = dvc == DateTime.MinValue ? 0L : dvc.Subtract(Config.MinimalDate).Ticks;
-                        var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate).Ticks;
+                       // var d = dvc == DateTime.MinValue ? 0 : dvc;//.Subtract(Config.MinimalDate)//.Ticks;
+                        //var r = rdd == DateTime.MinValue ? 0L : rdd;//.Subtract(Config.MinimalDate)//.Ticks;
 
                         context.ExecuteCommand("update objects set " +
                                 "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
                                 "where ordername={6} and aim={7} and department={8}",
                                 start, end,
-                                dS, dE, d, r,
+                                dS, dE, dvc, rdd,
                                 model.Name, model.Aim, model.Department);
                     }
                 }

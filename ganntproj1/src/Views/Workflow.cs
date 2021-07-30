@@ -219,6 +219,7 @@
                     if (modelBefore.DelayEndDate == DateTime.MinValue)
                     {
                         delayTicks = 0L;
+
                     }
                     else
                     {
