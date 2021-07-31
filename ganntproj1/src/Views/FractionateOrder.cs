@@ -170,7 +170,7 @@ where Id=@Id;";
                 var cmd = new System.Data.SqlClient.SqlCommand(updateQuery, con);
                 cmd.Parameters.Add("@LoadedQty", SqlDbType.Int).Value = newQty;
                 cmd.Parameters.Add("@Duration", SqlDbType.Float).Value = duration;
-                cmd.Parameters.Add("@EndDate", SqlDbType.BigInt).Value = Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
+                cmd.Parameters.Add("@EndDate", SqlDbType.DateTime).Value = eDate;
                 cmd.Parameters.Add("@DailyProd", SqlDbType.Int).Value = dailyProd;
                 cmd.Parameters.Add("@Id", SqlDbType.Int).Value = id == 0 ? _bar.Id : id;
 

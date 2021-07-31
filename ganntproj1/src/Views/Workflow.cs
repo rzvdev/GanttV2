@@ -164,7 +164,7 @@
             
             var rowIdx = 0;
             var elementIdx = 0;
-            foreach (var model in Central.TaskList)
+            foreach (var model in Central.TaskList.OrderBy(a=> a.Aim).ThenBy(a=> a.EndDate))
             {
                 if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
 
