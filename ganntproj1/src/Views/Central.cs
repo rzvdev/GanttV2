@@ -1959,16 +1959,16 @@
 
         private void CbDept_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbDept.Text == "<Multiple>")
-            {
-                Store.Default.selDept = Store.Default.arrDept;
-                Store.Default.Save();
-            }
-            else
-            {
+            //if (cbDept.Text == "<Multiple>")
+            //{
+            //    Store.Default.selDept = Store.Default.arrDept;
+            //    Store.Default.Save();
+            //}
+            //else
+            //{
                 Store.Default.selDept = "," + cbDept.Text + ",";
                 Store.Default.Save();
-            }
+            //}
         }
 
         public void AddDepartmentsToCombo()
@@ -1977,7 +1977,7 @@
 
             var dpt = Store.Default.arrDept.Split(',');
 
-            cbDept.Items.Add("<Multiple>");
+           // cbDept.Items.Add("<Multiple>");
 
             for (var i = 0; i <= dpt.Length - 1; i++)
             {
@@ -1986,10 +1986,11 @@
             }
 
             cbDept.SelectedIndex = cbDept.FindString(Store.Default.selDept.TrimStart(',').TrimEnd(','));
-            if (cbDept.SelectedIndex < 0)
-            {
-                cbDept.SelectedIndex = cbDept.FindString("<Multiple>");
-            }
+           // if (cbDept.SelectedIndex < 0)
+            //{
+               // cbDept.SelectedIndex = cbDept.FindString("<Multiple>");
+              cbDept.SelectedIndex = cbDept.FindString(dpt[0]);
+            //}
         }
 
         private void BtnFatturatoLinea_Paint(object sender, PaintEventArgs e)
