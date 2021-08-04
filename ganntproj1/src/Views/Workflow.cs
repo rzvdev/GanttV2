@@ -578,7 +578,12 @@
                         MessageBox.Show("Cannot block a closed order.", "Workflow", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    
+
+                    if(CheckOrderHasFractionate(bar.RowText))
+                    {
+                        MessageBox.Show("Order already fractionated.\nPlease undo work and fractionate correctly.", "Workflow", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     var bo = new FractionateOrder(bar);
                     bo.ShowDialog();
                     bo.Dispose();
@@ -1289,6 +1294,39 @@
             f.Dispose();
             SkipLines = ListOfLinesSelected.Count > 0;
             AddTimelineObjects();
+        }
+        public bool CheckOrderHasFractionate(string order)
+        {
+            var check1 = order.Split('_');
+            if (check1.Count() > 1)
+            {
+                int index = Convert.ToInt32(check1[1]);
+                var check = (from tasks in Central.TaskList
+                             where tasks.Name.Contains('_') && Convert.ToInt32(tasks.Name.Split('_')[1]) > index && tasks.Name.Split('_')[0] == order.Split('_')[0] && tasks.Department != "Sartoria"
+                             select tasks).FirstOrDefault();
+                if (check == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                var check = (from tasks in Central.TaskList
+                             where tasks.Name.Contains('_') && tasks.Name.Split('_')[0] == order && tasks.Department != "Sartoria"
+                             select tasks).FirstOrDefault();
+                if (check == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
         public bool CheckOrderFractionated(string order)
         {

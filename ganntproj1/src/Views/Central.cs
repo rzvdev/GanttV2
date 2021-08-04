@@ -12,6 +12,7 @@
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -34,7 +35,7 @@
         
         private IntPtr _console = new IntPtr();
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
-        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
+       // public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
 
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
         
@@ -1657,7 +1658,6 @@
         {
             treeMenu.SelectedNode = treeMenu.Nodes[0];
             treeMenu.Select();
-
             foreach (Control c in pnDockBar.Controls)
             {
                 if (c is Button b && b.Tag.ToString() == 1.ToString() &&
@@ -2242,8 +2242,40 @@
 
         private void BtnChart_Click(object sender, EventArgs e)
         {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            SaveControlAsImage(pnForms, path);
         }
+        private void SaveControlAsImage(Control control, string path)
+        {
+            Bitmap bmp = new Bitmap(control.Width, control.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graphics Grap = Graphics.FromImage(bmp);
 
+            Grap.CopyFromScreen(PointToScreen(control.Location).X, PointToScreen(control.Location).Y, 0, 0, ClientSize, CopyPixelOperation.SourceCopy);
+            SaveFileDialog save = new SaveFileDialog();
+            save.Filter = "PNG|*.png";
+            DialogResult tl = save.ShowDialog();
+            if (tl == DialogResult.OK)
+            {
+                bmp.Save(save.FileName);
+                MessageBox.Show("Completed !");
+            }
+            //Bitmap bitmap = new Bitmap(control.Width, control.Height);
+            //control.DrawToBitmap(bitmap, control.Bounds);
+            //SaveFileDialog save = new SaveFileDialog();
+            //save.Filter = "PNG|*.png";
+            //DialogResult tl = save.ShowDialog();
+            //if (tl == DialogResult.OK)
+            //{
+            //    bitmap.Save(save.FileName, ImageFormat.Png);
+            //    MessageBox.Show("Completed !");
+            //}
+            //using (FileStream fs = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite))
+            //{
+            //    /* using ImageFormat.Png or ImageFormat.Bmp saves the image with better quality */
+            //    bitmap.Save(fs, ImageFormat.Png);
+            //}
+        }
+        
         private void lblResetGlobal_Click_1(object sender, EventArgs e)
         {
 
@@ -2293,6 +2325,37 @@
                 return;
             }
         }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+           var visibility = pnDockBar.Visible = !pnDockBar.Visible;
+            
+            if(!visibility)
+            {
+                foreach (Control c in this.Controls)
+                {
+                    if (c is PictureBox)
+                        c.Visible = !c.Visible;
+                }
+                pnForms.Dock = DockStyle.Fill;
+                pnForms.Padding = System.Windows.Forms.Padding.Add(new Padding(10), new Padding(0));
+
+                button3.Image = ganntproj1.Properties.Resources.mega_fow_32;
+            }
+            else
+            {
+                pnForms.Dock = DockStyle.None;
+                pnForms.Padding = System.Windows.Forms.Padding.Add(new Padding(0), new Padding(0));
+                foreach (Control c in this.Controls)
+                {
+                    if (c is PictureBox)
+                        c.Visible = !c.Visible;
+                }
+                button3.Image = ganntproj1.Properties.Resources.mega_back_32;
+            }
+        }
+
+       
     }
 
     public class ReSize

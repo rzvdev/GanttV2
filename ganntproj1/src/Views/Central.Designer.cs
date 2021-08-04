@@ -53,6 +53,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pnNavi = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.cbDept = new System.Windows.Forms.ComboBox();
             this.btnSync = new System.Windows.Forms.Button();
@@ -75,13 +76,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.PbNavBarSplit = new System.Windows.Forms.PictureBox();
-            this.cbAcconto = new ganntproj1.ToggleCheckBox();
             this.btnLoadPan = new System.Windows.Forms.Button();
-            this.cbSaldo = new ganntproj1.ToggleCheckBox();
-            this.cbChiuso = new ganntproj1.ToggleCheckBox();
-            this.cbDvc = new ganntproj1.ToggleCheckBox();
-            this.cbRdd = new ganntproj1.ToggleCheckBox();
-            this.cbProgrammare = new ganntproj1.ToggleCheckBox();
             this.pnReload = new System.Windows.Forms.Panel();
             this.lblResetGlobal = new System.Windows.Forms.Label();
             this.lblRefreshGlobal = new System.Windows.Forms.Label();
@@ -115,6 +110,12 @@
             this.pbMenu = new System.Windows.Forms.PictureBox();
             this.btnFilters = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cbAcconto = new ganntproj1.ToggleCheckBox();
+            this.cbSaldo = new ganntproj1.ToggleCheckBox();
+            this.cbChiuso = new ganntproj1.ToggleCheckBox();
+            this.cbDvc = new ganntproj1.ToggleCheckBox();
+            this.cbRdd = new ganntproj1.ToggleCheckBox();
+            this.cbProgrammare = new ganntproj1.ToggleCheckBox();
             this.pnDockBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnNavi.SuspendLayout();
@@ -542,6 +543,7 @@
             // pnNavi
             // 
             this.pnNavi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.pnNavi.Controls.Add(this.button3);
             this.pnNavi.Controls.Add(this.btnHelp);
             this.pnNavi.Controls.Add(this.cbDept);
             this.pnNavi.Controls.Add(this.btnSync);
@@ -579,6 +581,22 @@
             this.pnNavi.Name = "pnNavi";
             this.pnNavi.Size = new System.Drawing.Size(1309, 104);
             this.pnNavi.TabIndex = 15;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(141)))), ((int)(((byte)(161)))));
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Image = global::ganntproj1.Properties.Resources.mega_back_32;
+            this.button3.Location = new System.Drawing.Point(52, 81);
+            this.button3.Margin = new System.Windows.Forms.Padding(0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(30, 21);
+            this.button3.TabIndex = 72;
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // btnHelp
             // 
@@ -647,7 +665,7 @@
             this.btnChart.Name = "btnChart";
             this.btnChart.Size = new System.Drawing.Size(63, 63);
             this.btnChart.TabIndex = 69;
-            this.btnChart.Text = "Chart";
+            this.btnChart.Text = "Print";
             this.btnChart.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnChart.UseVisualStyleBackColor = false;
             this.btnChart.Click += new System.EventHandler(this.BtnChart_Click);
@@ -900,14 +918,6 @@
             this.PbNavBarSplit.TabIndex = 0;
             this.PbNavBarSplit.TabStop = false;
             // 
-            // cbAcconto
-            // 
-            this.cbAcconto.Location = new System.Drawing.Point(475, 61);
-            this.cbAcconto.Name = "cbAcconto";
-            this.cbAcconto.Padding = new System.Windows.Forms.Padding(6);
-            this.cbAcconto.Size = new System.Drawing.Size(45, 24);
-            this.cbAcconto.TabIndex = 63;
-            // 
             // btnLoadPan
             // 
             this.btnLoadPan.FlatAppearance.BorderSize = 0;
@@ -921,52 +931,12 @@
             this.btnLoadPan.UseVisualStyleBackColor = false;
             this.btnLoadPan.Click += new System.EventHandler(this.button1_Click);
             // 
-            // cbSaldo
-            // 
-            this.cbSaldo.Location = new System.Drawing.Point(580, 61);
-            this.cbSaldo.Name = "cbSaldo";
-            this.cbSaldo.Padding = new System.Windows.Forms.Padding(6);
-            this.cbSaldo.Size = new System.Drawing.Size(45, 24);
-            this.cbSaldo.TabIndex = 64;
-            // 
-            // cbChiuso
-            // 
-            this.cbChiuso.Location = new System.Drawing.Point(673, 61);
-            this.cbChiuso.Name = "cbChiuso";
-            this.cbChiuso.Padding = new System.Windows.Forms.Padding(6);
-            this.cbChiuso.Size = new System.Drawing.Size(45, 24);
-            this.cbChiuso.TabIndex = 65;
-            // 
-            // cbDvc
-            // 
-            this.cbDvc.Location = new System.Drawing.Point(475, 24);
-            this.cbDvc.Name = "cbDvc";
-            this.cbDvc.Padding = new System.Windows.Forms.Padding(6);
-            this.cbDvc.Size = new System.Drawing.Size(45, 24);
-            this.cbDvc.TabIndex = 66;
-            // 
-            // cbRdd
-            // 
-            this.cbRdd.Location = new System.Drawing.Point(560, 24);
-            this.cbRdd.Name = "cbRdd";
-            this.cbRdd.Padding = new System.Windows.Forms.Padding(6);
-            this.cbRdd.Size = new System.Drawing.Size(45, 24);
-            this.cbRdd.TabIndex = 67;
-            // 
-            // cbProgrammare
-            // 
-            this.cbProgrammare.Location = new System.Drawing.Point(646, 24);
-            this.cbProgrammare.Name = "cbProgrammare";
-            this.cbProgrammare.Padding = new System.Windows.Forms.Padding(6);
-            this.cbProgrammare.Size = new System.Drawing.Size(45, 24);
-            this.cbProgrammare.TabIndex = 68;
-            // 
             // pnReload
             // 
             this.pnReload.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnReload.Controls.Add(this.lblResetGlobal);
             this.pnReload.Controls.Add(this.lblRefreshGlobal);
-            this.pnReload.Location = new System.Drawing.Point(406, 117);
+            this.pnReload.Location = new System.Drawing.Point(406, 150);
             this.pnReload.Name = "pnReload";
             this.pnReload.Size = new System.Drawing.Size(240, 148);
             this.pnReload.TabIndex = 0;
@@ -1373,6 +1343,54 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // cbAcconto
+            // 
+            this.cbAcconto.Location = new System.Drawing.Point(475, 61);
+            this.cbAcconto.Name = "cbAcconto";
+            this.cbAcconto.Padding = new System.Windows.Forms.Padding(6);
+            this.cbAcconto.Size = new System.Drawing.Size(45, 24);
+            this.cbAcconto.TabIndex = 63;
+            // 
+            // cbSaldo
+            // 
+            this.cbSaldo.Location = new System.Drawing.Point(580, 61);
+            this.cbSaldo.Name = "cbSaldo";
+            this.cbSaldo.Padding = new System.Windows.Forms.Padding(6);
+            this.cbSaldo.Size = new System.Drawing.Size(45, 24);
+            this.cbSaldo.TabIndex = 64;
+            // 
+            // cbChiuso
+            // 
+            this.cbChiuso.Location = new System.Drawing.Point(673, 61);
+            this.cbChiuso.Name = "cbChiuso";
+            this.cbChiuso.Padding = new System.Windows.Forms.Padding(6);
+            this.cbChiuso.Size = new System.Drawing.Size(45, 24);
+            this.cbChiuso.TabIndex = 65;
+            // 
+            // cbDvc
+            // 
+            this.cbDvc.Location = new System.Drawing.Point(475, 24);
+            this.cbDvc.Name = "cbDvc";
+            this.cbDvc.Padding = new System.Windows.Forms.Padding(6);
+            this.cbDvc.Size = new System.Drawing.Size(45, 24);
+            this.cbDvc.TabIndex = 66;
+            // 
+            // cbRdd
+            // 
+            this.cbRdd.Location = new System.Drawing.Point(560, 24);
+            this.cbRdd.Name = "cbRdd";
+            this.cbRdd.Padding = new System.Windows.Forms.Padding(6);
+            this.cbRdd.Size = new System.Drawing.Size(45, 24);
+            this.cbRdd.TabIndex = 67;
+            // 
+            // cbProgrammare
+            // 
+            this.cbProgrammare.Location = new System.Drawing.Point(646, 24);
+            this.cbProgrammare.Name = "cbProgrammare";
+            this.cbProgrammare.Padding = new System.Windows.Forms.Padding(6);
+            this.cbProgrammare.Size = new System.Drawing.Size(45, 24);
+            this.cbProgrammare.TabIndex = 68;
+            // 
             // Central
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1401,7 +1419,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1311, 727);
+            this.MinimumSize = new System.Drawing.Size(1311, 726);
             this.Name = "Central";
             this.Load += new System.EventHandler(this.Menu_Load);
             this.SizeChanged += new System.EventHandler(this.Central_SizeChanged);
@@ -1520,5 +1538,6 @@
         private System.Windows.Forms.Button btnCommessaDefects;
         private System.Windows.Forms.Button btnGraphRespinte;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Button button3;
     }
     }
