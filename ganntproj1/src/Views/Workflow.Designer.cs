@@ -31,30 +31,30 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Workflow));
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.cbComm = new System.Windows.Forms.ComboBox();
-            this.cbArt = new System.Windows.Forms.ComboBox();
-            this.btnCallCarico = new System.Windows.Forms.Button();
-            this.spContainer = new System.Windows.Forms.SplitContainer();
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
-            this.cbArticle = new ganntproj1.ToggleCheckBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnShowEff = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnHolidays = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnHideDelay = new System.Windows.Forms.Button();
             this.btnDayInfo = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.btnZoomOut = new System.Windows.Forms.Button();
+            this.cbComm = new System.Windows.Forms.ComboBox();
+            this.cbArt = new System.Windows.Forms.ComboBox();
             this.btnZoomIn = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnMegaBack = new System.Windows.Forms.Button();
+            this.btnCallCarico = new System.Windows.Forms.Button();
             this.btnFow = new System.Windows.Forms.Button();
             this.btnMegaFow = new System.Windows.Forms.Button();
+            this.spContainer = new System.Windows.Forms.SplitContainer();
+            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.cbArticle = new ganntproj1.ToggleCheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spContainer)).BeginInit();
             this.spContainer.Panel1.SuspendLayout();
@@ -65,7 +65,7 @@
             // 
             this.vScrollBar1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(1393, 0);
+            this.vScrollBar1.Location = new System.Drawing.Point(1349, 0);
             this.vScrollBar1.Name = "vScrollBar1";
             this.vScrollBar1.Size = new System.Drawing.Size(21, 163);
             this.vScrollBar1.TabIndex = 0;
@@ -100,150 +100,8 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1414, 46);
+            this.panel1.Size = new System.Drawing.Size(1370, 46);
             this.panel1.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(736, 7);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(2, 34);
-            this.label1.TabIndex = 70;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
-            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label17.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label17.Location = new System.Drawing.Point(61, 17);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(53, 16);
-            this.label17.TabIndex = 68;
-            this.label17.Text = "Articolo";
-            // 
-            // label8
-            // 
-            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Location = new System.Drawing.Point(1017, 7);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(2, 34);
-            this.label8.TabIndex = 62;
-            // 
-            // label7
-            // 
-            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label7.Location = new System.Drawing.Point(208, 7);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(2, 34);
-            this.label7.TabIndex = 61;
-            // 
-            // cbComm
-            // 
-            this.cbComm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbComm.FormattingEnabled = true;
-            this.cbComm.Location = new System.Drawing.Point(771, 12);
-            this.cbComm.Margin = new System.Windows.Forms.Padding(2);
-            this.cbComm.Name = "cbComm";
-            this.cbComm.Size = new System.Drawing.Size(92, 25);
-            this.cbComm.TabIndex = 52;
-            this.cbComm.SelectedIndexChanged += new System.EventHandler(this.cbComm_SelectedIndexChanged_1);
-            // 
-            // cbArt
-            // 
-            this.cbArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbArt.FormattingEnabled = true;
-            this.cbArt.Location = new System.Drawing.Point(867, 12);
-            this.cbArt.Margin = new System.Windows.Forms.Padding(2);
-            this.cbArt.Name = "cbArt";
-            this.cbArt.Size = new System.Drawing.Size(122, 25);
-            this.cbArt.TabIndex = 49;
-            this.cbArt.SelectedIndexChanged += new System.EventHandler(this.cbArt_SelectedIndexChanged);
-            // 
-            // btnCallCarico
-            // 
-            this.btnCallCarico.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnCallCarico.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
-            this.btnCallCarico.ForeColor = System.Drawing.Color.Black;
-            this.btnCallCarico.Location = new System.Drawing.Point(1047, 9);
-            this.btnCallCarico.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCallCarico.Name = "btnCallCarico";
-            this.btnCallCarico.Size = new System.Drawing.Size(151, 31);
-            this.btnCallCarico.TabIndex = 43;
-            this.btnCallCarico.Text = "Carico lavoro";
-            this.btnCallCarico.UseVisualStyleBackColor = false;
-            this.btnCallCarico.Click += new System.EventHandler(this.btnCallCarico_Click);
-            // 
-            // spContainer
-            // 
-            this.spContainer.BackColor = System.Drawing.Color.LightGray;
-            this.spContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spContainer.Location = new System.Drawing.Point(0, 46);
-            this.spContainer.Margin = new System.Windows.Forms.Padding(2);
-            this.spContainer.Name = "spContainer";
-            this.spContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // spContainer.Panel1
-            // 
-            this.spContainer.Panel1.BackColor = System.Drawing.Color.White;
-            this.spContainer.Panel1.Controls.Add(this.vScrollBar1);
-            this.spContainer.Panel1.Controls.Add(this.hScrollBar1);
-            // 
-            // spContainer.Panel2
-            // 
-            this.spContainer.Panel2.BackColor = System.Drawing.Color.White;
-            this.spContainer.Size = new System.Drawing.Size(1414, 302);
-            this.spContainer.SplitterDistance = 184;
-            this.spContainer.SplitterIncrement = 3;
-            this.spContainer.TabIndex = 3;
-            // 
-            // hScrollBar1
-            // 
-            this.hScrollBar1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.hScrollBar1.LargeChange = 1;
-            this.hScrollBar1.Location = new System.Drawing.Point(0, 163);
-            this.hScrollBar1.Maximum = 31;
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(1414, 21);
-            this.hScrollBar1.TabIndex = 4;
-            this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar1_Scroll);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(168, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 16);
-            this.label2.TabIndex = 73;
-            this.label2.Text = "Qty";
-            // 
-            // toggleCheckBox1
-            // 
-            this.toggleCheckBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.toggleCheckBox1.Location = new System.Drawing.Point(120, 9);
-            this.toggleCheckBox1.Name = "toggleCheckBox1";
-            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(6);
-            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
-            this.toggleCheckBox1.TabIndex = 72;
-            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
-            // 
-            // cbArticle
-            // 
-            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbArticle.Location = new System.Drawing.Point(13, 9);
-            this.cbArticle.Name = "cbArticle";
-            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
-            this.cbArticle.Size = new System.Drawing.Size(42, 24);
-            this.cbArticle.TabIndex = 67;
-            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
             // 
             // button2
             // 
@@ -259,6 +117,18 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(168, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 16);
+            this.label2.TabIndex = 73;
+            this.label2.Text = "Qty";
+            // 
             // btnShowEff
             // 
             this.btnShowEff.FlatAppearance.BorderSize = 0;
@@ -273,6 +143,15 @@
             this.btnShowEff.UseVisualStyleBackColor = true;
             this.btnShowEff.Click += new System.EventHandler(this.btnShowEff_Click);
             // 
+            // label1
+            // 
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(736, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(2, 34);
+            this.label1.TabIndex = 70;
+            // 
             // btnHolidays
             // 
             this.btnHolidays.FlatAppearance.BorderSize = 0;
@@ -286,6 +165,18 @@
             this.btnHolidays.TabIndex = 69;
             this.btnHolidays.UseVisualStyleBackColor = true;
             this.btnHolidays.Click += new System.EventHandler(this.BtnHolidays_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label17.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label17.Location = new System.Drawing.Point(61, 17);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 16);
+            this.label17.TabIndex = 68;
+            this.label17.Text = "Articolo";
             // 
             // button1
             // 
@@ -333,6 +224,24 @@
             this.btnDayInfo.UseVisualStyleBackColor = false;
             this.btnDayInfo.Click += new System.EventHandler(this.btnDayInfo_Click);
             // 
+            // label8
+            // 
+            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label8.Location = new System.Drawing.Point(1017, 7);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(2, 34);
+            this.label8.TabIndex = 62;
+            // 
+            // label7
+            // 
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label7.Location = new System.Drawing.Point(208, 7);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(2, 34);
+            this.label7.TabIndex = 61;
+            // 
             // btnZoomOut
             // 
             this.btnZoomOut.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -349,6 +258,28 @@
             this.btnZoomOut.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.btnZoomOut.UseVisualStyleBackColor = false;
             this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
+            // 
+            // cbComm
+            // 
+            this.cbComm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbComm.FormattingEnabled = true;
+            this.cbComm.Location = new System.Drawing.Point(771, 12);
+            this.cbComm.Margin = new System.Windows.Forms.Padding(2);
+            this.cbComm.Name = "cbComm";
+            this.cbComm.Size = new System.Drawing.Size(92, 25);
+            this.cbComm.TabIndex = 52;
+            this.cbComm.SelectedIndexChanged += new System.EventHandler(this.cbComm_SelectedIndexChanged_1);
+            // 
+            // cbArt
+            // 
+            this.cbArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbArt.FormattingEnabled = true;
+            this.cbArt.Location = new System.Drawing.Point(867, 12);
+            this.cbArt.Margin = new System.Windows.Forms.Padding(2);
+            this.cbArt.Name = "cbArt";
+            this.cbArt.Size = new System.Drawing.Size(122, 25);
+            this.cbArt.TabIndex = 49;
+            this.cbArt.SelectedIndexChanged += new System.EventHandler(this.cbArt_SelectedIndexChanged);
             // 
             // btnZoomIn
             // 
@@ -396,6 +327,20 @@
             this.btnMegaBack.UseVisualStyleBackColor = false;
             this.btnMegaBack.Click += new System.EventHandler(this.btnMegaBack_Click);
             // 
+            // btnCallCarico
+            // 
+            this.btnCallCarico.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnCallCarico.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
+            this.btnCallCarico.ForeColor = System.Drawing.Color.Black;
+            this.btnCallCarico.Location = new System.Drawing.Point(1047, 9);
+            this.btnCallCarico.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCallCarico.Name = "btnCallCarico";
+            this.btnCallCarico.Size = new System.Drawing.Size(151, 31);
+            this.btnCallCarico.TabIndex = 43;
+            this.btnCallCarico.Text = "Carico lavoro";
+            this.btnCallCarico.UseVisualStyleBackColor = false;
+            this.btnCallCarico.Click += new System.EventHandler(this.btnCallCarico_Click);
+            // 
             // btnFow
             // 
             this.btnFow.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -424,12 +369,67 @@
             this.btnMegaFow.UseVisualStyleBackColor = false;
             this.btnMegaFow.Click += new System.EventHandler(this.btnMegaFow_Click);
             // 
+            // spContainer
+            // 
+            this.spContainer.BackColor = System.Drawing.Color.LightGray;
+            this.spContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spContainer.Location = new System.Drawing.Point(0, 46);
+            this.spContainer.Margin = new System.Windows.Forms.Padding(2);
+            this.spContainer.Name = "spContainer";
+            this.spContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // spContainer.Panel1
+            // 
+            this.spContainer.Panel1.BackColor = System.Drawing.Color.White;
+            this.spContainer.Panel1.Controls.Add(this.vScrollBar1);
+            this.spContainer.Panel1.Controls.Add(this.hScrollBar1);
+            // 
+            // spContainer.Panel2
+            // 
+            this.spContainer.Panel2.BackColor = System.Drawing.Color.White;
+            this.spContainer.Size = new System.Drawing.Size(1370, 302);
+            this.spContainer.SplitterDistance = 184;
+            this.spContainer.SplitterIncrement = 3;
+            this.spContainer.TabIndex = 3;
+            // 
+            // hScrollBar1
+            // 
+            this.hScrollBar1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hScrollBar1.LargeChange = 1;
+            this.hScrollBar1.Location = new System.Drawing.Point(0, 163);
+            this.hScrollBar1.Maximum = 31;
+            this.hScrollBar1.Name = "hScrollBar1";
+            this.hScrollBar1.Size = new System.Drawing.Size(1370, 21);
+            this.hScrollBar1.TabIndex = 4;
+            this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar1_Scroll);
+            // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.toggleCheckBox1.Location = new System.Drawing.Point(120, 9);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(6);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 72;
+            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
+            // 
+            // cbArticle
+            // 
+            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbArticle.Location = new System.Drawing.Point(13, 9);
+            this.cbArticle.Name = "cbArticle";
+            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
+            this.cbArticle.Size = new System.Drawing.Size(42, 24);
+            this.cbArticle.TabIndex = 67;
+            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
+            // 
             // Workflow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1414, 348);
+            this.ClientSize = new System.Drawing.Size(1370, 348);
             this.Controls.Add(this.spContainer);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

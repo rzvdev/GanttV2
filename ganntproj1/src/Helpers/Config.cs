@@ -70,6 +70,7 @@
                 context.ExecuteCommand("insert into log (id,username,computername,logdate,operation,queryon,program)" +
                     " values ({0},{1},{2},{3},{4},{5},{6})", Guid.NewGuid(), username, pcname, DateTime.Now.Subtract(MinimalDate).Ticks, operation, query, program);
             }
+            
         }
 
         public string ReadSqlConnectionString(int conIdx)

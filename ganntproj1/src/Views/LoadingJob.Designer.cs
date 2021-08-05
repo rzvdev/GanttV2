@@ -86,10 +86,10 @@
             this.pnArticles.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnArticles.Controls.Add(this.pictureBox1);
             this.pnArticles.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnArticles.Location = new System.Drawing.Point(0, 24);
+            this.pnArticles.Location = new System.Drawing.Point(0, 22);
             this.pnArticles.Margin = new System.Windows.Forms.Padding(2);
             this.pnArticles.Name = "pnArticles";
-            this.pnArticles.Size = new System.Drawing.Size(1040, 97);
+            this.pnArticles.Size = new System.Drawing.Size(1040, 77);
             this.pnArticles.TabIndex = 7;
             this.pnArticles.Visible = false;
             // 
@@ -97,7 +97,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(98)))), ((int)(((byte)(124)))));
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 95);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 75);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1040, 2);
@@ -113,7 +113,7 @@
             this.lblModelsTitle.Location = new System.Drawing.Point(0, 0);
             this.lblModelsTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblModelsTitle.Name = "lblModelsTitle";
-            this.lblModelsTitle.Size = new System.Drawing.Size(1040, 24);
+            this.lblModelsTitle.Size = new System.Drawing.Size(1040, 22);
             this.lblModelsTitle.TabIndex = 8;
             this.lblModelsTitle.Text = "Programming proposal";
             this.lblModelsTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -139,7 +139,7 @@
             this.dgvReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvReport.EnableHeadersVisualStyles = false;
-            this.dgvReport.Location = new System.Drawing.Point(0, 121);
+            this.dgvReport.Location = new System.Drawing.Point(0, 99);
             this.dgvReport.Margin = new System.Windows.Forms.Padding(2);
             this.dgvReport.MultiSelect = false;
             this.dgvReport.Name = "dgvReport";
@@ -157,7 +157,7 @@
             this.dgvReport.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvReport.RowTemplate.Height = 24;
             this.dgvReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvReport.Size = new System.Drawing.Size(1040, 446);
+            this.dgvReport.Size = new System.Drawing.Size(1040, 468);
             this.dgvReport.TabIndex = 6;
             this.dgvReport.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReport_CellClick);
             this.dgvReport.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReport_CellDoubleClick);

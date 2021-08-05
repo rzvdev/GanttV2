@@ -38,6 +38,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.lblDateInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbManualDate = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblCaricoSugg = new System.Windows.Forms.Label();
@@ -145,6 +146,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbManualDate);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.lblDateInfo);
@@ -154,6 +156,18 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Date and time";
+            // 
+            // cbManualDate
+            // 
+            this.cbManualDate.AutoSize = true;
+            this.cbManualDate.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbManualDate.Location = new System.Drawing.Point(176, 86);
+            this.cbManualDate.Name = "cbManualDate";
+            this.cbManualDate.Size = new System.Drawing.Size(97, 20);
+            this.cbManualDate.TabIndex = 10;
+            this.cbManualDate.Text = "Manual date";
+            this.cbManualDate.UseVisualStyleBackColor = true;
+            this.cbManualDate.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -395,5 +409,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox cbLaunched;
         private System.Windows.Forms.Label lblQtyHSart;
+        private System.Windows.Forms.CheckBox cbManualDate;
     }
 }

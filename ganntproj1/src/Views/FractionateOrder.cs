@@ -217,10 +217,10 @@ where Id=@Id;";
             }
             else
             {
-                var check = Central.TaskList.Where(a => a.Name.Contains(_bar.RowText)).LastOrDefault();
-                if(check.Name.Split('_')[1]!=null)
-                { 
-                }
+                //var check = Central.TaskList.Where(a => a.Name.Contains(_bar.RowText)).LastOrDefault();
+                //if(check.Name.Split('_')[1]!=null)
+                //{ 
+                //}
                 newRowText = _bar.RowText + "_1";
             }
 

@@ -16,7 +16,7 @@ namespace ganntproj1.src.Views
             button2.DialogResult = DialogResult.Cancel;
         }
 
-        public ProgramationControl (string order,string line,string depart,DateTime date, string article, int totalQty = 0, int carico = 0, double qtyH = 0.0)
+        public ProgramationControl (string order,string line,string depart,DateTime date, DateTime manualdate, string article, int totalQty = 0, int carico = 0, double qtyH = 0.0)
         {
             InitializeComponent();
             button1.DialogResult = DialogResult.OK;
@@ -28,6 +28,7 @@ namespace ganntproj1.src.Views
             Article = article;
             TotalQty = totalQty;
             Carico = carico;
+            ManualDate = manualdate;
 
             if (Store.Default.sectorId == 8)
             {
@@ -170,6 +171,7 @@ namespace ganntproj1.src.Views
         public int TotalQty { get; set; }
         public int Carico { get; set; }
         public bool Launched { get; set; }
+        public DateTime ManualDate { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -269,6 +271,19 @@ namespace ganntproj1.src.Views
             }
 
             return hour;
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbManualDate.Checked == true)
+            {
+                dateTimePicker1.Value = ManualDate;
+            }
+            else 
+            {
+                dateTimePicker1.Value = DateTimes;
+            }
+
         }
     }
 }

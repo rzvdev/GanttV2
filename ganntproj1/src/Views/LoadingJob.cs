@@ -244,7 +244,7 @@
                             Workflow.TargetOrder = lbl.Name.Split('_')[0];
 
                             var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, Workflow.TargetDepartment, 
-                                Workflow.ManualDateTime, Workflow.Article, qty, carico);
+                                Workflow.ManualDateTime,Workflow.TargetProgramDate, Workflow.Article, qty, carico);
                          
                             if (programDialog.ShowDialog() != DialogResult.Cancel)
                             {
@@ -346,7 +346,7 @@
                                       "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
                                       "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
                                       "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
-                                      "and Comenzi.Line is null and Comenzi.isdeleted=0 " +
+                                      "and Comenzi.Line is null and Comenzi.isdeleted=0 " + 
                                       "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
                 else
@@ -1231,7 +1231,7 @@
             var byQty = false;
 
             var programDialog = new ProgramationControl(Workflow.TargetOrder, Workflow.TargetLine, 
-                Workflow.TargetDepartment, Workflow.ManualDateTime,art, qty, carico);
+                Workflow.TargetDepartment, Workflow.TargetProgramDate,DateTime.MinValue,art, qty, carico);
 
             if (programDialog.ShowDialog() != DialogResult.Cancel)
             {
@@ -1794,6 +1794,8 @@
                 dgvReport.FirstDisplayedScrollingRowIndex = idx - 2;
             else
                 dgvReport.FirstDisplayedScrollingRowIndex = idx;
+
+          
         }
 
         private void RemoveGridControls()
@@ -1921,7 +1923,7 @@
 
             var d = JobModel.GetLineNextDate(lineInsteadDescripton, dept);
 
-            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d, article, totalQty, carico, qtyH);
+            var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d,Workflow.TargetProgramDate, article, totalQty, carico, qtyH);
 
             if (programDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -2013,6 +2015,7 @@
             dgvReport.CurrentRow.Cells[0].Value = Properties.Resources.tick_icon_16;
 
             InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate, launched);
+           
         }
 
         private void _dtpProdChange_ValueChange(object sender, EventArgs e)
@@ -2518,76 +2521,79 @@
 
         public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched, int idx = 1) 
         {
-            var checkShift = new ShiftRecognition();
-
-            var orderOrigin = order.Contains("_") ? order.Split('_')[0] : order;
-
-            var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
-               "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
-               "membersnr,manualDate,abatimen,launched, idx, orderorigin) values " +
-               "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
-               "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-               "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35, @param36)";
-
-            var durationTicks = TimeSpan.FromDays(duration).Ticks;
-            var eDate = startDate.AddTicks(durationTicks);
-            eDate = new DateTime(eDate.Year, eDate.Date.Month, eDate.Day, eDate.Hour, eDate.Minute, 0, 0);
             
-            eDate = checkShift.GetEndTimeInShift(startDate, eDate);
+                var checkShift = new ShiftRecognition();
 
-            var lineDesc = (from lines in Tables.Lines
-                       where lines.Description == line && lines.Department == dept
-                       select lines).SingleOrDefault();
+                var orderOrigin = order.Contains("_") ? order.Split('_')[0] : order;
 
-            var lineDescription = lineDesc != null ? lineDesc.Line : line;
-            var lineAbatimen = lineDesc != null ? lineDesc.Abatimento : 0;
+                var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
+                   "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
+                   "membersnr,manualDate,abatimen,launched, idx, orderorigin) values " +
+                   "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
+                   "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
+                   "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35, @param36)";
 
-            using (var con = new SqlConnection(Central.SpecialConnStr))
-            {
-                var cmd = new SqlCommand(q, con);
-                cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = order;
-                cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = lineDescription;
-                cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = article;
-                cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
-                cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;
-                cmd.Parameters.Add("@param6", SqlDbType.Float).Value = qtyH;
-                cmd.Parameters.Add("@param7", SqlDbType.DateTime).Value = startDate; //Config.MinimalDate.AddTicks(startDate.Ticks).Ticks;
-                cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
-                cmd.Parameters.Add("@param9", SqlDbType.DateTime).Value = eDate;//Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
-                cmd.Parameters.Add("@param10", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param12", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param14", SqlDbType.Int).Value = dailyQty;
-                cmd.Parameters.Add("@param15", SqlDbType.Int).Value = 0;
-                cmd.Parameters.Add("@param16", SqlDbType.Int).Value = 0;
-                cmd.Parameters.Add("@param17", SqlDbType.Int).Value = 0;
-                cmd.Parameters.Add("@param18", SqlDbType.BigInt).Value = 0;
-                cmd.Parameters.Add("@param19", SqlDbType.BigInt).Value = 0;
-                cmd.Parameters.Add("@param20", SqlDbType.Bit).Value = false;
-                cmd.Parameters.Add("@param21", SqlDbType.Int).Value = 0;
-                cmd.Parameters.Add("@param22", SqlDbType.Bit).Value = false;
-                cmd.Parameters.Add("@param23", SqlDbType.Float).Value = price;
-                cmd.Parameters.Add("@param24", SqlDbType.Bit).Value = false;
-                cmd.Parameters.Add("@param25", SqlDbType.Bit).Value = false;
-                cmd.Parameters.Add("@param26", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param27", SqlDbType.DateTime).Value = DBNull.Value;
-                cmd.Parameters.Add("@param28", SqlDbType.Bit).Value = false;
-                cmd.Parameters.Add("@param29", SqlDbType.Bit).Value = true;
-                cmd.Parameters.Add("@param30", SqlDbType.NVarChar).Value = dept;
-                cmd.Parameters.Add("@param31", SqlDbType.Int).Value = members;
-                cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
-                cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
-                cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
-                cmd.Parameters.Add("@param35", SqlDbType.Bit).Value = idx;
-                cmd.Parameters.Add("@param36", SqlDbType.NVarChar).Value = orderOrigin;
+                var durationTicks = TimeSpan.FromDays(duration).Ticks;
+                var eDate = startDate.AddTicks(durationTicks);
+                eDate = new DateTime(eDate.Year, eDate.Date.Month, eDate.Day, eDate.Hour, eDate.Minute, 0, 0);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
+                eDate = checkShift.GetEndTimeInShift(startDate, eDate);
 
-            Config.InsertOperationLog("manual_programming", order + "-" + line + "-" + dept, "caricolavoro");
+                var lineDesc = (from lines in Tables.Lines
+                                where lines.Description == line && lines.Department == dept
+                                select lines).SingleOrDefault();
+
+                var lineDescription = lineDesc != null ? lineDesc.Line : line;
+                var lineAbatimen = lineDesc != null ? lineDesc.Abatimento : 0;
+
+                using (var con = new SqlConnection(Central.SpecialConnStr))
+                {
+                    var cmd = new SqlCommand(q, con);
+                    cmd.Parameters.Add("@param1", SqlDbType.NVarChar).Value = order;
+                    cmd.Parameters.Add("@param2", SqlDbType.NVarChar).Value = lineDescription;
+                    cmd.Parameters.Add("@param3", SqlDbType.NVarChar).Value = article;
+                    cmd.Parameters.Add("@param4", SqlDbType.Int).Value = 1;
+                    cmd.Parameters.Add("@param5", SqlDbType.Int).Value = qty;
+                    cmd.Parameters.Add("@param6", SqlDbType.Float).Value = qtyH;
+                    cmd.Parameters.Add("@param7", SqlDbType.DateTime).Value = startDate; //Config.MinimalDate.AddTicks(startDate.Ticks).Ticks;
+                    cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
+                    cmd.Parameters.Add("@param9", SqlDbType.DateTime).Value = eDate;//Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
+                    cmd.Parameters.Add("@param10", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param12", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param14", SqlDbType.Int).Value = dailyQty;
+                    cmd.Parameters.Add("@param15", SqlDbType.Int).Value = 0;
+                    cmd.Parameters.Add("@param16", SqlDbType.Int).Value = 0;
+                    cmd.Parameters.Add("@param17", SqlDbType.Int).Value = 0;
+                    cmd.Parameters.Add("@param18", SqlDbType.BigInt).Value = 0;
+                    cmd.Parameters.Add("@param19", SqlDbType.BigInt).Value = 0;
+                    cmd.Parameters.Add("@param20", SqlDbType.Bit).Value = false;
+                    cmd.Parameters.Add("@param21", SqlDbType.Int).Value = 0;
+                    cmd.Parameters.Add("@param22", SqlDbType.Bit).Value = false;
+                    cmd.Parameters.Add("@param23", SqlDbType.Float).Value = price;
+                    cmd.Parameters.Add("@param24", SqlDbType.Bit).Value = false;
+                    cmd.Parameters.Add("@param25", SqlDbType.Bit).Value = false;
+                    cmd.Parameters.Add("@param26", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param27", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param28", SqlDbType.Bit).Value = false;
+                    cmd.Parameters.Add("@param29", SqlDbType.Bit).Value = true;
+                    cmd.Parameters.Add("@param30", SqlDbType.NVarChar).Value = dept;
+                    cmd.Parameters.Add("@param31", SqlDbType.Int).Value = members;
+                    cmd.Parameters.Add("@param32", SqlDbType.Bit).Value = manualDate;
+                    cmd.Parameters.Add("@param33", SqlDbType.Int).Value = lineAbatimen;
+                    cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
+                    cmd.Parameters.Add("@param35", SqlDbType.Bit).Value = idx;
+                    cmd.Parameters.Add("@param36", SqlDbType.NVarChar).Value = orderOrigin;
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+
+                Config.InsertOperationLog("manual_programming", order + "-" + line + "-" + dept, "caricolavoro");
+            var w = new Workflow();
+            w.reset.PerformClick();
         }
 
         private string GetDescriptionInsteadOfLine(string line, string dept)

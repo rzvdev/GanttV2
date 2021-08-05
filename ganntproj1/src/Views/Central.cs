@@ -823,6 +823,7 @@
 
                 if (treeMenu.SelectedNode == node1)
                 {
+                    IsProgramare = false;
                     if (IsResetJobLoader)
                     {
                         IsAcconto = true;
@@ -844,6 +845,7 @@
                     frm.Show();
                     frm.TopLevel = false;
                     pnForms.Controls.Add(frm);
+                    
                     frm.Location = new Point(0, 0);
                     frm.Size = pnForms.Size;
                     frm.Visible = true;

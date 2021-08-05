@@ -20,6 +20,7 @@
         private List<Bar> _objList = new List<Bar>();
 
         private List<Index> _clonedIndexes = new List<Index>();
+        public  Button reset =  new Button();
 
         private readonly List<string> _lstExpanded = new List<string>();
 
@@ -104,7 +105,7 @@
                 _tmTip?.Dispose();
                 GC.Collect();
             };
-
+            reset.Click += Reset_Click;
             var tlp = new ToolTip();
             tlp.SetToolTip(btnBack, "Back");
             tlp.SetToolTip(btnMegaBack, "Back one week");
@@ -120,6 +121,11 @@
             tlp.SetToolTip(btnHolidays, "Holidays calendar");
             tlp.SetToolTip(btnShowEff, "Show production efficiency");
             tlp.SetToolTip(button2, "Hide lines where are no active orders");
+        }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            AddTimelineObjects();
         }
 
         private void ProduzioneGantt_Load(object sender, EventArgs e)
@@ -164,7 +170,7 @@
             
             var rowIdx = 0;
             var elementIdx = 0;
-            foreach (var model in Central.TaskList.OrderBy(a => a.Aim.Length).ThenBy(a=>a.Aim).ThenBy(a => a.EndDate))
+            foreach (var model in Central.TaskList.OrderBy(a => a.Aim.Length).ThenBy(a=>a.Aim).ThenBy(a => a.StartDate).ThenBy(a => a.EndDate))
             {
                 if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
 
@@ -185,7 +191,7 @@
             }
         }
 
-        private void SetPrincipalBarIndex(bool effColor)
+        public void SetPrincipalBarIndex(bool effColor)
         {
             _gChart.Bars = new List<BarProperty>();
             _gChart.HeaderList = new List<Header>();
@@ -564,7 +570,9 @@
             tsmi1.Click += (s, e) =>
             {
                 if (_tmTip != null) _tmTip.Dispose();
-                InsertCommessaProgram();
+                 InsertCommessaProgram();
+                
+               
             };
             tsmi2.Click += (s, e) =>
             {
@@ -627,7 +635,7 @@
         }
 
         public static List<string> LineActiveArticlesList = new List<string>();
-
+      
         public void InsertCommessaProgram()
         {
             try
@@ -637,7 +645,17 @@
                 if (TargetProgramDate == null || TargetProgramDate == DateTime.MinValue)
                 {
                     MessageBox.Show("Invalid selection.");
-                    return;
+                    return ;
+                }
+                else
+                {
+                    var selectedorder = Central.TaskList.Where(a => a.EndDate.Date == TargetProgramDate.Date).SingleOrDefault();
+                    DateTime dborder;
+                    using (var ctx = new DataContext(Central.SpecialConnStr))
+                    {
+                       dborder= ctx.ExecuteQuery<DateTime>("Select enddate from objects where ordername={0} and department={1}", selectedorder.Name, selectedorder.Department).FirstOrDefault();
+                    }
+                    TargetProgramDate = dborder;
                 }
                 var nextValue = (Bar)_gChart.MouseOverNextValue;
                 TargetLine = nextValue.Tag;
@@ -668,7 +686,7 @@
                 _ctxMenuStrip = null;
                 if (TargetOrder == string.Empty)
                 {
-                    return;
+                    return ;
                 }
 
                 var orderQuery = (from ord in Models.Tables.Orders
@@ -686,12 +704,12 @@
                     MessageBox.Show("Order already exist as an accepted model.\n" +
                         "Parametarized or cloning anomaly has been occurred.", "Workflow controller",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    return ;
                 }
                 if (orderQuery == null)
                 {
                     MessageBox.Show("Order fail.", "Workflow controller", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return ;
                 }
                 var artQ = (from art in Models.Tables.Articles
                             where art.Id == orderQuery.IdArticol
@@ -699,7 +717,7 @@
                 if (artQ == null)
                 {
                     MessageBox.Show("Article QtyH returns to zero.", "Security check", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return ;
                 }
                 var jobMod = new JobModel();
                 double.TryParse(artQ.Centes.ToString(), out var qtyH);
@@ -725,12 +743,14 @@
                         sDate, eDate,
                         TargetLine, ByQty, TargetOrder, TargetDepartment);
                 }
-
+              
                 AddTimelineObjects();
                 if (_loadingJobForm != null && _clActive)
                 {
                     _loadingJobForm.SelectProgrammedCommessa(TargetOrder);
                 }
+               
+                return;
             }
             catch (Exception ex)
             {
@@ -741,6 +761,7 @@
                     "Workflow controller",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                
             }
         }
         private void DeleteCommessaProgram()
@@ -839,7 +860,7 @@
             if (LoadingJobForm == null)
             {
                 spContainer.Panel2Collapsed = false;
-                spContainer.SplitterDistance = 280;
+                spContainer.SplitterDistance = 200;
                 var lbl = new Label
                 {
                     Text = "Initializing carico lavoro...",
@@ -915,12 +936,14 @@
                 btnCallCarico.Text = "Carico lavoro";
 
                 _clActive = false;
+                AddTimelineObjects();
             }
         }
 
         private void btnCallCarico_Click(object sender, EventArgs e)
         {
-          OpenCaricoLavoro();
+            OpenCaricoLavoro();
+            AddTimelineObjects();
         }
 
         private DataGridView _dgvTip = new DataGridView();
@@ -1459,6 +1482,11 @@
         private void button2_Click(object sender, EventArgs e)
         {
             Central.IsActiveOrdersSelection = !Central.IsActiveOrdersSelection;
+            AddTimelineObjects();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
             AddTimelineObjects();
         }
     }
