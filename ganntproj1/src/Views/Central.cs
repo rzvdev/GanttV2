@@ -869,8 +869,11 @@
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         wFlow.LoadDataWithDateChange();
                         frm.LoadCaricoLavoro();
+                        LoadingInfo.CloseLoading();
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
@@ -879,15 +882,20 @@
                             ResetStateFilters();
                             IsResetJobLoader = false;
                         }
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         wFlow.LoadDataWithDateChange();
                         frm.LoadCaricoLavoro();
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.reset_total_32;
                         RefreshTitle = "Commesse sul selezione data";
                         pnTitlebar.Refresh();
+                        LoadingInfo.CloseLoading();
                     };
                     lblResetGlobal.Click += (se, e) =>
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         IsResetJobLoader = true;
                         IsAcconto = true;
                         IsSaldo = true;
@@ -900,6 +908,7 @@
                         pbReload.Image = Properties.Resources.refresh_total_32;
                         RefreshTitle = "Commesse in lavoro/ commesse da programmare";
                         pnTitlebar.Refresh();
+                        LoadingInfo.CloseLoading();
                     };
                     pbPrint.Click += (se, e) =>
                     {
@@ -1006,8 +1015,10 @@
                             MessageBox.Show("not allowed");
                             return;
                         }
-
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadDataWithDateChange();
+                        LoadingInfo.CloseLoading();
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
@@ -1016,13 +1027,15 @@
                             MessageBox.Show("not allowed");
                             return;
                         }
-
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         IsResetJobLoader = false;
                         frm.LoadDataWithDateChange();
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.reset_total_32;
                         RefreshTitle = "Commesse sul selezione data";
                         pnTitlebar.Refresh();
+                        LoadingInfo.CloseLoading();
                     };
                     lblResetGlobal.Click += (se, e) =>
                     {
@@ -1031,13 +1044,15 @@
                             MessageBox.Show("not allowed");
                             return;
                         }
-
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         IsResetJobLoader = true;
                         frm.LoadDataWithDateChange();
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.refresh_total_32;
                         RefreshTitle = "Commesse in lavoro/ commesse da programmare";
                         pnTitlebar.Refresh();
+                        LoadingInfo.CloseLoading();
                     };
                     cbAcconto.Click += (se, e) =>
                     {
@@ -1089,11 +1104,17 @@
                     btnProduzione.Image = Properties.Resources.switch_arrow_triangle_right_white;
                     pbReload.Click += (se, e) =>
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadReportTable();
+                        LoadingInfo.CloseLoading();
                     };
                     btnExcel.Click += (se, e) =>
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.ExportToExcel();
+                        LoadingInfo.CloseLoading();
                     };
                 }
                 if (treeMenu.SelectedNode == node4)
@@ -1131,11 +1152,17 @@
                     btnFatturato.Image = Properties.Resources.switch_arrow_triangle_right_white;
                     pbReload.Click += (se, e) =>
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadData();
+                        LoadingInfo.CloseLoading();
                     };
                     btnExcel.Click += (se, e) =>
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.ExportToExcel();
+                        LoadingInfo.CloseLoading();
                     };
                 }
                 if (treeMenu.SelectedNode == node5)
@@ -1182,7 +1209,9 @@
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
-                        if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader); else frm.LoadReportByDateStiro(!IsResetJobLoader);
+
+                        if (Store.Default.sectorId != 2) frm.LoadReportByDate(!IsResetJobLoader);
+                        else frm.LoadReportByDateStiro(!IsResetJobLoader);
 
                     };
                     lblRefreshGlobal.Click += (se, e) =>
@@ -1256,7 +1285,10 @@
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadReportByDate(!IsResetJobLoader);
+                        LoadingInfo.CloseLoading();
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
@@ -1466,9 +1498,12 @@
                             IsResetJobLoader = false;
                             ResetStateFilters();
                         }
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadaDataFromServer();
                         frm.CreateSituationContolReport();
                         frm.CreateGraphReport();
+                        LoadingInfo.CloseLoading();
                     };
                     lblRefreshGlobal.Click += (se, e) =>
                     {
@@ -1477,12 +1512,15 @@
                             ResetStateFilters();
                             IsResetJobLoader = false;
                         }
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         frm.LoadaDataFromServer();
                         frm.CreateSituationContolReport();
                         frm.CreateGraphReport();
                         pnReload.Visible = false;
                         pbReload.Image = Properties.Resources.reset_total_32;
                         RefreshTitle = "Commesse sul selezione data";
+                        LoadingInfo.CloseLoading();
                     };
                 }
 

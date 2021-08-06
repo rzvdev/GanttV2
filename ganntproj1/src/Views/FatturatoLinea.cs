@@ -46,7 +46,10 @@ namespace ganntproj1
                 Month = cboMonth.SelectedIndex + 1;
                 if (!firstRead)
                 {
+                    LoadingInfo.ShowLoading();
+                    LoadingInfo.InfoText = "Loading data...";
                     LoadData();
+                    LoadingInfo.CloseLoading();
                 }
             };
 
@@ -55,7 +58,10 @@ namespace ganntproj1
                 Year = Convert.ToInt32(cboYears.Text);
                 if (!firstRead)
                 {
+                    LoadingInfo.ShowLoading();
+                    LoadingInfo.InfoText = "Loading data...";
                     LoadData();
+                    LoadingInfo.CloseLoading();
                 }
             };
 

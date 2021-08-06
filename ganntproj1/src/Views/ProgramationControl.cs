@@ -36,6 +36,10 @@ namespace ganntproj1.src.Views
             }
 
             lblQtyHSart.Text = QtyHSartoria.ToString();
+            if(ManualDate==DateTime.MinValue)
+            {
+                cbManualDate.Visible = false;
+            }
         }
 
         private void ProgramationControl_Load(object sender, EventArgs e)

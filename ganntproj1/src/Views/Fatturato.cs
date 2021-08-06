@@ -41,7 +41,7 @@
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Clear();
             cmd.Parameters.Add("@from_date", SqlDbType.DateTime).Value = Central.DateFrom;
-            cmd.Parameters.Add("@to_date", SqlDbType.DateTime).Value = Central.DateTo;
+            cmd.Parameters.Add("@to_date", SqlDbType.DateTime).Value = Central.DateTo.AddDays(1);
             cmd.Parameters.Add("@deptArr", SqlDbType.NVarChar).Value = Store.Default.arrDept;
             cmd.Parameters.Add("@useAbat", SqlDbType.Bit).Value = cbAcconto.Checked;
 
@@ -100,10 +100,11 @@
             }
 
             var totRow = tblRep.NewRow();
-            totRow[0] = "total";
+            totRow[0] = "TOTAL";
             tblRep.Rows.Add(totRow);
             var dateBefore = DateTime.MinValue;
             var totX = 1;
+            DataRow lastrow = null;
             foreach (DataRow xRow in tblDays.Rows)
             {               
                 DateTime.TryParse(xRow[0].ToString(), out var day);               
@@ -151,15 +152,34 @@
 
                 tblRep.Rows.Add(nRow);
 
-                if (day.DayOfWeek == DayOfWeek.Friday)
+                if (day.DayOfWeek == DayOfWeek.Saturday)
                 {
                     DataRow tRow = tblRep.NewRow();
-                    tRow[0] = "TOT " + totX.ToString();
+                    tRow[0] = "TOTAL " + totX.ToString();
                     totX++;
                     tblRep.Rows.Add(tRow);
-                }               
+                }
+                else if (lastrow != null)
+                {
+                    var date1 = Convert.ToDateTime(lastrow[0]);
+                    if (date1.DayOfWeek == DayOfWeek.Friday && day.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        DataRow tRow = tblRep.NewRow();
+                        tRow[0] = "TOTAL " + totX.ToString();
+                        totX++;
+                        tblRep.Rows.InsertAt(tRow, tblRep.Rows.Count - 1);
+                    }
+                }
+                lastrow = xRow;
+               
             }
-            
+            if (totX>1 && tblRep.Rows.Count>=5 && totX<7)
+            {
+                DataRow tRowf = tblRep.NewRow();
+                tRowf[0] = "TOTAL " + totX.ToString();
+                totX++;
+                tblRep.Rows.Add(tRowf);
+            }
             dgvReport.DataSource = tblRep;
             GetTotals();
         }
@@ -196,14 +216,17 @@
                 row.Cells[5].Value = eff.ToString();
             }
 
-            var tot1 = 0; var tot2 = 0; var tot3 = 0; var tot4 = 0;
+            var tot1 = 0; var tot2 = 0; var tot3 = 0; var tot4 = 0; var tot5 = 0; var tot6 = 0;
 
             foreach (DataGridViewRow row in dgvReport.Rows)
             {
-                if (row.Cells[0].Value.ToString() == "TOT 1") tot1 = row.Index;
-                else if (row.Cells[0].Value.ToString() == "TOT 2") tot2 = row.Index;
-                else if (row.Cells[0].Value.ToString() == "TOT 3") tot3 = row.Index;
-                else if (row.Cells[0].Value.ToString() == "TOT 4") tot4 = row.Index;
+                if (row.Cells[0].Value.ToString() == "TOTAL 1") tot1 = row.Index;
+                else if (row.Cells[0].Value.ToString() == "TOTAL 2") tot2 = row.Index;
+                else if (row.Cells[0].Value.ToString() == "TOTAL 3") tot3 = row.Index;
+                else if (row.Cells[0].Value.ToString() == "TOTAL 4") tot4 = row.Index;
+                else if (row.Cells[0].Value.ToString() == "TOTAL 5") tot5 = row.Index;
+                else if (row.Cells[0].Value.ToString() == "TOTAL 6") tot6 = row.Index;
+
             }
 
             for (var c = 1; c <= dgvReport.Columns.Count - 1; c++)
@@ -250,6 +273,29 @@
                 }
                 dgvReport.Rows[tot4].Cells[c].Value = Math.Round(t, 2).ToString();
             }
+            for (var c = 1; c <= dgvReport.Columns.Count - 1; c++)
+            {
+                if (dgvReport.Columns[c].Name.Contains(StrDeltaValor) || dgvReport.Columns[c].Name.Contains(StrPercent)) continue;
+                var t = 0.0;
+                for (var r = tot4 + 1; r <= tot5 - 1; r++)
+                {
+                    double.TryParse(dgvReport.Rows[r].Cells[c].Value.ToString(), out var x);
+                    t += x;
+                }
+                dgvReport.Rows[tot5].Cells[c].Value = Math.Round(t, 2).ToString();
+            }
+
+            for (var c = 1; c <= dgvReport.Columns.Count - 1; c++)
+            {
+                if (dgvReport.Columns[c].Name.Contains(StrDeltaValor) || dgvReport.Columns[c].Name.Contains(StrPercent)) continue;
+                var t = 0.0;
+                for (var r = tot5 + 1; r <= tot6 - 1; r++)
+                {
+                    double.TryParse(dgvReport.Rows[r].Cells[c].Value.ToString(), out var x);
+                    t += x;
+                }
+                dgvReport.Rows[tot6].Cells[c].Value = Math.Round(t, 2).ToString();
+            }
 
             foreach (DataGridViewColumn col in dgvReport.Columns)
             {
@@ -259,7 +305,7 @@
                 var tPrice = 0.0;
                 foreach (DataGridViewRow row in dgvReport.Rows)
                 {
-                    if (row.Cells[0].Value.ToString().Contains("TOT")) continue;
+                    if (row.Cells[0].Value.ToString().Contains("TOTAL")) continue;
                     double.TryParse(row.Cells[col.Index].Value.ToString(), out var val);
                     double.TryParse(row.Cells[col.Index + 1].Value.ToString(), out var pVal);
                     tQty += val;
@@ -358,7 +404,7 @@
                 {
                     dgvc.HeaderText = dgvc.HeaderText.Split('_')[0];
                     dgvc.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    dgvc.Width = 60;
+                    dgvc.Width = 65;
                     dgvc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
                     if (dgvc.Name.Split('_')[0] == StrEff)
                     {
@@ -376,19 +422,22 @@
             }
             foreach (DataGridViewRow dgvr in dgvReport.Rows)
             {
-                if (dgvr.Index == 0)
+                //if (dgvr.Index == 0)
+                //{
+                //    dgvr.DefaultCellStyle.BackColor = Color.Gainsboro;
+                //    dgvr.DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
+                //    dgvr.DefaultCellStyle.ForeColor = Color.Red;
+                //    dgvr.DefaultCellStyle.SelectionForeColor = Color.Red; 
+                //    dgvr.DefaultCellStyle.Font = new Font(Font, FontStyle.Bold);
+                //    dgvr.Frozen = true;
+                //}
+                if (dgvr.Cells[0].Value.ToString().Contains("TOTAL"))
                 {
                     dgvr.DefaultCellStyle.BackColor = Color.Gainsboro;
                     dgvr.DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
-                    dgvr.DefaultCellStyle.ForeColor = Color.Red;
                     dgvr.DefaultCellStyle.SelectionForeColor = Color.Red;
-                    dgvr.Frozen = true;
-                }
-                if (dgvr.Cells[0].Value.ToString().Contains("TOT"))
-                {
-                    dgvr.DefaultCellStyle.BackColor = Color.Gainsboro;
-                    dgvr.DefaultCellStyle.SelectionBackColor = Color.Gainsboro;
-                    dgvr.DefaultCellStyle.SelectionForeColor = Color.Black;
+                    dgvr.DefaultCellStyle.Font = new Font(Font, FontStyle.Bold);
+                    dgvr.DefaultCellStyle.ForeColor = Color.Red;
                 }
             }
 

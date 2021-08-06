@@ -204,25 +204,36 @@ namespace ganntproj1
             var partIndex = 0;
             var lineBefore = string.Empty;
             var lst = new List<string>();
-
-            foreach (DataRow row in table_data.Rows)
+            DataRow lastrow = null;
+            foreach(DataRow row in table_data.Rows)
             {
+                
                 var date = Convert.ToDateTime(row[0]);
-
                 if (lst.Contains(date.ToString("dd/MM"))) continue;
-
                 DataRow repRow = table_report.NewRow();
                 repRow[0] = date.ToString("dd/MM");
                 table_report.Rows.Add(repRow);
                 lst.Add(date.ToString("dd/MM"));
-
-                if (date.DayOfWeek == DayOfWeek.Friday)
+                if (date.DayOfWeek == DayOfWeek.Saturday)
                 {
                     var weekRow = table_report.NewRow();
                     weekRow[0] = string.Empty;
                     weekRow[1] = string.Empty;
                     table_report.Rows.Add(weekRow);
                 }
+                else if (lastrow != null)
+                {
+                    var date1 = Convert.ToDateTime(lastrow[0]);
+                    if (date1.DayOfWeek == DayOfWeek.Friday && date.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        var weekRow = table_report.NewRow();
+                        weekRow[0] = string.Empty;
+                        weekRow[1] = string.Empty;
+                        table_report.Rows.InsertAt(weekRow, table_report.Rows.Count-1);
+                    }
+                }
+                lastrow = row;
+
             }
 
             foreach (DataRow r in table_data.Rows)

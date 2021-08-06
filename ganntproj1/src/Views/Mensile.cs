@@ -45,11 +45,19 @@
                     _cboType?.Dispose();
                     if (Mode == "mens")
                     {
-                        LoadDataMensile();
+                       
+                            LoadingInfo.ShowLoading();
+                            LoadingInfo.InfoText = "Loading data...";
+                            LoadDataMensile();
+                            LoadingInfo.CloseLoading();
+                      
                     }
                     else
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         LoadEff();
+                        LoadingInfo.CloseLoading();
                     }
                 }
             };
@@ -67,11 +75,17 @@
                     _cboType?.Dispose();
                     if (Mode == "mens")
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         LoadDataMensile();
+                        LoadingInfo.CloseLoading();
                     }
                     else
                     {
+                        LoadingInfo.ShowLoading();
+                        LoadingInfo.InfoText = "Loading data...";
                         LoadEff();
+                        LoadingInfo.CloseLoading();
                     }
                 }
             };
@@ -95,6 +109,7 @@
             if (Mode != "mens")
             {
                 toggleCheckBox1.Visible = false;
+                label3.Visible = false;
             }
 
 

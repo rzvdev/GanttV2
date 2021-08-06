@@ -43,14 +43,20 @@
             }
             cboMonth.SelectedIndexChanged += (s, ev) =>
             {
+                LoadingInfo.ShowLoading();
+                LoadingInfo.InfoText = "Loading data...";
                 if (cbYearAll.Checked) return;
                 Month = cboMonth.SelectedIndex + 1;
                 LoadGraph();
+                LoadingInfo.CloseLoading();
             };
             cboYears.SelectedIndexChanged += (s, ev) =>
             {
+                LoadingInfo.ShowLoading();
+                LoadingInfo.InfoText = "Loading data...";
                 Year = Convert.ToInt32(cboYears.Text);    
-                LoadGraph();  
+                LoadGraph();
+                LoadingInfo.CloseLoading();
             };
             cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
             cboMonth.SelectedIndex = DateTime.Now.Month - 1;
@@ -452,30 +458,42 @@
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "Loading data...";
             Department = Store.Default.selDept;
             IsAll = true;
             LoadGraph();
+            LoadingInfo.CloseLoading();
         }
 
         private void rbConfA_CheckedChanged(object sender, EventArgs e)
         {
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "Loading data...";
             Department = ",Confezione A,";
             IsAll = false;
             LoadGraph();
+            LoadingInfo.CloseLoading();
         }
 
         private void rbConfB_CheckedChanged(object sender, EventArgs e)
         {
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "Loading data...";
             Department = ",Confezione B,";
             IsAll = false;
             LoadGraph();
+            LoadingInfo.CloseLoading();
         }
 
         private void rbConfC_CheckedChanged(object sender, EventArgs e)
         {
+            LoadingInfo.ShowLoading();
+            LoadingInfo.InfoText = "Loading data...";
             Department = ",Confezione C,";
             IsAll = false;
             LoadGraph();
+            LoadingInfo.CloseLoading();
         }
     }
 }

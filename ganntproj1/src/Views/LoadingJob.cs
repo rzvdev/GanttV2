@@ -1922,7 +1922,7 @@
             var byQty = false;
 
             var d = JobModel.GetLineNextDate(lineInsteadDescripton, dept);
-
+            if (!Central.IsProgramare) Workflow.TargetProgramDate = DateTime.MinValue;
             var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d,Workflow.TargetProgramDate, article, totalQty, carico, qtyH);
 
             if (programDialog.ShowDialog() == DialogResult.Cancel)
