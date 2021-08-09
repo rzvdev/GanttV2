@@ -124,6 +124,7 @@
             if (Central.IsProgramare)
             {
                 pnArticles.Visible = true;
+                lblModelsTitle.Text += " " + Workflow.TargetLine;
                 lblModelsTitle.Visible = true;
                 var leftObjLocation = 8;
                 Geometry _geometry = new Geometry();
@@ -1895,6 +1896,8 @@
             int.TryParse(dgvReport.CurrentRow.Cells["IdState"].Value.ToString(), out var stateNum);
             var article = dgvReport.CurrentRow.Cells[2].Value.ToString();
             var dept = dgvReport.CurrentRow.Cells["Department"].Value.ToString();
+            DateTime.TryParse( dgvReport.CurrentRow.Cells["Dvc"].Value.ToString(), out var dvc);
+            DateTime.TryParse( dgvReport.CurrentRow.Cells["Rdd"].Value.ToString(), out var rdd);
 
             var lineInsteadDescripton = (from lines in Tables.Lines
                                          where lines.Description == cb.Text && lines.Department == dept
@@ -2014,7 +2017,7 @@
             dgvReport.CurrentRow.Cells[9].Value = UniParseDateTime(endDate);
             dgvReport.CurrentRow.Cells[0].Value = Properties.Resources.tick_icon_16;
 
-            InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, jobDuration, dailyQty, price, dept,members,manualdate, launched);
+            InsertNewProgram(_orderToUpdate, cb.Text, article, qty, qtyH, startDate, dvc,rdd, jobDuration, dailyQty, price, dept,members,manualdate, launched);
            
         }
 
@@ -2519,7 +2522,7 @@
             HideLightColumns();
         }
 
-        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate,double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched, int idx = 1) 
+        public void InsertNewProgram(string order,string line,string article,int qty,double qtyH, DateTime startDate, DateTime? dvc, DateTime? rdd, double duration, int dailyQty, double price, string dept, int members, bool manualDate, bool launched, int idx = 1) 
         {
             
                 var checkShift = new ShiftRecognition();
@@ -2528,10 +2531,10 @@
 
                 var q = "insert into objects (ordername,aim,article,stateid,loadedqty,qtyh,startdate,duration,enddate,dvc,rdd,startprod,endprod,dailyprod,prodqty, " +
                    "overqty,prodoverdays,delayts,prodoverts,locked,holiday,closedord,artprice,hasprod,lockedprod,delaystart,delayend,doneprod,base,department," +
-                   "membersnr,manualDate,abatimen,launched, idx, orderorigin) values " +
+                   "membersnr,manualDate,abatimen,launched, idx, orderorigin, flowstartdate,flowenddate) values " +
                    "(@param1,@param2,@param3,@param4,@param5,@param6,@param7,@param8,@param9,@param10," +
                    "@param11,@param12,@param13,@param14,@param15,@param16,@param17,@param18,@param19," +
-                   "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35, @param36)";
+                   "@param20,@param21,@param22,@param23,@param24,@param25,@param26,@param27,@param28,@param29,@param30,@param31,@param32,@param33,@param34, @param35, @param36, @param37, @param38)";
 
                 var durationTicks = TimeSpan.FromDays(duration).Ticks;
                 var eDate = startDate.AddTicks(durationTicks);
@@ -2558,8 +2561,8 @@
                     cmd.Parameters.Add("@param7", SqlDbType.DateTime).Value = startDate; //Config.MinimalDate.AddTicks(startDate.Ticks).Ticks;
                     cmd.Parameters.Add("@param8", SqlDbType.Float).Value = duration;
                     cmd.Parameters.Add("@param9", SqlDbType.DateTime).Value = eDate;//Config.MinimalDate.AddTicks(eDate.Ticks).Ticks;
-                    cmd.Parameters.Add("@param10", SqlDbType.DateTime).Value = DBNull.Value;
-                    cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = DBNull.Value;
+                    cmd.Parameters.Add("@param10", SqlDbType.DateTime).Value = dvc;
+                    cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = rdd;
                     cmd.Parameters.Add("@param12", SqlDbType.DateTime).Value = DBNull.Value;
                     cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = DBNull.Value;
                     cmd.Parameters.Add("@param14", SqlDbType.Int).Value = dailyQty;
@@ -2585,8 +2588,10 @@
                     cmd.Parameters.Add("@param34", SqlDbType.Bit).Value = launched;
                     cmd.Parameters.Add("@param35", SqlDbType.Bit).Value = idx;
                     cmd.Parameters.Add("@param36", SqlDbType.NVarChar).Value = orderOrigin;
+                    cmd.Parameters.Add("@param37", SqlDbType.DateTime).Value = startDate;
+                    cmd.Parameters.Add("@param38", SqlDbType.DateTime).Value = eDate;
 
-                    con.Open();
+                con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }

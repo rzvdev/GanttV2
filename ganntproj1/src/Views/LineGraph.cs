@@ -458,9 +458,14 @@
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
+            Department = string.Empty;
             LoadingInfo.ShowLoading();
             LoadingInfo.InfoText = "Loading data...";
-            Department = Store.Default.selDept;
+            var dept = Store.Default.arrDept;
+            if (dept.Contains("Confezione A")) Department += ",Confezione A,";
+            if (dept.Contains("Confezione B")) Department += ",Confezione B,";
+            if (dept.Contains("Confezione C")) Department += ",Confezione C,";
+          //  Department = ",Confezione B,Confezione C,Confecione A,";
             IsAll = true;
             LoadGraph();
             LoadingInfo.CloseLoading();

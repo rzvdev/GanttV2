@@ -397,7 +397,7 @@ namespace ganntproj1
             DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayFromTime, DateTime delayToTime,
             Color color, Color hoverColor, int rowIndex, bool isRoot, string tag, bool expanded, Image toggle, int fixQty, int dailyQty, int prodQty,
             DateTime prodOverStartValue, DateTime prodOverEndValue, bool locked, bool prodLocked, bool closed, Color prodColor, string art, string dept, bool launched,
-            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id)
+            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id, DateTime dvc, DateTime rdd)
         {
             if (string.IsNullOrEmpty(rowText)) return;
 
@@ -437,7 +437,9 @@ namespace ganntproj1
                 LoadedQty = loadedQty,
                 Members = members,
                 QtyH = qtyH,
-                Id = id
+                Id = id,
+                Rdd= rdd,
+                DvcValue=dvc
             };
 
             Bars.Add(bar);
@@ -476,10 +478,12 @@ namespace ganntproj1
 
         private void DrawBars(Graphics grfx, bool ignoreScrollAndMousePosition = false)
         {
+
             grfx.SmoothingMode = SmoothingMode.AntiAlias;
             var geo = new Geometry();
             foreach (var bar in Bars)
-            {                
+            {
+               
                 if (FilteredRowText != string.Empty && bar.RowText != FilteredRowText) continue;
 
                 if (Central.IsActiveOrdersSelection && bar.ProdQty == bar.FixQty || Central.IsActiveOrdersSelection && bar.ProdQty == 0) continue;
@@ -511,6 +515,21 @@ namespace ganntproj1
                 var ox = _barStartLeft + GetBarStartLocation(bar.ProdOverStartValue) + 1;
                 var oy = y + 20;    
                 var oh = BarHeight - 30;
+
+                var dvcx = _barStartLeft + GetBarStartLocation(bar.DvcValue);
+                var dvcy = BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos);
+                var dvcw= GetBarEndLocation(bar.StartValue, bar.DvcValue);
+                int dvch = BarHeight - 20;
+                var dvcpen = new Pen(Brushes.Red, 1.8F);
+
+                var rddx = _barStartLeft + GetBarStartLocation(bar.Rdd);
+                var rddy = BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos);
+                var rddw = GetBarEndLocation(bar.StartValue, bar.Rdd);
+                int rddh = BarHeight - 20;
+                var rddpen = new Pen(Brushes.DarkSlateGray, 1.8F);
+
+
+
 
                 var findCenterByY = py + (ph / 2 - 5);
 
@@ -663,7 +682,14 @@ namespace ganntproj1
                     var desc = (from line in Central.ListOfLines
                                 where line.Line == bar.Tag && line.Department == bar.Department
                                 select line).SingleOrDefault().Description;
-
+                    if (bar.ProdQty > 0 && bar.ClosedOrd == false && bar.ProdQty < bar.FixQty && (bar.EndValue> bar.DvcValue || bar.DelayEndValue>bar.DvcValue))
+                    {
+                        grfx.DrawLine(dvcpen, dvcx, dvcy+3, dvcx, (dvcy + dvch)+3);
+                    }
+                    if (bar.ProdQty > 0 && bar.ClosedOrd == false && bar.ProdQty < bar.FixQty && (bar.EndValue > bar.Rdd || bar.DelayEndValue > bar.Rdd))
+                    {
+                        grfx.DrawLine(rddpen, rddx, rddy + 3, rddx, (rddy + dvch) + 3);
+                    }
                     if (Store.Default.sectorId == 1)
                     {
                         var strLine = "LINEA ";
@@ -692,6 +718,7 @@ namespace ganntproj1
                       new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
                       ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 + 12));
                     }
+                   
                 }
 
                 var maxHeight = Height;
@@ -1121,6 +1148,7 @@ namespace ganntproj1
 
         internal Location ProdBottomLocation { get; set; } = new Location();
 
+
         internal class Location
         {
             public Point Left { get; set; }
@@ -1138,7 +1166,7 @@ namespace ganntproj1
         public Bar(string rowText, string chain, DateTime fromTime, DateTime toTime, DateTime prodFromTime, DateTime prodToTime, DateTime delayStart, DateTime delayEnd,
             Color color, Color hoverColor, int index, bool isRoot, string tag,
             int fixQty, int dailyQty, int prodQty, DateTime prodOverFromTime, DateTime prodOverToTime, bool locked, bool prodLocked, bool closed, Color prodColor, string art,string dept, bool launched,
-            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id)
+            string operation, int idx, int parentIdx, int loadedQty, int members, double qtyH, int id, DateTime dvc, DateTime rdd)
             {
             RowText = rowText;
             Chain = chain;
@@ -1172,6 +1200,9 @@ namespace ganntproj1
             Members = members;
             QtyH = qtyH;
             Id = id;
+            ToDvc = dvc;
+            ToRdd = rdd;
+
         }
 
         public string RowText { get; set; }
@@ -1197,6 +1228,7 @@ namespace ganntproj1
         public DateTime ToRealTime { get; set; }
 
         public DateTime ToDvc { get; set; }
+        public DateTime ToRdd { get; set; }
 
         public Color Color { get; set; }
 

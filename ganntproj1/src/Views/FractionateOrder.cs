@@ -225,7 +225,7 @@ where Id=@Id;";
             }
 
             loadingJob.InsertNewProgram(newRowText, cboLine.Text, _bar.Article, newQty,
-                _bar.QtyH, startDate, duration, dailyProd,
+                _bar.QtyH, startDate, _bar.ToDvc, _bar.ToRdd, duration, dailyProd,
                 task.ArtPrice, _bar.Department, newMembers, dtpStart.Checked, false);
         }
 

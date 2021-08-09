@@ -18,7 +18,7 @@
         }
 
         public JobModel(string name, string aim, string article, int stateId, int loadedQty, double qtyH, DateTime startDate, double duration,
-            DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, int dailyProd,
+            DateTime endDate, DateTime dvc, DateTime rdd, DateTime prodStart, DateTime prodEnd, DateTime flowstart, DateTime flowend, int dailyProd,
             int prodQty, int overQty, int prodOverDays, long delayTs, long prodOverTs,
             bool locked, int holiday, bool closedord, double artPrice, bool hasProd, bool lockedProd,
             DateTime delayStart, DateTime delayEnd, bool prodDone, bool isbase, double newQh, double newPrice, string dept, 
@@ -64,6 +64,9 @@
             ParentIdx = parentIdx;
             Operation = operation;
             Id = id;
+            FlowStart = flowstart;
+            FlowEnd = flowend;
+
         }
 
         public int Id { get; set; }
@@ -145,6 +148,8 @@
         public string Operation { get; set; }
         public int Idx { get; set; }
         public int ParentIdx { get; set; }
+        public DateTime FlowStart { get; set; }
+        public DateTime FlowEnd { get; set; }
 
         public IEnumerable<DateTime> GetDaysInRange(DateTime from,
                                                     DateTime to)

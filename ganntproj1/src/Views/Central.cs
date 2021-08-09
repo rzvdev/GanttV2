@@ -35,7 +35,7 @@
         
         private IntPtr _console = new IntPtr();
         public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
-       // public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
+        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
 
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
         
@@ -735,7 +735,9 @@
                                     //Operation = dr["operation"].ToString(),
                                     //Idx= int.Parse(dr["idx"].ToString() == null ? "0" : dr["idx"].ToString()),
                                     // ParentIdx = int.Parse(dr["parentidx"].ToString() == null ? "0" : dr["parentidx"].ToString()),
-                                    Id = dr["Id"] == DBNull.Value ? 0 : Convert.ToInt32(dr["Id"])
+                                    Id = dr["Id"] == DBNull.Value ? 0 : Convert.ToInt32(dr["Id"]),
+                                    FlowStart=dr["flowstartdate"] == DBNull.Value? DateTime.MinValue : Convert.ToDateTime(dr["flowstartdate"]),
+                                    FlowEnd=dr["flowenddate"]== DBNull.Value? DateTime.MinValue: Convert.ToDateTime(dr["flowenddate"])
                                      //int.Parse(dr["Id"].ToString())
 
 
@@ -2165,17 +2167,17 @@
 
                     using (var context = new DataContext(SpecialConnStr))
                     {
-                        DateTime.TryParse(model.Dvc.ToString(), out var dvc);
-                        DateTime.TryParse(model.Rdd.ToString(), out var rdd);
+                       // DateTime.TryParse(model.Dvc.ToString(), out var dvc);
+                      //  DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
-                       // var d = dvc == DateTime.MinValue ? 0 : dvc;//.Subtract(Config.MinimalDate)//.Ticks;
-                        //var r = rdd == DateTime.MinValue ? 0L : rdd;//.Subtract(Config.MinimalDate)//.Ticks;
+                      //var d = dvc == DateTime.MinValue ? 0 : dvc.Subtract(Config.MinimalDate)//.Ticks;
+                      //var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate)//.Ticks;
 
                         context.ExecuteCommand("update objects set " +
-                                "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3}, dvc={4}, rdd={5} " +
-                                "where ordername={6} and aim={7} and department={8}",
+                                "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3} " +
+                                "where ordername={4} and aim={5} and department={6}",
                                 start, end,
-                                dS, dE, dvc, rdd,
+                                dS, dE,// dvc, rdd,
                                 model.Name, model.Aim, model.Department);
                     }
                 }

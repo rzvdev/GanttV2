@@ -170,7 +170,24 @@
             
             var rowIdx = 0;
             var elementIdx = 0;
-            foreach (var model in Central.TaskList.OrderBy(a => a.Aim.Length).ThenBy(a=>a.Aim).ThenBy(a => a.EndDate))
+            List<JobModel> tasklist = new List<JobModel>();
+            if(Store.Default.sectorId==7)
+            {
+                 var dbline = (from lines in Models.Tables.Lines where lines.Department == "Tessitura" select lines).OrderBy(a => a.Groupby.Length).ThenBy(a => a.Line).Select(a=>a.Line).ToList();
+                //string test = string.Empty;
+                //foreach(var x in dbline)
+                //{
+                //    test += x + ";";
+                //}
+                //MessageBox.Show(test);
+                tasklist = Central.TaskList.OrderBy(a=> dbline.IndexOf(a.Aim)).ThenBy(a => a.FlowEnd).ToList();
+            }
+            else
+            {
+                 tasklist = Central.TaskList.OrderBy(a => a.Aim.Length).ThenBy(a => a.Aim).ThenBy(a => a.FlowEnd).ToList();
+            }
+            
+            foreach (var model in tasklist)
             {
                 if (SkipLines && !ListOfLinesSelected.Contains(model.Aim)) continue;
 
@@ -438,9 +455,13 @@
                     model.ClosedByUser,
                     prodBarColor,
                     model.Article, model.Department, model.Launched,
-                    model.Operation, model.Idx, model.ParentIdx, model.LoadedQty, model.Members, model.QtyH, model.Id));
+                    model.Operation, model.Idx, model.ParentIdx, model.LoadedQty, model.Members, model.QtyH, model.Id, model.Dvc, model.Rdd));
             }
+            //if(_objList[0].Department=="Tessitura")
+            //{
 
+            //    _objList = new List<Bar>(_objList.GroupBy(a => Central.ListOfLines.IndexOf()));
+            //}
             foreach (var obj in _objList)
             {
                 if (!Central.IsResetJobLoader)
@@ -462,8 +483,10 @@
                     obj.Locked, obj.LockedProd, obj.ClosedOrd,
                     obj.ProdColor, obj.Article, obj.Department, obj.Launched,
                     obj.Operation, obj.Idx, obj.ParentIdx,
-                    obj.LoadedQty, obj.Members, obj.QtyH, obj.Id);
+                    obj.LoadedQty, obj.Members, obj.QtyH, obj.Id, obj.ToDvc, obj.ToRdd);
             }
+            
+
             _gChart.Refresh();
         }
 
@@ -649,11 +672,11 @@
                 }
                 else
                 {
-                    var selectedorder = Central.TaskList.Where(a => a.EndDate.Date == TargetProgramDate.Date).SingleOrDefault();
+                    var selectedorder = Central.TaskList.Where(a => a.FlowEnd.Date == TargetProgramDate.Date).LastOrDefault();
                     DateTime dborder;
                     using (var ctx = new DataContext(Central.SpecialConnStr))
                     {
-                       dborder= ctx.ExecuteQuery<DateTime>("Select enddate from objects where ordername={0} and department={1}", selectedorder.Name, selectedorder.Department).FirstOrDefault();
+                       dborder= ctx.ExecuteQuery<DateTime>("Select flowenddate from objects where ordername={0} and department={1}", selectedorder.Name, selectedorder.Department).FirstOrDefault();
                     }
                     TargetProgramDate = dborder;
                 }
@@ -734,9 +757,8 @@
                 var dur = jobMod.CalculateJobDuration(TargetLine, qty, qtyH, TargetDepartment, Members);
                 var eDate = ManualDateTime.AddDays(+dur);
                 var dailyQty = jobMod.CalculateDailyQty(TargetLine, qtyH, TargetDepartment, Members, qty);
-
                 var loadingJob = new LoadingJob(false);
-                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate, TargetLaunched);
+                loadingJob.InsertNewProgram(TargetOrder, TargetLine, artQ.Articol, orderQuery.Cantitate, qtyH, ManualDateTime, orderQuery.Dvc, orderQuery.Rdd, dur, dailyQty, price, orderQuery.Department, Members, ByManualDate, TargetLaunched);
                 using (var ctx = new DataContext(Central.ConnStr))
                 {
                     ctx.ExecuteCommand("update comenzi set DataProduzione={0},DataFine={1},Line={2},QtyInstead={3} where NrComanda={4} and department={5}",
