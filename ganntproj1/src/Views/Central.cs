@@ -2371,7 +2371,9 @@
         private void button3_Click_1(object sender, EventArgs e)
         {
            var visibility = pnDockBar.Visible = !pnDockBar.Visible;
+
             
+
             if(!visibility)
             {
                 foreach (Control c in this.Controls)
@@ -2380,14 +2382,14 @@
                         c.Visible = !c.Visible;
                 }
                 pnForms.Dock = DockStyle.Fill;
-                pnForms.Padding = System.Windows.Forms.Padding.Add(new Padding(10), new Padding(0));
+                pnForms.Padding = new Padding(30, 30, 0, 30);
 
                 button3.Image = ganntproj1.Properties.Resources.mega_fow_32;
             }
             else
             {
-                pnForms.Dock = DockStyle.None;
-                pnForms.Padding = System.Windows.Forms.Padding.Add(new Padding(0), new Padding(0));
+                pnForms.Dock = DockStyle.Fill;
+                pnForms.Padding = new Padding(30,30,0,30);
                 foreach (Control c in this.Controls)
                 {
                     if (c is PictureBox)

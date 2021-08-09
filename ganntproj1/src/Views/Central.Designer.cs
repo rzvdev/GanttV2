@@ -76,7 +76,13 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.PbNavBarSplit = new System.Windows.Forms.PictureBox();
+            this.cbAcconto = new ganntproj1.ToggleCheckBox();
             this.btnLoadPan = new System.Windows.Forms.Button();
+            this.cbSaldo = new ganntproj1.ToggleCheckBox();
+            this.cbChiuso = new ganntproj1.ToggleCheckBox();
+            this.cbDvc = new ganntproj1.ToggleCheckBox();
+            this.cbRdd = new ganntproj1.ToggleCheckBox();
+            this.cbProgrammare = new ganntproj1.ToggleCheckBox();
             this.pnReload = new System.Windows.Forms.Panel();
             this.lblResetGlobal = new System.Windows.Forms.Label();
             this.lblRefreshGlobal = new System.Windows.Forms.Label();
@@ -99,10 +105,6 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.pnForms = new System.Windows.Forms.Panel();
             this.pbShowHide = new System.Windows.Forms.PictureBox();
-            this.pictureBox8 = new System.Windows.Forms.PictureBox();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pbLeftbnd = new System.Windows.Forms.PictureBox();
             this.pbRightbnd = new System.Windows.Forms.PictureBox();
             this.pbBottombnd = new System.Windows.Forms.PictureBox();
@@ -110,12 +112,6 @@
             this.pbMenu = new System.Windows.Forms.PictureBox();
             this.btnFilters = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cbAcconto = new ganntproj1.ToggleCheckBox();
-            this.cbSaldo = new ganntproj1.ToggleCheckBox();
-            this.cbChiuso = new ganntproj1.ToggleCheckBox();
-            this.cbDvc = new ganntproj1.ToggleCheckBox();
-            this.cbRdd = new ganntproj1.ToggleCheckBox();
-            this.cbProgrammare = new ganntproj1.ToggleCheckBox();
             this.pnDockBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnNavi.SuspendLayout();
@@ -126,10 +122,6 @@
             this.pnReload.SuspendLayout();
             this.pnTitlebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowHide)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLeftbnd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRightbnd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBottombnd)).BeginInit();
@@ -918,6 +910,14 @@
             this.PbNavBarSplit.TabIndex = 0;
             this.PbNavBarSplit.TabStop = false;
             // 
+            // cbAcconto
+            // 
+            this.cbAcconto.Location = new System.Drawing.Point(475, 61);
+            this.cbAcconto.Name = "cbAcconto";
+            this.cbAcconto.Padding = new System.Windows.Forms.Padding(6);
+            this.cbAcconto.Size = new System.Drawing.Size(45, 24);
+            this.cbAcconto.TabIndex = 63;
+            // 
             // btnLoadPan
             // 
             this.btnLoadPan.FlatAppearance.BorderSize = 0;
@@ -930,6 +930,46 @@
             this.btnLoadPan.TabIndex = 0;
             this.btnLoadPan.UseVisualStyleBackColor = false;
             this.btnLoadPan.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cbSaldo
+            // 
+            this.cbSaldo.Location = new System.Drawing.Point(580, 61);
+            this.cbSaldo.Name = "cbSaldo";
+            this.cbSaldo.Padding = new System.Windows.Forms.Padding(6);
+            this.cbSaldo.Size = new System.Drawing.Size(45, 24);
+            this.cbSaldo.TabIndex = 64;
+            // 
+            // cbChiuso
+            // 
+            this.cbChiuso.Location = new System.Drawing.Point(673, 61);
+            this.cbChiuso.Name = "cbChiuso";
+            this.cbChiuso.Padding = new System.Windows.Forms.Padding(6);
+            this.cbChiuso.Size = new System.Drawing.Size(45, 24);
+            this.cbChiuso.TabIndex = 65;
+            // 
+            // cbDvc
+            // 
+            this.cbDvc.Location = new System.Drawing.Point(475, 24);
+            this.cbDvc.Name = "cbDvc";
+            this.cbDvc.Padding = new System.Windows.Forms.Padding(6);
+            this.cbDvc.Size = new System.Drawing.Size(45, 24);
+            this.cbDvc.TabIndex = 66;
+            // 
+            // cbRdd
+            // 
+            this.cbRdd.Location = new System.Drawing.Point(560, 24);
+            this.cbRdd.Name = "cbRdd";
+            this.cbRdd.Padding = new System.Windows.Forms.Padding(6);
+            this.cbRdd.Size = new System.Drawing.Size(45, 24);
+            this.cbRdd.TabIndex = 67;
+            // 
+            // cbProgrammare
+            // 
+            this.cbProgrammare.Location = new System.Drawing.Point(646, 24);
+            this.cbProgrammare.Name = "cbProgrammare";
+            this.cbProgrammare.Padding = new System.Windows.Forms.Padding(6);
+            this.cbProgrammare.Size = new System.Drawing.Size(45, 24);
+            this.cbProgrammare.TabIndex = 68;
             // 
             // pnReload
             // 
@@ -1196,14 +1236,15 @@
             // 
             // pnForms
             // 
-            this.pnForms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnForms.BackColor = System.Drawing.Color.WhiteSmoke;
+            //this.pnForms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            //| System.Windows.Forms.AnchorStyles.Left) 
+            //| System.Windows.Forms.AnchorStyles.Right)));
+            //this.pnForms.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnForms.Location = new System.Drawing.Point(316, 170);
             this.pnForms.Name = "pnForms";
             this.pnForms.Size = new System.Drawing.Size(966, 530);
             this.pnForms.TabIndex = 1;
+            this.pnForms.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // pbShowHide
             // 
@@ -1215,44 +1256,6 @@
             this.pbShowHide.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbShowHide.TabIndex = 27;
             this.pbShowHide.TabStop = false;
-            // 
-            // pictureBox8
-            // 
-            this.pictureBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox8.Location = new System.Drawing.Point(1281, 169);
-            this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(18, 10);
-            this.pictureBox8.TabIndex = 26;
-            this.pictureBox8.TabStop = false;
-            // 
-            // pictureBox7
-            // 
-            this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox7.Location = new System.Drawing.Point(315, 700);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(12, 15);
-            this.pictureBox7.TabIndex = 25;
-            this.pictureBox7.TabStop = false;
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox6.Location = new System.Drawing.Point(306, 160);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(993, 10);
-            this.pictureBox6.TabIndex = 24;
-            this.pictureBox6.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox5.Location = new System.Drawing.Point(306, 170);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(10, 545);
-            this.pictureBox5.TabIndex = 23;
-            this.pictureBox5.TabStop = false;
             // 
             // pbLeftbnd
             // 
@@ -1343,54 +1346,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // cbAcconto
-            // 
-            this.cbAcconto.Location = new System.Drawing.Point(475, 61);
-            this.cbAcconto.Name = "cbAcconto";
-            this.cbAcconto.Padding = new System.Windows.Forms.Padding(6);
-            this.cbAcconto.Size = new System.Drawing.Size(45, 24);
-            this.cbAcconto.TabIndex = 63;
-            // 
-            // cbSaldo
-            // 
-            this.cbSaldo.Location = new System.Drawing.Point(580, 61);
-            this.cbSaldo.Name = "cbSaldo";
-            this.cbSaldo.Padding = new System.Windows.Forms.Padding(6);
-            this.cbSaldo.Size = new System.Drawing.Size(45, 24);
-            this.cbSaldo.TabIndex = 64;
-            // 
-            // cbChiuso
-            // 
-            this.cbChiuso.Location = new System.Drawing.Point(673, 61);
-            this.cbChiuso.Name = "cbChiuso";
-            this.cbChiuso.Padding = new System.Windows.Forms.Padding(6);
-            this.cbChiuso.Size = new System.Drawing.Size(45, 24);
-            this.cbChiuso.TabIndex = 65;
-            // 
-            // cbDvc
-            // 
-            this.cbDvc.Location = new System.Drawing.Point(475, 24);
-            this.cbDvc.Name = "cbDvc";
-            this.cbDvc.Padding = new System.Windows.Forms.Padding(6);
-            this.cbDvc.Size = new System.Drawing.Size(45, 24);
-            this.cbDvc.TabIndex = 66;
-            // 
-            // cbRdd
-            // 
-            this.cbRdd.Location = new System.Drawing.Point(560, 24);
-            this.cbRdd.Name = "cbRdd";
-            this.cbRdd.Padding = new System.Windows.Forms.Padding(6);
-            this.cbRdd.Size = new System.Drawing.Size(45, 24);
-            this.cbRdd.TabIndex = 67;
-            // 
-            // cbProgrammare
-            // 
-            this.cbProgrammare.Location = new System.Drawing.Point(646, 24);
-            this.cbProgrammare.Name = "cbProgrammare";
-            this.cbProgrammare.Padding = new System.Windows.Forms.Padding(6);
-            this.cbProgrammare.Size = new System.Drawing.Size(45, 24);
-            this.cbProgrammare.TabIndex = 68;
-            // 
             // Central
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1401,11 +1356,7 @@
             this.ClientSize = new System.Drawing.Size(1311, 727);
             this.ControlBox = false;
             this.Controls.Add(this.pbShowHide);
-            this.Controls.Add(this.pictureBox8);
-            this.Controls.Add(this.pictureBox7);
             this.Controls.Add(this.pnReload);
-            this.Controls.Add(this.pictureBox6);
-            this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.pnForms);
             this.Controls.Add(this.pnDockBar);
             this.Controls.Add(this.pnNavi);
@@ -1436,10 +1387,6 @@
             this.pnTitlebar.ResumeLayout(false);
             this.pnTitlebar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowHide)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLeftbnd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRightbnd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBottombnd)).EndInit();
@@ -1530,10 +1477,6 @@
         private System.Windows.Forms.Button btnChart;
         private System.Windows.Forms.Button btnSync;
         private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private System.Windows.Forms.PictureBox pictureBox7;
-        private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pbShowHide;
         private System.Windows.Forms.Button btnCommessaDefects;
         private System.Windows.Forms.Button btnGraphRespinte;
