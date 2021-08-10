@@ -180,7 +180,7 @@
                 //    test += x + ";";
                 //}
                 //MessageBox.Show(test);
-                tasklist = Central.TaskList.OrderBy(a=> dbline.IndexOf(a.Aim)).ThenBy(a => a.FlowEnd).ToList();
+                tasklist = Central.TaskList.OrderBy(a=> dbline.IndexOf(a.Aim)).ThenBy(a=>a.Aim.Length).ThenBy(a => a.FlowEnd).ToList();
             }
             else
             {
@@ -485,7 +485,20 @@
                     obj.Operation, obj.Idx, obj.ParentIdx,
                     obj.LoadedQty, obj.Members, obj.QtyH, obj.Id, obj.ToDvc, obj.ToRdd);
             }
-            
+
+            if (Store.Default.sectorId == 7)
+            {
+                for (int i = 0; i < _gChart.Bars.Count; i++)
+                {
+                    int x = i + 1;
+                    if (x < _gChart.Bars.Count)
+                    {
+                        var bar1 = _gChart.Bars[i];
+                        var bar2 = _gChart.Bars[i + 1];
+                      
+                    }
+                }
+            }
 
             _gChart.Refresh();
         }

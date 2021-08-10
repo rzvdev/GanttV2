@@ -124,7 +124,7 @@
             if (Central.IsProgramare)
             {
                 pnArticles.Visible = true;
-                lblModelsTitle.Text += " " + Workflow.TargetLine;
+                lblModelsTitle.Text += ": " + Workflow.TargetLine;
                 lblModelsTitle.Visible = true;
                 var leftObjLocation = 8;
                 Geometry _geometry = new Geometry();

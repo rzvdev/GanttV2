@@ -87,6 +87,7 @@
             tblRep.Columns.Add(FindT("sep", "t"));
 
             var sCount = 0;
+
             foreach (DataRow row in tblLines.Rows)
             {
                 sCount++;
@@ -104,6 +105,7 @@
             tblRep.Rows.Add(totRow);
             var dateBefore = DateTime.MinValue;
             var totX = 1;
+            tblDays.DefaultView.Sort = "datex ASC";
             DataRow lastrow = null;
             foreach (DataRow xRow in tblDays.Rows)
             {               

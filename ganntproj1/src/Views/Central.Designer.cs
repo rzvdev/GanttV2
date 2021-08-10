@@ -995,7 +995,6 @@
             this.lblResetGlobal.TabIndex = 0;
             this.lblResetGlobal.Text = "Commesse in lavoro/prog   ";
             this.lblResetGlobal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblResetGlobal.Click += new System.EventHandler(this.lblResetGlobal_Click_1);
             this.lblResetGlobal.Paint += new System.Windows.Forms.PaintEventHandler(this.label11_Paint);
             this.lblResetGlobal.MouseEnter += new System.EventHandler(this.lblResetGlobal_MouseEnter);
             this.lblResetGlobal.MouseLeave += new System.EventHandler(this.lblResetGlobal_MouseLeave);
@@ -1236,15 +1235,12 @@
             // 
             // pnForms
             // 
-            //this.pnForms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            //| System.Windows.Forms.AnchorStyles.Left) 
-            //| System.Windows.Forms.AnchorStyles.Right)));
-            //this.pnForms.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pnForms.Location = new System.Drawing.Point(316, 170);
-            this.pnForms.Name = "pnForms";
-            this.pnForms.Size = new System.Drawing.Size(966, 530);
-            this.pnForms.TabIndex = 1;
             this.pnForms.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnForms.Location = new System.Drawing.Point(288, 150);
+            this.pnForms.Margin = new System.Windows.Forms.Padding(0);
+            this.pnForms.Name = "pnForms";
+            this.pnForms.Size = new System.Drawing.Size(1022, 576);
+            this.pnForms.TabIndex = 1;
             // 
             // pbShowHide
             // 

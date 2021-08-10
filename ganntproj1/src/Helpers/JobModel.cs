@@ -150,6 +150,7 @@
         public int ParentIdx { get; set; }
         public DateTime FlowStart { get; set; }
         public DateTime FlowEnd { get; set; }
+        public string Group { get; set; }
 
         public IEnumerable<DateTime> GetDaysInRange(DateTime from,
                                                     DateTime to)

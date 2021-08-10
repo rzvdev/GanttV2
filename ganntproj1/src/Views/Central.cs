@@ -737,8 +737,8 @@
                                     // ParentIdx = int.Parse(dr["parentidx"].ToString() == null ? "0" : dr["parentidx"].ToString()),
                                     Id = dr["Id"] == DBNull.Value ? 0 : Convert.ToInt32(dr["Id"]),
                                     FlowStart=dr["flowstartdate"] == DBNull.Value? DateTime.MinValue : Convert.ToDateTime(dr["flowstartdate"]),
-                                    FlowEnd=dr["flowenddate"]== DBNull.Value? DateTime.MinValue: Convert.ToDateTime(dr["flowenddate"])
-                                     //int.Parse(dr["Id"].ToString())
+                                    FlowEnd=dr["flowenddate"]== DBNull.Value? DateTime.MinValue: Convert.ToDateTime(dr["flowenddate"]),
+                                   //int.Parse(dr["Id"].ToString())
 
 
                                 }
@@ -750,8 +750,11 @@
                         if (x == string.Empty) sectors.Remove(x);
                     }
                    
-                    if(updateProduction && Store.Default.production)
+                    if(Store.Default.production)
                     {
+
+                        btnSync.PerformClick();
+
                         if (Store.Default.sectorId == 8)
                         {
                             var cmd1 = new SqlCommand("UpdatePricesSartoria", con);
@@ -1012,11 +1015,11 @@
 
                     pbReload.Click += (se, e) =>
                     {
-                        if (cbDept.SelectedIndex == 0)
-                        {
-                            MessageBox.Show("not allowed");
-                            return;
-                        }
+                        //if (cbDept.SelectedIndex == 0)
+                        //{
+                        //    MessageBox.Show("not allowed");
+                        //    return;
+                        //}
                         LoadingInfo.ShowLoading();
                         LoadingInfo.InfoText = "Loading data...";
                         frm.LoadDataWithDateChange();
@@ -2167,11 +2170,11 @@
 
                     using (var context = new DataContext(SpecialConnStr))
                     {
-                       // DateTime.TryParse(model.Dvc.ToString(), out var dvc);
-                      //  DateTime.TryParse(model.Rdd.ToString(), out var rdd);
+                        // DateTime.TryParse(model.Dvc.ToString(), out var dvc);
+                        //  DateTime.TryParse(model.Rdd.ToString(), out var rdd);
 
-                      //var d = dvc == DateTime.MinValue ? 0 : dvc.Subtract(Config.MinimalDate)//.Ticks;
-                      //var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate)//.Ticks;
+                        //var d = dvc == DateTime.MinValue ? 0 : dvc.Subtract(Config.MinimalDate)//.Ticks;
+                        //var r = rdd == DateTime.MinValue ? 0L : rdd.Subtract(Config.MinimalDate)//.Ticks;
 
                         context.ExecuteCommand("update objects set " +
                                 "flowstartdate={0},flowenddate={1},delflowstartdate={2},delflowenddate={3} " +
@@ -2318,10 +2321,7 @@
             //}
         }
         
-        private void lblResetGlobal_Click_1(object sender, EventArgs e)
-        {
-
-        }
+       
 
         public void GetProductionColor()
         {
@@ -2382,14 +2382,14 @@
                         c.Visible = !c.Visible;
                 }
                 pnForms.Dock = DockStyle.Fill;
-                pnForms.Padding = new Padding(30, 30, 0, 30);
+                //pnForms.Padding = new Padding(30, 30, 0, 30);
 
                 button3.Image = ganntproj1.Properties.Resources.mega_fow_32;
             }
             else
             {
                 pnForms.Dock = DockStyle.Fill;
-                pnForms.Padding = new Padding(30,30,0,30);
+                //pnForms.Padding = new Padding(30,30,0,30);
                 foreach (Control c in this.Controls)
                 {
                     if (c is PictureBox)
@@ -2399,7 +2399,10 @@
             }
         }
 
-       
+        private void lblRefreshGlobal_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class ReSize
