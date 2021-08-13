@@ -1349,8 +1349,22 @@
 
                 var linesList = (from lines in Models.Tables.Lines
                                  where lines.Department == dept
-                                 select lines);
-
+                                 select lines).ToList();
+                if (Store.Default.sectorId == 7)
+                {
+                    var dbline = (from lines in Models.Tables.Lines where lines.Department == "Tessitura" select lines).OrderBy(a => a.Groupby.Length).ThenBy(a => a.Line).Select(a => a.Line).ToList();
+                    //string test = string.Empty;
+                    //foreach(var x in dbline)
+                    //{
+                    //    test += x + ";";
+                    //}
+                    //MessageBox.Show(test);
+                    linesList = linesList.OrderBy(a => dbline.IndexOf(a.Line)).ThenBy(a => a.Line.Length).ToList();
+                }
+                else
+                {
+                    linesList = linesList.OrderBy(a => a.Line.Length).ThenBy(a => a.Line).ToList();
+                }
                 foreach (var item in linesList)
                 {
                     _cbLineChange.Items.Add(item.Description);

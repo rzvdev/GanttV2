@@ -41,6 +41,7 @@
             this.txtPin.Size = new System.Drawing.Size(100, 26);
             this.txtPin.TabIndex = 2;
             this.txtPin.UseSystemPasswordChar = true;
+            this.txtPin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPin_KeyPress);
             // 
             // button1
             // 

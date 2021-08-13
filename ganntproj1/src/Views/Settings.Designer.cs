@@ -69,7 +69,7 @@
             this.label22 = new System.Windows.Forms.Label();
             this.txtHoursSartW = new System.Windows.Forms.TextBox();
             this.txtHoursSart = new System.Windows.Forms.TextBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbTessitura = new System.Windows.Forms.RadioButton();
             this.grpTess = new System.Windows.Forms.GroupBox();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
@@ -652,7 +652,7 @@
             this.tpSectors.BackColor = System.Drawing.SystemColors.Control;
             this.tpSectors.Controls.Add(this.radioButton2);
             this.tpSectors.Controls.Add(this.grpSart);
-            this.tpSectors.Controls.Add(this.radioButton1);
+            this.tpSectors.Controls.Add(this.rbTessitura);
             this.tpSectors.Controls.Add(this.grpTess);
             this.tpSectors.Controls.Add(this.rbStiro);
             this.tpSectors.Controls.Add(this.grpStiro);
@@ -694,7 +694,7 @@
             this.grpSart.Margin = new System.Windows.Forms.Padding(2);
             this.grpSart.Name = "grpSart";
             this.grpSart.Padding = new System.Windows.Forms.Padding(2);
-            this.grpSart.Size = new System.Drawing.Size(601, 123);
+            this.grpSart.Size = new System.Drawing.Size(584, 123);
             this.grpSart.TabIndex = 22;
             this.grpSart.TabStop = false;
             // 
@@ -732,20 +732,20 @@
             this.txtHoursSart.Size = new System.Drawing.Size(56, 23);
             this.txtHoursSart.TabIndex = 43;
             // 
-            // radioButton1
+            // rbTessitura
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.radioButton1.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton1.Location = new System.Drawing.Point(49, 14);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(115, 29);
-            this.radioButton1.TabIndex = 21;
-            this.radioButton1.Text = "Tessitura";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.rbTessitura.AutoSize = true;
+            this.rbTessitura.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.rbTessitura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbTessitura.Font = new System.Drawing.Font("Bahnschrift", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbTessitura.Location = new System.Drawing.Point(49, 14);
+            this.rbTessitura.Margin = new System.Windows.Forms.Padding(2);
+            this.rbTessitura.Name = "rbTessitura";
+            this.rbTessitura.Size = new System.Drawing.Size(115, 29);
+            this.rbTessitura.TabIndex = 21;
+            this.rbTessitura.Text = "Tessitura";
+            this.rbTessitura.UseVisualStyleBackColor = true;
+            this.rbTessitura.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // grpTess
             // 
@@ -759,7 +759,7 @@
             this.grpTess.Margin = new System.Windows.Forms.Padding(2);
             this.grpTess.Name = "grpTess";
             this.grpTess.Padding = new System.Windows.Forms.Padding(2);
-            this.grpTess.Size = new System.Drawing.Size(601, 123);
+            this.grpTess.Size = new System.Drawing.Size(584, 123);
             this.grpTess.TabIndex = 20;
             this.grpTess.TabStop = false;
             // 
@@ -828,7 +828,7 @@
             this.grpStiro.Margin = new System.Windows.Forms.Padding(2);
             this.grpStiro.Name = "grpStiro";
             this.grpStiro.Padding = new System.Windows.Forms.Padding(2);
-            this.grpStiro.Size = new System.Drawing.Size(601, 124);
+            this.grpStiro.Size = new System.Drawing.Size(584, 124);
             this.grpStiro.TabIndex = 18;
             this.grpStiro.TabStop = false;
             // 
@@ -957,7 +957,7 @@
             this.grpConfezione.Margin = new System.Windows.Forms.Padding(2);
             this.grpConfezione.Name = "grpConfezione";
             this.grpConfezione.Padding = new System.Windows.Forms.Padding(2);
-            this.grpConfezione.Size = new System.Drawing.Size(601, 177);
+            this.grpConfezione.Size = new System.Drawing.Size(584, 177);
             this.grpConfezione.TabIndex = 16;
             this.grpConfezione.TabStop = false;
             // 
@@ -2218,7 +2218,7 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.GroupBox grpSart;
         private System.Windows.Forms.TextBox txtHoursSart;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbTessitura;
         private System.Windows.Forms.GroupBox grpTess;
         private System.Windows.Forms.TextBox txtHoursTess;
         private System.Windows.Forms.Label label16;

@@ -37,5 +37,12 @@ namespace ganntproj1.src.Views
 
         public bool PinCorrect { get; set; }
 
+        private void txtPin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                button1.PerformClick();
+            }
+        }
     }
 }

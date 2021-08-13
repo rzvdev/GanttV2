@@ -75,7 +75,7 @@ namespace ganntproj1
                 grpStiro.Enabled = false;
                 grpSart.Enabled = false;
                 grpConfezione.Enabled = false;
-                radioButton1.Checked = true;
+                rbTessitura.Checked = true;
             }
             else if (Store.Default.sectorId == 8)
             {
@@ -689,6 +689,7 @@ namespace ganntproj1
             else if (Store.Default.sectorId == 2)
             {
                 sb.Append(",Stiro");
+
             }
             else if (Store.Default.sectorId == 7)
             {
