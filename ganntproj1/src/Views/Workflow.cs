@@ -123,6 +123,7 @@
             tlp.SetToolTip(button2, "Hide lines where are no active orders");
         }
 
+
         private void Reset_Click(object sender, EventArgs e)
         {
             AddTimelineObjects();

@@ -17,6 +17,11 @@
         private const string StrDeltaValor = "Delta Valoare";
 
         private const string StrPercent = "%";
+        private int Month { get; set; }
+
+        private int Year { get; set; }
+        public bool MonthSelection { get; set; }
+        private bool firstRead = true;
 
         public Fatturato()
         {
@@ -27,11 +32,85 @@
 
         private void Fatturato_Load(object sender, EventArgs e)
         {
-            LoadData();
+            MonthSelection = false;
+            for (var i = DateTime.Now.Year - 3; i <= DateTime.Now.Year; i++)
+            {
+                cboYears.Items.Add(i);
+            }
+           
+            cboMonth.SelectedIndexChanged += (s, ev) =>
+            {
+                if (!firstRead)
+                {
+                    MonthSelection = true;
+                }
+                Month = cboMonth.SelectedIndex+1;
+                if (MonthSelection)
+                {
+                    LoadData();
+                }
+                else
+                {
+                    if (!firstRead)
+                    {
+                        MessageBox.Show("Please check Month interval!");
+                    }
+                }
+            };
+            cboYears.SelectedIndexChanged += (s, ev) =>
+            {
+                if (!firstRead)
+                {
+                    MonthSelection = true;
+                }
+                Year = Convert.ToInt32(cboYears.Text);
+                if (MonthSelection)
+                {
+
+                    LoadData();
+                }
+                else
+                {
+                    if (!firstRead)
+                    {
+                        MessageBox.Show("Please check Month interval!");
+                    }
+                }
+            };
+            cboYears.SelectedIndex = cboYears.FindString(DateTime.Now.Year.ToString());
+            cboMonth.SelectedIndex = DateTime.Now.Month - 1;
+            if(firstRead)
+            {
+                LoadData();
+            }
         }
 
         public void LoadData()
         {
+            firstRead = false;
+            DateTime dateFrom = Central.DateFrom;
+            DateTime dateTo = Central.DateTo;
+            if(MonthSelection)
+            {
+                if (Central.DateFrom != dateFrom || Central.DateTo != dateTo)
+                {
+                    dateFrom = Central.DateFrom;
+                    dateTo = Central.DateTo.AddDays(1);
+                    MonthSelection = false;
+                }
+                else
+                {
+                    dateFrom = new DateTime(Year, Month, 1);
+                    dateTo = new DateTime(Year, Month, DateTime.DaysInMonth(Year, Month));
+                    MonthSelection = false;
+                }
+                
+            }
+            else 
+            {
+                dateFrom = Central.DateFrom;
+                dateTo = Central.DateTo.AddDays(1);
+            }
             dgvReport.DataSource = null;
             var tblRep = new DataTable();
             tblRep.Columns.Add("Data");
@@ -40,8 +119,8 @@
             var cmd = new SqlCommand("get_data_fatturato", con);//72
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Clear();
-            cmd.Parameters.Add("@from_date", SqlDbType.DateTime).Value = Central.DateFrom;
-            cmd.Parameters.Add("@to_date", SqlDbType.DateTime).Value = Central.DateTo.AddDays(1);
+            cmd.Parameters.Add("@from_date", SqlDbType.DateTime).Value = dateFrom;
+            cmd.Parameters.Add("@to_date", SqlDbType.DateTime).Value = dateTo;
             cmd.Parameters.Add("@deptArr", SqlDbType.NVarChar).Value = Store.Default.arrDept;
             cmd.Parameters.Add("@useAbat", SqlDbType.Bit).Value = cbAcconto.Checked;
 
@@ -524,5 +603,7 @@
             dgvReport.ExportToExcel("Fatturato");
             dgvReport.MultiSelect = false;
         }
+
+       
     }
 }

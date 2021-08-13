@@ -52,7 +52,7 @@ namespace ganntproj1
 
             BarsCount = GetBarIdxByRowText();
             if (Store.Default.sectorId == 7)
-            { 
+            {
                 BarHeight = 60;
             }
             else
@@ -63,6 +63,7 @@ namespace ganntproj1
         }
 
         public List<BarProperty> Bars = new List<BarProperty>();
+        public List<LineLabels> LineList = new List<LineLabels>();
         public int ScrollPosition;
         public int BarsCount = 0;
         public int BarHeight = 0;
@@ -91,6 +92,7 @@ namespace ganntproj1
         public string FilteredRowText { get; set; }
         public string FilteredRowAtt { get; set; }
         private Pen GridColor { get; } = Pens.LightGray;
+        private Pen GridColor1 { get; } = Pens.Red;
         private Color ChartBackColor { get; } = Color.WhiteSmoke;     
         private Brush ChartBackBrush { get; } = new SolidBrush(Color.WhiteSmoke);   
         private readonly Font _barFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
@@ -671,7 +673,6 @@ namespace ganntproj1
                     {
                         lineRect = new Rectangle(new Point(0,
                                   BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1), new Size(100, BarHeight + 7));
-
                     }
                     else
                     {
@@ -680,23 +681,10 @@ namespace ganntproj1
 
                     }
                     grfx.FillRectangle(new SolidBrush(Color.FromArgb(50, 52, 68)), lineRect);
-                    var p2 = new Pen(Brushes.WhiteSmoke, 2);
-                    var p3 = new Pen(Brushes.WhiteSmoke, 3);
-                    grfx.DrawLine(p2, lineRect.X, lineRect.Y + lineRect.Height, lineRect.Width, lineRect.Y + lineRect.Height);
-                    grfx.DrawLine(p3, lineRect.X + lineRect.Width, lineRect.Y, lineRect.X + lineRect.Width, lineRect.Y + lineRect.Height);
-                    p2.Dispose();
-                    p3.Dispose();
+                   
 
                    
-                        using (Image taskImg = Properties.Resources.folder_icon_32_gold ??
-                                               throw new ArgumentNullException(nameof(grfx)))
-                        {
-                            var destRect1 = new Rectangle(7,
-                                (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 7, 20, 20);
-                            const GraphicsUnit units = GraphicsUnit.Pixel;
-
-                            grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
-                        }
+                       
                     var desc = (from line in Central.ListOfLines
                                 where line.Line == bar.Tag && line.Department == bar.Department
                                 select line).SingleOrDefault().Description;
@@ -710,6 +698,21 @@ namespace ganntproj1
                     }
                     if (Store.Default.sectorId == 1)
                     {
+                        var p2 = new Pen(Brushes.WhiteSmoke, 2);
+                        var p3 = new Pen(Brushes.WhiteSmoke, 3);
+                        grfx.DrawLine(p2, lineRect.X, lineRect.Y + lineRect.Height, lineRect.Width, lineRect.Y + lineRect.Height);
+                        grfx.DrawLine(p3, lineRect.X + lineRect.Width, lineRect.Y, lineRect.X + lineRect.Width, lineRect.Y + lineRect.Height);
+                        p2.Dispose();
+                        p3.Dispose();
+                        using (Image taskImg = Properties.Resources.folder_icon_32_gold ??
+                                              throw new ArgumentNullException(nameof(grfx)))
+                        {
+                            var destRect1 = new Rectangle(7,
+                                (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 7, 20, 20);
+                            const GraphicsUnit units = GraphicsUnit.Pixel;
+
+                            grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
+                        }
                         var strLine = "LINEA ";
                         var lineNum = bar.Tag.Remove(0, 5);
                         var deptChar = bar.Department == "Confezione A" 
@@ -733,18 +736,67 @@ namespace ganntproj1
                         //var deptChar = bar.Department == "Confezione A"
                         //    || bar.Department == "Confezione B" || bar.Department == "Confezione C" ? bar.Department.Split(' ')[1] : "";
                         var rowTitle = strLine + lineNum;// + deptChar;
+                        var linelbl = new LineLabels() { Line = rowTitle, Index = index };
+                        var intlinnr = Convert.ToInt32(lineNum);
+                        if (!LineList.Contains(linelbl))
+                        {
+                            intlinnr -= 1;
+                            if (intlinnr != 0)
+                            {
+                                intlinnr = intlinnr * 3;
+                            }
+                            if (intlinnr == linelbl.Index && rowTitle==linelbl.Line)
+                            {
 
-                        grfx.DrawString(new string(' ', 10) + rowTitle, new Font("Bahnschrift", 9, FontStyle.Regular),
-                            new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
-                            ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 2));
+                                using (Image taskImg = Properties.Resources.folder_icon_32_gold ??
+                                              throw new ArgumentNullException(nameof(grfx)))
+                                {
+                                    var destRect1 = new Rectangle(7,
+                                        (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 7, 20, 20);
+                                    const GraphicsUnit units = GraphicsUnit.Pixel;
 
-                       // grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
-                       //new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
-                       //((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 + 12));
+                                    grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
+                                }
+                                //var btn = new Button();
+                                //btn.Location = lineRect.Location;
+                                //btn.Text = rowTitle;
+                                //btn.Size = new Size(100, BarHeight + 7);
+                                //btn.BackColor = Color.FromArgb(50, 52, 68);
+                                //btn.ForeColor = Color.FromArgb(242, 242, 242);
+                                //btn.Anchor = AnchorStyles.Top;
+                                //btn.Click += Btn_Click;
+                                //btn.CreateGraphics();
+                                //Controls.Add(btn);
+                              grfx.DrawString(new string(' ', 10) + rowTitle, new Font("Bahnschrift", 9, FontStyle.Regular),
+                                    new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
+                                    ((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 2));
+                                LineList.Add(linelbl);
+
+                            }
+                        }
+                        
+                        // grfx.DrawString(new string(' ', 16) + desc, new Font("Bahnschrift", 6, FontStyle.Regular),
+                        //new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
+                        //((BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 + 12));
 
                     }
                     else
                     {
+                        var p2 = new Pen(Brushes.WhiteSmoke, 2);
+                        var p3 = new Pen(Brushes.WhiteSmoke, 3);
+                        grfx.DrawLine(p2, lineRect.X, lineRect.Y + lineRect.Height, lineRect.Width, lineRect.Y + lineRect.Height);
+                        grfx.DrawLine(p3, lineRect.X + lineRect.Width, lineRect.Y, lineRect.X + lineRect.Width, lineRect.Y + lineRect.Height);
+                        p2.Dispose();
+                        p3.Dispose();
+                        using (Image taskImg = Properties.Resources.folder_icon_32_gold ??
+                                              throw new ArgumentNullException(nameof(grfx)))
+                        {
+                            var destRect1 = new Rectangle(7,
+                                (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 7, 20, 20);
+                            const GraphicsUnit units = GraphicsUnit.Pixel;
+
+                            grfx.DrawImage(taskImg, destRect1, 0, 0, 30, 30, units);
+                        }
                         grfx.DrawString(new string(' ', 10) + bar.Tag, new Font("Bahnschrift", 9, FontStyle.Regular),
                           new SolidBrush(Color.FromArgb(242, 242, 242)), 1,
                           (BarStartTop + BarHeight * (index - scrollPos) + _barSpace * (index - scrollPos) + 1) + BarHeight / 2 - 2);
@@ -881,13 +933,13 @@ namespace ganntproj1
 
             for (index = 0; index <= GetBarIdxByRowText(); index++)
             {
-                foreach (var bar in Bars)
-                {
-                    grfx.DrawLine(GridColor, 0, BarStartTop + BarHeight * index + _barSpace * index, width,
-                    BarStartTop + BarHeight * index + _barSpace * index);
-                }
+                
+                    foreach (var bar in Bars)
+                    {
+                        grfx.DrawLine(GridColor, 0, BarStartTop + BarHeight * index + _barSpace * index, width,
+                        BarStartTop + BarHeight * index + _barSpace * index);
+                    }
             }
-
             _lastLineStop = BarStartTop + BarHeight * (index - 1) + _barSpace * (index - 1);
         }
 
@@ -976,7 +1028,6 @@ namespace ganntproj1
                         IsMouseOverProductionBar = false;
                         if ((_mouseHover != MouseOver.BarLeftSide) &
                             (_mouseHover != MouseOver.BarRightSide)) _mouseHover = MouseOver.Bar;
-
                     }
                 }
 
@@ -1090,6 +1141,12 @@ namespace ganntproj1
             }
             return null;
         }
+    }
+
+    public class LineLabels
+    {
+        public string Line { get; set; }
+        public int Index { get; set; }
     }
 
     public class Header

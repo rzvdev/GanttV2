@@ -750,11 +750,8 @@
                         if (x == string.Empty) sectors.Remove(x);
                     }
                    
-                    if(Store.Default.production)
+                    if(updateProduction && Store.Default.production)
                     {
-
-                        btnSync.PerformClick();
-
                         if (Store.Default.sectorId == 8)
                         {
                             var cmd1 = new SqlCommand("UpdatePricesSartoria", con);
@@ -2401,7 +2398,7 @@
 
         private void lblRefreshGlobal_Click_1(object sender, EventArgs e)
         {
-
+           
         }
     }
 

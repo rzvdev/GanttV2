@@ -34,6 +34,8 @@
 
         private bool Ore { get; set; }
 
+
+
         protected override void OnLoad(EventArgs e)
         {            
             cboMonth.SelectedIndexChanged += (s, ev) =>
@@ -207,7 +209,7 @@
                     q += "where DATEPART(MONTH, data) = '" + month + "' and DATEPART(YEAR, data)= '" + year + "' ";
                     q += "and charindex(+ ',' + department + ',', '" + Store.Default.arrDept + "' ) > 0 ";
                     q += "order by department,len(line),line,convert(date, data, 101) ";
-                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty int,dept nvarchar(50),cnt int, shours float) ";
+                    q += "create table tmpSum (datas date,line nvarchar(50),produc float,prevent float,qty float,dept nvarchar(50),cnt int, shours float) ";
                     q += "insert into tmpSum ";
                     q += "select datas,line,sum(members) as producibili, ";
                     q += "sum(members * abat) as prevent, sum(capi / qtyH)qty,dept,count(1),sum(hours) from tmpTable ";
@@ -220,31 +222,63 @@
                 var lst = new List<DataCollection>();
                 if (Mode == "mens")
                 {
-                    using (var c = new SqlConnection(Central.SpecialConnStr))
+                    if (!Ore)
                     {
-                        var cmd = new SqlCommand(q, c);
-                        cmd.Parameters.Add("@paramAb", SqlDbType.BigInt).Value = cbAbatim.Checked;
-                        c.Open();
-                        var dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
-                            while (dr.Read())
-                            {
-                                foreach (var type in ListOfTypesMensile())
+                        using (var c = new SqlConnection(Central.SpecialConnStr))
+                        {
+                            var cmd = new SqlCommand(q, c);
+                            cmd.Parameters.Add("@paramAb", SqlDbType.BigInt).Value = cbAbatim.Checked;
+                            c.Open();
+                            var dr = cmd.ExecuteReader();
+                            if (dr.HasRows)
+                                while (dr.Read())
                                 {
-                                    if (_cboType.SelectedIndex > 0 && _cboType.Text != type) continue;
-                                    DateTime.TryParse(dr[0].ToString(), out var dt);
-                                    double.TryParse(dr[2].ToString(), out var produc);
-                                    double.TryParse(dr[3].ToString(), out var prevent);
-                                    int.TryParse(dr[4].ToString(), out var qty);
-                                    var dpt = dr[5].ToString();
-                                    lst.Add(new DataCollection(
-                                        dt,
-                                        dr[1].ToString(), type, produc, prevent, qty, dpt, 0.0)
-                                        );
+                                    foreach (var type in ListOfTypesMensile())
+                                    {
+                                        if (_cboType.SelectedIndex > 0 && _cboType.Text != type) continue;
+                                        DateTime.TryParse(dr[0].ToString(), out var dt);
+                                        double.TryParse(dr[2].ToString(), out var produc);
+                                        double.TryParse(dr[3].ToString(), out var prevent);
+                                        int.TryParse(dr[4].ToString(), out var qty);
+                                        var dpt = dr[5].ToString();
+                                        lst.Add(new DataCollection(
+                                            dt,
+                                            dr[1].ToString(), type, produc, prevent, qty, dpt, 0.0)
+                                            );
+                                    }
                                 }
-                            }
-                        c.Close();
-                        dr.Close();
+                            c.Close();
+                            dr.Close();
+                        }
+                    }
+                    else
+                    {
+                        using (var c = new SqlConnection(Central.SpecialConnStr))
+                        {
+                            var cmd = new SqlCommand(q, c);
+                            cmd.Parameters.Add("@paramAb", SqlDbType.BigInt).Value = cbAbatim.Checked;
+                            c.Open();
+                            var dr = cmd.ExecuteReader();
+                            if (dr.HasRows)
+                                while (dr.Read())
+                                {
+                                    foreach (var type in ListOfTypesMensile())
+                                    {
+                                        if (_cboType.SelectedIndex > 0 && _cboType.Text != type) continue;
+                                        DateTime.TryParse(dr[0].ToString(), out var dt);
+                                        double.TryParse(dr[2].ToString(), out var produc);
+                                        double.TryParse(dr[3].ToString(), out var prevent);
+                                        double.TryParse(dr[4].ToString(), out var qty);
+                                        var dpt = dr[5].ToString();
+                                        lst.Add(new DataCollection(
+                                            dt,
+                                            dr[1].ToString(), type, produc, prevent, qty, dpt, 0.0)
+                                            );
+                                    }
+                                }
+                            c.Close();
+                            dr.Close();
+                        }
                     }
                 }
                 else
@@ -355,10 +389,18 @@
 
                 hKey = line + item.Type;
                 var dateIdx = item.Datex.ToString("yyyy-MM-dd");
-               
-                var cProducibili = Math.Round(item.Producibili,0);
-                var cPreventivati = Math.Round(item.Preventivati,0);
-
+                double cProducibili = 0.0;
+                double cPreventivati = 0.0;
+                if (!Ore)
+                {
+                     cProducibili = Math.Round(item.Producibili, 0);
+                     cPreventivati = Math.Round(item.Preventivati, 0);
+                }
+                else
+                {
+                    cProducibili = Math.Round(item.Producibili, 1);
+                    cPreventivati = Math.Round(item.Preventivati, 1);
+                }
                 var lineDesc = lineQuery.Where(l => l.Line == item.Line && l.Department == item.Department).FirstOrDefault(); 
 
                 if (htbl.Contains(hKey))
@@ -374,13 +416,13 @@
                             dt.Rows[j][dateIdx] = cPreventivati.ToString();
                             break;
                         case "CAPI PRODOTI":
-                            dt.Rows[j][dateIdx] = item.Qty.ToString();
+                            dt.Rows[j][dateIdx] = Math.Round(item.Qty,1).ToString();
                             break;
                         case "DIFF PROD-PREVENT":
-                            dt.Rows[j][dateIdx] = (item.Qty - cPreventivati).ToString();
+                            dt.Rows[j][dateIdx] = Math.Round((item.Qty - cPreventivati),1).ToString();
                             break;
                         case "DIFF PROD-PRODUCI":
-                            dt.Rows[j][dateIdx] = (item.Qty - cProducibili).ToString();
+                            dt.Rows[j][dateIdx] = Math.Round((item.Qty - cProducibili),1).ToString();
                             break;
                     }
                 }
@@ -413,13 +455,13 @@
                             newRow[dateIdx] = cPreventivati.ToString();
                             break;
                         case "CAPI PRODOTI":
-                            newRow[dateIdx] = item.Qty.ToString();
+                            newRow[dateIdx] = Math.Round(item.Qty, 1).ToString();
                             break;
                         case "DIFF PROD-PREVENT":
-                            newRow[dateIdx] = (item.Qty - cPreventivati).ToString();
+                            newRow[dateIdx] = Math.Round((item.Qty - cPreventivati), 1).ToString();
                             break;
                         case "DIFF PROD-PRODUCI":
-                            newRow[dateIdx] = (item.Qty - cProducibili).ToString();
+                            newRow[dateIdx] = Math.Round((item.Qty - cProducibili), 1).ToString();
                             break;
                     }
                     dt.Rows.Add(newRow);
@@ -630,12 +672,12 @@
             }
             for (var r = 1; r<= tableView1.Rows.Count - 1; r++)
             {
-                var tot = 0;
+                var tot = 0.0;
                 for (var c = 2; c <= tableView1.Columns.Count - 2; c++)
                 {
                     var cd = tableView1.Columns[c].Index;
                     if (cd == idx1 || cd == idx2 || cd == idx3 || cd == idx4) continue;
-                    int.TryParse(tableView1.Rows[r].Cells[c].Value.ToString(), out var t);
+                    double.TryParse(tableView1.Rows[r].Cells[c].Value.ToString(), out var t);
                     tot += t;
                 }
                 tableView1.Rows[r].Cells["TOTAL"].Value = tot.ToString();
@@ -643,16 +685,16 @@
 
             for (var c = 2; c <= tableView1.Columns.Count - 1; c++)
             {
-                var totProd = 0;
-                var totPrev = 0;
-                var totQty = 0;
+                var totProd = 0.0;
+                var totPrev = 0.0;
+                var totQty = 0.0;
 
                 for (var r = 6; r <= tableView1.Rows.Count - 1; r++)
                 {
                     if (tableView1.Rows[r].Cells[1].Value.ToString() == "CAPI PRODUCIBILI")
                     {
-                        int.TryParse(tableView1.Rows[1].Cells[c].Value.ToString().Split('%')[0], out var tot);
-                        int.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
+                        double.TryParse(tableView1.Rows[1].Cells[c].Value.ToString().Split('%')[0], out var tot);
+                        double.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
                         if (t == 0) continue;
 
                         tableView1.Rows[1].Cells[c].Value = (tot + t).ToString();
@@ -660,8 +702,8 @@
                     }
                     else if (tableView1.Rows[r].Cells[1].Value.ToString() == "CAPI PREVENTIVATI")
                     {
-                        int.TryParse(tableView1.Rows[2].Cells[c].Value.ToString().Split('%')[0], out var tot);
-                        int.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
+                        double.TryParse(tableView1.Rows[2].Cells[c].Value.ToString().Split('%')[0], out var tot);
+                        double.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
                         if (t == 0) continue;
 
                         tableView1.Rows[2].Cells[c].Value = (tot + t).ToString();
@@ -669,8 +711,8 @@
                     }
                     else if (tableView1.Rows[r].Cells[1].Value.ToString() == "CAPI PRODOTI")
                     {
-                        int.TryParse(tableView1.Rows[3].Cells[c].Value.ToString().Split('%')[0], out var tot);
-                        int.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
+                        double.TryParse(tableView1.Rows[3].Cells[c].Value.ToString().Split('%')[0], out var tot);
+                        double.TryParse(tableView1.Rows[r].Cells[c].Value.ToString().Split('%')[0], out var t);
                         if (t == 0) continue;
 
                         tableView1.Rows[3].Cells[c].Value = (tot + t).ToString();
@@ -679,8 +721,8 @@
                 }
                 if (totPrev != 0 || totProd != 0)
                 {
-                    tableView1.Rows[4].Cells[c].Value = (totQty - totPrev).ToString();
-                    tableView1.Rows[5].Cells[c].Value = (totQty - totProd).ToString();
+                    tableView1.Rows[4].Cells[c].Value = Math.Round((totQty - totPrev),1).ToString();
+                    tableView1.Rows[5].Cells[c].Value = Math.Round((totQty - totProd),1).ToString();
                 }
             }
         }
@@ -1166,7 +1208,7 @@
         public double Preventivati { get; set; }
 
         public DataCollection(DateTime date, string line, string type,
-            double produc, double prev, int qtyToprod, string dpt, double price)
+            double produc, double prev, double qtyToprod, string dpt, double price)
         {
             Datex = date;
             Line = line;
@@ -1271,7 +1313,7 @@
 
         public int Abatim { get; set; }
 
-        public int Qty { get; set; }
+        public double Qty { get; set; }
 
         public double QtyProdEff { get; set; }
 

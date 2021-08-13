@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mensile));
             this.tableView1 = new ganntproj1.TableView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cboYears = new System.Windows.Forms.ComboBox();
             this.cboMonth = new System.Windows.Forms.ComboBox();
             this.cbAbatim = new ganntproj1.ToggleCheckBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
-            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.tableView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -82,10 +82,36 @@
             this.panel1.Size = new System.Drawing.Size(794, 72);
             this.panel1.TabIndex = 13;
             // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleCheckBox1.BackColor = System.Drawing.Color.Transparent;
+            this.toggleCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.toggleCheckBox1.Location = new System.Drawing.Point(479, 23);
+            this.toggleCheckBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 57;
+            this.toggleCheckBox1.Text = "Chec";
+            this.toggleCheckBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toggleCheckBox1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Location = new System.Drawing.Point(445, 29);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.TabIndex = 56;
+            this.label3.Text = "ORE";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(138, 3);
+            this.label2.Location = new System.Drawing.Point(152, 3);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
@@ -95,7 +121,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-2, 3);
+            this.label1.Location = new System.Drawing.Point(12, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 13);
@@ -108,7 +134,7 @@
             this.cboYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboYears.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboYears.FormattingEnabled = true;
-            this.cboYears.Location = new System.Drawing.Point(140, 21);
+            this.cboYears.Location = new System.Drawing.Point(154, 21);
             this.cboYears.Margin = new System.Windows.Forms.Padding(2);
             this.cboYears.Name = "cboYears";
             this.cboYears.Size = new System.Drawing.Size(92, 28);
@@ -133,7 +159,7 @@
             "Ottobre",
             "Novembre",
             "Dicembre"});
-            this.cboMonth.Location = new System.Drawing.Point(0, 21);
+            this.cboMonth.Location = new System.Drawing.Point(14, 21);
             this.cboMonth.Margin = new System.Windows.Forms.Padding(2);
             this.cboMonth.Name = "cboMonth";
             this.cboMonth.Size = new System.Drawing.Size(137, 28);
@@ -144,7 +170,7 @@
             this.cbAbatim.Appearance = System.Windows.Forms.Appearance.Button;
             this.cbAbatim.BackColor = System.Drawing.Color.Transparent;
             this.cbAbatim.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbAbatim.Location = new System.Drawing.Point(343, 23);
+            this.cbAbatim.Location = new System.Drawing.Point(357, 23);
             this.cbAbatim.Margin = new System.Windows.Forms.Padding(2);
             this.cbAbatim.Name = "cbAbatim";
             this.cbAbatim.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -159,38 +185,12 @@
             // 
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Location = new System.Drawing.Point(247, 29);
+            this.label7.Location = new System.Drawing.Point(261, 29);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(89, 13);
             this.label7.TabIndex = 41;
             this.label7.Text = "Abatimento 100%";
-            // 
-            // toggleCheckBox1
-            // 
-            this.toggleCheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.toggleCheckBox1.BackColor = System.Drawing.Color.Transparent;
-            this.toggleCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.toggleCheckBox1.Location = new System.Drawing.Point(465, 23);
-            this.toggleCheckBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.toggleCheckBox1.Name = "toggleCheckBox1";
-            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
-            this.toggleCheckBox1.TabIndex = 57;
-            this.toggleCheckBox1.Text = "Chec";
-            this.toggleCheckBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toggleCheckBox1.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(431, 29);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(30, 13);
-            this.label3.TabIndex = 56;
-            this.label3.Text = "ORE";
             // 
             // Mensile
             // 
