@@ -1942,7 +1942,7 @@
             if (!Central.IsProgramare) Workflow.TargetProgramDate = DateTime.MinValue;
             var programDialog = new ProgramationControl(_orderToUpdate, cb.Text, dept, d,Workflow.TargetProgramDate, article, totalQty, carico, qtyH);
 
-            if (programDialog.ShowDialog() == DialogResult.Cancel)
+            while (programDialog.ShowDialog() == DialogResult.Cancel || programDialog.OK == false)
             {
                 return;
             }
@@ -1982,6 +1982,11 @@
                 qty = carico;
             }
 
+            if(members<=0)
+            {
+                MessageBox.Show("Members must be greater 0!", "Programming job", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             var j = new JobModel();
 
             var jobDuration = j.CalculateJobDuration(lineInsteadDescripton, qty, qtyH, dept, members);

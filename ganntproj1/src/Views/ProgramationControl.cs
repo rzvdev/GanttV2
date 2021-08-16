@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ganntproj1.src.Views
             button2.DialogResult = DialogResult.Cancel;
         }
 
-        public ProgramationControl (string order,string line,string depart,DateTime date, DateTime manualdate, string article, int totalQty = 0, int carico = 0, double qtyH = 0.0)
+        public ProgramationControl(string order, string line, string depart, DateTime date, DateTime manualdate, string article, int totalQty = 0, int carico = 0, double qtyH = 0.0, bool ok = true)
         {
             InitializeComponent();
             button1.DialogResult = DialogResult.OK;
@@ -29,6 +30,7 @@ namespace ganntproj1.src.Views
             TotalQty = totalQty;
             Carico = carico;
             ManualDate = manualdate;
+            OK = ok;
 
             if (Store.Default.sectorId == 8)
             {
@@ -66,6 +68,7 @@ namespace ganntproj1.src.Views
             if (Store.Default.manualDate)
             {
                 lblDateInfo.Visible = true;
+                dateTimePicker1.Value = DateTime.Now;
             }
 
             //check suggested date and enable datetime picker even if manualDate is disabled
@@ -122,16 +125,40 @@ namespace ganntproj1.src.Views
         {
             int.TryParse(numericUpDown1.Value.ToString(), out var memb);
             Members = memb;
+            List<JobModel> paralelorder = new List<JobModel>();
+            int membersparalel = 0;
+            if(Store.Default.sectorId==7)
+            {
+                var groupBy = (from lines in Tables.Lines where lines.Line == Line && lines.Department == "Tessitura" select lines.Groupby ).FirstOrDefault();
+                var paralelLines = (from lines in Tables.Lines
+                                    where lines.Groupby == groupBy select lines).ToList();
+
+                foreach (var line in paralelLines)
+                {
+                    var paralel = Central.TaskList.Where(a => a.Aim == line.Line && a.FlowStart <= dateTimePicker1.Value && a.FlowEnd >= dateTimePicker1.Value).ToList();
+                    paralelorder.AddRange(paralel);
+                }
+                var membsUsed = paralelorder.Sum(a => a.Members);
+                membersparalel =  membsUsed + memb;
+                if (membersparalel>14)
+                {
+                    MessageBox.Show("Members/machines equals to "+memb.ToString()+" is not a good value.\nPlease insert maximum: "+(14-membsUsed).ToString()+ " Members/Machines.", "Programming options", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    OK = false;
+                    return;
+                }
+            }
 
             if (memb == 0)
             {
                 MessageBox.Show("Members/machines equals to 0 is not a good value.\nPlease check Settings>Line", "Programming options", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                OK = false;
                 return;
             }
 
             if (SettingsHour() == 0)
             {
                 MessageBox.Show("Working hours equals to 0 are not a good value.\nPlease check Settings>Sectors (Weekdays hour input)", "Programming options", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                OK = false;
                 return;
             }
 
@@ -176,6 +203,7 @@ namespace ganntproj1.src.Views
         public int Carico { get; set; }
         public bool Launched { get; set; }
         public DateTime ManualDate { get; set; }
+        public bool OK { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
