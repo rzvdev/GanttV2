@@ -34,12 +34,18 @@
         }
         
         private IntPtr _console = new IntPtr();
-        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
+        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias" +
+            ";";
         //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
 
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
-        
+
+   
+        public static int GroupIndex { get; set; }
         public static List<JobModel> TaskList { get; set; }
+
+        public static List<JobModel> TessituraTaskList { get; set; }
+
         public static DateTime DateFrom { get; private set; }
         public static DateTime DateTo { get; private set; }
         public static TimeSpan ShiftFrom { get; private set; }
@@ -235,6 +241,11 @@
 
         private void Menu_Load(object send, EventArgs args)
         {
+            if (Store.Default.sectorId == 7)
+            {
+                GroupIndex = 1;
+            }
+
             if (Store.Default.UpdateSettings)
             {
                 Store.Default.Upgrade();
@@ -302,6 +313,8 @@
                        select models);
 
             TaskList = lst.ToList();
+            GroupForTessitura();
+            
 
             treeMenu.Width = 0;
             pbReload.MouseEnter += delegate
@@ -403,8 +416,45 @@
             {
                 Store.Default.manualDate = false;
             }
+            
         }
+        public static void GroupForTessitura()
+        {
+            switch(GroupIndex)
+            {
+                case 1:
+                    TessituraTaskList = TaskList.Where(a => 
+                    a.Aim == "LINEA1" || a.Aim == "LINEA1.1" || a.Aim == "LINEA1.2" ||
+                    a.Aim == "LINEA2" || a.Aim == "LINEA2.1" || a.Aim == "LINEA2.2" ||
+                    a.Aim == "LINEA3" || a.Aim == "LINEA3.1" || a.Aim == "LINEA3.2").ToList();
 
+                    break;
+                case 2:
+                    TessituraTaskList = TaskList.Where(a => 
+                     a.Aim == "LINEA4" || a.Aim == "LINEA4.1" || a.Aim == "LINEA4.2" ||
+                     a.Aim == "LINEA5" || a.Aim == "LINEA5.1" || a.Aim == "LINEA5.2" ||
+                     a.Aim == "LINEA6" || a.Aim == "LINEA6.1" || a.Aim == "LINEA6.2").ToList();
+                    break;
+                case 3:
+                    TessituraTaskList = TaskList.Where(a => 
+                    a.Aim == "LINEA7" || a.Aim == "LINEA7.1" || a.Aim == "LINEA7.2" ||
+                    a.Aim == "LINEA8" || a.Aim == "LINEA8.1" || a.Aim == "LINEA8.2" ||
+                    a.Aim == "LINEA9" || a.Aim == "LINEA9.1" || a.Aim == "LINEA9.2").ToList();
+                    break;
+                case 4:
+                    TessituraTaskList = TaskList.Where(a => 
+                    a.Aim == "LINEA10" || a.Aim == "LINEA10.1" || a.Aim == "LINEA10.2" ||
+                    a.Aim == "LINEA11" || a.Aim == "LINEA11.1" || a.Aim == "LINEA11.2" ||
+                    a.Aim == "LINEA12" || a.Aim == "LINEA12.1" || a.Aim == "LINEA12.2").ToList();
+                    break;
+                case 5:
+                    TessituraTaskList = TaskList.Where(a => 
+                    a.Aim == "LINEA13" || a.Aim == "LINEA13.1" || a.Aim == "LINEA13.2" ||
+                    a.Aim == "LINEA14" || a.Aim == "LINEA14.1" || a.Aim == "LINEA14.2" ||
+                    a.Aim == "LINEA15" || a.Aim == "LINEA15.1" || a.Aim == "LINEA15.2").ToList();
+                    break;
+            }
+        }
         private void LoadShifts()
         {
             var q = "select starttime,endtime from shifts where shift='" + Store.Default.selShift + "'";

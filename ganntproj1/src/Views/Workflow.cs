@@ -149,8 +149,23 @@
             IsDelayHidden = false;
             _gChart.FilteredRowText = string.Empty;
             _gChart.FilteredRowAtt = string.Empty;
+
+
+            if (Store.Default.sectorId == 7)
+            {
+                panel1.Height = 68;
+                lbl_separator1.Height = 58;
+                lbl_separator2.Height = 58;
+            }
+            else
+            {
+                panel1.Height = 46;
+                lbl_separator1.Height = 34;
+                lbl_separator2.Height = 34;
+            }
+
         }
- 
+    
         public void LoadDataWithDateChange()
         {
             _gChart.FromDate = Central.DateFrom;
@@ -159,6 +174,18 @@
             _gChart.BarHeight = 40;
             ListOfLinesSelected = new List<string>();
             AddTimelineObjects();
+            if (Store.Default.sectorId == 7)
+            {
+                panel1.Height = 68;
+                lbl_separator1.Height = 58;
+                lbl_separator2.Height = 58;
+            }
+            else
+            {
+                panel1.Height = 46;
+                lbl_separator1.Height = 34;
+                lbl_separator2.Height = 34;
+            }
         }
 
         private List<Index> _indexerList = new List<Index>();
@@ -181,7 +208,9 @@
                 //    test += x + ";";
                 //}
                 //MessageBox.Show(test);
-                tasklist = Central.TaskList.OrderBy(a=> dbline.IndexOf(a.Aim)).ThenBy(a=>a.Aim.Length).ThenBy(a => a.FlowEnd).ToList();
+                 tasklist = Central.TessituraTaskList.OrderBy(a=> dbline.IndexOf(a.Aim)).ThenBy(a=>a.Aim.Length).ThenBy(a => a.FlowEnd).ToList();
+               DefaultAim = tasklist.First().Aim;
+               DefaultDept = tasklist.First().Department;
             }
             else
             {
@@ -201,6 +230,7 @@
                 {
                     elementIdx = 0;
                     rowIdx++;
+                    //if (elementIdx == 0) rowIdx = 0;
                     _indexerList.Add(new Index(rowIdx, elementIdx, model.Name, model.Aim, model.Department, model.Idx));
                     elementIdx++;
                 }
@@ -1523,6 +1553,57 @@
 
         private void button3_Click(object sender, EventArgs e)
         {
+            AddTimelineObjects();
+        }
+
+        private void grp1_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex = 1;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grp2_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex = 2;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grp3_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex = 3;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grp4_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex = 4;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grp5_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex = 5;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grpback_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex -=1;
+            if (Central.GroupIndex <= 1) Central.GroupIndex = 1;
+            Central.GroupForTessitura();
+            AddTimelineObjects();
+        }
+
+        private void grpforword_Click(object sender, EventArgs e)
+        {
+            Central.GroupIndex +=1;
+            if (Central.GroupIndex >= 5) Central.GroupIndex = 5;
+            Central.GroupForTessitura();
             AddTimelineObjects();
         }
     }
