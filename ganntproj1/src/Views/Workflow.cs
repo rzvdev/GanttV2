@@ -82,7 +82,7 @@
         public static bool IsDelayHidden { get; set; }
 
         public static bool SkipLines = false;
-
+        private List<Button> BtnGroupLst = new List<Button>();
         public Workflow()
         {
             InitializeComponent();
@@ -131,6 +131,20 @@
 
         private void ProduzioneGantt_Load(object sender, EventArgs e)
         {
+            if (Store.Default.sectorId == 7)
+            {
+                panel1.Height = 68;
+                lbl_separator1.Height = 58;
+                lbl_separator2.Height = 58;
+                BtnGroupLst = new List<Button>() { grp1, grp2, grp3, grp4, grp5 };
+                Central.GroupIndex = 1;
+            }
+            else
+            {
+                panel1.Height = 46;
+                lbl_separator1.Height = 34;
+                lbl_separator2.Height = 34;
+            }
             cbArticle.Checked = Central.IsArticleSelection;
 
             ByQty = false;
@@ -151,18 +165,7 @@
             _gChart.FilteredRowAtt = string.Empty;
 
 
-            if (Store.Default.sectorId == 7)
-            {
-                panel1.Height = 68;
-                lbl_separator1.Height = 58;
-                lbl_separator2.Height = 58;
-            }
-            else
-            {
-                panel1.Height = 46;
-                lbl_separator1.Height = 34;
-                lbl_separator2.Height = 34;
-            }
+            
 
         }
     
@@ -173,9 +176,12 @@
             SkipLines = false;
             _gChart.BarHeight = 40;
             ListOfLinesSelected = new List<string>();
-            AddTimelineObjects();
+            
             if (Store.Default.sectorId == 7)
             {
+                Central.TessituraTaskList = Central.TaskList;
+                Central.GroupIndex = 1;
+                AddTimelineObjects();
                 panel1.Height = 68;
                 lbl_separator1.Height = 58;
                 lbl_separator2.Height = 58;
@@ -264,7 +270,8 @@
                 timeToMoveBack = 0L;
                 var model = Central.TaskList.FirstOrDefault(
                     x => x.Name == item.ObjText && x.Aim == item.ObjAim && x.Department == item.ObjDept && x.Idx == item.Idx);
-             
+                if (model == null)
+                    return;
                 var modelBefore = JobModel.GetModelIndex(model.Name, _indexerList, -1);
                
                 if (modelBefore != null)
@@ -536,6 +543,7 @@
 
         public void AddTimelineObjects()
         {
+            SelectedGroupColor();
             SetPrincipalBarIndex(false);
             ByQty = false;
         }
@@ -668,6 +676,10 @@
                     {
                         _ctxMenuStrip = null;
                         _gChart.Refresh();
+                        if(Store.Default.sectorId==7)
+                        {
+                            Central.GroupForTessitura();
+                        }
                         AddTimelineObjects();
                     }
                 }
@@ -1605,6 +1617,22 @@
             if (Central.GroupIndex >= 5) Central.GroupIndex = 5;
             Central.GroupForTessitura();
             AddTimelineObjects();
+        }
+
+       
+        private void SelectedGroupColor()
+        {
+            
+            for(int i=0;i<BtnGroupLst.Count;i++)
+            {
+                if (i+1==Central.GroupIndex)
+                    {
+                    BtnGroupLst[i].BackColor = Color.Silver;
+                }
+                else {
+                    BtnGroupLst[i].BackColor = Color.WhiteSmoke;
+                }
+            }
         }
     }
 }

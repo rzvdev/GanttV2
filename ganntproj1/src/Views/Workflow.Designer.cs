@@ -33,17 +33,19 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.grpforword = new System.Windows.Forms.Button();
             this.grp5 = new System.Windows.Forms.Button();
-            this.grp4 = new System.Windows.Forms.Button();
-            this.grp3 = new System.Windows.Forms.Button();
-            this.grp2 = new System.Windows.Forms.Button();
-            this.grpback = new System.Windows.Forms.Button();
-            this.grp1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.grp4 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.grp3 = new System.Windows.Forms.Button();
+            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
+            this.grp2 = new System.Windows.Forms.Button();
             this.btnShowEff = new System.Windows.Forms.Button();
+            this.grpback = new System.Windows.Forms.Button();
             this.lbl_separator2 = new System.Windows.Forms.Label();
+            this.grp1 = new System.Windows.Forms.Button();
             this.btnHolidays = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
+            this.cbArticle = new ganntproj1.ToggleCheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnHideDelay = new System.Windows.Forms.Button();
             this.btnDayInfo = new System.Windows.Forms.Button();
@@ -60,8 +62,6 @@
             this.btnMegaFow = new System.Windows.Forms.Button();
             this.spContainer = new System.Windows.Forms.SplitContainer();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.toggleCheckBox1 = new ganntproj1.ToggleCheckBox();
-            this.cbArticle = new ganntproj1.ToggleCheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spContainer)).BeginInit();
             this.spContainer.Panel1.SuspendLayout();
@@ -146,9 +146,23 @@
             this.grp5.UseVisualStyleBackColor = false;
             this.grp5.Click += new System.EventHandler(this.grp5_Click);
             // 
+            // button2
+            // 
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = global::ganntproj1.Properties.Resources.active_321;
+            this.button2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.button2.Location = new System.Drawing.Point(671, 5);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(26, 26);
+            this.button2.TabIndex = 74;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // grp4
             // 
-            this.grp4.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.grp4.BackColor = System.Drawing.Color.Silver;
             this.grp4.FlatAppearance.BorderSize = 0;
             this.grp4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grp4.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -160,6 +174,18 @@
             this.grp4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.grp4.UseVisualStyleBackColor = false;
             this.grp4.Click += new System.EventHandler(this.grp4_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(168, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 16);
+            this.label2.TabIndex = 73;
+            this.label2.Text = "Qty";
             // 
             // grp3
             // 
@@ -176,6 +202,16 @@
             this.grp3.UseVisualStyleBackColor = false;
             this.grp3.Click += new System.EventHandler(this.grp3_Click);
             // 
+            // toggleCheckBox1
+            // 
+            this.toggleCheckBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.toggleCheckBox1.Location = new System.Drawing.Point(120, 9);
+            this.toggleCheckBox1.Name = "toggleCheckBox1";
+            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(6);
+            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
+            this.toggleCheckBox1.TabIndex = 72;
+            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
+            // 
             // grp2
             // 
             this.grp2.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -190,6 +226,20 @@
             this.grp2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.grp2.UseVisualStyleBackColor = false;
             this.grp2.Click += new System.EventHandler(this.grp2_Click);
+            // 
+            // btnShowEff
+            // 
+            this.btnShowEff.FlatAppearance.BorderSize = 0;
+            this.btnShowEff.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.btnShowEff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShowEff.Image = global::ganntproj1.Properties.Resources.eff_color_32;
+            this.btnShowEff.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnShowEff.Location = new System.Drawing.Point(628, 5);
+            this.btnShowEff.Name = "btnShowEff";
+            this.btnShowEff.Size = new System.Drawing.Size(26, 26);
+            this.btnShowEff.TabIndex = 71;
+            this.btnShowEff.UseVisualStyleBackColor = true;
+            this.btnShowEff.Click += new System.EventHandler(this.btnShowEff_Click);
             // 
             // grpback
             // 
@@ -206,6 +256,15 @@
             this.grpback.UseVisualStyleBackColor = false;
             this.grpback.Click += new System.EventHandler(this.grpback_Click);
             // 
+            // lbl_separator2
+            // 
+            this.lbl_separator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_separator2.Location = new System.Drawing.Point(715, 7);
+            this.lbl_separator2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbl_separator2.Name = "lbl_separator2";
+            this.lbl_separator2.Size = new System.Drawing.Size(2, 34);
+            this.lbl_separator2.TabIndex = 70;
+            // 
             // grp1
             // 
             this.grp1.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -220,55 +279,6 @@
             this.grp1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.grp1.UseVisualStyleBackColor = false;
             this.grp1.Click += new System.EventHandler(this.grp1_Click);
-            // 
-            // button2
-            // 
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = global::ganntproj1.Properties.Resources.active_321;
-            this.button2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button2.Location = new System.Drawing.Point(671, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(26, 26);
-            this.button2.TabIndex = 74;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(168, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 16);
-            this.label2.TabIndex = 73;
-            this.label2.Text = "Qty";
-            // 
-            // btnShowEff
-            // 
-            this.btnShowEff.FlatAppearance.BorderSize = 0;
-            this.btnShowEff.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.btnShowEff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShowEff.Image = global::ganntproj1.Properties.Resources.eff_color_32;
-            this.btnShowEff.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnShowEff.Location = new System.Drawing.Point(628, 5);
-            this.btnShowEff.Name = "btnShowEff";
-            this.btnShowEff.Size = new System.Drawing.Size(26, 26);
-            this.btnShowEff.TabIndex = 71;
-            this.btnShowEff.UseVisualStyleBackColor = true;
-            this.btnShowEff.Click += new System.EventHandler(this.btnShowEff_Click);
-            // 
-            // lbl_separator2
-            // 
-            this.lbl_separator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_separator2.Location = new System.Drawing.Point(715, 7);
-            this.lbl_separator2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbl_separator2.Name = "lbl_separator2";
-            this.lbl_separator2.Size = new System.Drawing.Size(2, 34);
-            this.lbl_separator2.TabIndex = 70;
             // 
             // btnHolidays
             // 
@@ -295,6 +305,16 @@
             this.label17.Size = new System.Drawing.Size(53, 16);
             this.label17.TabIndex = 68;
             this.label17.Text = "Articolo";
+            // 
+            // cbArticle
+            // 
+            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbArticle.Location = new System.Drawing.Point(13, 9);
+            this.cbArticle.Name = "cbArticle";
+            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
+            this.cbArticle.Size = new System.Drawing.Size(42, 24);
+            this.cbArticle.TabIndex = 67;
+            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
             // 
             // button1
             // 
@@ -521,26 +541,6 @@
             this.hScrollBar1.Size = new System.Drawing.Size(1370, 21);
             this.hScrollBar1.TabIndex = 4;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar1_Scroll);
-            // 
-            // toggleCheckBox1
-            // 
-            this.toggleCheckBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.toggleCheckBox1.Location = new System.Drawing.Point(120, 9);
-            this.toggleCheckBox1.Name = "toggleCheckBox1";
-            this.toggleCheckBox1.Padding = new System.Windows.Forms.Padding(6);
-            this.toggleCheckBox1.Size = new System.Drawing.Size(42, 24);
-            this.toggleCheckBox1.TabIndex = 72;
-            this.toggleCheckBox1.CheckedChanged += new System.EventHandler(this.toggleCheckBox1_CheckedChanged);
-            // 
-            // cbArticle
-            // 
-            this.cbArticle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbArticle.Location = new System.Drawing.Point(13, 9);
-            this.cbArticle.Name = "cbArticle";
-            this.cbArticle.Padding = new System.Windows.Forms.Padding(6);
-            this.cbArticle.Size = new System.Drawing.Size(42, 24);
-            this.cbArticle.TabIndex = 67;
-            this.cbArticle.CheckedChanged += new System.EventHandler(this.CbArticle_CheckedChanged);
             // 
             // Workflow
             // 

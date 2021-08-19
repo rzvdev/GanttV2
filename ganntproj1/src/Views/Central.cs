@@ -34,9 +34,8 @@
         }
         
         private IntPtr _console = new IntPtr();
-        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias" +
-            ";";
-        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
+        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
+        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
 
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
@@ -2126,7 +2125,8 @@
             {
                 WindowState = FormWindowState.Normal;
                 StartPosition = FormStartPosition.Manual;
-                Location = new Point(Screen.PrimaryScreen.WorkingArea.Left + 10, Screen.PrimaryScreen.WorkingArea.Top + 10);
+                Location = new Point(Screen.PrimaryScreen.WorkingArea.Left+10, Screen.PrimaryScreen.WorkingArea.Top+10);
+
             }
             else
             {
@@ -2145,11 +2145,13 @@
             {
                 WindowState = FormWindowState.Normal;
                 StartPosition = FormStartPosition.Manual;
-                Location = new Point(Screen.PrimaryScreen.WorkingArea.Left + 10, Screen.PrimaryScreen.WorkingArea.Top + 10);
+                Location = new Point(Screen.PrimaryScreen.WorkingArea.Left, Screen.PrimaryScreen.WorkingArea.Top);
             }
             else
             {
                 WindowState = FormWindowState.Maximized;
+               
+
             }
         }
 

@@ -727,9 +727,6 @@ namespace ganntproj1
                     }
                     else if (Store.Default.sectorId == 7)
                     {
-
-                      
-
                             var strLine = "LINEA ";
                             var lineNum = /*line.Line.Remove(0, 5); //*/bar.Tag.Remove(0, 5);
                             if (lineNum.Contains('.')) lineNum = lineNum.Remove(1, 2);
@@ -744,9 +741,9 @@ namespace ganntproj1
                                 intlinnr -= 1;
                                 if (intlinnr != 0)
                                 {
-                                    intlinnr = intlinnr * 3;
+                                    intlinnr = intlinnr  * 3;
                                 }
-                                if (intlinnr == linelbl.Index && rowTitle == linelbl.Line)
+                                if (index%3==0 && rowTitle == linelbl.Line)
                                 {
 
                                     using (Image taskImg = Properties.Resources.folder_icon_32_gold ??
