@@ -179,7 +179,7 @@
             
             if (Store.Default.sectorId == 7)
             {
-                Central.TessituraTaskList = Central.TaskList;
+                //Central.TessituraTaskList = Central.TaskList;
                 Central.GroupIndex = 1;
                 AddTimelineObjects();
                 panel1.Height = 68;
