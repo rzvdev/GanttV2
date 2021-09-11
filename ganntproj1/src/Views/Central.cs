@@ -34,8 +34,8 @@
         }
         
         private IntPtr _console = new IntPtr();
-        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
-        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
+        public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Ganttproj; User ID=sa; password=onlyouolimpias;";
+        //public static string SpecialConnStr = "data source=192.168.96.17;initial catalog=Gantt_Test; User ID=sa; password=onlyouolimpias;";
 
         public static string ConnStr = "data source=192.168.96.37;initial catalog=ONLYOU; User ID=nicu; password=onlyouolimpias;";
 
@@ -240,10 +240,7 @@
 
         private void Menu_Load(object send, EventArgs args)
         {
-            if (Store.Default.sectorId == 7)
-            {
-                GroupIndex = 1;
-            }
+           
 
             if (Store.Default.UpdateSettings)
             {
@@ -312,7 +309,11 @@
                        select models);
 
             TaskList = lst.ToList();
-            GroupForTessitura();
+            if (Store.Default.sectorId == 7)
+            {
+                GroupIndex = 1;
+                GroupForTessitura();
+            }
             
 
             treeMenu.Width = 0;
@@ -531,10 +532,10 @@
                           .ThenBy(x => Convert.ToDouble(x.Aim.Remove(0, 5)))
                           .ThenBy(x => x.StartDate);
                 TaskList = lst.ToList();
-
+                GroupForTessitura();
                 var ln = from lines in Tables.Lines
                          select lines;
-
+                
                 ListOfLines = ln.ToList();
 
                 Cursor = Cursors.Default;

@@ -145,8 +145,8 @@ namespace ganntproj1
 
                 if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
                     {
-                    dgvCheck.Columns[i].DefaultCellStyle.BackColor = Color.Silver;
-                    dgvCheck.Columns[i].HeaderCell.Style.BackColor = Color.Gold;
+                    dgvCheck.Columns[i].DefaultCellStyle.BackColor = Color.LightBlue;
+                    dgvCheck.Columns[i].HeaderCell.Style.BackColor = Color.LightBlue;
                     }
                 for (var r = 0; r <= dgvCheck.Rows.Count - 1; r++)
                     {
@@ -307,7 +307,7 @@ namespace ganntproj1
             {
             if (e.RowIndex < 0 || e.ColumnIndex < 1) return;
             DateTime.TryParse(dgvCheck.Columns[e.ColumnIndex].Name, out var dt);
-            if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
+            if ((dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday) && Store.Default.sectorId!=7)
                 {
                 dgvCheck.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "0";
                 return;

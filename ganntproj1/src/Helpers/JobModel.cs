@@ -222,7 +222,7 @@
                 }
                 else
                 {
-                    if (dd.DayOfWeek == DayOfWeek.Saturday || dd.DayOfWeek == DayOfWeek.Sunday)
+                    if ((dd.DayOfWeek == DayOfWeek.Saturday || dd.DayOfWeek == DayOfWeek.Sunday) && Store.Default.sectorId!=7)
                     {
                         i += 1;
                         dateTo = dateTo.AddDays(+1);

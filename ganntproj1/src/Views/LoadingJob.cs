@@ -306,6 +306,12 @@
                 if (Central.IsProgramare) Central.IdStateArray.Append(",4");
                 Central.IdStateArray.Append(",");
             }
+
+            string tessfilter = "";
+            if (Store.Default.sectorId == 7)
+            {
+                tessfilter = " and Comenzi.CodStabilimento = '32'";
+            }
             var stateId = " and charindex(+ ',' + cast(Comenzi.IdStare as nvarchar(20)) + ',', '"
                 + Central.IdStateArray.ToString() + "') > 0";
             var queryCondition = "";
@@ -313,22 +319,22 @@
                 queryCondition = "where Comenzi.dataLivrare between '" +
                 from + "' and '" + to + "' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
                 sector +   
-                stateId + " order by Comenzi.dataLivrare DESC";
+                stateId + tessfilter + " order by Comenzi.dataLivrare DESC";
             else
                 queryCondition = "where charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
                 sector + 
-                stateId + " order by Comenzi.dataLansare DESC";
+                stateId + tessfilter + " order by Comenzi.dataLansare DESC";
             if (Central.IsDvc)
                 queryCondition = "where Comenzi.DVC between '" +
                 from + "' and '" +
                 to + "' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
                 sector + 
-                stateId + " order by Comenzi.DVC";
+                stateId + tessfilter + " order by Comenzi.DVC";
             else if (Central.IsRdd)
                 queryCondition = "where Comenzi.Rdd between '" +
                 from + "' and '" + to + "' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 and  Comenzi.isdeleted='0'" +
                 sector + "" +
-                stateId + " order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
+                stateId + tessfilter + " order by case when Comenzi.Rdd is null then 1 else 0 end, Comenzi.Rdd";
             else if (Central.IsProgramare)
             {
                 var strFilter = "";
@@ -347,7 +353,7 @@
                                       "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' or Comenzi.Line is null and Comenzi.department='" + Workflow.TargetDepartment + "' " +
                                       "and Comenzi.IdStare=4 and  Comenzi.isdeleted='0' and Comenzi.department='" + Workflow.TargetDepartment + "' " +
                                       "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
-                                      "and Comenzi.Line is null and Comenzi.isdeleted=0 " + 
+                                      "and Comenzi.Line is null and Comenzi.isdeleted=0 " + tessfilter +
                                       "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
                 else
@@ -356,16 +362,16 @@
                         "and Comenzi.IdStare=4 and Comenzi.isdeleted='0' or Comenzi.Line is null and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
                         "and Comenzi.IdStare=4 and Comenzi.isdeleted='0' and charindex(+',' + Comenzi.department + ',', '" + Store.Default.selDept + "') > 0 " +
                         "and Comenzi.IdStare=4 and Comenzi.DataProduzione is null " +
-                        "and Comenzi.Line is null and Comenzi.isdeleted='0' " +
+                        "and Comenzi.Line is null and Comenzi.isdeleted='0' " + tessfilter +
                         "order by case when " + strFilter + " is null then 1 else 0 end, " + strFilter;
                 }
             }
             if (UseSingleFilter)
             {
                 queryCondition = "where Comenzi.NrComanda='" + Workflow.TargetOrder + "' "
-                    + "and comenzi.line='" + Workflow.TargetLine + "' and comenzi.department='" + Workflow.TargetDepartment + "'";
+                    + "and comenzi.line='" + Workflow.TargetLine + "' and comenzi.department='" + Workflow.TargetDepartment + "'" +tessfilter;
             }
-
+            
             var strLine = IsUpd ? "case when Comenzi.Line is not null then null else Comenzi.Line end as Line," : "Comenzi.Line,";
 
             var query = "select " +

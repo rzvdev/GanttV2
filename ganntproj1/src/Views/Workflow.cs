@@ -188,6 +188,7 @@
             }
             else
             {
+                AddTimelineObjects();
                 panel1.Height = 46;
                 lbl_separator1.Height = 34;
                 lbl_separator2.Height = 34;
